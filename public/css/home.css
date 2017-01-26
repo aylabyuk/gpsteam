@@ -1,0 +1,43 @@
+#container {
+    display: flex;
+	align-items: center;
+	justify-content: center;
+	height:100vh
+}
+
+#card {
+	align-items:center;
+	width:400px;
+	background: white;
+}
+
+#card .segment {
+	width:100%
+}
+
+#card .segment .button {
+	width:100%
+}
+
+#inputsLogin {
+	height:300px;
+	display:flex;
+	flex-direction:column;
+	justify-content:space-between
+}
+
+p {
+	text-align:center;
+	color:gray;
+}
+
+.segment em, .segment em .item {
+	float: right
+}
+
+#regForm {
+	height:270px;
+	display:flex;
+	flex-direction:column;
+	justify-content:space-between
+}

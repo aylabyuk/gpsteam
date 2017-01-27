@@ -1,178 +1,178 @@
-var margin = { top: 50, right: 300, bottom: 50, left: 50 },
-    outerWidth = 1050,
-    outerHeight = 500,
-    width = outerWidth - margin.left - margin.right,
-    height = outerHeight - margin.top - margin.bottom;
+// Set the dimensions of the canvas / graph
+var margin = {top: 30, right: 20, bottom: 30, left: 50},
+    width = 600 - margin.left - margin.right,
+    height = 270 - margin.top - margin.bottom;
 
-var x = d3.scale.linear()
-    .range([0, width]).nice();
+// Parse the date / time
+var parseDate = d3.time.format("%d-%b-%y").parse,
+    formatDate = d3.time.format("%d-%b"),
+    bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
-var y = d3.scale.linear()
-    .range([height, 0]).nice();
+// Set the ranges
+var x = d3.time.scale().range([0, width]);
+var y = d3.scale.linear().range([height, 0]);
 
-var xCat = "Calories",
-    yCat = "Potassium",
-    rCat = "Protein (g)",
-    colorCat = "Manufacturer";
+// Define the axes
+var xAxis = d3.svg.axis().scale(x)
+    .orient("bottom").ticks(5);
 
-d3.csv("cereal.csv", function(data) {
-  data.forEach(function(d) {
-    d.Calories = +d.Calories;
-    d.Carbs = +d.Carbs;
-    d["Cups per Serving"] = +d["Cups per Serving"];
-    d["Dietary Fiber"] = +d["Dietary Fiber"];
-    d["Display Shelf"] = +d["Display Shelf"];
-    d.Fat = +d.Fat;
-    d.Potassium = +d.Potassium;
-    d["Protein (g)"] = +d["Protein (g)"];
-    d["Serving Size Weight"] = +d["Serving Size Weight"];
-    d.Sodium = +d.Sodium;
-    d.Sugars = +d.Sugars;
-    d["Vitamins and Minerals"] = +d["Vitamins and Minerals"];
-  });
+var yAxis = d3.svg.axis().scale(y)
+    .orient("left").ticks(5);
 
-  var xMax = d3.max(data, function(d) { return d[xCat]; }) * 1.05,
-      xMin = d3.min(data, function(d) { return d[xCat]; }),
-      xMin = xMin > 0 ? 0 : xMin,
-      yMax = d3.max(data, function(d) { return d[yCat]; }) * 1.05,
-      yMin = d3.min(data, function(d) { return d[yCat]; }),
-      yMin = yMin > 0 ? 0 : yMin;
-
-  x.domain([xMin, xMax]);
-  y.domain([yMin, yMax]);
-
-  var xAxis = d3.svg.axis()
-      .scale(x)
-      .orient("bottom")
-      .tickSize(-height);
-
-  var yAxis = d3.svg.axis()
-      .scale(y)
-      .orient("left")
-      .tickSize(-width);
-
-  var color = d3.scale.category10();
-
-  var tip = d3.tip()
-      .attr("class", "d3-tip")
-      .offset([-10, 0])
-      .html(function(d) {
-        return xCat + ": " + d[xCat] + "<br>" + yCat + ": " + d[yCat];
-      });
-
-  var zoomBeh = d3.behavior.zoom()
-      .x(x)
-      .y(y)
-      .scaleExtent([0, 500])
-      .on("zoom", zoom);
-
-  var svg = d3.select("#scatter")
+// Define the line
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.close); });
+    
+// Adds the svg canvas
+var svg = d3.select("body")
     .append("svg")
-      .attr("width", outerWidth)
-      .attr("height", outerHeight)
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
     .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      .call(zoomBeh);
+        .attr("transform", 
+              "translate(" + margin.left + "," + margin.top + ")");
 
-  svg.call(tip);
+var lineSvg = svg.append("g"); 
 
-  svg.append("rect")
-      .attr("width", width)
-      .attr("height", height);
+var focus = svg.append("g") 
+    .style("display", "none");
 
-  svg.append("g")
-      .classed("x axis", true)
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis)
-    .append("text")
-      .classed("label", true)
-      .attr("x", width)
-      .attr("y", margin.bottom - 10)
-      .style("text-anchor", "end")
-      .text(xCat);
+// Get the data
+d3.csv("atad.csv", function(error, data) {
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.close = +d.close;
+    });
 
-  svg.append("g")
-      .classed("y axis", true)
-      .call(yAxis)
-    .append("text")
-      .classed("label", true)
-      .attr("transform", "rotate(-90)")
-      .attr("y", -margin.left)
-      .attr("dy", ".71em")
-      .style("text-anchor", "end")
-      .text(yCat);
+    // Scale the range of the data
+    x.domain(d3.extent(data, function(d) { return d.date; }));
+    y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
-  var objects = svg.append("svg")
-      .classed("objects", true)
-      .attr("width", width)
-      .attr("height", height);
+    // Add the valueline path.
+    lineSvg.append("path")
+        .attr("class", "line")
+        .attr("d", valueline(data));
 
-  objects.append("svg:line")
-      .classed("axisLine hAxisLine", true)
-      .attr("x1", 0)
-      .attr("y1", 0)
-      .attr("x2", width)
-      .attr("y2", 0)
-      .attr("transform", "translate(0," + height + ")");
+    // Add the X Axis
+    svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
-  objects.append("svg:line")
-      .classed("axisLine vAxisLine", true)
-      .attr("x1", 0)
-      .attr("y1", 0)
-      .attr("x2", 0)
-      .attr("y2", height);
+    // Add the Y Axis
+    svg.append("g")
+        .attr("class", "y axis")
+        .call(yAxis);
 
-  objects.selectAll(".dot")
-      .data(data)
-    .enter().append("circle")
-      .classed("dot", true)
-      .attr("r", function (d) { return 6 * Math.sqrt(d[rCat] / Math.PI); })
-      .attr("transform", transform)
-      .style("fill", function(d) { return color(d[colorCat]); })
-      .on("mouseover", tip.show)
-      .on("mouseout", tip.hide);
+   // append the x line
+    focus.append("line")
+        .attr("class", "x")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("y1", 0)
+        .attr("y2", height);
 
-  var legend = svg.selectAll(".legend")
-      .data(color.domain())
-    .enter().append("g")
-      .classed("legend", true)
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+    // append the y line
+    focus.append("line")
+        .attr("class", "y")
+        .style("stroke", "blue")
+        .style("stroke-dasharray", "3,3")
+        .style("opacity", 0.5)
+        .attr("x1", width)
+        .attr("x2", width);
 
-  legend.append("circle")
-      .attr("r", 3.5)
-      .attr("cx", width + 20)
-      .attr("fill", color);
+    // append the circle at the intersection
+    focus.append("circle")
+        .attr("class", "y")
+        .style("fill", "none")
+        .style("stroke", "blue")
+        .attr("r", 4);
 
-  legend.append("text")
-      .attr("x", width + 26)
-      .attr("dy", ".35em")
-      .text(function(d) { return d; });
+    // place the value at the intersection
+    focus.append("text")
+        .attr("class", "y1")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
+    focus.append("text")
+        .attr("class", "y2")
+        .attr("dx", 8)
+        .attr("dy", "-.3em");
 
-  d3.select("input").on("click", change);
+    // place the date at the intersection
+    focus.append("text")
+        .attr("class", "y3")
+        .style("stroke", "white")
+        .style("stroke-width", "3.5px")
+        .style("opacity", 0.8)
+        .attr("dx", 8)
+        .attr("dy", "1em");
+    focus.append("text")
+        .attr("class", "y4")
+        .attr("dx", 8)
+        .attr("dy", "1em");
+    
+    // append the rectangle to capture mouse
+    svg.append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .style("fill", "none")
+        .style("pointer-events", "all")
+        .on("mouseover", function() { focus.style("display", null); })
+        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mousemove", mousemove);
 
-  function change() {
-    xCat = "Carbs";
-    xMax = d3.max(data, function(d) { return d[xCat]; });
-    xMin = d3.min(data, function(d) { return d[xCat]; });
+    function mousemove() {
+		var x0 = x.invert(d3.mouse(this)[0]),
+		    i = bisectDate(data, x0, 1),
+		    d0 = data[i - 1],
+		    d1 = data[i],
+		    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
-    zoomBeh.x(x.domain([xMin, xMax])).y(y.domain([yMin, yMax]));
+		focus.select("circle.y")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")");
 
-    var svg = d3.select("#scatter").transition();
+		focus.select("text.y1")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")")
+		    .text(d.close);
 
-    svg.select(".x.axis").duration(750).call(xAxis).select(".label").text(xCat);
+		focus.select("text.y2")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")")
+		    .text(d.close);
 
-    objects.selectAll(".dot").transition().duration(1000).attr("transform", transform);
-  }
+		focus.select("text.y3")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")")
+		    .text(formatDate(d.date));
 
-  function zoom() {
-    svg.select(".x.axis").call(xAxis);
-    svg.select(".y.axis").call(yAxis);
+		focus.select("text.y4")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")")
+		    .text(formatDate(d.date));
 
-    svg.selectAll(".dot")
-        .attr("transform", transform);
-  }
+		focus.select(".x")
+		    .attr("transform",
+		          "translate(" + x(d.date) + "," +
+		                         y(d.close) + ")")
+		               .attr("y2", height - y(d.close));
 
-  function transform(d) {
-    return "translate(" + x(d[xCat]) + "," + y(d[yCat]) + ")";
-  }
+		focus.select(".y")
+		    .attr("transform",
+		          "translate(" + width * -1 + "," +
+		                         y(d.close) + ")")
+		               .attr("x2", width + width);
+	}
+
 });

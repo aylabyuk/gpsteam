@@ -47,7 +47,8 @@ class MyCustomChart {
             height = +svg.attr("height") - margin.top - margin.bottom,
             height2 = +svg.attr("height") - margin2.top - margin2.bottom;
 
-        var parseDate = d3.timeParse("%b %Y");
+        var parseDate = d3.timeParse("%b %d %Y");
+        var formatDate = d3.timeFormat("%b %d")
 
         var x = d3.scaleTime().range([0, width]),
             x2 = d3.scaleTime().range([0, width]),
@@ -94,6 +95,7 @@ class MyCustomChart {
             .attr("class", "context")
             .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
     
+        var bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
             x.domain(d3.extent(data, function(d) { return d.date; }));
             y.domain([0, d3.max(data, function(d) { return d.price; })]);
@@ -148,6 +150,11 @@ class MyCustomChart {
                 .attr("width", width)
                 .attr("height", height)
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .style("fill", "none")
+                .style("pointer-events", "all")
+                .on("mouseover", function() { foc.style("display", null); })
+                .on("mouseout", function() { foc.style("display", "none"); })
+                .on("mousemove", mousemove)
                 .call(zoom);
             
             focus.select(".scat")
@@ -157,6 +164,115 @@ class MyCustomChart {
                 .attr("r", 3.5)
                 .attr("transform", transform)
                 .classed("dot", true)
+
+            //TOOLTIP
+
+            var foc = focus.select(".scat")
+                .append("g")
+                .attr("class", "tooltipContainer")
+
+                // append the x line
+                foc.append("line")
+                    .attr("class", "x")
+                    .style("stroke", "blue")
+                    .style("stroke-dasharray", "3,3")
+                    .style("opacity", 0.5)
+                    .attr("y1", 0)
+                    .attr("y2", height);
+
+                // append the y line
+                foc.append("line")
+                    .attr("class", "y")
+                    .style("stroke", "blue")
+                    .style("stroke-dasharray", "3,3")
+                    .style("opacity", 0.5)
+                    .attr("x1", width)
+                    .attr("x2", width);
+
+                // append the circle at the intersection
+                foc.append("circle")
+                    .attr("class", "y")
+                    .style("fill", "none")
+                    .style("stroke", "blue")
+                    .attr("r", 4);
+
+                // place the value at the intersection
+                foc.append("text")
+                    .attr("class", "y1")
+                    .style("stroke", "white")
+                    .style("stroke-width", "3.5px")
+                    .style("opacity", 0.8)
+                    .attr("dx", 8)
+                    .attr("dy", "-.3em");
+                foc.append("text")
+                    .attr("class", "y2")
+                    .attr("dx", 8)
+                    .attr("dy", "-.3em");
+
+                // place the date at the intersection
+                foc.append("text")
+                    .attr("class", "y3")
+                    .style("stroke", "white")
+                    .style("stroke-width", "3.5px")
+                    .style("opacity", 0.8)
+                    .attr("dx", 8)
+                    .attr("dy", "1em");
+                foc.append("text")
+                    .attr("class", "y4")
+                    .attr("dx", 8)
+                    .attr("dy", "1em");
+                
+                    
+
+        function mousemove() {
+                var x0 = x.invert(d3.mouse(this)[0]),
+                    i = bisectDate(data, x0, 1),
+                    d0 = data[i - 1],
+                    d1 = data[i],
+                    d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+                foc.select("circle.y")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")");
+
+                foc.select("text.y1")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")")
+                    .text(d.price);
+
+                foc.select("text.y2")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")")
+                    .text(d.price);
+
+                foc.select("text.y3")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")")
+                    .text(formatDate(d.date));
+
+                foc.select("text.y4")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")")
+                    .text(formatDate(d.date));
+
+                foc.select(".x")
+                    .attr("transform",
+                        "translate(" + x(d.date) + "," +
+                                        y(d.price) + ")")
+                            .attr("y2", height - y(d.price));
+
+                foc.select(".y")
+                    .attr("transform",
+                        "translate(" + width * -1 + "," +
+                                        y(d.price) + ")")
+                            .attr("x2", width + width);
+            }
+            //TOOLTIP
                 
 
         function brushed() {

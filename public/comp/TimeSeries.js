@@ -102,8 +102,17 @@ class MyCustomChart {
 
             focus.append("path")
                 .datum(data)
+                .attr("fill", "none")
                 .attr("class", "area")
+                .attr("stroke", "steelblue")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
                 .attr("d", area);
+
+            focus.append("g")
+                .attr("class", "scat")
+
 
             focus.append("g")
                 .attr("class", "axis axis--x")
@@ -117,6 +126,11 @@ class MyCustomChart {
             context.append("path")
                 .datum(data)
                 .attr("class", "area")
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
                 .attr("d", area2);
 
             context.append("g")
@@ -136,7 +150,8 @@ class MyCustomChart {
                 .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
                 .call(zoom);
             
-            focus.selectAll(".dot")
+            focus.select(".scat")
+                .selectAll(".dot")
                 .data(data)
                 .enter().append("circle")
                 .attr("r", 3.5)

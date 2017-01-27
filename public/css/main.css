@@ -3,7 +3,6 @@ body {
 }
 
 .area {
-  fill: steelblue;
   clip-path: url(#clip);
 }
 
@@ -13,6 +12,10 @@ body {
   pointer-events: all;
 }
 
-.dot {
+.scat {
   clip-path: url(#clip);
+}
+
+.dot {
+  fill: gray
 }

@@ -12,3 +12,7 @@ body {
   fill: none;
   pointer-events: all;
 }
+
+.dot {
+  clip-path: url(#clip);
+}

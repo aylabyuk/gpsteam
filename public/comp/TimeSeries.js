@@ -96,10 +96,13 @@ class MyCustomChart {
     
         var bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
+            var maxY = d3.max(data, function(d) { return d.price; });
+
             x.domain(d3.extent(data, function(d) { return d.date; }));
-            y.domain([0, d3.max(data, function(d) { return d.price; })]);
+            y.domain([0, maxY + maxY * 0.05]);
             x2.domain(x.domain());
             y2.domain(y.domain());
+
 
             focus.append("path")
                 .datum(data)
@@ -230,6 +233,8 @@ class MyCustomChart {
                     d1 = data[i],
                     d = x0 - d0.date > d1.date - x0 ? d1 : d0;
 
+                focus.selectAll('.tooltipContainer').attr("display", "block");   
+                 
                 foc.select("circle.y")
                     .attr("transform",
                         "translate(" + x(d.date) + "," +
@@ -281,6 +286,7 @@ class MyCustomChart {
             focus.select(".area").attr("d", area);
             focus.select(".axis--x").call(xAxis);
             focus.selectAll('.dot').attr("transform", transform);
+            focus.selectAll('.tooltipContainer').attr("display", "none");
             svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
                 .scale(width / (s[1] - s[0]))
                 .translate(-s[0], 0));
@@ -293,6 +299,7 @@ class MyCustomChart {
             focus.select(".area").attr("d", area);
             focus.select(".axis--x").call(xAxis);
             focus.selectAll('.dot').attr("transform", transform);
+            focus.selectAll('.tooltipContainer').attr("display", "none");
             context.select(".brush").call(brush.move, x.range().map(t.invertX, t));
             
         }

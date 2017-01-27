@@ -70,16 +70,15 @@ class MyCustomChart {
             .on("zoom", zoomed);
 
         var area = d3.area()
-            .curve(d3.curveMonotoneX)
+            .curve(d3.curveLinear)
             .x(function(d) { return x(d.date); })
-            .y0(height)
-            .y1(function(d) { return y(d.price); });
+            .y(function(d) { return y(d.price); });
 
         var area2 = d3.area()
             .curve(d3.curveMonotoneX)
             .x(function(d) { return x2(d.date); })
             .y0(height2)
-            .y1(function(d) { return y2(d.price); });
+            .y(function(d) { return y2(d.price); });
 
         svg.append("defs").append("clipPath")
             .attr("id", "clip")

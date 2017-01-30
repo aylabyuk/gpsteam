@@ -1,21 +1,19 @@
-body {
-    background-color: white
+.axis path {
+  display: none;
 }
 
-.area {
-  clip-path: url(#clip);
+.axis line {
+  stroke-opacity: 0.3;
+  shape-rendering: crispEdges;
 }
 
-.zoom {
-  cursor: move;
-  fill: none;
-  pointer-events: all;
+.view {
+  fill: url(#gradient);
+  stroke: #000;
 }
 
-.scat {
-  clip-path: url(#clip);
-}
-
-.dot {
-  fill: gray
+button {
+  position: absolute;
+  top: 20px;
+  left: 190px;
 }

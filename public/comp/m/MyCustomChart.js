@@ -73,38 +73,30 @@ export default class MyCustomChart {
 
         svg.call(zoom);
 
-        // // define the line
-        // var valueline = d3.line()
-        //     .x(function(d) { return x(d.date); })
-        //     .y(function(d) { return y(d.east); });
-
-        // //plotting
-        // svg.append("path")
-        //     .data([data])
-        //     .attr("class", "line")
-        //     .attr("d", valueline);
-            
         // Add the scatterplot
-        view.append('g').selectAll("dot")
+        svg.selectAll("dot")
             .data(data)
             .enter().append("circle")
             .attr("r", 3.5)
             .attr("transform", transform)
+            .classed("dot", true);
         
         function transform(d) {
-            return "translate(" + x(d['date']) + "," + y(d['east']) + ")";
+            return "translate(" + x(d['date']) + "," + y(d['east'] - mean)  + ")";
         }
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
+            svg.selectAll("dot").attr("transform", transform);
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
         }
 
         function resetted() {
-        svg.transition()
-            .duration(750)
-            .call(zoom.transform, d3.zoomIdentity);
+            svg.selectAll("dot").attr("transform", transform);
+            svg.transition()
+                .duration(750)
+                .call(zoom.transform, d3.zoomIdentity);
         }
     }
 

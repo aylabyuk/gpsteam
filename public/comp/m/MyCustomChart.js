@@ -15,14 +15,14 @@ export default class MyCustomChart {
         create(data) {
         var svg = d3.select(this.el).append('svg')
             .attr("width", 960)
-            .attr("height", 500),
+            .attr("height", 250),
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
         var margin = {top: 0, right: 0, bottom: 0, left: 0}
 
         var zoom = d3.zoom()
-            .scaleExtent([1, 40])
+            .scaleExtent([1, 1000])
             .translateExtent([[-100, -100], [width + 90, height + 100]])
             .on("zoom", zoomed);
 
@@ -31,7 +31,7 @@ export default class MyCustomChart {
         this.props.data.map((d) => {
             focusData.push(d.east)
         })
-        var mean = math.mean(focusData) 
+        var mean = math.mean(focusData)
 
         var x = d3.scaleLinear()
             .domain([d3.min(data, function (d) { return d.date - 1; }), d3.max(data, function (d) { return d.date + 1; })])
@@ -48,7 +48,7 @@ export default class MyCustomChart {
             .tickFormat(d3.format(" "));
 
         var yAxis = d3.axisRight(y)
-            .ticks(10)
+            .ticks(4)
             .tickSize(width)
             .tickPadding(8 - width);
 

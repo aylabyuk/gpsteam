@@ -8,12 +8,15 @@
 }
 
 .view {
-  fill: url(#gradient);
-  stroke: #000;
+  fill: white
 }
 
 button {
   position: absolute;
   top: 20px;
   left: 190px;
+}
+
+.dot {
+  color: orangered
 }

@@ -14,8 +14,8 @@ export default class MyCustomChart {
 
         create(data) {
         var svg = d3.select(this.el).append('svg')
-            .attr("width", 960)
-            .attr("height", 250),
+            .attr("width", 600)
+            .attr("height", 200),
         width = +svg.attr("width"),
         height = +svg.attr("height");
 
@@ -38,13 +38,13 @@ export default class MyCustomChart {
             .range([margin.left, width - margin.right]).nice();
 
         var y = d3.scaleLinear()
-            .domain([d3.max(data, function (d) { return d.east; }) - mean, d3.min(data, function (d) { return d.east; }) - mean])
+            .domain([d3.max(data, function (d) { return d.east; }) - mean + 0.05, d3.min(data, function (d) { return d.east; }) - mean - 0.05])
             .range([margin.top, height - margin.bottom]).nice(); 
 
         var xAxis = d3.axisBottom(x)
             // .ticks((width + 2) / (height + 2) * 10)
             .tickSize(height)
-            .tickPadding(-8)
+            .tickPadding(-10)
             .tickFormat(d3.format(" "));
 
         var yAxis = d3.axisRight(y)
@@ -81,7 +81,11 @@ export default class MyCustomChart {
                 .attr("r", 8)
                 .attr("cx",function(d){return x(d.date);})
                 .attr("cy",function(d){return y(d.east - mean);})
-                .style("opacity",0.6);
+                .style("opacity",0.2)
+                .attr("fill", "white")
+                .attr("stroke-width", 2)
+                .attr("stroke", "blue")
+                
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
@@ -89,6 +93,8 @@ export default class MyCustomChart {
                 .attr("transform", d3.event.transform );
             svg.selectAll(".dots circle").attr("r", function(){
                 return ( 8 / d3.event.transform.k);
+            }).attr("stroke-width", function(){
+                return ( 2 / d3.event.transform.k);
             });
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));

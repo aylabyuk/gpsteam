@@ -7,8 +7,22 @@
   shape-rendering: crispEdges;
 }
 
+svg {
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-color: cadetblue
+}
+
 .view {
-  fill: white
+  fill: white;
+}
+
+.tick {
+  opacity: 0.6;
+}
+
+.tick text{
+  fill: darkslategray;
 }
 
 button {

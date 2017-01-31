@@ -97,12 +97,15 @@ export default class MyCustomChart {
 
         var lr = linearRegression(myY,myX)
         var max = d3.max(data, function (d) { return d.date; });
+        var min = d3.min(data, function (d) { return d.date; });
         var myLine = svg.append("g").classed("lr",true).append("svg:line")
+            .classed("lrLine", true)
             .attr("x1", x(0))
             .attr("y1", y(lr.intercept))
             .attr("x2", x(max))
             .attr("y2", y( (max * lr.slope) + lr.intercept ))
-            .style("stroke", "lightgreen");
+            .style("stroke", "lightgreen")
+            
                 
 
         function zoomed() {
@@ -114,7 +117,10 @@ export default class MyCustomChart {
             }).attr("stroke-width", function(){
                 return ( 2 / d3.event.transform.k);
             });
-            svg.select(".lr").attr("transform", d3.event.transform);
+            svg.select(".lr").attr("transform", d3.event.transform)
+                .select(".lrLine").attr("stroke-width", function(){
+                    return ( 1 / d3.event.transform.k);
+                });              
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
             

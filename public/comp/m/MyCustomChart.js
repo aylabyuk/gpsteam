@@ -72,6 +72,7 @@ export default class MyCustomChart {
 
         svg.call(zoom);
 
+        //draw the dots
         svg.append("g")
                 .classed('dots', true)
                 .selectAll(".dot")
@@ -85,6 +86,23 @@ export default class MyCustomChart {
                 .attr("fill", "white")
                 .attr("stroke-width", 2)
                 .attr("stroke", "blue")
+
+        //draw linear regression.
+        let myY = []
+        let myX = []
+        this.props.data.map((d) => {
+            myY.push(d.east - mean)
+            myX.push(d.date)
+        })
+
+        var lr = linearRegression(myY,myX)
+        var max = d3.max(data, function (d) { return d.date; });
+        var myLine = svg.append("g").classed("lr",true).append("svg:line")
+            .attr("x1", x(0))
+            .attr("y1", y(lr.intercept))
+            .attr("x2", x(max))
+            .attr("y2", y( (max * lr.slope) + lr.intercept ))
+            .style("stroke", "lightgreen");
                 
 
         function zoomed() {
@@ -96,6 +114,7 @@ export default class MyCustomChart {
             }).attr("stroke-width", function(){
                 return ( 2 / d3.event.transform.k);
             });
+            svg.select(".lr").attr("transform", d3.event.transform);
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
             
@@ -105,6 +124,31 @@ export default class MyCustomChart {
             svg.transition()
                 .duration(750)
                 .call(zoom.transform, d3.zoomIdentity);
+        }
+
+        function linearRegression(y,x){
+                var lr = {};
+                var n = y.length;
+                var sum_x = 0;
+                var sum_y = 0;
+                var sum_xy = 0;
+                var sum_xx = 0;
+                var sum_yy = 0;
+                
+                for (var i = 0; i < y.length; i++) {
+                    
+                    sum_x += x[i];
+                    sum_y += y[i];
+                    sum_xy += (x[i]*y[i]);
+                    sum_xx += (x[i]*x[i]);
+                    sum_yy += (y[i]*y[i]);
+                } 
+                
+                lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n*sum_xx - sum_x * sum_x);
+                lr['intercept'] = (sum_y - lr.slope * sum_x)/n;
+                lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
+                
+                return lr;
         }
     }
 

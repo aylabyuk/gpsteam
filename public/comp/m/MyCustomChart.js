@@ -100,8 +100,8 @@ export default class MyCustomChart {
         var min = d3.min(data, function (d) { return d.date; });
         var myLine = svg.append("g").classed("lr",true).append("svg:line")
             .classed("lrLine", true)
-            .attr("x1", x(0))
-            .attr("y1", y(lr.intercept))
+            .attr("x1", x(min))
+            .attr("y1", y((min * lr.slope) + lr.intercept))
             .attr("x2", x(max))
             .attr("y2", y( (max * lr.slope) + lr.intercept ))
             .style("stroke", "lightgreen")

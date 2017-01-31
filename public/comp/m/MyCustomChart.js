@@ -13,11 +13,11 @@ export default class MyCustomChart {
         }
 
         create(data) {
-            var svg = d3.select(this.el).append('svg')
-                .attr("width", 960)
-                .attr("height", 500),
-            width = +svg.attr("width"),
-            height = +svg.attr("height");
+        var svg = d3.select(this.el).append('svg')
+            .attr("width", 960)
+            .attr("height", 500),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
 
         var margin = {top: 0, right: 0, bottom: 0, left: 0}
 
@@ -26,26 +26,25 @@ export default class MyCustomChart {
             .translateExtent([[-100, -100], [width + 90, height + 100]])
             .on("zoom", zoomed);
 
-        var x = d3.scaleLinear()
-            .domain([d3.min(data, function (d) { return d.date - 1; }), d3.max(data, function (d) { return d.date + 1; })])
-            .range([margin.left, width - margin.right]);
-
+        // get the mean
         let focusData = []
-
         this.props.data.map((d) => {
             focusData.push(d.east)
         })
+        var mean = math.mean(focusData) 
 
-        var mean = math.mean(focusData) * 1
+        var x = d3.scaleLinear()
+            .domain([d3.min(data, function (d) { return d.date - 1; }), d3.max(data, function (d) { return d.date + 1; })])
+            .range([margin.left, width - margin.right]).nice();
 
         var y = d3.scaleLinear()
             .domain([d3.max(data, function (d) { return d.east; }) - mean, d3.min(data, function (d) { return d.east; }) - mean])
-            .range([margin.top, height - margin.bottom]); 
+            .range([margin.top, height - margin.bottom]).nice(); 
 
         var xAxis = d3.axisBottom(x)
-            .ticks((width + 2) / (height + 2) * 10)
+            // .ticks((width + 2) / (height + 2) * 10)
             .tickSize(height)
-            .tickPadding(8 - height)
+            .tickPadding(-8)
             .tickFormat(d3.format(" "));
 
         var yAxis = d3.axisRight(y)
@@ -73,27 +72,30 @@ export default class MyCustomChart {
 
         svg.call(zoom);
 
-        // Add the scatterplot
-        svg.selectAll("dot")
-            .data(data)
-            .enter().append("circle")
-            .attr("r", 3.5)
-            .attr("transform", transform)
-            .classed("dot", true);
-        
-        function transform(d) {
-            return "translate(" + x(d['date']) + "," + y(d['east'] - mean)  + ")";
-        }
+        svg.append("g")
+                .classed('dots', true)
+                .selectAll(".dot")
+                .data(data)
+                .enter().append("circle")
+                .classed("dot", true)
+                .attr("r", 8)
+                .attr("cx",function(d){return x(d.date);})
+                .attr("cy",function(d){return y(d.east - mean);})
+                .style("opacity",0.6);
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
-            svg.selectAll("dot").attr("transform", transform);
+            svg.select(".dots")
+                .attr("transform", d3.event.transform );
+            svg.selectAll(".dots circle").attr("r", function(){
+                return ( 8 / d3.event.transform.k);
+            });
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
+            
         }
 
         function resetted() {
-            svg.selectAll("dot").attr("transform", transform);
             svg.transition()
                 .duration(750)
                 .call(zoom.transform, d3.zoomIdentity);

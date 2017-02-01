@@ -13,7 +13,7 @@ class TimeSeries extends Component {
         return (
             <div style={{margin: 10}}>
                 <h2>{this.props.name}</h2>
-                <button>RESET</button>
+                <button className={"button " + this.props.name}>RESET</button>
                 <Chart
                     id='chart'
                     type={"custom"}

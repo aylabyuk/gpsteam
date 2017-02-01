@@ -26,7 +26,6 @@ svg {
 }
 
 button {
-  position: absolute;
   top: 20px;
   left: 190px;
 }
@@ -38,10 +37,11 @@ button {
 .d3-tip {
   line-height: 1;
   font-weight: bold;
-  padding: 12px;
+  font-size: 0.8em;
+  padding: 6px;
   background-color: cornflowerblue;
   color: #fff;
   border-radius: 2px;
-  opacity: 0.5;
   pointer-events: none;
+  text-align: center;
 }

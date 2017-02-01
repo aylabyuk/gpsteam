@@ -31,7 +31,7 @@ export default class MyCustomChart {
         // get the mean
         let focusData = []
         this.props.data.map((d) => {
-            focusData.push(d.east)
+            focusData.push(d[this.props.name])
         })
         var mean = math.mean(focusData)
 
@@ -69,7 +69,7 @@ export default class MyCustomChart {
             .attr("class", "axis axis--y")
             .call(yAxis);
 
-        d3.select("button")
+        d3.select(".east")
             .on("click", resetted);
 
         svg.call(zoom);
@@ -86,7 +86,7 @@ export default class MyCustomChart {
         svg.call(tip)
 
         //draw the dots
-        svg.append("g")
+        var dots = svg.append("g")
                 .classed('dots', true)
                 .selectAll(".dot")
                 .data(data)
@@ -98,10 +98,11 @@ export default class MyCustomChart {
                 .style("opacity",0.2)
                 .attr("fill", "white")
                 .attr("stroke-width", 2)
-                .attr("stroke", "blue")
-                .on('mouseover', tip.show)
-                .on('mouseout', tip.hide);
+                .attr("stroke", "blue");
                 
+
+        dots.on('mouseover', tip.show)
+            .on('mouseout', tip.hide);
 
         //draw linear regression.
         let myY = []

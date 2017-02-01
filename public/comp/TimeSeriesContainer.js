@@ -15,6 +15,8 @@ class TimeSeriesContainer extends Component {
         return (
             <div>
                 <TimeSeries data={this.state.data} name='east'/>
+                <TimeSeries data={this.state.data} name='north'/>
+                <TimeSeries data={this.state.data} name='up'/>
             </div>
         );
     }

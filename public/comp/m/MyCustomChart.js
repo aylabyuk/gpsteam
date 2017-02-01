@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import math from 'mathjs'
+import math from 'mathjs';
+import d3Tip from "d3-tip";
 
 export default class MyCustomChart {
         constructor(el, props) {
@@ -73,6 +74,17 @@ export default class MyCustomChart {
 
         svg.call(zoom);
 
+        //tooltips
+        d3.tip = d3Tip;
+        
+        var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .direction('n') 
+            .html(function(d) { return '<div>' + d.east + "</br>" + d.date + '</div>'})
+            .offset([-5, 0])
+        
+        svg.call(tip)
+
         //draw the dots
         svg.append("g")
                 .classed('dots', true)
@@ -87,6 +99,9 @@ export default class MyCustomChart {
                 .attr("fill", "white")
                 .attr("stroke-width", 2)
                 .attr("stroke", "blue")
+                .on('mouseover', tip.show)
+                .on('mouseout', tip.hide);
+                
 
         //draw linear regression.
         let myY = []
@@ -118,6 +133,7 @@ export default class MyCustomChart {
             }).attr("stroke-width", function(){
                 return ( 2 / d3.event.transform.k);
             });
+            svg.select(".tooltip").attr("transform", d3.event.transform);
             svg.select(".lr").attr("transform", d3.event.transform)
                 .select(".lrLine").attr("stroke-width", function(){
                     return ( 1 / d3.event.transform.k);
@@ -156,130 +172,7 @@ export default class MyCustomChart {
                 lr['r2'] = Math.pow((n*sum_xy - sum_x*sum_y)/Math.sqrt((n*sum_xx-sum_x*sum_x)*(n*sum_yy-sum_y*sum_y)),2);
                 
                 return lr;
-        }
-
-/////////////TOOLTIP////////////////
-
-        var focus = svg.append("g") 
-            .style("display", "none");
-        
-        var bisectDate = d3.bisector(function(d) { return d.date; }).left;
-
-        // append the x line
-        focus.append("line")
-            .attr("class", "x")
-            .style("stroke", "red")
-            .style("stroke-dasharray", "3,3")
-            .style("opacity", 0.5)
-            .attr("y1", 0)
-            .attr("y2", height);
-
-        // append the y line
-        focus.append("line")
-            .attr("class", "y")
-            .style("stroke", "red")
-            .style("stroke-dasharray", "3,3")
-            .style("opacity", 0.5)
-            .attr("x1", width)
-            .attr("x2", width);
-
-        // append the circle at the intersection
-        focus.append("circle")
-            .attr("class", "y")
-            .style("fill", "none")
-            .style("stroke", "red")
-            .attr("r", 8);
-
-        // place the value at the intersection
-        focus.append("text")
-            .attr("class", "y1")
-            .style("stroke", "white")
-            .style("stroke-width", "3.5px")
-            .style("opacity", 0.8)
-            .attr("dx", 8)
-            .attr("dy", "-.3em");
-        focus.append("text")
-            .attr("class", "y2")
-            .attr("dx", 8)
-            .attr("dy", "-.3em");
-
-        // place the date at the intersection
-        focus.append("text")
-            .attr("class", "y3")
-            .style("stroke", "white")
-            .style("stroke-width", "3.5px")
-            .style("opacity", 0.8)
-            .attr("dx", 8)
-            .attr("dy", "1em");
-        focus.append("text")
-            .attr("class", "y4")
-            .attr("dx", 8)
-            .attr("dy", "1em");
-        
-        // append the rectangle to capture mouse
-        svg.append("rect")
-            .attr("width", width)
-            .attr("height", height)
-            .style("fill", "none")
-            .style("pointer-events", "all")
-            .on("mouseover", function() { focus.style("display", null); })
-            .on("mouseout", function() { focus.style("display", "none"); })
-            .on("mousemove", mousemove);
-
-        function mousemove() {
-            
-            var x0 = x.invert(d3.mouse(this)[0]),
-                i = bisectDate(data, x0, 1),
-                d0 = data[i - 1],
-                d1 = data[i],
-                d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-
-                console.log(data)
-
-            var eastValue = d.east - mean
-
-            focus.select("circle.y")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")");
-
-            focus.select("text.y1")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")")
-                .text(d.east);
-
-            focus.select("text.y2")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")")
-                .text(d.east);
-
-            focus.select("text.y3")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")")
-                .text(d.date);
-
-            focus.select("text.y4")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")")
-                .text(d.date);
-
-            focus.select(".x")
-                .attr("transform",
-                    "translate(" + x(d.date) + "," +
-                                    y(eastValue) + ")")
-                        .attr("y2", height - y(eastValue));
-
-            focus.select(".y")
-                .attr("transform",
-                    "translate(" + width * -1 + "," +
-                                    y(eastValue) + ")")
-                        .attr("x2", width + width);
-        }
-
+        }      
 
     }
 

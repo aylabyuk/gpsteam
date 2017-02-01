@@ -34,3 +34,14 @@ button {
 .dot {
   color: orangered
 }
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background-color: cornflowerblue;
+  color: #fff;
+  border-radius: 2px;
+  opacity: 0.5;
+  pointer-events: none;
+}

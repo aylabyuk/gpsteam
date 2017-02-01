@@ -15,6 +15,7 @@ class TimeSeries extends Component {
                 <h2>{this.props.name}</h2>
                 <button>RESET</button>
                 <Chart
+                    id='chart'
                     type={"custom"}
                     customChart={MyCustomChart}
                     data={this.props.data}

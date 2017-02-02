@@ -49,6 +49,9 @@
     left: 525px;
 }
 
-body {
-  background-color: slategray
+:local(.timeSeriesContainer) {
+  background-color: slategray;
+  width: max-content;
+  height: 100vh;
+  padding: 10px;
 }

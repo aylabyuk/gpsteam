@@ -37,7 +37,7 @@ render(
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={TimeSeriesContainer} />
+                <IndexRoute component={TestDashboard} />
                 <Route path="/login" component={Login} />
                 <Route path="/dashboard" component={Dashboard} />
 

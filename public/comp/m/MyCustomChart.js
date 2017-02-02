@@ -17,7 +17,6 @@ export default class MyCustomChart {
         create(data) {
 
         let styles = this.props.styles
-        console.log(styles)
 
         var svg = d3.select(this.el).append('svg')
             .classed(styles.chartSvg, true)

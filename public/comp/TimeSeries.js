@@ -24,7 +24,7 @@ class TimeSeries extends Component {
 
 
         return (
-            <Card raised style={{margin: 10, width: 626}}>
+            <Card raised style={{ width: 626}}>
                 <Card.Content>
                 <Card.Header>
                         {this.props.name}

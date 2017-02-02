@@ -1,8 +1,6 @@
 import React from 'react'
 import '../semantic/dist/semantic.min.css'
 
-require('./css/main.css')
-
 class MainComponent extends React.Component {
 	constructor(props) {
 		super(props)

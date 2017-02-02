@@ -17,6 +17,7 @@ import Dashboard from './comp/Dashboard'
 import NotFoundPage from './comp/NotFoundPage'
 import TimeSeries from './comp/TimeSeries'
 import TimeSeriesContainer from './comp/TimeSeriesContainer'
+import TestDashboard from './comp/TestDashboard'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());

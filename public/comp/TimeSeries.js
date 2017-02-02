@@ -2,7 +2,9 @@ import React, {Component} from 'react';
 import * as d3 from "d3";
 import  Chart  from 'd3act'
 import MyCustomChart from './m/MyCustomChart'
+import { Button, Card } from 'semantic-ui-react'
 
+import styles from '../css/chart.css';
 
 class TimeSeries extends Component {
   constructor(props) {
@@ -10,17 +12,34 @@ class TimeSeries extends Component {
     }
 
     render() {
+
+        let newData = [], date, yVal
+        this.props.data.map((d) => {
+            date = d.date
+            switch (this.props.name) {
+                case 'east': yVal = d.east; break;
+                case 'north': yVal = d.north; break;
+                case 'up': yVal = d.up; break;
+            }
+            newData.push({date, yVal, name: this.props.name})
+        })
+
+
         return (
-            <div style={{margin: 10}}>
-                <h2>{this.props.name}</h2>
-                <button className={"button " + this.props.name}>RESET</button>
-                <Chart
-                    id='chart'
-                    type={"custom"}
-                    customChart={MyCustomChart}
-                    data={this.props.data}
-                />
-            </div>
+            <Card raised style={{margin: 10, width: 626}}>
+                <Card.Content>
+                <Card.Header>
+                        {this.props.name}
+                </Card.Header>
+                <Button size='mini' primary className={this.props.name}>reset</Button>
+                    <Chart
+                        id='chart'
+                        type={"custom"}
+                        customChart={MyCustomChart}
+                        data={newData}
+                    />
+                </Card.Content>
+            </Card>
         );
     }
 }

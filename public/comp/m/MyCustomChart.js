@@ -2,6 +2,9 @@ import * as d3 from "d3";
 import math from 'mathjs';
 import d3Tip from "d3-tip";
 
+
+
+
 export default class MyCustomChart {
         constructor(el, props) {
             this.el = el;
@@ -16,6 +19,7 @@ export default class MyCustomChart {
         create(data) {
 
         var svg = d3.select(this.el).append('svg')
+            .classed("chartSvg", true)
             .attr("width", 600)
             .attr("height", 200),
         width = +svg.attr("width"),
@@ -31,7 +35,7 @@ export default class MyCustomChart {
         // get the mean
         let focusData = []
         this.props.data.map((d) => {
-            focusData.push(d[this.props.name])
+            focusData.push(d.yVal)
         })
         var mean = math.mean(focusData)
 
@@ -40,7 +44,7 @@ export default class MyCustomChart {
             .range([margin.left, width - margin.right]).nice();
 
         var y = d3.scaleLinear()
-            .domain([d3.max(data, function (d) { return d.east; }) - mean + 0.05, d3.min(data, function (d) { return d.east; }) - mean - 0.05])
+            .domain([d3.max(data, function (d) { return d.yVal; }) - mean + 0.05, d3.min(data, function (d) { return d.yVal; }) - mean - 0.05])
             .range([margin.top, height - margin.bottom]).nice(); 
 
         var xAxis = d3.axisBottom(x)
@@ -69,7 +73,7 @@ export default class MyCustomChart {
             .attr("class", "axis axis--y")
             .call(yAxis);
 
-        d3.select(".east")
+        d3.select("." + this.props.data[0].name)
             .on("click", resetted);
 
         svg.call(zoom);
@@ -80,7 +84,7 @@ export default class MyCustomChart {
         var tip = d3.tip()
             .attr('class', 'd3-tip')
             .direction('n') 
-            .html(function(d) { return '<div>' + d.east + "</br>" + d.date + '</div>'})
+            .html(function(d) { return '<div>' + d.yVal + "</br>" + d.date + '</div>'})
             .offset([-5, 0])
         
         svg.call(tip)
@@ -94,7 +98,7 @@ export default class MyCustomChart {
                 .classed("dot", true)
                 .attr("r", 8)
                 .attr("cx",function(d){return x(d.date);})
-                .attr("cy",function(d){return y(d.east - mean);})
+                .attr("cy",function(d){return y(d.yVal - mean);})
                 .style("opacity",0.2)
                 .attr("fill", "white")
                 .attr("stroke-width", 2)
@@ -108,7 +112,7 @@ export default class MyCustomChart {
         let myY = []
         let myX = []
         this.props.data.map((d) => {
-            myY.push(d.east - mean)
+            myY.push(d.yVal - mean)
             myX.push(d.date)
         })
 

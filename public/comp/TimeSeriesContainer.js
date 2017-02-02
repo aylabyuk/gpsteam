@@ -13,7 +13,7 @@ class TimeSeriesContainer extends Component {
 
     render() {
         return (
-            <div>
+            <div className='timeSeriesContainer'>
                 <TimeSeries data={this.state.data} name='east'/>
                 <TimeSeries data={this.state.data} name='north'/>
                 <TimeSeries data={this.state.data} name='up'/>

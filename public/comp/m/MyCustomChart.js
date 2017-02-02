@@ -3,8 +3,6 @@ import math from 'mathjs';
 import d3Tip from "d3-tip";
 
 
-
-
 export default class MyCustomChart {
         constructor(el, props) {
             this.el = el;
@@ -18,8 +16,11 @@ export default class MyCustomChart {
 
         create(data) {
 
+        let styles = this.props.styles
+        console.log(styles)
+
         var svg = d3.select(this.el).append('svg')
-            .classed("chartSvg", true)
+            .classed(styles.chartSvg, true)
             .attr("width", 600)
             .attr("height", 200),
         width = +svg.attr("width"),
@@ -59,18 +60,18 @@ export default class MyCustomChart {
             .tickPadding(8 - width);
 
         var view = svg.append("rect")
-            .attr("class", "view")
+            .attr("class", styles.view)
             .attr("x", 0.5)
             .attr("y", 0.5)
             .attr("width", width - 1)
             .attr("height", height - 1);
 
         var gX = svg.append("g")
-            .attr("class", "axis axis--x")
+            .attr("class", styles.axis + " axis--x")
             .call(xAxis);
 
         var gY = svg.append("g")
-            .attr("class", "axis axis--y")
+            .attr("class", styles.axis + " axis--y")
             .call(yAxis);
 
         d3.select("." + this.props.data[0].name)
@@ -82,7 +83,7 @@ export default class MyCustomChart {
         d3.tip = d3Tip;
         
         var tip = d3.tip()
-            .attr('class', 'd3-tip')
+            .attr('class', styles.d3tip)
             .direction('n') 
             .html(function(d) { return '<div>' + d.yVal + "</br>" + d.date + '</div>'})
             .offset([-5, 0])
@@ -92,10 +93,10 @@ export default class MyCustomChart {
         //draw the dots
         var dots = svg.append("g")
                 .classed('dots', true)
-                .selectAll(".dot")
+                .selectAll(styles.dot)
                 .data(data)
                 .enter().append("circle")
-                .classed("dot", true)
+                .classed(styles.dot, true)
                 .attr("r", 8)
                 .attr("cx",function(d){return x(d.date);})
                 .attr("cy",function(d){return y(d.yVal - mean);})

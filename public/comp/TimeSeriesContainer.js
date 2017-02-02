@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
 import { data } from './m/mock'
 
+import styles from '../css/chart.css';
+
 class TimeSeriesContainer extends Component {
     constructor(props) {
         super(props);
@@ -13,10 +15,10 @@ class TimeSeriesContainer extends Component {
 
     render() {
         return (
-            <div className='timeSeriesContainer'>
-                <TimeSeries data={this.state.data} name='east'/>
-                <TimeSeries data={this.state.data} name='north'/>
-                <TimeSeries data={this.state.data} name='up'/>
+            <div className={styles.timeSeriesContainer}>
+                <TimeSeries data={this.state.data} name='east' styles={styles}/>
+                <TimeSeries data={this.state.data} name='north' styles={styles}/>
+                <TimeSeries data={this.state.data} name='up' styles={styles}/>
             </div>
         );
     }

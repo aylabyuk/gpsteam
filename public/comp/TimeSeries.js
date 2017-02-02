@@ -4,8 +4,6 @@ import  Chart  from 'd3act'
 import MyCustomChart from './m/MyCustomChart'
 import { Button, Card } from 'semantic-ui-react'
 
-import styles from '../css/chart.css';
-
 class TimeSeries extends Component {
   constructor(props) {
         super(props);
@@ -31,12 +29,13 @@ class TimeSeries extends Component {
                 <Card.Header>
                         {this.props.name}
                 </Card.Header>
-                <Button size='mini' primary className={this.props.name}>reset</Button>
+                <Button id='resetBtn' size='mini' primary className={this.props.name}>reset</Button>
                     <Chart
                         id='chart'
                         type={"custom"}
                         customChart={MyCustomChart}
                         data={newData}
+                        styles={this.props.styles}
                     />
                 </Card.Content>
             </Card>

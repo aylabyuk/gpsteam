@@ -1,13 +1,13 @@
-.axis path {
+:local(.axis) path {
   display: none;
 }
 
-.axis line {
+:local(.axis) line {
   stroke-opacity: 0.3;
   shape-rendering: crispEdges;
 }
 
-svg {
+:local(.chartSvg) {
   border-style: solid;
   border-radius: 4px;
   border-width: 1px 1px 1px 1px;
@@ -15,8 +15,8 @@ svg {
   background-color: #fff;
 }
 
-.view {
-  fill: white;
+:local(.view) {
+ opacity: 0
 }
 
 .tick {
@@ -27,11 +27,11 @@ svg {
   fill: darkslategray;
 }
 
-.dot {
+:local(.dot) {
   color: orangered
 }
 
-.d3-tip {
+:local(.d3tip) {
   line-height: 1;
   font-weight: bold;
   font-size: 0.8em;
@@ -43,10 +43,10 @@ svg {
   text-align: center;
 }
 
-.button {
-      position: relative;
-      top: 40px;
-      left: 525px;
+#resetBtn {
+   position: relative;
+    top: 40px;
+    left: 525px;
 }
 
 body {

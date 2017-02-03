@@ -43,8 +43,11 @@ export default class MyCustomChart {
             .domain([d3.min(data, function (d) { return d.date - 1; }), d3.max(data, function (d) { return d.date + 1; })])
             .range([margin.left, width - margin.right]).nice();
 
+
+        let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * 0.05
+
         var y = d3.scaleLinear()
-            .domain([d3.max(data, function (d) { return d.yVal; }) - mean + 0.05, d3.min(data, function (d) { return d.yVal; }) - mean - 0.05])
+            .domain([d3.max(data, function (d) { return d.yVal; }) - mean + ypercent, d3.min(data, function (d) { return d.yVal; }) - mean - ypercent])
             .range([margin.top, height - margin.bottom]).nice(); 
 
         var xAxis = d3.axisBottom(x)

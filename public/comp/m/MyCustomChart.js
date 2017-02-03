@@ -33,7 +33,7 @@ export default class MyCustomChart {
         }
 
         let zoom = d3.zoom()
-            .scaleExtent([1, 1000])
+            .scaleExtent([1, Infinity])
             .translateExtent([
                 [-100, -100],
                 [width + 90, height + 100]
@@ -213,7 +213,6 @@ export default class MyCustomChart {
     }
 
     update(data) {
-        let svg = d3.select(this.el).select('svg')
 
         d3.select(this.el).select('svg').remove();
         this.create(data);

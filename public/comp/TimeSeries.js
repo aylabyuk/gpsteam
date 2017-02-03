@@ -7,11 +7,15 @@ import { Button, Card } from 'semantic-ui-react'
 class TimeSeries extends Component {
   constructor(props) {
         super(props);
+
+    }
+
+    componentWillUpdate() {
+        
     }
 
     render() {
-
-        let newData = [], date, yVal
+        let dd = [], date, yVal
         this.props.data.map((d) => {
             date = d.date
             switch (this.props.name) {
@@ -19,9 +23,8 @@ class TimeSeries extends Component {
                 case 'north': yVal = d.north; break;
                 case 'up': yVal = d.up; break;
             }
-            newData.push({date, yVal, name: this.props.name})
+            dd.push({date, yVal, name: this.props.name})
         })
-
 
         return (
             <Card raised style={{ width: 626}}>
@@ -34,7 +37,7 @@ class TimeSeries extends Component {
                         id='chart'
                         type={"custom"}
                         customChart={MyCustomChart}
-                        data={newData}
+                        data={dd}
                         styles={this.props.styles}
                     />
                 </Card.Content>

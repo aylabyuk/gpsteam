@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
-import { data } from './m/BUCA'
+import { BUCA } from './m/BUCA'
 
 /*
 mock = BUCA
@@ -14,18 +14,18 @@ import styles from '../css/chart.css';
 class TimeSeriesContainer extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            data: data
-        };
     }
 
+    componentWillUpdate(prevProps, prevState) {
+       
+    }
+    
     render() {
         return (
             <div className={styles.timeSeriesContainer}>
-                <TimeSeries data={this.state.data} name='east' styles={styles}/>
-                <TimeSeries data={this.state.data} name='north' styles={styles}/>
-                <TimeSeries data={this.state.data} name='up' styles={styles}/>
+                <TimeSeries data={this.props.data} name='east' styles={styles}/>
+                <TimeSeries data={this.props.data} name='north' styles={styles}/>
+                <TimeSeries data={this.props.data} name='up' styles={styles}/>
             </div>
         );
     }

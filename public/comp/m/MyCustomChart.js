@@ -99,7 +99,7 @@ export default class MyCustomChart {
                 .data(data)
                 .enter().append("circle")
                 .classed(styles.dot, true)
-                .attr("r", 8)
+                .attr("r", 3)
                 .attr("cx",function(d){return x(d.date);})
                 .attr("cy",function(d){return y(d.yVal - mean);})
                 .style("opacity",0.2)
@@ -137,7 +137,7 @@ export default class MyCustomChart {
             svg.select(".dots")
                 .attr("transform", d3.event.transform );
             svg.selectAll(".dots circle").attr("r", function(){
-                return ( 8 / d3.event.transform.k);
+                return ( 3 / d3.event.transform.k);
             }).attr("stroke-width", function(){
                 return ( 2 / d3.event.transform.k);
             });

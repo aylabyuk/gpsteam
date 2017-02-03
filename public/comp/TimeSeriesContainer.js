@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
-import { data } from './m/ANGT'
+import { data } from './m/BUCA'
 
 /*
 mock = BUCA
 mock2 = ALAB
 mock3 = 
+ANGT
 */
 
 import styles from '../css/chart.css';

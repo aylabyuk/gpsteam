@@ -151,6 +151,10 @@ export default class MyCustomChart {
             return d.date;
         });
 
+        console.log("max: " + max)
+        console.log("min: " + min)
+        console.log("lr: ", lr)
+
         let myLine = svg.append("g").classed("lr", true).append("svg:line")
             .classed("lrLine", true)
             .attr("x1", x(min))
@@ -158,6 +162,11 @@ export default class MyCustomChart {
             .attr("x2", x(max))
             .attr("y2", y((max * lr.slope) + lr.intercept))
             .style("stroke", "lightgreen")
+
+        console.log("x1: " + x(min))
+        console.log("y1: " + y((min * lr.slope) + lr.intercept))
+        console.log("x2: " + x(max))
+        console.log("y2: " + y((max * lr.slope) + lr.intercept))
 
 
 

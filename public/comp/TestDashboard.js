@@ -35,7 +35,7 @@ class TestDashboard extends Component {
                     animation='overlay'
                     width='very wide'
                     direction='right'
-                    visible={this.state.visible}
+                    visible={/*this.state.visible*/true}
                     vertical
                     inverted
                     style={{width: 648,  overflowY: "hidden", overflowX: "hidden"}}

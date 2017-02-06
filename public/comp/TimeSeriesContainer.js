@@ -24,8 +24,8 @@ class TimeSeriesContainer extends Component {
         return (
             <div className={styles.timeSeriesContainer}>
                 <TimeSeries data={this.props.data} name='east' styles={styles}/>
-                <TimeSeries data={this.props.data} name='north' styles={styles}/>
-                <TimeSeries data={this.props.data} name='up' styles={styles}/>
+                {/*<TimeSeries data={this.props.data} name='north' styles={styles}/>
+                <TimeSeries data={this.props.data} name='up' styles={styles}/>*/}
             </div>
         );
     }

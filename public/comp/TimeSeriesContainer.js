@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
 import { BUCA } from './m/BUCA'
 
+import axios from 'axios';
 /*
 mock = BUCA
 mock2 = ALAB
@@ -16,16 +17,26 @@ class TimeSeriesContainer extends Component {
         super(props);
     }
 
-    componentWillUpdate(prevProps, prevState) {
-       
-    }
     
     render() {
+
+       axios.get('/compute' , {
+            params: {
+                data: this.props.data
+            }
+       })
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
         return (
             <div className={styles.timeSeriesContainer}>
                 <TimeSeries data={this.props.data} name='east' styles={styles}/>
-                {/*<TimeSeries data={this.props.data} name='north' styles={styles}/>
-                <TimeSeries data={this.props.data} name='up' styles={styles}/>*/}
+                <TimeSeries data={this.props.data} name='north' styles={styles}/>
+                <TimeSeries data={this.props.data} name='up' styles={styles}/>
             </div>
         );
     }

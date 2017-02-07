@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import math from 'mathjs';
-import d3Tip from "d3-tip";
 
 
 export default class MyCustomChart {
@@ -99,19 +98,6 @@ export default class MyCustomChart {
 
         svg.call(zoom);
 
-        //tooltips
-        // d3.tip = d3Tip;
-
-        // let tip = d3.tip()
-        //     .attr('class', styles.d3tip)
-        //     .direction('n')
-        //     .html(function (d) {
-        //         return '<div>' + d.yVal + "</br>" + d.date + '</div>'
-        //     })
-        //     .offset([-5, 0])
-
-        // svg.call(tip)
-
         //draw the dots
         let dots = svg.append("g")
             .classed('dots', true)
@@ -131,44 +117,15 @@ export default class MyCustomChart {
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
 
-
-        // dots.on('mouseover', tip.show)
-        //     .on('mouseout', tip.hide);
-
         //draw linear regression.
-        let myY = []
-        let myX = []
-        data.map((d) => {
-            myY.push(d.yVal - mean)
-            myX.push(d.date)
-        })
 
-        let lr = linearRegression(myY, myX)
-        let max = d3.max(data, function (d) {
-            return d.date;
-        });
-        let min = d3.min(data, function (d) {
-            return d.date;
-        });
-
-        console.log("max: " + max)
-        console.log("min: " + min)
-        console.log("lr: ", lr)
-
-        let myLine = svg.append("g").classed("lr", true).append("svg:line")
-            .classed("lrLine", true)
-            .attr("x1", x(min))
-            .attr("y1", y((min * lr.slope) + lr.intercept))
-            .attr("x2", x(max))
-            .attr("y2", y((max * lr.slope) + lr.intercept))
-            .style("stroke", "lightgreen")
-
-        console.log("x1: " + x(min))
-        console.log("y1: " + y((min * lr.slope) + lr.intercept))
-        console.log("x2: " + x(max))
-        console.log("y2: " + y((max * lr.slope) + lr.intercept))
-
-
+        // let myLine = svg.append("g").classed("lr", true).append("svg:line")
+        //     .classed("lrLine", true)
+        //     .attr("x1", x(min))
+        //     .attr("y1", y((min * lr.slope) + lr.intercept))
+        //     .attr("x2", x(max))
+        //     .attr("y2", y((max * lr.slope) + lr.intercept))
+        //     .style("stroke", "lightgreen")
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
@@ -193,31 +150,6 @@ export default class MyCustomChart {
             svg.transition()
                 .duration(750)
                 .call(zoom.transform, d3.zoomIdentity);
-        }
-
-        function linearRegression(y, x) {
-            let lr = {};
-            let n = y.length;
-            let sum_x = 0;
-            let sum_y = 0;
-            let sum_xy = 0;
-            let sum_xx = 0;
-            let sum_yy = 0;
-
-            for (let i = 0; i < y.length; i++) {
-
-                sum_x += x[i];
-                sum_y += y[i];
-                sum_xy += (x[i] * y[i]);
-                sum_xx += (x[i] * x[i]);
-                sum_yy += (y[i] * y[i]);
-            }
-
-            lr['slope'] = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
-            lr['intercept'] = (sum_y - lr.slope * sum_x) / n;
-            lr['r2'] = Math.pow((n * sum_xy - sum_x * sum_y) / Math.sqrt((n * sum_xx - sum_x * sum_x) * (n * sum_yy - sum_y * sum_y)), 2);
-
-            return lr;
         }
     }
 

@@ -31,7 +31,6 @@ export function errorHandler(dispatch, error, type) {
 			payload: errorMessage
 		})
 	}
-
 }
 
 export function loginUser({ email, password }) {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
 import { connect } from 'react-redux'; 
 import { BUCA } from './m/BUCA'
-import { chartData } from '../actions/index'
+import { chartData, resetChartData } from '../actions/index'
 
 /*
 mock = BUCA
@@ -14,6 +14,11 @@ ANGT
 import styles from '../css/chart.css';
 
 class TimeSeriesContainer extends Component {
+
+    componentWillUpdate() {
+        this.props.resetChartData()
+    }
+
     render() {
         this.props.chartData(this.props.data)
         return (
@@ -32,4 +37,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { chartData })(TimeSeriesContainer);
+export default connect(mapStateToProps, { chartData, resetChartData })(TimeSeriesContainer);

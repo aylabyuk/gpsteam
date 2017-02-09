@@ -4,7 +4,8 @@ import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER,
          PROTECTED_TEST,
-		 CHART_DATA } from './types'
+		 CHART_DATA,
+		 RESET_CHART_DATA } from './types'
 
 const API_URL = 'http://localhost:3030/api'
 const CLIENT_ROOT_URL = 'http://localhost:3000'
@@ -99,5 +100,13 @@ export function chartData(data) {
 		.catch(function (error) {
 			console.log(error);
 		});
+	}
+}
+
+export function resetChartData() {
+	return function(dispatch) {
+		dispatch({
+			type: RESET_CHART_DATA,
+		})
 	}
 }

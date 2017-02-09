@@ -30,10 +30,10 @@ app.listen(port, function () {
 });
 
 ///server side velocity computation
-var PythonShell = require('python-shell');
-var pyshell = new PythonShell('./compute_input.py', { mode: 'json' });
 
 app.get('/compute', function (req, res) {
+    let PythonShell = require('python-shell');
+    let pyshell = new PythonShell('./compute_input.py', { mode: 'json' });
 
     let data = req.query
 
@@ -43,8 +43,8 @@ app.get('/compute', function (req, res) {
 
     pyshell.on('message', function (message) {
     // received a message sent from the Python script (a simple "print" statement)
-        //res.send(message)
-        console.log(message);
+        res.send(message)
+        // console.log(message);
     });
 
     // end the input stream and allow the process to exit

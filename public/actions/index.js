@@ -84,8 +84,20 @@ export function protectedTest() {
 
 ///CHART ACTIONS
 export function chartData(data) {
-	dispatch({
-			type: CHART_DATA,
-			payload: data
-	})
+	return function(dispatch) {
+		axios.get('/compute' , {
+			params: {
+				data: data
+			}
+		})
+		.then(function (response) {
+			dispatch({
+				type: CHART_DATA,
+				payload: response.data
+			})
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	}
 }

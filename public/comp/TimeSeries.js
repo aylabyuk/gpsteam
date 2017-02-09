@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux'; 
 import * as d3 from "d3";
 import  Chart  from 'd3act'
 import MyCustomChart from './m/MyCustomChart'
@@ -28,8 +29,8 @@ class TimeSeries extends Component {
                 <Card.Header>
                         {this.props.name}
                 </Card.Header>
-                <div>velocity:</div>
-                <div>error:</div>
+                <div>velocity: {this.props.computed ? this.props.computed.velocity[this.props.name][1] * 10 : 'calculating'}</div>
+                <div>error: {this.props.computed ? this.props.computed.std_error[this.props.name][0] : 'calculating'}</div>
                 <Button id='resetBtn' size='mini' primary className={this.props.name}>reset</Button>
                     <Chart
                         id='chart'
@@ -44,4 +45,10 @@ class TimeSeries extends Component {
     }
 }
 
-export default TimeSeries;
+function mapStateToProps(state) {  
+  return {
+    computed: state.plot.computed
+  };
+}
+
+export default connect(mapStateToProps)(TimeSeries);

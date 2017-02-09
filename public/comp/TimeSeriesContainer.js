@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
+import { connect } from 'react-redux'; 
 import { BUCA } from './m/BUCA'
+import { chartData } from '../actions/index'
 
-import axios from 'axios';
 /*
 mock = BUCA
 mock2 = ALAB
@@ -13,24 +14,8 @@ ANGT
 import styles from '../css/chart.css';
 
 class TimeSeriesContainer extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    
     render() {
-       axios.get('/compute' , {
-            params: {
-                data: this.props.data
-            }
-       })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-
+        this.props.chartData(this.props.data)
         return (
             <div className={styles.timeSeriesContainer}>
                 <TimeSeries data={this.props.data} name='east' styles={styles}/>
@@ -41,4 +26,10 @@ class TimeSeriesContainer extends Component {
     }
 }
 
-export default TimeSeriesContainer;
+function mapStateToProps(state) {  
+  return {
+    //none yet
+  };
+}
+
+export default connect(mapStateToProps, { chartData })(TimeSeriesContainer);

@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import math from 'mathjs';
 
+import LeastSquares from './least-squares'
 
 export default class MyCustomChart {
     constructor(el, props) {
@@ -116,6 +117,18 @@ export default class MyCustomChart {
             .attr("fill", "white")
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
+
+        //  let myY = []
+        //  let myX = []
+        //  let ret = {}
+        //  data.map((d) => {
+        //      myY.push(d.yVal)
+        //      myX.push(d.date)
+        //  })
+
+        //  let lr = LeastSquares(myX, myY, true, ret)
+
+        //  console.log(ret)
 
         //draw linear regression.
 

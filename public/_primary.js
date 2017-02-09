@@ -37,9 +37,10 @@ render(
     <Provider store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={TestDashboard} />
+                <IndexRoute component={AttendHome} />
                 <Route path="/login" component={Login} />
                 <Route path="/dashboard" component={Dashboard} />
+                <Route path="/testdashboard" component={TestDashboard} />
 
                 <Route path="*" component={NotFoundPage} />
             </Route>

@@ -3,7 +3,8 @@ import cookie from 'react-cookie'
 import { AUTH_USER,
          AUTH_ERROR,
          UNAUTH_USER,
-         PROTECTED_TEST } from './types'
+         PROTECTED_TEST,
+		 CHART_DATA } from './types'
 
 const API_URL = 'http://localhost:3030/api'
 const CLIENT_ROOT_URL = 'http://localhost:3000'
@@ -79,4 +80,12 @@ export function protectedTest() {
 			errorHandler(dispatch, error.response, AUTH_ERROR)
 		})
 	}
+}
+
+///CHART ACTIONS
+export function chartData(data) {
+	dispatch({
+			type: CHART_DATA,
+			payload: data
+	})
 }

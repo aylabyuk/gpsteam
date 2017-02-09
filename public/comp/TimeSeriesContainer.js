@@ -19,7 +19,6 @@ class TimeSeriesContainer extends Component {
 
     
     render() {
-
        axios.get('/compute' , {
             params: {
                 data: this.props.data

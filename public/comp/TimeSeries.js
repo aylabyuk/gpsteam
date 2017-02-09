@@ -10,10 +10,6 @@ class TimeSeries extends Component {
 
     }
 
-    componentWillUpdate() {
-        
-    }
-
     render() {
         let dd = [], date, yVal
         this.props.data.map((d) => {
@@ -32,6 +28,8 @@ class TimeSeries extends Component {
                 <Card.Header>
                         {this.props.name}
                 </Card.Header>
+                <div>velocity:</div>
+                <div>error:</div>
                 <Button id='resetBtn' size='mini' primary className={this.props.name}>reset</Button>
                     <Chart
                         id='chart'

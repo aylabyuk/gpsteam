@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
 import TimeSeriesContainer from './TimeSeriesContainer'
+import { connect } from 'react-redux'
 
 //test datas
 import { BUCA } from './m/BUCA'

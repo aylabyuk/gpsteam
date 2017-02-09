@@ -40,6 +40,11 @@ export default class MyCustomChart {
             ])
             .on("zoom", zoomed);
 
+        //convert yVal to mm
+        data.map((d) => {
+            d.yVal = d.yVal * 100
+        }) 
+
         // get the mean
         let focusData = [], mean
         data.map((d) => {

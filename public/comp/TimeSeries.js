@@ -6,38 +6,36 @@ import MyCustomChart from './m/MyCustomChart'
 import { Button, Card } from 'semantic-ui-react'
 
 class TimeSeries extends Component {
-  constructor(props) {
-        super(props);
-
-    }
-
     render() {
-        let dd = [], date, yVal
-        this.props.data.map((d) => {
+        let { name, computed, data, styles } = this.props
+        let dd = [], date, yVal, i = 0
+        data.map((d) => {
             date = d.date
-            switch (this.props.name) {
+            switch (name) {
                 case 'east': yVal = d.east; break;
                 case 'north': yVal = d.north; break;
                 case 'up': yVal = d.up; break;
             }
-            dd.push({date, yVal, name: this.props.name})
+            let line = computed ? computed.line[name][i] : 0
+            dd.push({date, yVal, name, line })
+            i++
         })
 
         return (
             <Card raised style={{ width: 626}}>
                 <Card.Content>
                 <Card.Header>
-                        {this.props.name}
+                        {name}
                 </Card.Header>
-                <div>velocity: {this.props.computed ? Math.round((this.props.computed.velocity[this.props.name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
-                <div>error: +- {this.props.computed ? Math.round((this.props.computed.std_error[this.props.name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
-                <Button id='resetBtn' size='mini' primary className={this.props.name}>reset</Button>
+                <div>velocity: {computed ? Math.round((computed.velocity[name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
+                <div>error: +- {computed ? Math.round((computed.std_error[name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
+                <Button id='resetBtn' size='mini' primary className={name}>reset</Button>
                     <Chart
                         id='chart'
                         type={"custom"}
                         customChart={MyCustomChart}
                         data={dd}
-                        styles={this.props.styles}
+                        styles={styles}
                     />
                 </Card.Content>
             </Card>

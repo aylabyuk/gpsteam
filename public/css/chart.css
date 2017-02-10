@@ -31,18 +31,6 @@
   color: orangered
 }
 
-:local(.d3tip) {
-  line-height: 1;
-  font-weight: bold;
-  font-size: 0.8em;
-  padding: 6px;
-  background-color: cornflowerblue;
-  color: #fff;
-  border-radius: 2px;
-  pointer-events: none;
-  text-align: center;
-}
-
 #resetBtn {
    position: relative;
     top: 40px;

@@ -50,8 +50,6 @@ export default class MyCustomChart {
         })
         mean = math.mean(focusData)
 
-        
-
         let x = d3.scaleLinear()
             .domain([d3.min(data, function (d) {
                 return d.date - 1;
@@ -122,7 +120,19 @@ export default class MyCustomChart {
             .attr("stroke", "blue");
 
         //draw linear regression line
-        
+        var line = d3.line()
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.line); });
+            
+        let lr = svg.append("path")
+            .datum(data)
+            .classed("lr", true)
+            .attr("fill", "none")
+            .attr("stroke", "lightgreen")
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .attr("d", line);
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
@@ -133,11 +143,9 @@ export default class MyCustomChart {
             }).attr("stroke-width", function () {
                 return (2 / d3.event.transform.k);
             });
-            svg.select(".tooltip").attr("transform", d3.event.transform);
-            svg.select(".lr").attr("transform", d3.event.transform)
-                .select(".lrLine").attr("stroke-width", function () {
-                    return (1 / d3.event.transform.k);
-                });
+            svg.select(".lr")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
 
@@ -152,8 +160,8 @@ export default class MyCustomChart {
 
     update(data) {
 
-        d3.select(this.el).select('svg').remove();
-        this.create(data);
+        // d3.select(this.el).select('svg').remove();
+        // this.create(data);
 
     }
 

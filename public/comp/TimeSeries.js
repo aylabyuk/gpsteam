@@ -29,8 +29,8 @@ class TimeSeries extends Component {
                 <Card.Header>
                         {this.props.name}
                 </Card.Header>
-                <div>velocity: {this.props.computed ? this.props.computed.velocity[this.props.name][1] * 10 + ' mm/yr': 'calculating'}</div>
-                <div>error: +- {this.props.computed ? this.props.computed.std_error[this.props.name][0] + ' mm' : 'calculating'}</div>
+                <div>velocity: {this.props.computed ? Math.round((this.props.computed.velocity[this.props.name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
+                <div>error: +- {this.props.computed ? Math.round((this.props.computed.std_error[this.props.name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
                 <Button id='resetBtn' size='mini' primary className={this.props.name}>reset</Button>
                     <Chart
                         id='chart'

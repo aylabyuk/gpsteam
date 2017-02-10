@@ -1,8 +1,6 @@
 import * as d3 from "d3";
 import math from 'mathjs';
 
-import LeastSquares from './least-squares'
-
 export default class MyCustomChart {
     constructor(el, props) {
         this.el = el;
@@ -123,27 +121,8 @@ export default class MyCustomChart {
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
 
-        //  let myY = []
-        //  let myX = []
-        //  let ret = {}
-        //  data.map((d) => {
-        //      myY.push(d.yVal)
-        //      myX.push(d.date)
-        //  })
-
-        //  let lr = LeastSquares(myX, myY, true, ret)
-
-        //  console.log(ret)
-
-        //draw linear regression.
-
-        // let myLine = svg.append("g").classed("lr", true).append("svg:line")
-        //     .classed("lrLine", true)
-        //     .attr("x1", x(min))
-        //     .attr("y1", y((min * lr.slope) + lr.intercept))
-        //     .attr("x2", x(max))
-        //     .attr("y2", y((max * lr.slope) + lr.intercept))
-        //     .style("stroke", "lightgreen")
+        //draw linear regression line
+        
 
         function zoomed() {
             view.attr("transform", d3.event.transform);

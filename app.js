@@ -50,7 +50,7 @@ app.get('/compute', function (req, res) {
     // end the input stream and allow the process to exit
     pyshell.end(function (err) {
         if (err) throw err;
-        console.log('python script for time series processing finish');
+        console.log('python script for time series processing done');
     });
 
 })

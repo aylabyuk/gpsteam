@@ -128,7 +128,7 @@ export default class MyCustomChart {
             .datum(data)
             .classed("lr", true)
             .attr("fill", "none")
-            .attr("stroke", "lightgreen")
+            .attr("stroke", data[0].line ? "lightgreen" : "")
             .attr("stroke-linejoin", "round")
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
@@ -160,8 +160,8 @@ export default class MyCustomChart {
 
     update(data) {
 
-        // d3.select(this.el).select('svg').remove();
-        // this.create(data);
+        d3.select(this.el).select('svg').remove();
+        this.create(data);
 
     }
 

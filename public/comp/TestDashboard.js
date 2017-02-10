@@ -22,8 +22,6 @@ class TestDashboard extends Component {
         }
     }
 
-    
-
     render() {
         return (
             <div>
@@ -36,10 +34,10 @@ class TestDashboard extends Component {
                     animation='overlay'
                     width='very wide'
                     direction='right'
-                    visible={/*this.state.visible*/true}
+                    visible={this.state.visible}
                     vertical
                     inverted
-                    style={{width: 648,  overflowY: "hidden", overflowX: "hidden"}}
+                    style={{width: 660,  overflowY: "hidden", overflowX: "hidden"}}
                 >
                     <TimeSeriesContainer data={this.state.data}/>
                 </Sidebar>

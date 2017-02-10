@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import * as d3 from "d3";
 import  Chart  from 'd3act'
 import MyCustomChart from './m/MyCustomChart'
-import { Button, Card } from 'semantic-ui-react'
+import { Button, Card, Dimmer, Loader } from 'semantic-ui-react'
 
 class TimeSeries extends Component {
     render() {
@@ -23,21 +23,26 @@ class TimeSeries extends Component {
 
         return (
             <Card raised style={{ width: 626}}>
-                <Card.Content>
-                <Card.Header>
-                        {name}
-                </Card.Header>
-                <div>velocity: {computed ? Math.round((computed.velocity[name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
-                <div>error: +- {computed ? Math.round((computed.std_error[name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
-                <Button id='resetBtn' size='mini' primary className={name}>reset</Button>
-                    <Chart
-                        id='chart'
-                        type={"custom"}
-                        customChart={MyCustomChart}
-                        data={dd}
-                        styles={styles}
-                    />
-                </Card.Content>
+                    <Card.Content>
+                    <Card.Header>
+                            {name}
+                    </Card.Header>
+                    <div>velocity: {computed ? Math.round((computed.velocity[name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
+                    <div>error: +- {computed ? Math.round((computed.std_error[name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
+                        <Dimmer.Dimmable dimmed={true}>
+                        <Dimmer active={computed ? false : true} inverted>
+                            <Loader>Loading</Loader>
+                        </Dimmer>
+                        <Button id='resetBtn' size='mini' primary className={name}>reset</Button>
+                        <Chart
+                            id='chart'
+                            type={"custom"}
+                            customChart={MyCustomChart}
+                            data={dd}
+                            styles={styles}
+                        />
+                        </Dimmer.Dimmable>
+                    </Card.Content>
             </Card>
         );
     }

@@ -1,14 +1,24 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import * as d3 from "d3";
 import  Chart  from 'd3act'
 import MyCustomChart from './m/MyCustomChart'
-import { Button, Card, Dimmer, Loader } from 'semantic-ui-react'
+
+//ui
+import Paper from 'material-ui/Paper';
+import FlatButton from 'material-ui/FlatButton';
+
+const style = {
+  margin: 10,
+  padding: 6
+};
 
 class TimeSeries extends Component {
     render() {
+
         let { name, computed, data, styles } = this.props
         let dd = [], date, yVal, i = 0
+        
         data.map((d) => {
             date = d.date
             switch (name) {
@@ -22,28 +32,19 @@ class TimeSeries extends Component {
         })
 
         return (
-            <Card raised style={{ width: 626}}>
-                    <Card.Content>
-                    <Card.Header>
-                            {name}
-                    </Card.Header>
-                    <div>velocity: {computed ? Math.round((computed.velocity[name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
-                    <div>error: +- {computed ? Math.round((computed.std_error[name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
-                        <Dimmer.Dimmable dimmed={true}>
-                        <Dimmer active={computed ? false : true} inverted>
-                            <Loader>Loading</Loader>
-                        </Dimmer>
-                        <Button id='resetBtn' size='mini' primary className={name}>reset</Button>
-                        <Chart
-                            id='chart'
-                            type={"custom"}
-                            customChart={MyCustomChart}
-                            data={dd}
-                            styles={styles}
-                        />
-                        </Dimmer.Dimmable>
-                    </Card.Content>
-            </Card>
+            <Paper style={style}>
+                <h2>{name}</h2>
+                <div>velocity: {computed ? Math.round((computed.velocity[name][1] * 10) * 100) / 100  + ' mm/yr': 'calculating'}</div>
+                <div>error: +- {computed ? Math.round((computed.std_error[name][0] * 10) * 100) / 100 + ' mm' : 'calculating'}</div>
+                <FlatButton id='resetBtn' className={name} label='reset' primary={true} />
+                <Chart
+                    id='chart'
+                    type={"custom"}
+                    customChart={MyCustomChart}
+                    data={dd}
+                    styles={styles}
+                />
+            </Paper>
         );
     }
 }

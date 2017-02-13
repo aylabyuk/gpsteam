@@ -37,7 +37,7 @@ class TestDashboard extends Component {
                     visible={this.state.visible}
                     vertical
                     inverted
-                    style={{width: 660,  overflowY: "hidden", overflowX: "hidden"}}
+                    style={{width: 660,  overflowY: "hidden", overflowX: "hidden", backgroundColor: "slategray"}}
                 >
                     <TimeSeriesContainer data={this.state.data}/>
                 </Sidebar>

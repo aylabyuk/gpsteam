@@ -10,7 +10,8 @@ import FlatButton from 'material-ui/FlatButton';
 
 const style = {
   margin: 10,
-  padding: 6
+  padding: 6,
+  width: 600
 };
 
 class TimeSeries extends Component {

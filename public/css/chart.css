@@ -39,5 +39,6 @@
 }
 
 :local(.timeSeriesContainer) {
-  width: max-content;
+  background-color: slategray;
+  overflow-x: hidden;
 }

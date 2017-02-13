@@ -1,19 +1,24 @@
 import React, {Component} from 'react';
-import { Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react'
 import TimeSeriesContainer from './TimeSeriesContainer'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 //test datas
 import { BUCA } from './m/BUCA'
 import { ANGT } from './m/ANGT'
 
+//ui
+import { Button } from 'semantic-ui-react'
+import Drawer from 'material-ui/Drawer';
+import FlatButton from 'material-ui/FlatButton';
+
 class TestDashboard extends Component {
     state = { 
-        visible: false,
+        open: false,
         data: BUCA
     }
 
-    toggleVisibility = () => this.setState({ visible: !this.state.visible })
+    toggleDrawer = () => this.setState({ open: !this.state.open })
 
     changeData = (e) => { 
         switch (e.target.value) {
@@ -25,23 +30,17 @@ class TestDashboard extends Component {
     render() {
         return (
             <div>
-                <Button onClick={this.toggleVisibility}>Toggle Visibility</Button>
+                <FlatButton onClick={this.toggleDrawer}>Toggle Visibility</FlatButton>
                 <Button onClick={this.changeData} value='BUCA'>BUCA</Button>
                 <Button onClick={this.changeData} value='ANGT'>ANGT</Button>
-               
-                <Sidebar
-                    as={Menu}
-                    animation='overlay'
-                    width='very wide'
-                    direction='right'
-                    visible={this.state.visible}
-                    vertical
-                    inverted
-                    style={{width: 660,  overflowY: "hidden", overflowX: "hidden", backgroundColor: "slategray"}}
-                >
+                <Link to='/logsheet'>Log Sheet</Link>
+                <Drawer 
+                    width={640} 
+                    openSecondary={true} 
+                    open={this.state.open} 
+                    style={{ backgroundColor: "slategray"}}>
                     <TimeSeriesContainer data={this.state.data}/>
-                </Sidebar>
-                
+                </Drawer>
             </div>
         );
     }

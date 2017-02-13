@@ -18,7 +18,7 @@ export default class MyCustomChart {
 
         let svg = d3.select(this.el).append('svg')
             .classed(styles.chartSvg, true)
-            .attr("width", 600)
+            .attr("width", 588)
             .attr("height", 200),
             width = +svg.attr("width"),
             height = +svg.attr("height");

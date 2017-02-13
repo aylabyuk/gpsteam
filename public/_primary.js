@@ -18,6 +18,7 @@ import NotFoundPage from './comp/NotFoundPage'
 import TimeSeries from './comp/TimeSeries'
 import TimeSeriesContainer from './comp/TimeSeriesContainer'
 import TestDashboard from './comp/TestDashboard'
+import LogSheetForm from './comp/LogSheetForm'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
@@ -41,6 +42,7 @@ render(
                 <Route path="/login" component={Login} />
                 <Route path="/dashboard" component={Dashboard} />
                 <Route path="/testdashboard" component={TestDashboard} />
+                <Route path="/logsheet" component={LogSheetForm} />
 
                 <Route path="*" component={NotFoundPage} />
             </Route>

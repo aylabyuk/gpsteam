@@ -34,12 +34,11 @@
 #resetBtn {
    position: relative;
     top: 40px;
-    left: 525px;
+    left: 490px;
     opacity: .6;
 }
 
 :local(.timeSeriesContainer) {
   background-color: slategray;
-  width: max-content;
-  padding: 10px;
+  overflow-x: hidden;
 }

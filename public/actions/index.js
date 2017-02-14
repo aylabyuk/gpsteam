@@ -5,10 +5,11 @@ import { AUTH_USER,
          UNAUTH_USER,
          PROTECTED_TEST,
 		 CHART_DATA,
-		 RESET_CHART_DATA } from './types'
+		 RESET_CHART_DATA,
+		 SITE_NAME_DATA } from './types'
 
-const API_URL = 'http://localhost:3030/api'
-const CLIENT_ROOT_URL = 'http://localhost:3000'
+const API_URL = 'http://192.168.1.206:3000'
+const CLIENT_ROOT_URL = 'http://localhost:8080'
 
 export function errorHandler(dispatch, error, type) {
 	let errorMessage = ''
@@ -86,7 +87,7 @@ export function protectedTest() {
 ///CHART ACTIONS
 export function chartData(data) {
 	return function(dispatch) {
-		axios.get('/compute' , {
+		axios.get(`${API_URL}/compute` , {
 			params: {
 				data: data
 			}
@@ -108,5 +109,21 @@ export function resetChartData() {
 		dispatch({
 			type: RESET_CHART_DATA,
 		})
+	}
+}
+
+//LOG SHEET ACTIONS
+export function siteNameData() {
+	return function(dispatch) {
+		axios.get(`${API_URL}/sitename`)
+		.then(function (response) {
+			dispatch({
+				type: SITE_NAME_DATA,
+				payload: response.data
+			})
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 	}
 }

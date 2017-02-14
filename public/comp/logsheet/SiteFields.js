@@ -8,10 +8,12 @@ import { AutoComplete, MenuItem } from 'material-ui'
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
   <AutoComplete
       floatingLabelText="site name"
-      filter={AutoComplete.fuzzyFilter}
+      filter={AutoComplete.caseInsensitiveFilter}
       openOnFocus={true}
       dataSource={dataSource}
       listStyle={{ maxHeight: 200, overflow: 'auto' }}
+      onUpdateInput={input.onChange}
+      searchText={input.value}
     />
 )
 
@@ -20,13 +22,11 @@ const form =  reduxForm({
 })
 
 class SiteFields extends Component {
-
     render() {
-        
         return (
-            <div>
+            <form>
                 <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.sites}/>
-            </div>
+            </form>
         );
     }
 }

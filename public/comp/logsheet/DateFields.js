@@ -13,7 +13,7 @@ Date.prototype.julianDate = function(){
 };
 
 const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
-    <div style={{display: 'flex', flexDirection: 'row', padding: 5}}>
+    <div style={{display: 'flex', flexDirection: 'row'}}>
     <DatePicker 
         mode='landscape'
         errorText = {touched && error} 
@@ -28,7 +28,7 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         hintText={label}
         floatingLabelText={label}
         onChange = {(event, value) => {input.onChange(value)}} />
-    <TextField  style={{width: 80, marginLeft: 5}} floatingLabelText='julian day'  hintText='julian day' value={input.value ? input.value.julianDate() : ''} disabled={true}
+    <TextField  style={{width: 80, marginLeft: 5}} floatingLabelText='julian day'  hintText='julian day' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
        fullWidth={false} 
         />
     </div>

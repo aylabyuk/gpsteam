@@ -10,7 +10,7 @@ import { Paper } from 'material-ui'
 const style = {
   margin: 20,
   display: 'inline-block',
-  padding: 5
+  padding: 10
 };
 
 class LogSheetForm extends Component {
@@ -21,6 +21,7 @@ class LogSheetForm extends Component {
     render() {
         return (
             <Paper style={style} zDepth={1}>
+                <h2><center>Log Sheet</center></h2>
                 <DateFields />
                 <SiteFields />
             </Paper>

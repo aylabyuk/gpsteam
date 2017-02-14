@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 
 //ui
 import { DatePicker, TextField } from 'material-ui'
 
-const style = {
-  width: 500,
-  margin: 20,
-  textAlign: 'center',
-  display: 'inline-block',
-};
 
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
@@ -20,7 +13,7 @@ Date.prototype.julianDate = function(){
 };
 
 const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
-    <div>
+    <div style={{display: 'flex', flexDirection: 'row', padding: 5}}>
     <DatePicker 
         mode='landscape'
         errorText = {touched && error} 
@@ -34,8 +27,10 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         }).format}
         hintText={label}
         floatingLabelText={label}
-        onChange = {(event, value) => {console.log(value.julianDate()); input.onChange(value)}} />
-    <TextField floatingLabelText='julian day equivalent'  hintText='julian day' value={input.value ? input.value.julianDate() : ''} disabled={true}/>
+        onChange = {(event, value) => {input.onChange(value)}} />
+    <TextField  style={{width: 80, marginLeft: 5}} floatingLabelText='julian day'  hintText='julian day' value={input.value ? input.value.julianDate() : ''} disabled={true}
+       fullWidth={false} 
+        />
     </div>
 )
 
@@ -55,7 +50,7 @@ class DateFields extends Component {
         
         return (
         <form>
-            <Field name="logdate" label='Log Date' component={renderDatePicker} autoOk={true} />
+            <Field name="logdate" label='log date' component={renderDatePicker} autoOk={true} />
         </form>
         );
     }

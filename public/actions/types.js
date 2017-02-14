@@ -5,4 +5,5 @@ export const AUTH_USER = 'auth_user',
 	RESET_PASSWORD_REQUEST = 'reset_password_request',
 	PROTECTED_TEST = 'protected_test',
 	CHART_DATA = 'chart_data',
-	RESET_CHART_DATA = 'reset_chart_data'
+	RESET_CHART_DATA = 'reset_chart_data',
+	SITE_NAME_DATA = 'site_name_data'

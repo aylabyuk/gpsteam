@@ -6,4 +6,5 @@ export const AUTH_USER = 'auth_user',
 	PROTECTED_TEST = 'protected_test',
 	CHART_DATA = 'chart_data',
 	RESET_CHART_DATA = 'reset_chart_data',
-	RECEIVER_INFO = 'receiver_info'
+	RECEIVER_INFO = 'receiver_info',
+	ANTENNA_INFO = 'antenna_info'

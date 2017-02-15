@@ -6,7 +6,8 @@ import { AUTH_USER,
          PROTECTED_TEST,
 		 CHART_DATA,
 		 RESET_CHART_DATA,
-		 RECEIVER_INFO } from './types'
+		 RECEIVER_INFO,
+		 ANTENNA_INFO } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -112,6 +113,8 @@ export function resetChartData() {
 	}
 }
 
+
+//server data actions
 export function getReceiverInfo(serial) {
 	return function(dispatch) {
 		let info
@@ -123,6 +126,27 @@ export function getReceiverInfo(serial) {
 		.then(function (response) {
 			dispatch({
 				type: RECEIVER_INFO,
+				payload: response.data[0][0]
+			})
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
+	}
+}
+
+export function getAntennaInfo(serial) {
+	return function(dispatch) {
+		let info
+		axios.get(`${API_URL}/gettingantennainfo`, {
+			params: {
+				id: serial
+			}
+		})
+		.then(function (response) {
+			//console.log(response.data[0][0])
+			dispatch({
+				type: ANTENNA_INFO,
 				payload: response.data[0][0]
 			})
 		})

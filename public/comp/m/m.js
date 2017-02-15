@@ -72,7 +72,7 @@ export function fetchAntennas() {
 	axios.get(`${API_URL}/allantennasn`)
 	.then(function (response) {
 		response.data.map((d) => {
-			antennaSNs.push(d.anttenna_serialnumber)
+			antennaSNs.push(d.antenna_serialnumber)
 		})
 	})
 	.catch(function (error) {

@@ -4,7 +4,6 @@ import { reduxForm, Field } from 'redux-form'
 //ui
 import { DatePicker, TextField } from 'material-ui'
 
-
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
     i=3-j.length;

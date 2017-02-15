@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 
 //ui
-import { AutoComplete, MenuItem } from 'material-ui'
+import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
 
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
   <AutoComplete
@@ -17,30 +16,30 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
     />
 )
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
+const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+  <TextField hintText={label}
+    floatingLabelText={label}
+    errorText={touched && error}
+    {...input}
+    {...custom}
+  />
+)
 
 class SiteFields extends Component {
     render() {
         return (
             <form>
-                <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.sites}/>
+                <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames}/>
+                <Field name="location" style={{ marginLeft: 5}}  component={renderTextField} label='location' />
+                <Field name="marker" style={{ marginLeft: 5}}  component={renderTextField} label='marker' /><br/>
+                <FlatButton label="Add Observers" primary={true} />
             </form>
         );
     }
 }
 
-function mapStateToProps(state) {  
+const form =  reduxForm({  
+	form: 'logsheet'
+})
 
-    let siteName = []
-    state.serverData.sites.map((d) => {
-        siteName.push(d.site_name)
-    })
-
-	return {
-		sites: siteName
-	}
-}
-
-export default connect(mapStateToProps)(form(SiteFields))  
+export default form(SiteFields)

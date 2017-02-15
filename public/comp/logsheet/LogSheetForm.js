@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+import {fetchSites, fetchReceivers} from '../m/m.js'
 
 //components
 import DateFields from './DateFields'
 import SiteFields from './SiteFields'
+import HardwareFields from './HardwareFields'
 
 //ui
-import { Paper } from 'material-ui'
+import { Paper, AppBar, Divider } from 'material-ui'
 
 const style = {
   margin: 20,
@@ -14,16 +16,24 @@ const style = {
 };
 
 class LogSheetForm extends Component {
-    componentDidMount() {
-        this.props.siteNameData()
+    constructor(props) {
+        super(props);
+        this.state = {
+            siteNames: fetchSites(),
+            receivers: fetchReceivers()
+        };
     }
-    
+
     render() {
         return (
             <Paper style={style} zDepth={1}>
-                <h2><center>Log Sheet</center></h2>
+                <AppBar
+                    title="Log Sheet"
+                    iconClassNameRight="muidocs-icon-navigation-expand-more"
+                />
                 <DateFields />
-                <SiteFields />
+                <SiteFields siteNames={this.state.siteNames}/>
+                <HardwareFields receiverSNs={this.state.receivers}/>
             </Paper>
         );
     }

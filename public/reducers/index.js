@@ -4,7 +4,8 @@ import { reducer as formReducer } from 'redux-form'
 
 import auth from './auth_reducer'
 import plot from './plot_reducer'
-import serverData from './serverData_reducer'
+import serverData from './server_data_reducer'
+
 
 const rootReducer = combineReducers({
 	auth: auth ,

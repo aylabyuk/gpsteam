@@ -31,8 +31,7 @@ class SiteFields extends Component {
             <form>
                 <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames}/>
                 <Field name="location" style={{ marginLeft: 5}}  component={renderTextField} label='location' />
-                <Field name="marker" style={{ marginLeft: 5}}  component={renderTextField} label='marker' /><br/>
-                <FlatButton label="Add Observers" primary={true} />
+                <Field name="marker" style={{ marginLeft: 5}}  component={renderTextField} label='marker' />
             </form>
         );
     }

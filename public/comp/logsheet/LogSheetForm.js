@@ -5,6 +5,7 @@ import {fetchSites, fetchReceivers, fetchAntennas} from '../m/m.js'
 import DateFields from './DateFields'
 import SiteFields from './SiteFields'
 import HardwareFields from './HardwareFields'
+import MeasurementFields from './MeasurementFields'
 
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
@@ -35,6 +36,7 @@ class LogSheetForm extends Component {
                 <DateFields />
                 <SiteFields siteNames={this.state.siteNames}/>
                 <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas}/>
+                <MeasurementFields />
             </Paper>
         );
     }

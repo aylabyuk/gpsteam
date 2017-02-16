@@ -6,12 +6,6 @@ import Clear from 'material-ui/svg-icons/content/clear';
 
 const Clearable = ComposedComponent => class extends React.Component {
 
-    onChange(evt, date) {
-        if (this.props.input.onChange) {
-            this.props.input.onChange(date ? date : '');
-        }
-    }
-
     clearDate (event) {
         event.preventDefault();
 
@@ -31,8 +25,9 @@ const Clearable = ComposedComponent => class extends React.Component {
                     { ...this.props.input }
                     autoOk={true}
                     ref="timePicker"
-                    value={this.props.input.value !== '' ? this.props.input.value : null}
+                    value={this.props.input.value !== '' ? new Date(this.props.input.value) : null}
                     onChange={(event, value) => {this.props.input.onChange(value)}} 
+                    onBlur = {(value) => { value = '' } }
                     floatingLabelText={this.props.label}
                     format="24hr"/>
                 {this.props.input.value &&

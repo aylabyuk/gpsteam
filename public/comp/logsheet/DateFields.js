@@ -4,7 +4,6 @@ import { reduxForm, Field } from 'redux-form'
 //ui
 import { DatePicker, TextField } from 'material-ui'
 
-
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
     i=3-j.length;
@@ -27,7 +26,8 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         }).format}
         hintText={label}
         floatingLabelText={label}
-        onChange = {(event, value) => {input.onChange(value)}} />
+        onChange = {(event, value) => {input.onChange(value)}} 
+        onBlur = {(value) => { value = '' } }/>
     <TextField  style={{width: 80, marginLeft: 5}} floatingLabelText='julian day'  hintText='julian day' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
        fullWidth={false} 
         />

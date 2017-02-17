@@ -81,3 +81,18 @@ export function fetchAntennas() {
 	});
 	return antennaSNs
 }
+
+export function fetchSiteContacts() {  
+	let contactpersons = []
+	axios.get(`${API_URL}/allcontactperson`)
+	.then(function (response) {
+		response.data.map((d) => {
+			contactpersons.push(d)
+		})
+	})
+	.catch(function (error) {
+		return error
+		console.log(error);
+	});
+	return contactpersons
+}

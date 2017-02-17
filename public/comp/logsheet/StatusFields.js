@@ -12,6 +12,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     {...custom}
     multiLine={true}
     fullWidth={true}
+    rowsMax={3}
   />
 )
 

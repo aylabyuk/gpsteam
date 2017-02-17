@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 import SiteContacts from '../contacts/SiteContacts'
 import { fetchSiteContacts } from '../m/m.js'
@@ -31,7 +32,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="Select"
             primary={true}
-            disabled={true}
+            disabled={this.props.selectedKey ? false : true}
             onTouchTap={this.handleClose}
         />,
         ];
@@ -42,7 +43,7 @@ class SiteContactPersonFields extends Component {
                 <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen}/>
 
                 <Dialog
-                    title="Site Contact List"
+                    title="Site Contacts List"
                     actions={actions}
                     modal={true}
                     open={this.state.open}>
@@ -56,4 +57,10 @@ class SiteContactPersonFields extends Component {
     }
 }
 
-export default SiteContactPersonFields;
+function mapStateToProps(state) {  
+	return {
+		selectedKey: state.serverData.selectedContact
+	}
+}
+
+export default connect(mapStateToProps)(SiteContactPersonFields)  

@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
+import { setSelectedContactKey } from '../../actions/index'
+import { connect } from 'react-redux'
+import { reduxForm } from 'redux-form'
 
 //ui
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 class SiteContacts extends Component {
+
+
+    handleSelection = (key) => {
+        this.props.setSelectedContactKey(key)
+    };
       
     render() {
 
@@ -16,7 +24,7 @@ class SiteContacts extends Component {
         );
 
         return (
-              <Table>
+              <Table onRowSelection={this.handleSelection}>
                 <TableHeader>
                 <TableRow>
                     <TableHeaderColumn>ID</TableHeaderColumn>
@@ -34,4 +42,14 @@ class SiteContacts extends Component {
     }
 }
 
-export default SiteContacts;
+const form =  reduxForm({  
+	form: 'logsheet'
+})
+
+function mapStateToProps(state) {  
+	return {
+		
+	}
+}
+
+export default connect(mapStateToProps, { setSelectedContactKey })(form(SiteContacts))  

@@ -7,7 +7,8 @@ import { AUTH_USER,
 		 CHART_DATA,
 		 RESET_CHART_DATA,
 		 RECEIVER_INFO,
-		 ANTENNA_INFO } from './types'
+		 ANTENNA_INFO,
+		 SELECTED_CONTACT } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -153,5 +154,14 @@ export function getAntennaInfo(serial) {
 		.catch(function (error) {
 			console.log(error);
 		});
+	}
+}
+
+export function setSelectedContactKey(key) {
+	return function(dispatch) {
+		dispatch({
+			type: SELECTED_CONTACT,
+			payload: key
+		})
 	}
 }

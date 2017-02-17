@@ -10,6 +10,7 @@ import HardwareFields from './HardwareFields'
 import MeasurementFields from './MeasurementFields'
 import TimeFields from './TimeFields'
 import StatusFields from './StatusFields'
+import AntennaHeigtInfoFields from './AntennaHeightInfoFields'
 
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
@@ -17,7 +18,8 @@ import { Paper, AppBar, Divider } from 'material-ui'
 const style = {
   margin: 20,
   display: 'inline-block',
-  padding: 10
+  padding: 10,
+  maxWidth: 800
 };
 
 class LogSheetForm extends Component {
@@ -43,6 +45,7 @@ class LogSheetForm extends Component {
                 <MeasurementFields />
                 <TimeFields />
                 <StatusFields />
+                <AntennaHeigtInfoFields values={this.props.values}/>
                 
             </Paper>
         );

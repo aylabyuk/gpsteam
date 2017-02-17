@@ -1,6 +1,15 @@
 import { RECEIVER_INFO, ANTENNA_INFO, SELECTED_CONTACT } from '../actions/types'
 
-const INITIAL_STATE = {receiverInfo: 0, antennaInfo: 0, selectedContact: []}
+const INITIAL_STATE = {
+	receiverInfo: { 
+		receiver_type: '', 
+		part_number: '' 
+	}, 
+	antennaInfo: { 
+		antenna_type: '',
+		antenna_partnumber: '' 
+	}, 
+	selectedContact: []}
 
 function serverData(state = INITIAL_STATE, action) {  
 	switch(action.type) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 
 import ClearableTimePicker from './ClearableTimePicker';
@@ -39,10 +39,14 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-function mapStateToProps(state) {  
-	return {
-	 	failureTime: state.form.logsheet.values ? state.form.logsheet.values.failureTime : '',
-	 }
-}
+const selector = formValueSelector('logsheet') 
+TimeFields = connect(
+  state => {
+    const failureTime = selector(state, 'failureTime')
+    return {
+      failureTime,
+    }
+  }
+)(TimeFields)
 
-export default connect(mapStateToProps)(form(TimeFields))  
+export default (form(TimeFields))

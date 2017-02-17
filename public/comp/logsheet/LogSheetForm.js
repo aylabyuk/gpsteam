@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {fetchSites, fetchReceivers, fetchAntennas} from '../m/m.js'
+import { connect } from 'react-redux'
+import { getFormValues } from 'redux-form'
 
 //components
 import DateFields from './DateFields'
@@ -7,6 +9,7 @@ import SiteFields from './SiteFields'
 import HardwareFields from './HardwareFields'
 import MeasurementFields from './MeasurementFields'
 import TimeFields from './TimeFields'
+import StatusFields from './StatusFields'
 
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
@@ -36,12 +39,20 @@ class LogSheetForm extends Component {
                 />
                 <DateFields />
                 <SiteFields siteNames={this.state.siteNames}/>
-                <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas}/>
+                <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas} />
                 <MeasurementFields />
                 <TimeFields />
+                <StatusFields />
+                
             </Paper>
         );
     }
 }
+
+LogSheetForm = connect(
+    state => ({
+        values: getFormValues('logsheet')(state)
+    })
+)(LogSheetForm)
 
 export default LogSheetForm  

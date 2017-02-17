@@ -50,7 +50,7 @@ class DateFields extends Component {
         
         return (
         <form>
-            <Field name="logdate" label='log date' component={renderDatePicker} autoOk={true} />
+            <Field name="logdate" label='log date' component={renderDatePicker} autoOk={false} />
         </form>
         );
     }

@@ -17,6 +17,8 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
         listStyle={{ maxHeight: 200, overflow: 'auto' }}
         onUpdateInput={input.onChange}
         searchText={input.value}
+        maxSearchResults={10}
+        openOnFocus={false}
     />
 )
 
@@ -25,6 +27,7 @@ class HardwareFields extends Component {
    componentDidUpdate() {
        this.props.receiverSN ? this.props.getReceiverInfo(this.props.receiverSN) : ''
        this.props.antennaSN ? this.props.getAntennaInfo(this.props.antennaSN) : ''
+       
    }
 
    render() {
@@ -48,12 +51,12 @@ const form =  reduxForm({
 function mapStateToProps(state) {  
 	return {
 	 	receiverSN: state.form.logsheet.values ? state.form.logsheet.values.receiverSN : '',
-        receiverType: state.serverData.receiverInfo ? state.serverData.receiverInfo.receiver_type : '',
-        partNumber: state.serverData.receiverInfo ? state.serverData.receiverInfo.part_number : '',
+        receiverType: state.serverData.receiverInfo && state.form.logsheet.values.receiverSN ? state.serverData.receiverInfo.receiver_type : '',
+        partNumber: state.serverData.receiverInfo && state.form.logsheet.values.receiverSN ? state.serverData.receiverInfo.part_number : '',
 
         antennaSN: state.form.logsheet.values ? state.form.logsheet.values.antennaSN : '',
-        antennaType: state.serverData.antennaInfo ? state.serverData.antennaInfo.antenna_type : '',
-        antennaPartNumber: state.serverData.antennaInfo ? state.serverData.antennaInfo.antenna_partnumber : '',
+        antennaType: state.serverData.antennaInfo && state.form.logsheet.values.antennaSN ? state.serverData.antennaInfo.antenna_type : '',
+        antennaPartNumber: state.serverData.antennaInfo && state.form.logsheet.values.antennaSN ? state.serverData.antennaInfo.antenna_partnumber : '',
 	 }
 }
 

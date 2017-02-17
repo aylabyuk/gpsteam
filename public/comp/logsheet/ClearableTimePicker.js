@@ -23,7 +23,7 @@ const Clearable = ComposedComponent => class extends React.Component {
             <div style={{position: 'relative'}}>
                 <ComposedComponent
                     { ...this.props.input }
-                    autoOk={true}
+                    autoOk={false}
                     ref="timePicker"
                     value={this.props.input.value !== '' ? new Date(this.props.input.value) : null}
                     onChange={(event, value) => {this.props.input.onChange(value)}} 

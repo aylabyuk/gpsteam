@@ -13,6 +13,8 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
       listStyle={{ maxHeight: 200, overflow: 'auto' }}
       onUpdateInput={input.onChange}
       searchText={input.value}
+      maxSearchResults={10}
+      openOnFocus={false}
     />
 )
 

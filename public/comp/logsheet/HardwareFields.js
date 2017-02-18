@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { fetchReceiverInfo } from '../m/m.js'
 import { connect } from 'react-redux'
 import { getReceiverInfo, getAntennaInfo } from '../../actions/index'
@@ -48,13 +48,23 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
+const selector = formValueSelector('logsheet') 
+HardwareFields = connect(
+  state => {
+    const receiverSN = selector(state, 'receiverSN')
+    const antennaSN = selector(state, 'antennaSN')
+    return {
+      receiverSN,
+      antennaSN
+    }
+  }
+)(HardwareFields)
+
 function mapStateToProps(state) {  
 	return {
-	 	receiverSN: state.form.logsheet.values ? state.form.logsheet.values.receiverSN : '',
         receiverType: state.serverData.receiverInfo && state.form.logsheet.values.receiverSN ? state.serverData.receiverInfo.receiver_type : '',
         partNumber: state.serverData.receiverInfo && state.form.logsheet.values.receiverSN ? state.serverData.receiverInfo.part_number : '',
-
-        antennaSN: state.form.logsheet.values ? state.form.logsheet.values.antennaSN : '',
+        
         antennaType: state.serverData.antennaInfo && state.form.logsheet.values.antennaSN ? state.serverData.antennaInfo.antenna_type : '',
         antennaPartNumber: state.serverData.antennaInfo && state.form.logsheet.values.antennaSN ? state.serverData.antennaInfo.antenna_partnumber : '',
 	 }

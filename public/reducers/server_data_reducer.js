@@ -14,7 +14,7 @@ const INITIAL_STATE =
 			antenna_type: '',
 			antenna_partnumber: ''
 		}, 
-		selectedContact: []
+		selectedKey: []
  	}
 
 function serverData(state = INITIAL_STATE, action) {  
@@ -24,7 +24,7 @@ function serverData(state = INITIAL_STATE, action) {
 	case ANTENNA_INFO:
 		return { ...state, antennaInfo: action.payload }
 	case SELECTED_CONTACT:
-		return { ...state, selectedContact: action.payload }
+		return { ...state, selectedKey: action.payload }
 	case CLEAR_RECEIVER_INFO:
 		return { ...state,
 			receiverInfo: {

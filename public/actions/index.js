@@ -10,7 +10,7 @@ import { AUTH_USER,
 		 ANTENNA_INFO,
 		 SELECTED_CONTACT } from './types'
 
-const API_URL = 'http://192.168.1.206:3000'
+const API_URL = 'http://localhost:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
 
 export function errorHandler(dispatch, error, type) {

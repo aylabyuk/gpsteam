@@ -1,6 +1,6 @@
 import { RECEIVER_INFO, 
 	ANTENNA_INFO, 
-	SELECTED_CONTACT, 
+	SELECTED_TABLE_KEY, 
 	CLEAR_ANTENNA_INFO, 
 	CLEAR_RECEIVER_INFO } from '../actions/types'
 
@@ -23,7 +23,7 @@ function serverData(state = INITIAL_STATE, action) {
 		return { ...state, receiverInfo: action.payload }
 	case ANTENNA_INFO:
 		return { ...state, antennaInfo: action.payload }
-	case SELECTED_CONTACT:
+	case SELECTED_TABLE_KEY:
 		return { ...state, selectedKey: action.payload }
 	case CLEAR_RECEIVER_INFO:
 		return { ...state,

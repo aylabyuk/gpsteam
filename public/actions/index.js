@@ -10,7 +10,7 @@ import { AUTH_USER,
 		 ANTENNA_INFO,
 		 CLEAR_ANTENNA_INFO,
 		 CLEAR_RECEIVER_INFO,
-		 SELECTED_CONTACT } from './types'
+		 SELECTED_TABLE_KEY } from './types'
 
 const API_URL = 'http://localhost:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -175,10 +175,10 @@ export function clearAntennaInfo() {
 	}
 }
 
-export function setSelectedContactKey(key) {
+export function setSelectedTableKey(key) {
 	return function(dispatch) {
 		dispatch({
-			type: SELECTED_CONTACT,
+			type: SELECTED_TABLE_KEY,
 			payload: key
 		})
 	}

@@ -8,4 +8,6 @@ export const AUTH_USER = 'auth_user',
 	RESET_CHART_DATA = 'reset_chart_data',
 	RECEIVER_INFO = 'receiver_info',
 	ANTENNA_INFO = 'antenna_info',
+	CLEAR_RECEIVER_INFO = 'clear_receiver_info',
+	CLEAR_ANTENNA_INFO = 'clear_antenna_info',
 	SELECTED_CONTACT = 'selected_contact'

@@ -8,6 +8,8 @@ import { AUTH_USER,
 		 RESET_CHART_DATA,
 		 RECEIVER_INFO,
 		 ANTENNA_INFO,
+		 CLEAR_ANTENNA_INFO,
+		 CLEAR_RECEIVER_INFO,
 		 SELECTED_CONTACT } from './types'
 
 const API_URL = 'http://localhost:3000'
@@ -154,6 +156,22 @@ export function getAntennaInfo(serial) {
 		.catch(function (error) {
 			console.log(error);
 		});
+	}
+}
+
+export function clearReceiverInfo() {
+	return function(dispatch) {
+		dispatch({
+			type: CLEAR_RECEIVER_INFO
+		})
+	}
+}
+
+export function clearAntennaInfo() {
+	return function(dispatch) {
+		dispatch({
+			type: CLEAR_ANTENNA_INFO
+		})
 	}
 }
 

@@ -6,8 +6,12 @@ var config = require('./webpack.config.js');
 var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
+var favicon = require('serve-favicon');
+
 
 var app = express();
+
+app.use(favicon(__dirname + '/views/favicon.ico'));
 
 var compiler = webpack(config);
 

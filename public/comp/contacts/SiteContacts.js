@@ -4,43 +4,86 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 
 //ui
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import DataTables from 'material-ui-datatables';
+
+
+const TABLE_COLUMNS = [
+  {
+    key: 'first_name',
+    label: 'firstname',
+  }, {
+    key: 'last_name',
+    label: 'lastname',
+  }, {
+    key: 'contact_number',
+    label: 'contact number',
+  }
+];
 
 class SiteContacts extends Component {
 
+    constructor(props, context) {
+        super(props, context);
+            this.handleFilterValueChange = this.handleFilterValueChange.bind(this);
+
+            this.state = {
+                tableData: this.props.contacts,
+                page: 1
+            }
+
+    }
 
     handleSelection = (key) => {
         this.props.setSelectedTableKey(key)
     };
+
+    handleFilterValueChange(value) {
+
+
+    //    let newArray = this.props.contacts.filter(function(row) {
+    //         return row.first_name.match('/' + value + '/')
+    //    })
+
+    //    console.log(newArray)
+    //    this.setState({tableData: newArray})
+
+    let arr = this.props.contacts
+
+    var filtered = (function(pattern){
+        var filtered = [], i = arr.length, re = new RegExp('' + pattern);
+        while (i--) {
+            if (re.test(arr[i].first_name) || re.test(arr[i].last_name)) {
+                filtered.push(arr[i]);
+            }
+        }
+        return filtered;
+    })(value); 
+
+     this.setState({tableData: filtered})
+
+     console.log(this.props.contacts)
+
+    }
       
     render() {
-
-        let contacts = this.props.contacts.map((d) =>
-            <TableRow key={d.contact_id}>
-                <TableRowColumn>{d.contact_id}</TableRowColumn>
-                <TableRowColumn>{d.first_name + ' ' + d.last_name}</TableRowColumn>
-                <TableRowColumn>{d.contact_number}</TableRowColumn>
-            </TableRow>
-        );
-
-        return (
-              <Table onRowSelection={this.handleSelection}>
-                <TableHeader>
-                <TableRow>
-                    <TableHeaderColumn>ID</TableHeaderColumn>
-                    <TableHeaderColumn>Name</TableHeaderColumn>
-                    <TableHeaderColumn>Contact Number</TableHeaderColumn>
-                </TableRow>
-                </TableHeader>
-                <TableBody>
-
-                {contacts}
-                
-                </TableBody>
-            </Table>
+        return(
+             <DataTables
+                height={'auto'}
+                selectable={true}
+                showRowHover={true}
+                columns={TABLE_COLUMNS}
+                data={this.state.tableData}
+                showCheckboxes={true}
+                showHeaderToolbar={true}
+                filterHintText='Search'
+                onFilterValueChange={this.handleFilterValueChange}
+                onRowSelection={this.handleSelection}
+                page={this.state.page}
+                count={this.state.tableData.length}
+            />
         );
     }
-}
+}   
 
 const form =  reduxForm({  
 	form: 'logsheet'

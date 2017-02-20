@@ -10,10 +10,10 @@ import DataTables from 'material-ui-datatables';
 const TABLE_COLUMNS = [
   {
     key: 'first_name',
-    label: 'firstname',
+    label: 'firstname'
   }, {
     key: 'last_name',
-    label: 'lastname',
+    label: 'lastname'
   }, {
     key: 'contact_number',
     label: 'contact number',

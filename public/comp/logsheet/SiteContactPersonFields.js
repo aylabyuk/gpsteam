@@ -34,6 +34,10 @@ class SiteContactPersonFields extends Component {
         this.setState({open: false});
     };
 
+    handleCancel = () => {
+        this.setState({open: false});
+    }
+
     componentDidUpdate() {
         if(this.props.selectedContactKey != 'notset') {
             this.props.dispatch(change('logsheet', 'contactName', 
@@ -51,7 +55,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="Cancel"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={this.handleCancel}
         />,
         <FlatButton
             label="Select"

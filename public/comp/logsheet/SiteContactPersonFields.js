@@ -32,7 +32,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="Select"
             primary={true}
-            disabled={this.props.selectedKey ? false : true}
+            disabled={this.props.selectedKey.length ==  0 ? true : false}
             onTouchTap={this.handleClose}
         />,
         ];
@@ -59,7 +59,7 @@ class SiteContactPersonFields extends Component {
 
 function mapStateToProps(state) {  
 	return {
-		selectedKey: state.serverData.selectedContact
+		selectedKey: state.serverData.selectedKey
 	}
 }
 

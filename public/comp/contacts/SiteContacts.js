@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { setSelectedContactKey } from '../../actions/index'
+import { setSelectedTableKey } from '../../actions/index'
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 
@@ -10,7 +10,7 @@ class SiteContacts extends Component {
 
 
     handleSelection = (key) => {
-        this.props.setSelectedContactKey(key)
+        this.props.setSelectedTableKey(key)
     };
       
     render() {
@@ -52,4 +52,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, { setSelectedContactKey })(form(SiteContacts))  
+export default connect(mapStateToProps, { setSelectedTableKey })(form(SiteContacts))  

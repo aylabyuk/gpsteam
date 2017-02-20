@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { fetchReceiverInfo } from '../m/m.js'
 import { connect } from 'react-redux'
-import { getReceiverInfo, getAntennaInfo } from '../../actions/index'
+import { getReceiverInfo, getAntennaInfo, clearAntennaInfo, clearReceiverInfo } from '../../actions/index'
 
 //ui
 import { AutoComplete, TextField } from 'material-ui'
@@ -22,11 +22,16 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
     />
 )
 
+<<<<<<< HEAD
 let recIN, antIN
+=======
+let recIn, antIn
+>>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
 
 class HardwareFields extends Component {
 
    componentDidUpdate() {
+<<<<<<< HEAD
 
        recIN = this.props.receiverSNs.includes(this.props.receiverSN)
        antIN = this.props.antennaSNs.includes(this.props.antennaSN)
@@ -34,6 +39,23 @@ class HardwareFields extends Component {
        this.props.receiverSN && recIN ? this.props.getReceiverInfo(this.props.receiverSN) : ''
        this.props.antennaSN && antIN ? this.props.getAntennaInfo(this.props.antennaSN) : ''
        
+=======
+        recIn = this.props.receiverSNs.includes(this.props.receiverSN)
+        antIn = this.props.antennaSNs.includes(this.props.antennaSN)
+
+        if(!recIn) {
+            this.props.clearReceiverInfo()
+        } else {
+            this.props.getReceiverInfo(this.props.receiverSN)
+        }
+
+        if(!antIn) {
+            this.props.clearAntennaInfo()
+        } else {
+            this.props.getAntennaInfo(this.props.antennaSN)
+        }
+
+>>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
    }
 
    render() {
@@ -70,11 +92,19 @@ function mapStateToProps(state) {
 	return {
         receiverType: state.serverData.receiverInfo.receiver_type,
         partNumber: state.serverData.receiverInfo.part_number,
+<<<<<<< HEAD
 
         antennaType: state.serverData.antennaInfo.antenna_type,
         antennaPartNumber: state.serverData.antennaInfo.antenna_partnumber
 
+=======
+
+        antennaType: state.serverData.antennaInfo.antenna_type,
+        antennaPartNumber: state.serverData.antennaInfo.antenna_partnumber
+>>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
 	 }
 }
 
-export default connect(mapStateToProps, { getReceiverInfo, getAntennaInfo } )(form(HardwareFields))  
+export default connect(mapStateToProps, 
+    { getReceiverInfo, getAntennaInfo, clearAntennaInfo, clearReceiverInfo }
+)(form(HardwareFields))  

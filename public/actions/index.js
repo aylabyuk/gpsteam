@@ -8,9 +8,11 @@ import { AUTH_USER,
 		 RESET_CHART_DATA,
 		 RECEIVER_INFO,
 		 ANTENNA_INFO,
-		 SELECTED_CONTACT } from './types'
+		 CLEAR_ANTENNA_INFO,
+		 CLEAR_RECEIVER_INFO,
+		 SELECTED_TABLE_KEY } from './types'
 
-const API_URL = 'http://192.168.1.206:3000'
+const API_URL = 'http://localhost:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
 
 export function errorHandler(dispatch, error, type) {
@@ -157,10 +159,26 @@ export function getAntennaInfo(serial) {
 	}
 }
 
-export function setSelectedContactKey(key) {
+export function clearReceiverInfo() {
 	return function(dispatch) {
 		dispatch({
-			type: SELECTED_CONTACT,
+			type: CLEAR_RECEIVER_INFO
+		})
+	}
+}
+
+export function clearAntennaInfo() {
+	return function(dispatch) {
+		dispatch({
+			type: CLEAR_ANTENNA_INFO
+		})
+	}
+}
+
+export function setSelectedTableKey(key) {
+	return function(dispatch) {
+		dispatch({
+			type: SELECTED_TABLE_KEY,
 			payload: key
 		})
 	}

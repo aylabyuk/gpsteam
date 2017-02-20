@@ -44,9 +44,17 @@ TimeFields = connect(
   state => {
     const failureTime = selector(state, 'failureTime')
     return {
+<<<<<<< HEAD
       failureTime,
+=======
+      failureTime
+>>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
     }
   }
 )(TimeFields)
 
+<<<<<<< HEAD
 export default (form(TimeFields))
+=======
+export default form(TimeFields)
+>>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997

@@ -10,7 +10,8 @@ import { AUTH_USER,
 		 ANTENNA_INFO,
 		 CLEAR_ANTENNA_INFO,
 		 CLEAR_RECEIVER_INFO,
-		 SELECTED_TABLE_KEY } from './types'
+		 SELECTED_TABLE_KEY,
+		 SELECTED_CONTACT_KEY } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -179,6 +180,15 @@ export function setSelectedTableKey(key) {
 	return function(dispatch) {
 		dispatch({
 			type: SELECTED_TABLE_KEY,
+			payload: key
+		})
+	}
+}
+
+export function setSelectedContactKey(key) {
+	return function(dispatch) {
+		dispatch({
+			type: SELECTED_CONTACT_KEY,
 			payload: key
 		})
 	}

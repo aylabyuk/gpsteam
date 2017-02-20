@@ -45,7 +45,6 @@ TimeFields = connect(
     const failureTime = selector(state, 'failureTime')
     return {
       failureTime
-
     }
   }
 )(TimeFields)

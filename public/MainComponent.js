@@ -1,5 +1,7 @@
 import React from 'react'
 import '../semantic/dist/semantic.min.css'
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 
 //ui
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -11,7 +13,7 @@ class MainComponent extends React.Component {
 	
 	render() {
 		return (
-            <MuiThemeProvider>
+			<MuiThemeProvider>
                 {React.cloneElement(this.props.children, this.props)}
             </MuiThemeProvider>
 		)

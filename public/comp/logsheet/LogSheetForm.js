@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {fetchSites, fetchReceivers, fetchAntennas} from '../m/m.js'
+import {fetchSites, fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
 
 //components
 import DateFields from './DateFields'
@@ -28,7 +28,8 @@ class LogSheetForm extends Component {
         this.state = {
             siteNames: fetchSites(),
             receivers: fetchReceivers(),
-            antennas: fetchAntennas()
+            antennas: fetchAntennas(),
+            contacts: fetchSiteContacts()
         };
     }
 
@@ -47,7 +48,7 @@ class LogSheetForm extends Component {
                 <StatusFields />
                 <AntennaHeigtInfoFields />
                 <PertinentInfoFields />
-                <SiteContactPersonFields />
+                <SiteContactPersonFields contacts={this.state.contacts}/>
                 
             </Paper>
         );

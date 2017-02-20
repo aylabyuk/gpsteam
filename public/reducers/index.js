@@ -5,6 +5,7 @@ import { reducer as formReducer } from 'redux-form'
 import auth from './auth_reducer'
 import plot from './plot_reducer'
 import serverData from './server_data_reducer'
+import uiState from './ui_reducer'
 
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
 	plot: plot,
 	form: formReducer,
 	serverData: serverData,
+	uiState: uiState,
 	routing: routerReducer
 	})
 

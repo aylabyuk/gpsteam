@@ -41,3 +41,7 @@ p {
 	flex-direction:column;
 	justify-content:space-between
 }
+
+body {
+	background-color: dimgrey
+}

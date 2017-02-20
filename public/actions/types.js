@@ -10,4 +10,5 @@ export const AUTH_USER = 'auth_user',
 	ANTENNA_INFO = 'antenna_info',
 	CLEAR_RECEIVER_INFO = 'clear_receiver_info',
 	CLEAR_ANTENNA_INFO = 'clear_antenna_info',
-	SELECTED_TABLE_KEY = 'selected_table_key'
+	SELECTED_TABLE_KEY = 'selected_table_key',
+	SELECTED_CONTACT_KEY = 'selected_contact_key'

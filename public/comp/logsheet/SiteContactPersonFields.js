@@ -7,7 +7,8 @@ import SiteContacts from '../contacts/SiteContacts'
 import { setSelectedContactKey } from '../../actions/index'
 
 //ui
-import { FlatButton, Dialog, TextField } from 'material-ui'
+import { FlatButton, Dialog, TextField, IconButton } from 'material-ui'
+import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField hintText={label}
@@ -30,7 +31,6 @@ class SiteContactPersonFields extends Component {
 
     handleClose = () => {
         this.props.setSelectedContactKey(this.props.selectedKey)
-
         this.setState({open: false});
     };
 
@@ -65,9 +65,12 @@ class SiteContactPersonFields extends Component {
             <div style={{textAlign: 'center'}}>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Contact Person</h5>
                 { this.props.selectedContactKey == 'notset' ? <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen}/> : 
-                    <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-around'}}>
-                        <Field style={{flexGrow: 1}} name="contactName"  component={renderTextField} label='contact name' />
-                        <Field style={{flexGrow: 1}} name="contactNumber"  component={renderTextField} label='contact number' />
+                    <div>
+                        <Field name="contactName"  component={renderTextField} label='contact name' />
+                        <Field name="contactNumber" style={{ marginLeft: 5}}  component={renderTextField} label='contact number' />
+                        <IconButton style={{top: 5}}>
+                            <EditorModeEdit onTouchTap={this.handleOpen}/>
+                        </IconButton>
                     </div>
                 }
 
@@ -75,7 +78,9 @@ class SiteContactPersonFields extends Component {
                     title="Site Contacts List"
                     actions={actions}
                     modal={true}
-                    open={this.state.open}>
+                    open={this.state.open}
+                    autoScrollBodyContent={true}
+                    bodyStyle={{height: 200}}>
                     
                     <SiteContacts contacts={this.props.contacts} />
 

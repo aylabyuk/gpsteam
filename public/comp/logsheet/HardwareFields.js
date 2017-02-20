@@ -22,24 +22,12 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
     />
 )
 
-<<<<<<< HEAD
-let recIN, antIN
-=======
+
 let recIn, antIn
->>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
 
 class HardwareFields extends Component {
 
    componentDidUpdate() {
-<<<<<<< HEAD
-
-       recIN = this.props.receiverSNs.includes(this.props.receiverSN)
-       antIN = this.props.antennaSNs.includes(this.props.antennaSN)
-
-       this.props.receiverSN && recIN ? this.props.getReceiverInfo(this.props.receiverSN) : ''
-       this.props.antennaSN && antIN ? this.props.getAntennaInfo(this.props.antennaSN) : ''
-       
-=======
         recIn = this.props.receiverSNs.includes(this.props.receiverSN)
         antIn = this.props.antennaSNs.includes(this.props.antennaSN)
 
@@ -54,8 +42,6 @@ class HardwareFields extends Component {
         } else {
             this.props.getAntennaInfo(this.props.antennaSN)
         }
-
->>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
    }
 
    render() {
@@ -92,16 +78,10 @@ function mapStateToProps(state) {
 	return {
         receiverType: state.serverData.receiverInfo.receiver_type,
         partNumber: state.serverData.receiverInfo.part_number,
-<<<<<<< HEAD
 
         antennaType: state.serverData.antennaInfo.antenna_type,
         antennaPartNumber: state.serverData.antennaInfo.antenna_partnumber
 
-=======
-
-        antennaType: state.serverData.antennaInfo.antenna_type,
-        antennaPartNumber: state.serverData.antennaInfo.antenna_partnumber
->>>>>>> 9d0fd4bcded4b750a99f7e6227d500e07c8b3997
 	 }
 }
 

@@ -39,29 +39,20 @@ class SiteContacts extends Component {
 
     handleFilterValueChange(value) {
 
-
-    //    let newArray = this.props.contacts.filter(function(row) {
-    //         return row.first_name.match('/' + value + '/')
-    //    })
-
-    //    console.log(newArray)
-    //    this.setState({tableData: newArray})
-
-    let arr = this.props.contacts
-
-    var filtered = (function(pattern){
-        var filtered = [], i = arr.length, re = new RegExp('' + pattern);
-        while (i--) {
-            if (re.test(arr[i].first_name) || re.test(arr[i].last_name)) {
-                filtered.push(arr[i]);
+        let arr = this.props.contacts
+        var filtered = (function(pattern){
+            var filtered = [], i = arr.length, re = new RegExp('' + pattern);
+            while (i--) {
+                if (re.test(arr[i].first_name) || re.test(arr[i].last_name)) {
+                    filtered.push(arr[i]);
+                }
             }
-        }
-        return filtered;
-    })(value); 
+            return filtered;
+        })(value); 
 
-     this.setState({tableData: filtered})
+        this.setState({tableData: filtered})
 
-     console.log(this.props.contacts)
+        console.log(this.props.contacts)
 
     }
       

@@ -20,6 +20,14 @@ import TimeSeriesContainer from './comp/TimeSeriesContainer'
 import TestDashboard from './comp/TestDashboard'
 import LogSheetForm from './comp/logsheet/LogSheetForm'
 
+//apollo client
+import ApolloClient, { createNetworkInterface } from 'apollo-client'
+import { ApolloProvider } from 'react-apollo'
+
+const client = new ApolloClient({
+  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
+});
+
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -35,7 +43,7 @@ if(module.hot) {
 }
 
 render(
-    <Provider store={store}>
+    <ApolloProvider store={store} client={client}>
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />
@@ -47,6 +55,6 @@ render(
                 <Route path="*" component={NotFoundPage} />
             </Route>
         </Router>
-    </Provider>,
+    </ApolloProvider>,
     document.getElementById("app")
 )

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {fetchSites, fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo'
 
 //components
 import DateFields from './DateFields'
@@ -14,6 +16,15 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
+
+const MyQuery = gql`query MyQuery {
+  allContact {
+    contact_id
+    first_name
+    last_name
+    contact_number
+  }
+}`;
 
 const style = {
   margin: 20,
@@ -55,4 +66,4 @@ class LogSheetForm extends Component {
     }
 }
 
-export default LogSheetForm  
+export default graphql(MyQuery)(LogSheetForm)  

@@ -25,7 +25,8 @@ import { ApolloProvider } from 'react-apollo'
 
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk, client.middleware())(createStore)
-const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStoreWithMiddleware(rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
 const history = syncHistoryWithStore(browserHistory, store);

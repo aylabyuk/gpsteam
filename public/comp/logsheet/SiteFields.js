@@ -1,8 +1,17 @@
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo'
+
 //ui
 import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
+
+const SitenamesQuery = gql`query SitenamesQuery {
+  allSitename {
+    site_name
+  }
+}`;
 
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
   <AutoComplete
@@ -13,7 +22,6 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
       listStyle={{ maxHeight: 200, overflow: 'auto' }}
       onUpdateInput={input.onChange}
       searchText={input.value}
-      maxSearchResults={10}
       openOnFocus={false}
     />
 )
@@ -44,4 +52,6 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-export default form(SiteFields)
+
+
+export default graphql(SitenamesQuery)(form(SiteFields))

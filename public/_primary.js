@@ -3,9 +3,9 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import reduxThunk from 'redux-thunk'
-import rootReducer from './reducers/index'
+import rootReducer, { client } from './reducers/index'
 import App from './App'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
@@ -21,15 +21,10 @@ import TestDashboard from './comp/TestDashboard'
 import LogSheetForm from './comp/logsheet/LogSheetForm'
 
 //apollo client
-import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
-  connectToDevTools: true
-});
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
+const createStoreWithMiddleware = applyMiddleware(reduxThunk, client.middleware())(createStore)
 const store = createStoreWithMiddleware(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 

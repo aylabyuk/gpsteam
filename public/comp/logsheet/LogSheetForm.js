@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {fetchSites, fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo'
@@ -18,11 +18,8 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 import { Paper, AppBar, Divider } from 'material-ui'
 
 const MyQuery = gql`query MyQuery {
-  allContact {
-    contact_id
-    first_name
-    last_name
-    contact_number
+  allSitename {
+    site_name
   }
 }`;
 
@@ -52,7 +49,7 @@ class LogSheetForm extends Component {
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
                 />
                 <DateFields />
-                <SiteFields siteNames={this.state.siteNames}/>
+                <SiteFields siteNames={!this.props.loading ? this.props.data.allSitename.valueOf(): this.state.siteNames}/>
                 <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas} />
                 <MeasurementFields />
                 <TimeFields />
@@ -65,5 +62,12 @@ class LogSheetForm extends Component {
         );
     }
 }
+
+LogSheetForm.propTypes = {
+    loading: React.PropTypes.bool,
+    data: PropTypes.shape({
+        allSitename: PropTypes.array,
+    }).isRequired,
+};
 
 export default graphql(MyQuery)(LogSheetForm)  

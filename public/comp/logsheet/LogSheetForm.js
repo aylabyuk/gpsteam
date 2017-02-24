@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {fetchSites, fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
 
 //components
@@ -15,6 +15,11 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
 
+const MyQuery = gql`query MyQuery {
+  allSitename {
+    site_name
+  }
+}`;
 
 const style = {
   margin: 20,
@@ -42,7 +47,7 @@ class LogSheetForm extends Component {
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
                 />
                 <DateFields />
-                <SiteFields siteNames={this.state.siteNames}/>
+                <SiteFields siteNames={!this.props.loading ? this.props.data.allSitename.valueOf(): this.state.siteNames}/>
                 <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas} />
                 <MeasurementFields />
                 <TimeFields />
@@ -56,4 +61,12 @@ class LogSheetForm extends Component {
     }
 }
 
-export default LogSheetForm
+LogSheetForm.propTypes = {
+    loading: React.PropTypes.bool,
+    data: PropTypes.shape({
+        allSitename: PropTypes.array,
+    }).isRequired,
+};
+
+export default graphql(MyQuery)(LogSheetForm)  
+

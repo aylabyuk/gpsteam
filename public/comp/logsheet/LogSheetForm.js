@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import {fetchSites, fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
+import {fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 //components
 import DateFields from './DateFields'
@@ -19,6 +21,19 @@ const MyQuery = gql`query MyQuery {
   allSitename {
     site_name
   }
+
+  allReceiver {
+    serial_number
+    part_number
+    receiver_type
+  }
+
+  allAntenna {
+    antenna_serialnumber
+    antenna_partnumber
+    antenna_type
+  }
+
 }`;
 
 const style = {
@@ -32,9 +47,6 @@ class LogSheetForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            siteNames: fetchSites(),
-            receivers: fetchReceivers(),
-            antennas: fetchAntennas(),
             contacts: fetchSiteContacts()
         };
     }
@@ -47,8 +59,9 @@ class LogSheetForm extends Component {
                     iconClassNameRight="muidocs-icon-navigation-expand-more"
                 />
                 <DateFields />
-                <SiteFields siteNames={!this.props.loading ? this.props.data.allSitename.valueOf(): this.state.siteNames}/>
-                <HardwareFields receiverSNs={this.state.receivers} antennaSNs={this.state.antennas} />
+                <SiteFields siteNames={this.props.data.allSitename ? this.props.data.allSitename : [{site_name: 'loading..'}]}/>
+                <HardwareFields receiverSNs={this.props.data.allReceiver ? this.props.data.allReceiver : [{serial_number: 'loading..'}]} 
+                        antennaSNs={this.props.data.allAntenna ? this.props.data.allAntenna : [{antenna_serialnumber: 'loading..'}]} />
                 <MeasurementFields />
                 <TimeFields />
                 <StatusFields />
@@ -65,6 +78,8 @@ LogSheetForm.propTypes = {
     loading: React.PropTypes.bool,
     data: PropTypes.shape({
         allSitename: PropTypes.array,
+        allReceiver: PropTypes.array,
+        allAntenna: PropTypes.array
     }).isRequired,
 };
 

@@ -28,8 +28,8 @@ let recIn, antIn
 class HardwareFields extends Component {
 
    componentDidUpdate() {
-        recIn = this.props.receiverSNs.includes(this.props.receiverSN)
-        antIn = this.props.antennaSNs.includes(this.props.antennaSN)
+        recIn = this.props.receiverSNs.map((a) => { return a.serial_number }).includes(this.props.receiverSN)
+        antIn = this.props.antennaSNs.map((a) => { return a.antenna_serialnumber }).includes(this.props.antennaSN)
 
         if(!recIn) {
             this.props.clearReceiverInfo()
@@ -45,12 +45,16 @@ class HardwareFields extends Component {
    }
 
    render() {
+        let receivers = this.props.receiverSNs.map((a) => { return a.serial_number }),
+            antennas = this.props.antennaSNs.map((a) => { return a.antenna_serialnumber })
+
+
         return (
             <form>
-                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.receiverSNs} />
+                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={receivers} />
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' value={this.props.receiverSN ? this.props.receiverType: ''} disabled={true} />
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={this.props.receiverSN ? this.props.partNumber: ''} disabled={true} /><br/>
-                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.antennaSNs}/>
+                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={antennas}/>
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='antenna type' value={this.props.antennaSN ? this.props.antennaType: ''} disabled={true} />
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={this.props.antennaSN ? this.props.antennaPartNumber: ''} disabled={true} /><br/>
             </form>
@@ -87,4 +91,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, 
     { getReceiverInfo, getAntennaInfo, clearAntennaInfo, clearReceiverInfo }
-)(form(HardwareFields))  
+)(form(HardwareFields))

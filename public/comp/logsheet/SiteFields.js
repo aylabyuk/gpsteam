@@ -1,28 +1,21 @@
 import React, { Component } from 'react'
 import { reduxForm, Field } from 'redux-form'
 
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo'
-
 //ui
 import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
-
-const SitenamesQuery = gql`query SitenamesQuery {
-  allSitename {
-    site_name
-  }
-}`;
 
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
   <AutoComplete
       floatingLabelText="site name"
-      filter={AutoComplete.caseInsensitiveFilter}
+      filter={AutoComplete.fuzzyFilter}
       openOnFocus={true}
       dataSource={dataSource}
       listStyle={{ maxHeight: 200, overflow: 'auto' }}
       onUpdateInput={input.onChange}
       searchText={input.value}
       openOnFocus={false}
+      maxSearchResults={20}
+      
     />
 )
 
@@ -37,16 +30,10 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 
 class SiteFields extends Component {
     render() {
-
-        let dataSource = []
-        this.props.siteNames.map((d) => 
-            dataSource.push(d.site_name)
-        )
-
         return (
             <form>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Site Information</h5>
-                <Field name="sitename" component={renderAutoCompleteField}  dataSource={dataSource}/>
+                <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames.map((a) => { return a.site_name })}/>
                 <Field name="location" style={{ marginLeft: 5}}  component={renderTextField} label='location' />
                 <Field name="marker" style={{ marginLeft: 5}}  component={renderTextField} label='marker' />
             </form>
@@ -60,4 +47,4 @@ const form =  reduxForm({
 
 
 
-export default graphql(SitenamesQuery)(form(SiteFields))
+export default form(SiteFields)

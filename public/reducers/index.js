@@ -12,7 +12,8 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client'
 export const client = new ApolloClient({
   networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
   reduxRootSelector: state => state.apollo,
-  connectToDevTools: true
+  connectToDevTools: true,
+  addTypename: false
 });
 
 

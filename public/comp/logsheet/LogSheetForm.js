@@ -17,23 +17,16 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
 
-const MyQuery = gql`query MyQuery {
+const LogSheetQuery = gql`query LogSheetQuery {
   allSitename {
     site_name
   }
-
   allReceiver {
     serial_number
-    part_number
-    receiver_type
   }
-
   allAntenna {
     antenna_serialnumber
-    antenna_partnumber
-    antenna_type
   }
-
 }`;
 
 const style = {
@@ -60,8 +53,8 @@ class LogSheetForm extends Component {
                 />
                 <DateFields />
                 <SiteFields siteNames={this.props.data.allSitename ? this.props.data.allSitename : [{site_name: 'loading..'}]}/>
-                <HardwareFields receiverSNs={this.props.data.allReceiver ? this.props.data.allReceiver : [{serial_number: 'loading..'}]} 
-                        antennaSNs={this.props.data.allAntenna ? this.props.data.allAntenna : [{antenna_serialnumber: 'loading..'}]} />
+                <HardwareFields receivers={this.props.data.allReceiver ? this.props.data.allReceiver : [{serial_number: 'loading..'}]} 
+                        antennas={this.props.data.allAntenna ? this.props.data.allAntenna : [{antenna_serialnumber: 'loading..'}]} />
                 <MeasurementFields />
                 <TimeFields />
                 <StatusFields />
@@ -83,5 +76,5 @@ LogSheetForm.propTypes = {
     }).isRequired,
 };
 
-export default graphql(MyQuery)(LogSheetForm)  
+export default graphql(LogSheetQuery)(LogSheetForm)  
 

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { fetchReceiverInfo } from '../m/m.js'
 import { connect } from 'react-redux'
-import { getReceiverInfo, getAntennaInfo, clearAntennaInfo, clearReceiverInfo } from '../../actions/index'
+import { getAntennaInfo, clearAntennaInfo, clearReceiverInfo } from '../../actions/index'
+import ApolloClient from 'apollo-client';
+import gql from 'graphql-tag';
+import { graphql, withApollo } from 'react-apollo';
 
 //ui
 import { AutoComplete, TextField } from 'material-ui'
@@ -22,19 +25,31 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
     />
 )
 
-
 let recIn, antIn
 
 class HardwareFields extends Component {
 
+    getReceiverInfo(serial) {
+        this.props.client.query({
+            query: gql`
+                query CurrentSelectedReceiver($serial_number: String!) {
+                    Receiver(serial_number: $serial_number) {
+                        receiver_type
+                        part_number
+                    }
+                }`,
+            variables: { serial_number: serial }
+        })
+    }
+
    componentDidUpdate() {
-        recIn = this.props.receiverSNs.map((a) => { return a.serial_number }).includes(this.props.receiverSN)
-        antIn = this.props.antennaSNs.map((a) => { return a.antenna_serialnumber }).includes(this.props.antennaSN)
+        recIn = this.props.receivers.map((a) => { return a.serial_number }).includes(this.props.receiverSN)
+        antIn = this.props.antennas.map((a) => { return a.antenna_serialnumber }).includes(this.props.antennaSN)
 
         if(!recIn) {
             this.props.clearReceiverInfo()
         } else {
-            this.props.getReceiverInfo(this.props.receiverSN)
+            this.getReceiverInfo(this.props.receiverSN)
         }
 
         if(!antIn) {
@@ -45,16 +60,16 @@ class HardwareFields extends Component {
    }
 
    render() {
-        let receivers = this.props.receiverSNs.map((a) => { return a.serial_number }),
-            antennas = this.props.antennaSNs.map((a) => { return a.antenna_serialnumber })
+        let receivers_SNs = this.props.receivers.map((a) => { return a.serial_number }),
+            antennas_SNs = this.props.antennas.map((a) => { return a.antenna_serialnumber })
 
 
         return (
             <form>
-                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={receivers} />
-                    <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' value={this.props.receiverSN ? this.props.receiverType: ''} disabled={true} />
-                    <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={this.props.receiverSN ? this.props.partNumber: ''} disabled={true} /><br/>
-                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={antennas}/>
+                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={receivers_SNs} />
+                    <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' disabled={true} />
+                    <TextField  style={{ marginLeft: 5}} floatingLabelText='part number'  disabled={true} /><br/>
+                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={antennas_SNs}/>
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='antenna type' value={this.props.antennaSN ? this.props.antennaType: ''} disabled={true} />
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={this.props.antennaSN ? this.props.antennaPartNumber: ''} disabled={true} /><br/>
             </form>
@@ -78,6 +93,7 @@ HardwareFields = connect(
   }
 )(HardwareFields)
 
+
 function mapStateToProps(state) {  
 	return {
         receiverType: state.serverData.receiverInfo.receiver_type,
@@ -89,6 +105,11 @@ function mapStateToProps(state) {
 	 }
 }
 
-export default connect(mapStateToProps, 
-    { getReceiverInfo, getAntennaInfo, clearAntennaInfo, clearReceiverInfo }
-)(form(HardwareFields))
+
+export default connect(mapStateToProps,
+    { getAntennaInfo, clearAntennaInfo, clearReceiverInfo }
+)(form(withApollo(HardwareFields)))
+
+HardwareFields.propTypes = {
+  client: React.PropTypes.instanceOf(ApolloClient).isRequired,
+}

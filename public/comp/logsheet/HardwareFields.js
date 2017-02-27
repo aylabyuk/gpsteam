@@ -32,7 +32,8 @@ class ReceiverInfo extends Component {
         const { Receiver } = this.props.data
         return(
             <div>
-                <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.receiver_type}  disabled={true} />
+                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource} />
+                <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.type}  disabled={true} />
                 <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={Receiver == null ? '' : Receiver.part_number} disabled={true} /><br/>
             </div>
         )
@@ -42,7 +43,7 @@ class ReceiverInfo extends Component {
 const CurrentSelectedReceiver = gql`
   query CurrentSelectedReceiver($serial_number: String!) {
     Receiver(serial_number: $serial_number) {
-        receiver_type
+        type
         part_number
     }
   }
@@ -59,24 +60,25 @@ class AntennaInfo extends Component {
         const { Antenna } = this.props.data
         return(
             <div>
-                <TextField  style={{ marginLeft: 5}} floatingLabelText='antenna type' value={Antenna == null ? '' : Antenna.antenna_type}  disabled={true} />
-                <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={Antenna == null ? '' : Antenna.antenna_partnumber} disabled={true} /><br/>
+                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource}/>
+                <TextField  style={{ marginLeft: 5}} floatingLabelText='antenna type' value={Antenna == null ? '' : Antenna.type}  disabled={true} />
+                <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={Antenna == null ? '' : Antenna.part_number} disabled={true} /><br/>
             </div>
         )
     }
 }
 
 const CurrentSelectedAntenna = gql`
-  query CurrentSelectedAntenna($antenna_serialnumber: String!) {
-    Antenna(antenna_serialnumber: $antenna_serialnumber) {
-        antenna_type
-        antenna_partnumber
+  query CurrentSelectedAntenna($serial_number: String!) {
+    Antenna(serial_number: $serial_number) {
+        type
+        part_number
     }
   }
 `;
 
 const AntennaInfoWithData = graphql(CurrentSelectedAntenna, {
-   options: ({ antenna_serialnumber }) => ({ variables: { antenna_serialnumber } }),
+   options: ({ serial_number }) => ({ variables: { serial_number } }),
 })(AntennaInfo);
 
 
@@ -85,17 +87,15 @@ const AntennaInfoWithData = graphql(CurrentSelectedAntenna, {
 class HardwareFields extends Component {
    render() {
         let receivers_SNs = this.props.receivers.map((a) => { return a.serial_number }),
-            antennas_SNs = this.props.antennas.map((a) => { return a.antenna_serialnumber })
+            antennas_SNs = this.props.antennas.map((a) => { return a.serial_number })
 
         let recIn = this.props.receivers.map((a) => { return a.serial_number }).includes(this.props.receiverSN),
-            antIn = this.props.antennas.map((a) => { return a.antenna_serialnumber }).includes(this.props.antennaSN)
+            antIn = this.props.antennas.map((a) => { return a.serial_number }).includes(this.props.antennaSN)
 
         return (
             <form>
-                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={receivers_SNs} />
-                    <ReceiverInfoWithData serial_number={recIn ? this.props.receiverSN : ''} />
-                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={antennas_SNs}/>
-                    <AntennaInfoWithData antenna_serialnumber={antIn ? this.props.antennaSN : ''} />
+                <ReceiverInfoWithData serial_number={recIn ? this.props.receiverSN : ''} datasource={receivers_SNs}/>
+                <AntennaInfoWithData serial_number={antIn ? this.props.antennaSN : ''} datasource={antennas_SNs}/>
             </form>
         );
     }

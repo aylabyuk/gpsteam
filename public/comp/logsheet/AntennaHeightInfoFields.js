@@ -36,7 +36,7 @@ class AntennaHeightInfoFields extends Component {
                                 year: 'numeric',
                                 weekday: 'long'
                         }).format}/>
-                    <TextField hintText='Session(Julian Day)' floatingLabelText='Session(Julian Day)' disabled={true} value={this.props.logdate ? this.props.logdate.julianDate() : ''} />
+                    <TextField hintText='Session(Day of Year)' floatingLabelText='Session(Day of Year)' disabled={true} value={this.props.logdate ? this.props.logdate.julianDate() : ''} />
                     <Field name='rodNo' label="rod no." component={renderTextField} />
                     <Field name='rodCorrection' label="rod correction" component={renderTextField}  />
                     <TextField hintText='average slant antenna height' floatingLabelText='average slant antenna height' disabled={true} value={this.props.aveSlantHeight ? this.props.aveSlantHeight : ''}/>

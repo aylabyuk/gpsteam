@@ -117,8 +117,5 @@ HardwareFields = connect(
   }
 )(HardwareFields)
 
-export default (form(withApollo(HardwareFields)))
+export default (form(HardwareFields))
 
-HardwareFields.propTypes = {
-  client: React.PropTypes.instanceOf(ApolloClient).isRequired,
-}

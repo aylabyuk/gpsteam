@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import TimeSeriesContainer from './TimeSeriesContainer'
+import TimeSeriesContainer from './timeseries/TimeSeriesContainer'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; 
 import * as d3 from "d3";
 import  Chart  from 'd3act'
-import MyCustomChart from './m/MyCustomChart'
+import MyCustomChart from './MyCustomChart'
 
 //ui
 import Paper from 'material-ui/Paper';

@@ -11,12 +11,8 @@ import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 //React Components
-import AttendHome from './comp/AttendHome'
-import Login from './comp/Login'
-import Dashboard from './comp/Dashboard'
 import NotFoundPage from './comp/NotFoundPage'
-import TimeSeries from './comp/TimeSeries'
-import TimeSeriesContainer from './comp/TimeSeriesContainer'
+import TimeSeriesContainer from './comp/timeseries/TimeSeriesContainer'
 import TestDashboard from './comp/TestDashboard'
 import LogSheetForm from './comp/logsheet/LogSheetForm'
 
@@ -44,8 +40,6 @@ render(
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />
-                <Route path="/login" component={Login} />
-                <Route path="/dashboard" component={Dashboard} />
                 <Route path="/testdashboard" component={TestDashboard} />
                 <Route path="/logsheet" component={LogSheetForm} />
 

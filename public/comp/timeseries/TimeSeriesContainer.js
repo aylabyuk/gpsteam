@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import TimeSeries from './TimeSeries'
 import { connect } from 'react-redux'; 
-import { BUCA } from './m/BUCA'
-import { chartData, resetChartData } from '../actions/index'
+import { BUCA } from '../m/BUCA'
+import { chartData, resetChartData } from '../../actions/index'
 
 /*
 mock = BUCA
@@ -11,7 +11,7 @@ mock3 =
 ANGT
 */
 
-import styles from '../css/chart.css';
+import styles from '../../css/chart.css';
 
 class TimeSeriesContainer extends Component {
 

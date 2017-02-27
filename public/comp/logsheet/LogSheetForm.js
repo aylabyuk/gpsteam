@@ -17,6 +17,8 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 //ui
 import { Paper, AppBar, Divider } from 'material-ui'
 
+import styles from '../../css/home.css';
+
 const LogSheetQuery = gql`query LogSheetQuery {
   allSitename {
     site_name
@@ -61,7 +63,6 @@ class LogSheetForm extends Component {
                 <AntennaHeigtInfoFields />
                 <PertinentInfoFields />
                 <SiteContactPersonFields contacts={this.state.contacts}/>
-                
             </Paper>
         );
     }

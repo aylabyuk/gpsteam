@@ -25,7 +25,7 @@ const LogSheetQuery = gql`query LogSheetQuery {
     serial_number
   }
   allAntenna {
-    antenna_serialnumber
+    serial_number
   }
 }`;
 
@@ -54,7 +54,7 @@ class LogSheetForm extends Component {
                 <DateFields />
                 <SiteFields siteNames={this.props.data.allSitename ? this.props.data.allSitename : [{site_name: 'loading..'}]}/>
                 <HardwareFields receivers={this.props.data.allReceiver ? this.props.data.allReceiver : [{serial_number: 'loading..'}]} 
-                        antennas={this.props.data.allAntenna ? this.props.data.allAntenna : [{antenna_serialnumber: 'loading..'}]} />
+                        antennas={this.props.data.allAntenna ? this.props.data.allAntenna : [{serial_number: 'loading..'}]} />
                 <MeasurementFields />
                 <TimeFields />
                 <StatusFields />

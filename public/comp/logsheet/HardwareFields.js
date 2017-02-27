@@ -27,20 +27,34 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
 
 let recIn, antIn
 
-class HardwareFields extends Component {
-
-    getReceiverInfo(serial) {
-        this.props.client.query({
-            query: gql`
-                query CurrentSelectedReceiver($serial_number: String!) {
-                    Receiver(serial_number: $serial_number) {
-                        receiver_type
-                        part_number
-                    }
-                }`,
-            variables: { serial_number: serial }
-        })
+class ReceiverInfo extends Component {
+    render() {
+        const { Receiver } = this.props.data
+        return(
+            <div>
+                <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.receiver_type}  disabled={true} />
+                <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={Receiver == null ? '' : Receiver.part_number} disabled={true} /><br/>
+            </div>
+        )
     }
+}
+
+const CurrentSelectedReceiver = gql`
+  query CurrentSelectedReceiver($serial_number: String!) {
+    Receiver(serial_number: $serial_number) {
+        receiver_type
+        part_number
+    }
+  }
+`;
+
+const ReceiverInfoWithData = graphql(CurrentSelectedReceiver, {
+   options: ({ serial_number }) => ({ variables: { serial_number } }),
+})(ReceiverInfo);
+
+
+
+class HardwareFields extends Component {
 
    componentDidUpdate() {
         recIn = this.props.receivers.map((a) => { return a.serial_number }).includes(this.props.receiverSN)
@@ -49,7 +63,7 @@ class HardwareFields extends Component {
         if(!recIn) {
             this.props.clearReceiverInfo()
         } else {
-            this.getReceiverInfo(this.props.receiverSN)
+            //this.getReceiverInfo(this.props.receiverSN)
         }
 
         if(!antIn) {
@@ -67,8 +81,7 @@ class HardwareFields extends Component {
         return (
             <form>
                 <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={receivers_SNs} />
-                    <TextField  style={{ marginLeft: 5}} floatingLabelText='receiver type' disabled={true} />
-                    <TextField  style={{ marginLeft: 5}} floatingLabelText='part number'  disabled={true} /><br/>
+                    <ReceiverInfoWithData serial_number={this.props.receiverSN ? this.props.receiverSN : '12345789'} />
                 <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={antennas_SNs}/>
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='antenna type' value={this.props.antennaSN ? this.props.antennaType: ''} disabled={true} />
                     <TextField  style={{ marginLeft: 5}} floatingLabelText='part number' value={this.props.antennaSN ? this.props.antennaPartNumber: ''} disabled={true} /><br/>

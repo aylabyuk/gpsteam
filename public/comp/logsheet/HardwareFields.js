@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { reduxForm, Field, formValueSelector } from 'redux-form'
-import { fetchReceiverInfo } from '../m/m.js'
 import { connect } from 'react-redux'
 import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';

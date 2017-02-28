@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import {fetchReceivers, fetchAntennas, fetchSiteContacts} from '../m/m.js'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -19,6 +18,13 @@ import { Paper, AppBar, Divider } from 'material-ui'
 
 import styles from '../../css/home.css';
 
+const style = {
+  margin: 20,
+  display: 'inline-block',
+  padding: 10,
+  maxWidth: 800
+};
+
 const LogSheetQuery = gql`query LogSheetQuery {
   allSitename {
     site_name
@@ -31,42 +37,37 @@ const LogSheetQuery = gql`query LogSheetQuery {
   }
 }`;
 
-const style = {
-  margin: 20,
-  display: 'inline-block',
-  padding: 10,
-  maxWidth: 800
-};
-
 class LogSheetForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            contacts: fetchSiteContacts()
-        };
     }
 
     render() {
-        return (
-            <Paper style={style} zDepth={1}>
-                <AppBar
-                    title="Log Sheet"
-                    iconClassNameRight="muidocs-icon-navigation-expand-more"
-                />
-                <DateFields />
-                <SiteFields siteNames={this.props.data.allSitename ? this.props.data.allSitename : [{site_name: 'loading..'}]}/>
-                <HardwareFields receivers={this.props.data.allReceiver ? this.props.data.allReceiver : [{serial_number: 'loading..'}]} 
-                        antennas={this.props.data.allAntenna ? this.props.data.allAntenna : [{serial_number: 'loading..'}]} />
-                <MeasurementFields />
-                <TimeFields />
-                <StatusFields />
-                <AntennaHeigtInfoFields />
-                <PertinentInfoFields />
-                <SiteContactPersonFields contacts={this.state.contacts}/>
-            </Paper>
-        );
-    }
+        let { loading, allSitename, allReceiver, allAntenna } = this.props.data
 
+        if(loading) {
+            return <div>loading..</div>
+        } else {
+            return (
+                <Paper style={style} zDepth={1}>
+                    <AppBar
+                        title="Log Sheet"
+                        iconClassNameRight="muidocs-icon-navigation-expand-more"
+                    />
+                    <DateFields />
+                    <SiteFields siteNames={allSitename ? allSitename : [{site_name: 'loading..'}]}/>
+                    <HardwareFields receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
+                            antennas={allAntenna ? allAntenna : [{serial_number: 'loading..'}]} />
+                    <MeasurementFields />
+                    <TimeFields />
+                    <StatusFields />
+                    <AntennaHeigtInfoFields />
+                    <PertinentInfoFields />
+                    <SiteContactPersonFields />
+                </Paper>
+            );
+        }
+    }
 }
 
 LogSheetForm.propTypes = {

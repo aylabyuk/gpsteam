@@ -29,24 +29,8 @@ class SiteContactPersonFields extends Component {
         this.setState({open: true});
     };
 
-    handleClose = () => {
-        this.props.setSelectedContactKey(this.props.selectedKey)
-        this.setState({open: false});
-    };
-
     handleCancel = () => {
         this.setState({open: false});
-    }
-
-    componentDidUpdate() {
-        if(this.props.selectedContactKey != 'notset') {
-            this.props.dispatch(change('logsheet', 'contactName', 
-                this.props.contacts[this.props.selectedContactKey].first_name + ' ' + this.props.contacts[this.props.selectedContactKey].last_name))
-            this.props.dispatch(change('logsheet', 'contactNumber', this.props.contacts[this.props.selectedContactKey].contact_number))
-        } else {
-            this.props.dispatch(change('logsheet', 'contactName', ''))
-            this.props.dispatch(change('logsheet', 'contactNumber', ''))
-        }
     }
 
     render() {
@@ -60,7 +44,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="Select"
             primary={true}
-            disabled={this.props.selectedKey.length ==  0 ? true : false}
+            disabled={false}
             onTouchTap={this.handleClose}
         />,
         ];
@@ -68,7 +52,7 @@ class SiteContactPersonFields extends Component {
         return (
             <div style={{textAlign: 'center'}}>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Contact Person</h5>
-                { this.props.selectedContactKey == 'notset' ? <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen}/> : 
+                {/*{ this.props.selectedContactKey == 'notset' ?  : 
                     <div>
                         <Field name="contactName"  component={renderTextField} label='contact name' />
                         <Field name="contactNumber" style={{ marginLeft: 5}}  component={renderTextField} label='contact number' />
@@ -76,17 +60,19 @@ class SiteContactPersonFields extends Component {
                             <EditorModeEdit onTouchTap={this.handleOpen}/>
                         </IconButton>
                     </div>
-                }
+                }*/}
+
+                <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen}/>
 
                 <Dialog
                     title="Site Contacts List"
                     actions={actions}
                     modal={true}
                     open={this.state.open}
-                    autoScrollBodyContent={true}
+                    autoScrollBodyContent={false}
                     bodyStyle={{height: 200}}>
                     
-                    <SiteContacts contacts={this.props.contacts} />
+                    <SiteContacts />
 
                 </Dialog>
 

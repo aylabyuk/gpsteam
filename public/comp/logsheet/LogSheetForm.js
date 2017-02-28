@@ -66,6 +66,7 @@ class LogSheetForm extends Component {
             </Paper>
         );
     }
+
 }
 
 LogSheetForm.propTypes = {

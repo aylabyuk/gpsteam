@@ -40,7 +40,6 @@ render(
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />
-                <Route path="/testdashboard" component={TestDashboard} />
                 <Route path="/logsheet" component={LogSheetForm} />
 
                 <Route path="*" component={NotFoundPage} />

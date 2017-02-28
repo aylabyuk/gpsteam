@@ -8,11 +8,11 @@ import DataTables from 'material-ui-datatables';
 
 const TABLE_COLUMNS = [
   {
-    key: 'first_name',
-    label: 'firstname'
-  }, {
     key: 'last_name',
     label: 'lastname'
+  }, {
+    key: 'first_name',
+    label: 'firstname'
   }, {
     key: 'contact_number',
     label: 'contact number',

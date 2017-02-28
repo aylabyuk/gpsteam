@@ -8,7 +8,7 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 import { TextField } from 'material-ui'
 
 const renderTextField = ({ input, label, multiLine, fullWidth, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
+  <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}

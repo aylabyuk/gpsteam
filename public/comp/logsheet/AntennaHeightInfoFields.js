@@ -13,7 +13,7 @@ Date.prototype.julianDate = function(){
 };
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
+  <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}

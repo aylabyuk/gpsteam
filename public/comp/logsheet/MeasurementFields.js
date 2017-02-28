@@ -5,7 +5,7 @@ import { reduxForm, Field } from 'redux-form'
 import { TextField } from 'material-ui'
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
+  <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}

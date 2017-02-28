@@ -20,7 +20,7 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
 )
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
+  <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}

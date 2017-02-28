@@ -69,8 +69,7 @@ class SiteContactPersonFields extends Component {
                     actions={actions}
                     modal={true}
                     open={this.state.open}
-                    autoScrollBodyContent={false}
-                    bodyStyle={{height: 200}}>
+                    autoScrollBodyContent={false}>
                     
                     <SiteContacts />
 

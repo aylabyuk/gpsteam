@@ -37,7 +37,8 @@ const ContactsQuery = gql`
 
 class SiteContactPersonFields extends Component {
     state = {
-        open: false
+        open: false,
+        searchText: ''
     };
 
     handleOpen = () => {
@@ -46,10 +47,6 @@ class SiteContactPersonFields extends Component {
 
     handleCancel = () => {
         this.setState({open: false});
-    }
-
-    handleSearch = () => {
-
     }
 
     render() {
@@ -76,8 +73,8 @@ class SiteContactPersonFields extends Component {
                 
                 <Dialog
                     title={ <div><span>Site Contacts List</span> <br/> 
-                                <TextField fullWidth={true} id='searchContact' 
-                                floatingLabelText='Search' onChange={this.handleSearch}/>
+                                <TextField fullWidth={true} id='searchContact' value={this.state.searchText}
+                                floatingLabelText='Search' onChange={e => this.setState({ searchText: e.target.value })}/>
                             </div> 
                         }
                     actions={actions}
@@ -86,7 +83,7 @@ class SiteContactPersonFields extends Component {
                     autoScrollBodyContent={true}
                     style={{height: 200}}>
                     
-                    <SiteContacts contacts={this.props.data.allContact}/>
+                    <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText}/>
 
                 </Dialog>
 

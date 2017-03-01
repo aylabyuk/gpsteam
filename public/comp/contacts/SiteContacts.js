@@ -11,15 +11,22 @@ class SiteContacts extends Component {
     }
       
     render() {
+        let { filter, contacts } = this.props
+
         return(
              <List>
-                { this.props.contacts.map((d) => {
+                { contacts.map((d) => {
+                    let fname = d.last_name + ', ' + d.first_name
+                    let exp = new RegExp('' + filter)
+                    let toList = exp.test(fname)
+
                     return (
+                        toList ? 
                         <ListItem
-                            primaryText={ d.last_name + ', ' + d.first_name }
+                            primaryText={ fname }
                             secondaryText={ d.contact_number }
                             key={ d.contact_id }
-                        />
+                        /> : null
                     )
                 }) }
              </List>

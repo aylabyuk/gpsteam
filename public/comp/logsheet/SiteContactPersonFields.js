@@ -7,8 +7,9 @@ import SiteContacts from '../contacts/SiteContacts'
 import { setSelectedContactKey } from '../../actions/index'
 
 //ui
-import { FlatButton, Dialog, TextField, IconButton, CircularProgress } from 'material-ui'
-import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
+    Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem } from 'material-ui'
+import  ActionSearch from 'material-ui/svg-icons/action/search'
 
 //graphql
 import gql from 'graphql-tag';
@@ -72,10 +73,20 @@ class SiteContactPersonFields extends Component {
                     <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
                 
                 <Dialog
-                    title={ <div><span>Site Contacts List</span> <br/> 
-                                <TextField fullWidth={true} id='searchContact' value={this.state.searchText}
-                                floatingLabelText='Search' onChange={e => this.setState({ searchText: e.target.value })}/>
-                            </div> 
+                    title={ <div style={{padding: 0}}>
+                        <Toolbar>
+                            <ToolbarGroup>
+                                <ToolbarTitle text="Site Contacts List" />
+                            </ToolbarGroup> 
+                            <ToolbarGroup>
+                                <Menu disableAutoFocus={true}>
+                                    <MenuItem leftIcon={<ActionSearch color='#fff' style={{left: 280}}/>} disabled={true}>
+                                        <TextField fullWidth={true} id='searchContact' value={this.state.searchText}
+                                        hintText='Search' onChange={e => this.setState({ searchText: e.target.value })}/>
+                                    </MenuItem>
+                                </Menu> 
+                            </ToolbarGroup>
+                        </Toolbar></div>
                         }
                     actions={actions}
                     modal={true}

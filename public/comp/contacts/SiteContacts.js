@@ -20,7 +20,6 @@ class SiteContacts extends Component {
                     let firstChar = d.first_name.charAt(0)
                     let secondChar = d.last_name.charAt(0)
 
-
                     return (
                         toList ? 
                         <ListItem
@@ -35,9 +34,6 @@ class SiteContacts extends Component {
                             key={ d.contact_id }
                         /> : null
                     )
-
-                   
-
                 }) }
              </List>
         );

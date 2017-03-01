@@ -53,15 +53,15 @@ class SiteContactPersonFields extends Component {
     render() {
         const actions = [
         <FlatButton
-            label="Cancel"
+            label="New Contact"
             primary={true}
             onTouchTap={this.handleCancel}
         />,
         <FlatButton
-            label="Select"
+            label="Cancel"
             primary={true}
             disabled={false}
-            onTouchTap={this.handleClose}
+            onTouchTap={this.handleCancel}
         />,
         ];
 
@@ -92,7 +92,8 @@ class SiteContactPersonFields extends Component {
                     modal={true}
                     open={this.state.open}
                     autoScrollBodyContent={true}
-                    bodyStyle={{padding: 0}}>
+                    bodyStyle={{padding: 0}}
+                    repositionOnUpdate={false}>
                     
                     <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText}/>
 

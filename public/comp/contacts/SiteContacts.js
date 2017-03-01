@@ -6,7 +6,14 @@ import { reduxForm } from 'redux-form'
 import { List, ListItem, Avatar } from 'material-ui'
 import {pinkA200, transparent} from 'material-ui/styles/colors';
 
+
 class SiteContacts extends Component {
+
+    componentDidUpdate() {
+        console.log(countAfterFilter)
+    }
+    
+
     render() {
         let { filter, contacts } = this.props
 
@@ -14,8 +21,8 @@ class SiteContacts extends Component {
              <List>
                 { contacts.map((d) => {
                     let fullname = d.first_name + ' ' + d.last_name
-                    let exp = new RegExp('' + filter)
-                    let toList = exp.test(fullname)
+                    let exp = (fullname.toLowerCase().indexOf(filter.toLowerCase()) !== -1)
+                    let toList = exp
 
                     let firstChar = d.first_name.charAt(0)
                     let secondChar = d.last_name.charAt(0)

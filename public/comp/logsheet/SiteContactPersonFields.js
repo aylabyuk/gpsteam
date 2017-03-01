@@ -7,8 +7,12 @@ import SiteContacts from '../contacts/SiteContacts'
 import { setSelectedContactKey } from '../../actions/index'
 
 //ui
-import { FlatButton, Dialog, TextField, IconButton } from 'material-ui'
+import { FlatButton, Dialog, TextField, IconButton, CircularProgress } from 'material-ui'
 import EditorModeEdit from 'material-ui/svg-icons/editor/mode-edit';
+
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField hintText={label}
@@ -19,6 +23,17 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     disabled={true}
   />
 )
+
+
+const ContactsQuery = gql`
+    query ContactsQuery {
+    allContact(order: "last_name ASC") {
+        contact_id
+        first_name
+        last_name
+        contact_number
+    }
+}`;
 
 class SiteContactPersonFields extends Component {
     state = {
@@ -33,8 +48,11 @@ class SiteContactPersonFields extends Component {
         this.setState({open: false});
     }
 
-    render() {
+    handleSearch = () => {
 
+    }
+
+    render() {
         const actions = [
         <FlatButton
             label="Cancel"
@@ -52,26 +70,23 @@ class SiteContactPersonFields extends Component {
         return (
             <div style={{textAlign: 'center'}}>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Contact Person</h5>
-                {/*{ this.props.selectedContactKey == 'notset' ?  : 
-                    <div>
-                        <Field name="contactName"  component={renderTextField} label='contact name' />
-                        <Field name="contactNumber" style={{ marginLeft: 5}}  component={renderTextField} label='contact number' />
-                        <IconButton style={{top: 5}}>
-                            <EditorModeEdit onTouchTap={this.handleOpen}/>
-                        </IconButton>
-                    </div>
-                }*/}
 
-                <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen}/>
-
+                { this.props.data.loading ? <CircularProgress /> : 
+                    <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
+                
                 <Dialog
-                    title="Site Contacts List"
+                    title={ <div><span>Site Contacts List</span> <br/> 
+                                <TextField fullWidth={true} id='searchContact' 
+                                floatingLabelText='Search' onChange={this.handleSearch}/>
+                            </div> 
+                        }
                     actions={actions}
                     modal={true}
                     open={this.state.open}
-                    autoScrollBodyContent={false}>
+                    autoScrollBodyContent={true}
+                    style={{height: 200}}>
                     
-                    <SiteContacts />
+                    <SiteContacts contacts={this.props.data.allContact}/>
 
                 </Dialog>
 
@@ -80,15 +95,4 @@ class SiteContactPersonFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-function mapStateToProps(state) {  
-	return {
-		selectedKey: state.uiState.selectedKey,
-        selectedContactKey: state.uiState.logsheet.selectedContactKey
-	}
-}
-
-export default connect(mapStateToProps, { setSelectedContactKey } )(form(SiteContactPersonFields))  
+export default graphql(ContactsQuery)(SiteContactPersonFields) 

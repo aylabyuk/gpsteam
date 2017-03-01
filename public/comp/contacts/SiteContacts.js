@@ -3,31 +3,41 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 
 //ui
-import { List, ListItem } from 'material-ui'
+import { List, ListItem, Avatar } from 'material-ui'
+import {pinkA200, transparent} from 'material-ui/styles/colors';
 
 class SiteContacts extends Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-      
     render() {
         let { filter, contacts } = this.props
 
         return(
              <List>
                 { contacts.map((d) => {
-                    let fname = d.last_name + ', ' + d.first_name
+                    let fullname = d.first_name + ' ' + d.last_name
                     let exp = new RegExp('' + filter)
-                    let toList = exp.test(fname)
+                    let toList = exp.test(fullname)
+
+                    let firstChar = d.first_name.charAt(0)
+                    let secondChar = d.last_name.charAt(0)
+
 
                     return (
                         toList ? 
                         <ListItem
-                            primaryText={ fname }
+                            leftAvatar={
+                                <Avatar
+                                    color={pinkA200} backgroundColor={transparent}
+                                    style={{left: 8}}
+                                > { firstChar + secondChar } </Avatar>
+                            }
+                            primaryText={ d.first_name + ' ' + d.last_name }
                             secondaryText={ d.contact_number }
                             key={ d.contact_id }
                         /> : null
                     )
+
+                   
+
                 }) }
              </List>
         );

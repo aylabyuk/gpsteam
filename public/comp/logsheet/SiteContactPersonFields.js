@@ -81,7 +81,7 @@ class SiteContactPersonFields extends Component {
                     modal={true}
                     open={this.state.open}
                     autoScrollBodyContent={true}
-                    style={{height: 200}}>
+                    bodyStyle={{padding: 0}}>
                     
                     <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText}/>
 

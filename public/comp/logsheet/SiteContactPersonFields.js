@@ -71,6 +71,11 @@ class SiteContactPersonFields extends Component {
 
                 { this.props.data.loading ? <CircularProgress /> : 
                     <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
+                <div style={{width: 778, display: "flex", flexDirection: 'row', justifyContent: 'space-between'}} >
+                    <Field name="contactFirstName" component={renderTextField} label="first name" />
+                    <Field name="contactLastName" component={renderTextField} label="last name" />
+                    <Field name="contactNumber" component={renderTextField} label="number" />
+                </div>
                 
                 <Dialog
                     title={ <div style={{padding: 0}}>
@@ -104,4 +109,8 @@ class SiteContactPersonFields extends Component {
     }
 }
 
-export default graphql(ContactsQuery)(SiteContactPersonFields) 
+const form =  reduxForm({  
+	form: 'logsheet'
+})
+
+export default form(graphql(ContactsQuery)(SiteContactPersonFields)) 

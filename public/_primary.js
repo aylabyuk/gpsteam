@@ -20,7 +20,7 @@ import LogSheetForm from './comp/logsheet/LogSheetForm'
 import { ApolloProvider } from 'react-apollo'
 
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk, client.middleware())(createStore)
+const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -36,7 +36,7 @@ if(module.hot) {
 }
 
 render(
-    <ApolloProvider store={store} client={client}>
+    <ApolloProvider client={client} store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />
@@ -45,6 +45,6 @@ render(
                 <Route path="*" component={NotFoundPage} />
             </Route>
         </Router>
-    </ApolloProvider>,
+    </ApolloProvider >,
     document.getElementById("app")
 )

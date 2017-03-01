@@ -9,7 +9,7 @@ import ApolloClient, { createNetworkInterface } from 'apollo-client'
 
 export const client = new ApolloClient({
   networkInterface: createNetworkInterface({ uri: 'http://localhost:4000/graphql' }),
-  reduxRootSelector: state => state.apollo,
+//   reduxRootSelector: state => state.apollo,
   connectToDevTools: true,
   addTypename: false
 });
@@ -19,8 +19,7 @@ const rootReducer = combineReducers({
 	plot: plot,
 	form: formReducer,
 	uiState: uiState,
-	routing: routerReducer,
-	apollo: client.reducer()
+	routing: routerReducer
 	})
 
 export default rootReducer

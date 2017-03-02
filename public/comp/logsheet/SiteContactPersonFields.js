@@ -42,6 +42,12 @@ class SiteContactPersonFields extends Component {
         searchText: ''
     };
 
+    contactPersonChange = (fname, lname, id, contactNo) => {
+        this.props.change('contactFirstName', fname)
+        this.props.change('contactLastName', lname)
+        this.props.change('contactNumber', contactNo)
+    }
+
     handleOpen = () => {
         this.setState({open: true});
     };
@@ -85,7 +91,7 @@ class SiteContactPersonFields extends Component {
                             </ToolbarGroup> 
                             <ToolbarGroup>
                                 <Menu disableAutoFocus={true}>
-                                    <MenuItem leftIcon={<ActionSearch color='#fff' style={{left: 280}}/>} disabled={true}>
+                                    <MenuItem leftIcon={<ActionSearch color='#fff' style={{left: 32}}/>} disabled={true}>
                                         <TextField fullWidth={true} id='searchContact' value={this.state.searchText}
                                         hintText='Search' onChange={e => this.setState({ searchText: e.target.value })}/>
                                     </MenuItem>

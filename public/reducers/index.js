@@ -3,6 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
 import plot from './plot_reducer'
+import ui from './ui_reducer'
 
 import ApolloClient, { createNetworkInterface } from 'apollo-client'
 
@@ -17,6 +18,7 @@ export const client = new ApolloClient({
 const rootReducer = combineReducers({
 	plot: plot,
 	form: formReducer,
+	ui: ui,
 	routing: routerReducer
 	})
 

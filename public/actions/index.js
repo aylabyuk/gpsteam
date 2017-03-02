@@ -1,7 +1,8 @@
 import axios from 'axios'
 import cookie from 'react-cookie'
 import { CHART_DATA,
-		 RESET_CHART_DATA } from './types'
+		 RESET_CHART_DATA,
+		 SELECTED_CONTACT_ID } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -31,6 +32,15 @@ export function resetChartData() {
 	return function(dispatch) {
 		dispatch({
 			type: RESET_CHART_DATA,
+		})
+	}
+}
+
+export function changeSelectedContactId(id) {
+	return function(dispatch) {
+		dispatch({
+			type: SELECTED_CONTACT_ID,
+			payload: id
 		})
 	}
 }

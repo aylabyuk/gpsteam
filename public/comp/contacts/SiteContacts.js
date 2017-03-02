@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { reduxForm } from 'redux-form'
+import { changeSelectedContactId } from '../../actions/index'
 
 //ui
 import { List, ListItem, Avatar } from 'material-ui'
@@ -8,12 +8,10 @@ import {pinkA200, transparent} from 'material-ui/styles/colors';
 
 
 class SiteContacts extends Component {
-
-    componentDidUpdate() {
-        console.log(countAfterFilter)
+    contactPersonChange = (id) => {
+        this.props.changeSelectedContactId(id)
     }
     
-
     render() {
         let { filter, contacts } = this.props
 
@@ -39,6 +37,7 @@ class SiteContacts extends Component {
                             primaryText={ d.first_name + ' ' + d.last_name }
                             secondaryText={ d.contact_number }
                             key={ d.contact_id }
+                            onTouchTap={ () => this.contactPersonChange(d.contact_id)}
                         /> : null
                     )
                 }) }
@@ -48,4 +47,10 @@ class SiteContacts extends Component {
 }   
 
 
-export default SiteContacts
+function mapStateToProps(state) {  
+	return {
+		
+	}
+}
+
+export default connect(mapStateToProps, { changeSelectedContactId })(SiteContacts) 

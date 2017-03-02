@@ -37,8 +37,8 @@ class SiteContacts extends Component {
                             }
                             primaryText={ d.first_name + ' ' + d.last_name }
                             secondaryText={ d.contact_number }
-                            key={ d.contact_id }
-                            onTouchTap={ () => this.contactPersonChange(d.contact_id)}
+                            key={ d.id }
+                            onTouchTap={ () => this.contactPersonChange(d.id)}
                         /> : null
                     )
                 }) }

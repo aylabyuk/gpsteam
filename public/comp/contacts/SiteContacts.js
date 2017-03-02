@@ -10,6 +10,7 @@ import {pinkA200, transparent} from 'material-ui/styles/colors';
 class SiteContacts extends Component {
     contactPersonChange = (id) => {
         this.props.changeSelectedContactId(id)
+        this.props.closeDialog()
     }
     
     render() {
@@ -47,10 +48,4 @@ class SiteContacts extends Component {
 }   
 
 
-function mapStateToProps(state) {  
-	return {
-		
-	}
-}
-
-export default connect(mapStateToProps, { changeSelectedContactId })(SiteContacts) 
+export default connect(null, { changeSelectedContactId })(SiteContacts) 

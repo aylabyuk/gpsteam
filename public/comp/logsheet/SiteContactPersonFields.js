@@ -41,35 +41,41 @@ class SiteContactPersonFields extends Component {
         open: false,
         searchText: ''
     };
-
-    contactPersonChange = (fname, lname, id, contactNo) => {
-        this.props.change('contactFirstName', fname)
-        this.props.change('contactLastName', lname)
-        this.props.change('contactNumber', contactNo)
-    }
-
+    
     handleOpen = () => {
         this.setState({open: true});
     };
 
-    handleCancel = () => {
-        this.setState({open: false});
+    handleClose = () => {
+        this.setState({open: false, searchText: ''});
     }
+
+    componentDidUpdate() {
+        let result = this.props.data.allContact.find(x => x.contact_id === this.props.contactId)
+
+        if(result) {
+            this.props.change('contactFirstName', result.first_name)
+            this.props.change('contactLastName', result.last_name)
+            this.props.change('contactNumber', result.contact_number)
+        }
+    }
+    
 
     render() {
         const actions = [
         <FlatButton
             label="New Contact"
             primary={true}
-            onTouchTap={this.handleCancel}
+            onTouchTap={this.handleClose}
         />,
         <FlatButton
             label="Cancel"
             primary={true}
             disabled={false}
-            onTouchTap={this.handleCancel}
+            onTouchTap={this.handleClose}
         />,
         ];
+
 
         return (
             <div style={{textAlign: 'center'}}>
@@ -77,6 +83,8 @@ class SiteContactPersonFields extends Component {
 
                 { this.props.data.loading ? <CircularProgress /> : 
                     <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
+
+
                 <div style={{width: 778, display: "flex", flexDirection: 'row', justifyContent: 'space-between'}} >
                     <Field name="contactFirstName" component={renderTextField} label="first name" />
                     <Field name="contactLastName" component={renderTextField} label="last name" />
@@ -106,7 +114,7 @@ class SiteContactPersonFields extends Component {
                     bodyStyle={{padding: 0}}
                     repositionOnUpdate={false}>
                     
-                    <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText}/>
+                    <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose}/>
 
                 </Dialog>
 
@@ -115,8 +123,14 @@ class SiteContactPersonFields extends Component {
     }
 }
 
+function mapStateToProps(state) {  
+	return {
+		contactId: state.ui.selectedContactId
+	}
+}
+
 const form =  reduxForm({  
 	form: 'logsheet'
 })
 
-export default form(graphql(ContactsQuery)(SiteContactPersonFields)) 
+export default connect(mapStateToProps)(form(graphql(ContactsQuery)(SiteContactPersonFields)))

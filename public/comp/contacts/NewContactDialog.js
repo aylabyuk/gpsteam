@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form'
+import { validateContactDetails as validate } from './validateContactDetails'
+
+//apollo
+import gql from 'graphql-tag';
+import { graphql, withApollo } from 'react-apollo';
 
 //ui
 import { Dialog, FlatButton, TextField } from 'material-ui'
@@ -14,10 +19,58 @@ const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ..
   />
 )
 
+const addNewContactPerson = gql`
+  mutation addNewContactPerson(
+        $first_name: String!
+        $last_name: String!
+        $position: String
+        $contact_number: String!
+        $organization: String
+        $email_add: String
+        $address_one: String
+        $address_two: String
+        $city: String
+        $province: String
+  ) {
+    newContact: createContact(
+        first_name: $first_name
+        last_name: $last_name
+        position: $position
+        contact_number: $contact_number
+        organization: $organization
+        email_add: $email_add
+        address_one: $address_one
+        address_two: $address_two
+        city: $city
+        province: $province
+    ) {
+      id 
+      first_name
+      last_name
+    }
+  }
+`;
+
 class NewContactDialog extends Component {
 
     handleAdd(d) {
-       console.log(d)
+    //    console.log(d)
+        this.props.mutate({ variables: {
+            first_name: d.first_name,
+            last_name: d.last_name,
+            position: d.position,
+            contact_number: d.contact_number,
+            organization: d.organization,
+            email_add: d.email_add,
+            address_one: d.address_one,
+            address_two: d.address_two,
+            city: d.city,
+            province: d.province
+        } }).then(({ data }) => {
+        console.log('new contact person: ', data);
+      }).catch((error) => {
+        console.log('there was an error sending the query: ', error);
+      });
     }
 
     render() {
@@ -25,7 +78,7 @@ class NewContactDialog extends Component {
         <FlatButton
             label="Add New Contact"
             primary={true}
-            onTouchTap={this.props.handleSubmit(this.handleAdd)}
+            onTouchTap={this.props.handleSubmit(this.handleAdd.bind(this))}
         />,
         <FlatButton
             label="Cancel"
@@ -36,6 +89,7 @@ class NewContactDialog extends Component {
         ];
 
         return (
+
             <Dialog 
                 title='New Contact'
                 actions={actions}
@@ -61,7 +115,8 @@ class NewContactDialog extends Component {
 }
 
 const form =  reduxForm({  
-	form: 'newContact'
+	form: 'newContact',
+    validate
 })
 
-export default form(NewContactDialog);
+export default form(graphql(addNewContactPerson)(NewContactDialog));

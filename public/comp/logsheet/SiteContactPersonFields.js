@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { reduxForm, Field, change } from 'redux-form'
 
-
 import SiteContacts from '../contacts/SiteContacts'
+import NewContactDialog from '../contacts/NewContactDialog'
 import { setSelectedContactKey } from '../../actions/index'
 
 //ui
@@ -39,8 +39,13 @@ const ContactsQuery = gql`
 class SiteContactPersonFields extends Component {
     state = {
         open: false,
+        openNew: false,
         searchText: ''
     };
+
+    handleNewClose = () => {
+        this.setState({openNew: false})
+    }
     
     handleOpen = () => {
         this.setState({open: true});
@@ -48,6 +53,10 @@ class SiteContactPersonFields extends Component {
 
     handleClose = () => {
         this.setState({open: false, searchText: ''});
+    }
+
+    handleNewContact = () => {
+        this.setState({openNew: true});
     }
 
     componentDidUpdate() {
@@ -66,7 +75,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="New Contact"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={this.handleNewContact}
         />,
         <FlatButton
             label="Cancel"
@@ -117,6 +126,8 @@ class SiteContactPersonFields extends Component {
                     <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose}/>
 
                 </Dialog>
+
+                <NewContactDialog open={this.state.openNew} close={this.handleNewClose}/>
 
             </div>
         );

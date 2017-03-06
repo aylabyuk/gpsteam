@@ -52,7 +52,6 @@ const addNewContactPerson = gql`
 `;
 
 class NewContactDialog extends Component {
-
     handleAdd(d) {
     //    console.log(d)
         this.props.mutate({ variables: {
@@ -66,7 +65,7 @@ class NewContactDialog extends Component {
             address_two: d.address_two,
             city: d.city,
             province: d.province
-        } }).then(({ data }) => {
+        } }).then((data) => {
         console.log('new contact person: ', data);
       }).catch((error) => {
         console.log('there was an error sending the query: ', error);

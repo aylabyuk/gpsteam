@@ -44,7 +44,7 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 
 
 // create apollo client with subscription
-export const client = new ApolloClient({
+export const apolloClient = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
   connectToDevTools: true,
   addTypename: false
@@ -58,7 +58,7 @@ const store = createStoreWithMiddleware(rootReducer,
 
 const history = syncHistoryWithStore(browserHistory, store);
 
-//hot reload reducer
+//hot reload for reducer
 if(module.hot) {
     module.hot.accept('./reducers/', () => {
         const nextRootReducer = require('./reducers/index').default;
@@ -67,7 +67,7 @@ if(module.hot) {
 }
 
 render(
-    <ApolloProvider client={client} store={store}>
+    <ApolloProvider client={apolloClient} store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />

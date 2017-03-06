@@ -5,7 +5,7 @@ import { reduxForm, Field, change } from 'redux-form'
 import SiteContacts from '../contacts/SiteContacts'
 import NewContactDialog from '../contacts/NewContactDialog'
 import { setSelectedContactKey } from '../../actions/index'
-
+import { apolloClient } from '../../_primary'
 //ui
 import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
     Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem } from 'material-ui'
@@ -36,12 +36,27 @@ const ContactsQuery = gql`
     }
 }`;
 
+const contactCreated = gql`
+  subscription contactCreated {
+    contactCreated {
+      id
+      first_name
+      last_name
+      contact_number
+    }
+  }
+`;
+
 class SiteContactPersonFields extends Component {
-    state = {
-        open: false,
-        openNew: false,
-        searchText: ''
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            open: false,
+            openNew: false,
+            searchText: '',
+        }
+        this.subscription = null
+    }
 
     handleNewClose = () => {
         this.setState({openNew: false})
@@ -66,6 +81,23 @@ class SiteContactPersonFields extends Component {
             this.props.change('contactFirstName', result.first_name)
             this.props.change('contactLastName', result.last_name)
             this.props.change('contactNumber', result.contact_number)
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.subscription && !nextProps.data.loading) {
+            let { subscribeToMore } = this.props.data
+            this.subscription = [
+                subscribeToMore({
+                    document: contactCreated,
+                    updateQuery: (previousResult, {
+                        subscriptionData
+                    }) => {
+                        previousResult.posts.push(subscriptionData.data.contactCreated)
+                        return previousResult
+                    },
+                })
+            ]
         }
     }
     

@@ -5,7 +5,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import reduxThunk from 'redux-thunk'
-import rootReducer, { client } from './reducers/index'
+import rootReducer from './reducers/index'
 import App from './App'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
@@ -17,7 +17,38 @@ import TestDashboard from './comp/TestDashboard'
 import LogSheetForm from './comp/logsheet/LogSheetForm'
 
 //apollo client
+import ApolloClient, { createNetworkInterface } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
+
+//subscription client
+import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws';
+
+// Create regular NetworkInterface by using apollo-client's API: 
+const networkInterface = createNetworkInterface({
+ uri: 'http://localhost:4000/graphql' // Your GraphQL endpoint 
+});
+
+
+// connect to web-socket for subscription
+const wsClient = new SubscriptionClient(`ws://localhost:5000/`, {
+    reconnect: true,
+    connectionParams: {
+        // Pass any arguments for initialization 
+    }
+});
+
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+    networkInterface,
+    wsClient
+);
+
+
+// create apollo client with subscription
+export const client = new ApolloClient({
+  networkInterface: networkInterfaceWithSubscriptions,
+  connectToDevTools: true,
+  addTypename: false
+});
 
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)

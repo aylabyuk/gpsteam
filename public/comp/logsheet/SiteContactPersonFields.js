@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { reduxForm, Field, change } from 'redux-form'
 
-
 import SiteContacts from '../contacts/SiteContacts'
+import NewContactDialog from '../contacts/NewContactDialog'
 import { setSelectedContactKey } from '../../actions/index'
-
+import { apolloClient } from '../../_primary'
 //ui
 import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
     Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem } from 'material-ui'
@@ -36,11 +36,31 @@ const ContactsQuery = gql`
     }
 }`;
 
+const contactCreated = gql`
+  subscription contactCreated {
+    contactCreated {
+      id
+      first_name
+      last_name
+      contact_number
+    }
+  }
+`;
+
 class SiteContactPersonFields extends Component {
-    state = {
-        open: false,
-        searchText: ''
-    };
+    constructor(props) {
+        super(props)
+        this.state = {
+            open: false,
+            openNew: false,
+            searchText: '',
+        }
+        this.subscription = null
+    }
+
+    handleNewClose = () => {
+        this.setState({openNew: false})
+    }
     
     handleOpen = () => {
         this.setState({open: true});
@@ -48,6 +68,10 @@ class SiteContactPersonFields extends Component {
 
     handleClose = () => {
         this.setState({open: false, searchText: ''});
+    }
+
+    handleNewContact = () => {
+        this.setState({openNew: true});
     }
 
     componentDidUpdate() {
@@ -59,6 +83,23 @@ class SiteContactPersonFields extends Component {
             this.props.change('contactNumber', result.contact_number)
         }
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.subscription && !nextProps.data.loading) {
+            let { subscribeToMore } = this.props.data
+            this.subscription = [
+                subscribeToMore({
+                    document: contactCreated,
+                    updateQuery: (previousResult, {
+                        subscriptionData
+                    }) => {
+                        previousResult.posts.push(subscriptionData.data.contactCreated)
+                        return previousResult
+                    },
+                })
+            ]
+        }
+    }
     
 
     render() {
@@ -66,7 +107,7 @@ class SiteContactPersonFields extends Component {
         <FlatButton
             label="New Contact"
             primary={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={this.handleNewContact}
         />,
         <FlatButton
             label="Cancel"
@@ -117,6 +158,8 @@ class SiteContactPersonFields extends Component {
                     <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose}/>
 
                 </Dialog>
+
+                <NewContactDialog open={this.state.openNew} close={this.handleNewClose}/>
 
             </div>
         );

@@ -49,6 +49,7 @@
     "semantic-ui": "^2.2.7",
     "semantic-ui-react": "^0.64.0",
     "serve-favicon": "^2.3.2",
+    "subscriptions-transport-ws": "^0.5.3",
     "underscore": "^1.8.3",
     "url-loader": "^0.5.7",
     "validate.js": "^0.11.1",

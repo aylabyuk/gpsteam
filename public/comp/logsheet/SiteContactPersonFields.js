@@ -15,6 +15,8 @@ import  ActionSearch from 'material-ui/svg-icons/action/search'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import { cloneDeep } from 'lodash'
+
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField hintText={label}
     floatingLabelText={label}
@@ -90,11 +92,17 @@ class SiteContactPersonFields extends Component {
             this.subscription = [
                 subscribeToMore({
                     document: contactCreated,
-                    updateQuery: (previousResult, {
-                        subscriptionData
-                    }) => {
-                        previousResult.posts.push(subscriptionData.data.contactCreated)
-                        return previousResult
+                    updateQuery: (previousResult, { subscriptionData }) => {
+
+                        console.log('previousResult: ', previousResult)
+                        console.log('to insert: ', subscriptionData.data.contactCreated)
+
+                        const newContact = subscriptionData.data.contactCreated
+                        const newResult = cloneDeep(previousResult)
+
+                        
+                        newResult.allContact.push(subscriptionData.data.contactCreated)
+                        return newResult
                     },
                 })
             ]

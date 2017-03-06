@@ -17,20 +17,24 @@ import TestDashboard from './comp/TestDashboard'
 import LogSheetForm from './comp/logsheet/LogSheetForm'
 
 //apollo client
-import ApolloClient, { createNetworkInterface } from 'apollo-client'
+import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
 import { ApolloProvider } from 'react-apollo'
 
 //subscription client
 import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws';
 
 // Create regular NetworkInterface by using apollo-client's API: 
-const networkInterface = createNetworkInterface({
- uri: 'http://localhost:4000/graphql' // Your GraphQL endpoint 
+const networkInterface = createBatchingNetworkInterface({
+  opts: {
+    credentials: "same-origin",
+  },
+  batchInterval: 20,
+  uri: "http://localhost:4000/graphql",
 });
 
 
 // connect to web-socket for subscription
-const wsClient = new SubscriptionClient(`ws://localhost:5000/`, {
+const wsClient = new SubscriptionClient(`ws://localhost:4000/`, {
     reconnect: true,
     connectionParams: {
         // Pass any arguments for initialization 

@@ -65,9 +65,7 @@ class NewContactDialog extends Component {
             address_two: d.address_two,
             city: d.city,
             province: d.province
-        } }).then((data) => {
-        console.log('new contact person: ', data);
-      }).catch((error) => {
+        } }).catch((error) => {
         console.log('there was an error sending the query: ', error);
       });
     }
@@ -94,6 +92,7 @@ class NewContactDialog extends Component {
                 actions={actions}
                 open={this.props.open}
                 repositionOnUpdate={false}
+                autoScrollBodyContent={true}
             >
             <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Field style={{flexGrow: 2, marginLeft: 2, marginRight: 2 }} name='first_name' label="firstname(required)" component={renderTextField}  />

@@ -3,9 +3,24 @@ import { connect } from 'react-redux'
 import { changeSelectedContactId } from '../../actions/index'
 
 //ui
-import { List, ListItem, Avatar } from 'material-ui'
-import {pinkA200, transparent} from 'material-ui/styles/colors';
+import { List, ListItem, Avatar, IconMenu, MenuItem, IconButton } from 'material-ui'
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {pinkA200, transparent, grey400} from 'material-ui/styles/colors';
 
+
+const iconButtonElement = (
+  <IconButton touch={true}>
+    <MoreVertIcon color={grey400} />
+  </IconButton>
+);
+
+const rightIconMenu = (
+  <IconMenu iconButtonElement={iconButtonElement}>
+    <MenuItem>Details</MenuItem>
+    <MenuItem>Edit</MenuItem>
+    <MenuItem>Delete</MenuItem>
+  </IconMenu>
+);
 
 class SiteContacts extends Component {
     contactPersonChange = (id) => {
@@ -39,6 +54,7 @@ class SiteContacts extends Component {
                             secondaryText={ d.contact_number }
                             key={ d.id }
                             onTouchTap={ () => this.contactPersonChange(d.id)}
+                            rightIconButton={rightIconMenu}
                         /> : null
                     )
                 }) }

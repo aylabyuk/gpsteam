@@ -6,6 +6,9 @@ import SiteContacts from '../contacts/SiteContacts'
 import NewContactDialog from '../contacts/NewContactDialog'
 import { setSelectedContactKey } from '../../actions/index'
 import { apolloClient } from '../../_primary'
+import { changeSelectedContactId } from '../../actions/index'
+
+
 //ui
 import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
     Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem } from 'material-ui'
@@ -15,7 +18,7 @@ import  ActionSearch from 'material-ui/svg-icons/action/search'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { cloneDeep } from 'lodash'
+import { cloneDeep, sortBy } from 'lodash'
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField hintText={label}
@@ -94,12 +97,10 @@ class SiteContactPersonFields extends Component {
                     document: contactCreated,
                     updateQuery: (previousResult, { subscriptionData }) => {
 
-                        console.log('previousResult: ', previousResult)
-                        console.log('to insert: ', subscriptionData.data.contactCreated)
-
                         const newContact = subscriptionData.data.contactCreated
                         const newResult = cloneDeep(previousResult)
 
+                        this.props.changeSelectedContactId(newContact.id)
                         
                         newResult.allContact.push(subscriptionData.data.contactCreated)
                         return newResult
@@ -167,7 +168,7 @@ class SiteContactPersonFields extends Component {
 
                 </Dialog>
 
-                <NewContactDialog open={this.state.openNew} close={this.handleNewClose}/>
+                <NewContactDialog open={this.state.openNew} close={this.handleNewClose} closeParent={this.handleClose}/>
 
             </div>
         );
@@ -184,4 +185,4 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-export default connect(mapStateToProps)(form(graphql(ContactsQuery)(SiteContactPersonFields)))
+export default connect(mapStateToProps, { changeSelectedContactId })(form(graphql(ContactsQuery)(SiteContactPersonFields)))

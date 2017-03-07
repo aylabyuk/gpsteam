@@ -65,7 +65,10 @@ class NewContactDialog extends Component {
             address_two: d.address_two,
             city: d.city,
             province: d.province
-        } }).catch((error) => {
+        } }).then(() => {
+            this.props.closeParent()
+            this.props.close()
+        }).catch((error) => {
         console.log('there was an error sending the query: ', error);
       });
     }

@@ -14,7 +14,7 @@ import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
 
 //ui
-import { Paper, AppBar, Divider } from 'material-ui'
+import { Paper, AppBar, RaisedButton, Divider } from 'material-ui';
 
 import styles from '../../css/home.css';
 
@@ -22,7 +22,9 @@ const style = {
   margin: 20,
   display: 'inline-block',
   padding: 10,
-  maxWidth: 800
+  maxWidth: 800,
+  display: 'flex',
+  flexDirection: 'column'
 };
 
 const LogSheetQuery = gql`query LogSheetQuery {
@@ -64,6 +66,9 @@ class LogSheetForm extends Component {
                     <AntennaHeigtInfoFields />
                     <PertinentInfoFields />
                     <SiteContactPersonFields />
+                    <Divider />
+                    <br />
+                    <RaisedButton label='submit' primary />
                 </Paper>
             );
         }
@@ -79,5 +84,4 @@ LogSheetForm.propTypes = {
     }).isRequired,
 };
 
-export default graphql(LogSheetQuery)(LogSheetForm)  
-
+export default graphql(LogSheetQuery)(LogSheetForm)

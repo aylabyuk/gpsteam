@@ -33,9 +33,11 @@ class SiteFields extends Component {
         return (
             <form>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Site Information</h5>
-                <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames.map((a) => { return a.site_name })}/>
-                <Field name="location" style={{ marginLeft: 5}}  component={renderTextField} label='location' />
-                <Field name="marker" style={{ marginLeft: 5}}  component={renderTextField} label='marker' />
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Field name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames.map((a) => { return a.site_name })}/>
+                    <Field name="location" component={renderTextField} label='location' />
+                    <Field name="marker" component={renderTextField} label='marker' />
+                </div>
             </form>
         );
     }

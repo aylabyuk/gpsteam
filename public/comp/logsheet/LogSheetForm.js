@@ -44,6 +44,10 @@ class LogSheetForm extends Component {
         super(props);
     }
 
+    handleSubmit() {
+        console.log('submit')
+    }
+
     render() {
         let { loading, allSitename, allReceiver, allAntenna } = this.props.data
 
@@ -68,20 +72,14 @@ class LogSheetForm extends Component {
                     <SiteContactPersonFields />
                     <Divider />
                     <br />
-                    <RaisedButton label='submit' primary />
+                    <div style={{ display: 'flex', justifyContent: ' space-around ' }}>
+                        <RaisedButton label='submit' onTouchTap={ this.handleSubmit } primary buttonStyle={{ width: 150 }}/>
+                        <RaisedButton label='cancel' primary buttonStyle={{ width: 150 }}/>
+                    </div>
                 </Paper>
             );
         }
     }
 }
-
-LogSheetForm.propTypes = {
-    loading: React.PropTypes.bool,
-    data: PropTypes.shape({
-        allSitename: PropTypes.array,
-        allReceiver: PropTypes.array,
-        allAntenna: PropTypes.array
-    }).isRequired,
-};
 
 export default graphql(LogSheetQuery)(LogSheetForm)

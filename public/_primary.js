@@ -29,7 +29,7 @@ const networkInterface = createBatchingNetworkInterface({
     credentials: "same-origin",
   },
   batchInterval: 20,
-  uri: "http://localhost:4000/graphql",
+  uri: "http://gpsteam.herokuapp.com/graphql",
 });
 
 

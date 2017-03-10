@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import ApolloClient from 'apollo-client';
 import gql from 'graphql-tag';
@@ -100,10 +100,6 @@ class HardwareFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
 const selector = formValueSelector('logsheet') 
 HardwareFields = connect(
   state => {
@@ -116,5 +112,5 @@ HardwareFields = connect(
   }
 )(HardwareFields)
 
-export default (form(HardwareFields))
+export default HardwareFields
 

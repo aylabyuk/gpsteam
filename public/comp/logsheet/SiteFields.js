@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { reduxForm, Field } from 'redux-form'
+import { Field } from 'redux-form'
 
 //ui
 import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
@@ -43,10 +43,4 @@ class SiteFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-
-
-export default form(SiteFields)
+export default SiteFields

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form'
+import { Field } from 'redux-form'
 
 //ui
 import { DatePicker, TextField } from 'material-ui'
@@ -26,17 +26,13 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         }).format}
         hintText={label}
         floatingLabelText={label}
-        onChange = {(event, value) => {input.onChange(value)}} 
-        onBlur = {(value) => { value = '' } }/>
+        onChange = {(event, value) => {input.onChange(value)} } 
+        onBlur = {(value) => { value = '' }}/>
     <TextField  style={{marginLeft: 5}} floatingLabelText='day of year'  hintText='day of year' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
        fullWidth={false} 
         />
     </div>
 )
-
-const form =  reduxForm({  
-	form: 'logsheet'
-})
 
 class DateFields extends Component {
     constructor(props) {
@@ -56,5 +52,4 @@ class DateFields extends Component {
     }
 }
 
-
-export default form(DateFields)
+export default DateFields

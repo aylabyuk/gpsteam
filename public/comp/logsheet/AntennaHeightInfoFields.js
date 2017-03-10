@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { Field, formValueSelector } from 'redux-form'
 
 //ui
 import { TextField, DatePicker } from 'material-ui'
@@ -53,10 +53,6 @@ class AntennaHeightInfoFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
 const selector = formValueSelector('logsheet') 
 AntennaHeightInfoFields = connect(
   state => {
@@ -69,4 +65,4 @@ AntennaHeightInfoFields = connect(
   }
 )(AntennaHeightInfoFields)
 
-export default form(AntennaHeightInfoFields);
+export default AntennaHeightInfoFields;

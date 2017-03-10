@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { reduxForm } from 'redux-form'
 
 //components
 import DateFields from './DateFields'
@@ -13,6 +12,8 @@ import StatusFields from './StatusFields'
 import AntennaHeigtInfoFields from './AntennaHeightInfoFields'
 import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
+
+import { reduxForm } from 'redux-form'
 
 //ui
 import { Paper, AppBar, RaisedButton, Divider } from 'material-ui';

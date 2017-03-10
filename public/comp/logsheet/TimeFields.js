@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { Field } from 'redux-form'
 import { connect } from 'react-redux'
 
 import ClearableTimePicker from './ClearableTimePicker';
@@ -35,18 +35,4 @@ class TimeFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-const selector = formValueSelector('logsheet') 
-TimeFields = connect(
-  state => {
-    const failureTime = selector(state, 'failureTime')
-    return {
-      failureTime
-    }
-  }
-)(TimeFields)
-
-export default form(TimeFields)
+export default TimeFields

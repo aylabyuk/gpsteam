@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form'
+import { Field } from 'redux-form'
 
 //ui
 import { TextField } from 'material-ui'
@@ -27,9 +27,4 @@ class StatusFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-
-export default form(StatusFields);
+export default StatusFields;

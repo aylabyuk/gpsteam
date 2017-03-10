@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { reduxForm, Field, change } from 'redux-form'
+import { Field, change } from 'redux-form'
 
 import SiteContacts from '../contacts/SiteContacts'
 import NewContactDialog from '../contacts/NewContactDialog'
@@ -181,8 +181,4 @@ function mapStateToProps(state) {
 	}
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-export default connect(mapStateToProps, { changeSelectedContactId })(form(graphql(ContactsQuery)(SiteContactPersonFields)))
+export default connect(mapStateToProps, { changeSelectedContactId })(graphql(ContactsQuery)(SiteContactPersonFields))

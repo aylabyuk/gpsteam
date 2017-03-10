@@ -32,9 +32,4 @@ class PertinentInfoFields extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'logsheet'
-})
-
-
-export default form(PertinentInfoFields);
+export default PertinentInfoFields;

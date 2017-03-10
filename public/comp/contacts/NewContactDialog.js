@@ -53,7 +53,6 @@ const addNewContactPerson = gql`
 
 class NewContactDialog extends Component {
     handleAdd(d) {
-    //    console.log(d)
         this.props.mutate({ variables: {
             first_name: d.first_name,
             last_name: d.last_name,

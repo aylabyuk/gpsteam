@@ -175,10 +175,4 @@ class SiteContactPersonFields extends Component {
     }
 }
 
-function mapStateToProps(state) {  
-	return {
-		contactId: state.ui.selectedContactId
-	}
-}
-
-export default connect(mapStateToProps, { changeSelectedContactId })(graphql(ContactsQuery)(SiteContactPersonFields))
+export default connect(null, { changeSelectedContactId })(graphql(ContactsQuery)(SiteContactPersonFields))

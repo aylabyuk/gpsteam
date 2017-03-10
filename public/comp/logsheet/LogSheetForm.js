@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -12,11 +14,11 @@ import StatusFields from './StatusFields'
 import AntennaHeigtInfoFields from './AntennaHeightInfoFields'
 import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
+import LogSheetButtons from './LogSheetButtons'
 
-import { reduxForm } from 'redux-form'
 
 //ui
-import { Paper, AppBar, RaisedButton, Divider } from 'material-ui';
+import { Paper, AppBar, Divider } from 'material-ui';
 
 import styles from '../../css/home.css';
 
@@ -42,14 +44,6 @@ const LogSheetQuery = gql`query LogSheetQuery {
 }`;
 
 class LogSheetForm extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    handleSubmitLog(d) {
-        console.log(d)
-    }
-
     render() {
         let { loading, allSitename, allReceiver, allAntenna } = this.props.data
 
@@ -71,14 +65,10 @@ class LogSheetForm extends Component {
                     <StatusFields />
                     <AntennaHeigtInfoFields />
                     <PertinentInfoFields />
-                    <SiteContactPersonFields change={this.props.change}/>
+                    <SiteContactPersonFields contactId={this.props.contactId} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <div style={{ display: 'flex', justifyContent: ' space-around ' }}>
-                        <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
-                            primary buttonStyle={{ width: 150 }}/>
-                        <RaisedButton label='cancel' primary buttonStyle={{ width: 150 }}/>
-                    </div>
+                    <LogSheetButtons contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
                 </Paper>
             );
         }
@@ -89,4 +79,10 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-export default graphql(LogSheetQuery)(form(LogSheetForm))
+function mapStateToProps(state) {  
+	return {
+		contactId: state.ui.selectedContactId
+	}
+}
+
+export default connect(mapStateToProps)(graphql(LogSheetQuery)(form(LogSheetForm)))

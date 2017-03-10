@@ -14,7 +14,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import NotFoundPage from './comp/NotFoundPage'
 import TimeSeriesContainer from './comp/timeseries/TimeSeriesContainer'
 import TestDashboard from './comp/TestDashboard'
-import LogSheetForm from './comp/logsheet/LogSheetForm'
+import _LogSheet from './comp/logsheet/_LogSheet'
 
 //apollo client
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
@@ -75,7 +75,7 @@ render(
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={TestDashboard} />
-                <Route path="/logsheet" component={LogSheetForm} />
+                <Route path="/logsheet" component={_LogSheet} />
 
                 <Route path="*" component={NotFoundPage} />
             </Route>

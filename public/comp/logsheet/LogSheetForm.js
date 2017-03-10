@@ -71,7 +71,7 @@ class LogSheetForm extends Component {
                     <StatusFields />
                     <AntennaHeigtInfoFields />
                     <PertinentInfoFields />
-                    <SiteContactPersonFields />
+                    <SiteContactPersonFields change={this.props.change}/>
                     <Divider />
                     <br />
                     <div style={{ display: 'flex', justifyContent: ' space-around ' }}>

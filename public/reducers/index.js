@@ -7,7 +7,7 @@ import ui from './ui_reducer'
 
 const rootReducer = combineReducers({
 	plot: plot,
-	appforms: formReducer,
+	form: formReducer,
 	ui: ui,
 	routing: routerReducer
 	})

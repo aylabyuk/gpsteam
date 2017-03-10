@@ -19,7 +19,7 @@ const addNewLogSheet = gql`
         $fieldwork_id: ID!
         $site_name: String
         $survey_type: String
-        $logsheet_date: String
+        $logsheet_date: Date
         $julian_day: Int
         $marker: String
         $receiver_serialnumber: String
@@ -89,6 +89,8 @@ const addNewLogSheet = gql`
         ) {
             id
             logsheet_date
+            time_start
+            time_end
         }
     }
 `
@@ -96,6 +98,8 @@ const addNewLogSheet = gql`
 class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
+        console.log(d)
+
         this.props.mutate({ variables: {
             fieldwork_id: 0,
             site_name: d.sitename,

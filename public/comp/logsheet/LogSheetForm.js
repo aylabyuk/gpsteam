@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { reduxForm } from 'redux-form'
 
 //components
 import DateFields from './DateFields'
@@ -44,8 +45,8 @@ class LogSheetForm extends Component {
         super(props);
     }
 
-    handleSubmit() {
-        console.log('submit')
+    handleSubmitLog(d) {
+        console.log(d)
     }
 
     render() {
@@ -73,7 +74,8 @@ class LogSheetForm extends Component {
                     <Divider />
                     <br />
                     <div style={{ display: 'flex', justifyContent: ' space-around ' }}>
-                        <RaisedButton label='submit' onTouchTap={ this.handleSubmit } primary buttonStyle={{ width: 150 }}/>
+                        <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
+                            primary buttonStyle={{ width: 150 }}/>
                         <RaisedButton label='cancel' primary buttonStyle={{ width: 150 }}/>
                     </div>
                 </Paper>
@@ -82,4 +84,8 @@ class LogSheetForm extends Component {
     }
 }
 
-export default graphql(LogSheetQuery)(LogSheetForm)
+const form =  reduxForm({  
+	form: 'logsheet'
+})
+
+export default graphql(LogSheetQuery)(form(LogSheetForm))

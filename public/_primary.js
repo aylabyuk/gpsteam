@@ -12,8 +12,6 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
 //React Components
 import NotFoundPage from './comp/NotFoundPage'
-import TimeSeriesContainer from './comp/timeseries/TimeSeriesContainer'
-import TestDashboard from './comp/TestDashboard'
 import _LogSheet from './comp/logsheet/_LogSheet'
 
 //apollo client
@@ -29,7 +27,7 @@ const networkInterface = createBatchingNetworkInterface({
     credentials: "same-origin",
   },
   batchInterval: 20,
-  uri: "http://gpsteam.herokuapp.com/graphql",
+  uri: "http://gpsteamapi.herokuapp.com/graphql",
 });
 
 
@@ -74,7 +72,7 @@ render(
     <ApolloProvider client={apolloClient} store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
-                <IndexRoute component={TestDashboard} />
+                <IndexRoute component={_LogSheet} />
                 <Route path="/logsheet" component={_LogSheet} />
 
                 <Route path="*" component={NotFoundPage} />

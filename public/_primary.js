@@ -27,11 +27,11 @@ const networkInterface = createBatchingNetworkInterface({
     credentials: "same-origin",
   },
   batchInterval: 20,
-  uri: "http://gpsteamapi.herokuapp.com/graphql",
+  uri: "http://localhost:4000/graphql",
 });
 
 // connect to web-socket for subscription
-const wsClient = new SubscriptionClient(`ws://gpsteamapi.herokuapp.com/`, {
+const wsClient = new SubscriptionClient(`ws://localhost:4000/`, {
     reconnect: true,
     connectionParams: {
         // Pass any arguments for initialization 

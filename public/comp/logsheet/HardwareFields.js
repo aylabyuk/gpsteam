@@ -30,10 +30,10 @@ class ReceiverInfo extends Component {
     render() {
         const { Receiver } = this.props.data
         return(
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Field name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource} />
-                <TextField  floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.type}  disabled={true} />
-                <TextField  floatingLabelText='part number' value={Receiver == null ? '' : Receiver.part_number} disabled={true} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                <Field style={{flexGrow: 1}} name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource} />
+                <TextField style={{flexGrow: 1}} floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.type}  disabled={true} />
+                <TextField style={{flexGrow: 1}}  floatingLabelText='part number' value={Receiver == null ? '' : Receiver.part_number} disabled={true} />
             </div>
         )
     }
@@ -58,10 +58,10 @@ class AntennaInfo extends Component {
     render() {
         const { Antenna } = this.props.data
         return(
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Field name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource}/>
-                <TextField floatingLabelText='antenna type' value={Antenna == null ? '' : Antenna.type}  disabled={true} />
-                <TextField floatingLabelText='part number' value={Antenna == null ? '' : Antenna.part_number} disabled={true} />
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
+                <Field style={{flexGrow: 1}} name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource}/>
+                <TextField style={{flexGrow: 1}} floatingLabelText='antenna type' value={Antenna == null ? '' : Antenna.type}  disabled={true} />
+                <TextField style={{flexGrow: 1}} floatingLabelText='part number' value={Antenna == null ? '' : Antenna.part_number} disabled={true} />
             </div>
         )
     }
@@ -93,6 +93,7 @@ class HardwareFields extends Component {
 
         return (
             <form>
+                <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Instruments</h5>
                 <ReceiverInfoWithData serial_number={recIn ? this.props.receiverSN : ''} datasource={receivers_SNs}/>
                 <AntennaInfoWithData serial_number={antIn ? this.props.antennaSN : ''} datasource={antennas_SNs}/>
             </form>

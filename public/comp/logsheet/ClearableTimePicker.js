@@ -20,7 +20,7 @@ const Clearable = ComposedComponent => class extends React.Component {
     
     render () {
         return (
-            <div style={{position: 'relative'}}>
+            <div style={{position: 'relative', flexGrow: 1}}>
                 <ComposedComponent
                     { ...this.props.input }
                     autoOk={false}

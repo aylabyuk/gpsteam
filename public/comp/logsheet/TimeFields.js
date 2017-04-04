@@ -11,11 +11,14 @@ import ContentClear from 'material-ui/svg-icons/content/clear';
 class TimeFields extends Component {
     render() {
         return (
-            <form style={{width: 778, display: "flex", flexDirection: 'row', justifyContent: 'space-between'}}>
-                <div style={{flexShrink: 1}}><Field name="startTime" component={ClearableTimePicker} label="start time(UTC)"/></div>
-                <div style={{flexShrink: 1}}><Field name="endTime" component={ClearableTimePicker} label="end time(UTC)"/></div>
-                <div style={{flexShrink: 1}}><Field name="failureTime" component={ClearableTimePicker} label="failure time(UTC)"/></div>
-            </form>
+            <div>
+                <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Time Logs and Status</h5>
+                <form style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
+                    <Field name="startTime" component={ClearableTimePicker} label="start time(UTC)"/>
+                    <Field name="endTime" component={ClearableTimePicker} label="end time(UTC)"/>
+                    <Field name="failureTime" component={ClearableTimePicker} label="failure time(UTC)"/>
+                </form>
+            </div>
         );
     }
 }

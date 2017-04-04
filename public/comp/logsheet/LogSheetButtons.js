@@ -24,27 +24,27 @@ const addNewLogSheet = gql`
         $marker: String
         $receiver_serialnumber: String
         $antenna_serialnumber: String
-        $height: Float
-        $north: Float
-        $east: Float
-        $south: Float
-        $west: Float
-        $time_start: Time
-        $time_end: Time
+        $height: Double
+        $north: Double
+        $east: Double
+        $south: Double
+        $west: Double
+        $time_start: Date
+        $time_end: Date
         $azimuth: Int
-        $failure_time: Time
+        $failure_time: Date
         $receiver_status: String
         $antenna_status: String
         $rod_num: Int
         $rod_correction: Int
-        $avg_slant_height: Float
+        $avg_slant_height: Double
         $ip_add: String
         $netmask: String
         $gateway: String
         $dns: String
         $local_tcp_port: String
-        $latitude: Float
-        $longitude: Float
+        $latitude: Double
+        $longitude: Double
         $site_sketch_id: ID
         $observed_situation: String
         $lodging_road_information: String

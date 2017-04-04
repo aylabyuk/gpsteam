@@ -21,9 +21,9 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 )
 
 const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
-    <div style={{display: 'flex', flexDirection: 'row'}}>
+    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
     <DatePicker 
-        mode='landscape'
+        mode='portrait'
         errorText = {touched && error} 
         {...input}
         value = {input.value !== ''? new Date(input.value) : null}

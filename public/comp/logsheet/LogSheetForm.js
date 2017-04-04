@@ -23,10 +23,10 @@ import { Paper, AppBar, Divider } from 'material-ui';
 import styles from '../../css/home.css';
 
 const style = {
-  margin: 20,
+  margin: 2,
   display: 'inline-block',
   padding: 10,
-  maxWidth: 800,
+  maxWidth: '100vw',
   display: 'flex',
   flexDirection: 'column'
 };

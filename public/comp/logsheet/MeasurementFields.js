@@ -17,14 +17,15 @@ class MeasurementFields extends Component {
     render() {
         return (
             <div>
-                <form style={{width: 778, display: "flex", flexDirection: 'row', justifyContent: 'space-around'}}>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="height" component={renderTextField} label="height(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="north" component={renderTextField} label="north(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="east" component={renderTextField} label="east(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="south" component={renderTextField} label="south(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="west" component={renderTextField} label="west(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="aveSlantHeight" component={renderTextField} label="slantheight(m)" /></div>
-                    <div style={{flexGrow: 1}}><Field style={{width: 108}} name="azimuth" component={renderTextField} label="azimuth" /></div>
+                <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Measurements</h5>
+                <form style={{display: "flex", flexDirection: 'row', justifyContent: 'space-around', flexWrap: 'wrap'}}>
+                    <div style={{flexGrow: 1}}><Field name="north" component={renderTextField} label="north" /></div>
+                    <div style={{flexGrow: 1}}><Field name="east" component={renderTextField} label="east" /></div>
+                    <div style={{flexGrow: 1}}><Field name="south" component={renderTextField} label="south" /></div>
+                    <div style={{flexGrow: 1}}><Field name="west" component={renderTextField} label="west" /></div>
+                    <div style={{flexGrow: 1}}><Field name="height" component={renderTextField} label="height" /></div>
+                    <div style={{flexGrow: 1}}><Field name="aveSlantHeight" component={renderTextField} label="slant height" /></div>
+                    <div style={{flexGrow: 1}}><Field name="azimuth" component={renderTextField} label="azimuth(deg)" /></div>
                 </form>
             </div>
         );

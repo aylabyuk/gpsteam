@@ -135,7 +135,7 @@ class SiteContactPersonFields extends Component {
                     <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
 
 
-                <div style={{width: 778, display: "flex", flexDirection: 'row', justifyContent: 'space-between'}} >
+                <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}} >
                     <Field name="contactFirstName" component={renderTextField} label="first name" />
                     <Field name="contactLastName" component={renderTextField} label="last name" />
                     <Field name="contactNumber" component={renderTextField} label="number" />

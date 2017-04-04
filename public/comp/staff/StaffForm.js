@@ -70,48 +70,22 @@ const addNewStaff = gql`
         $division_name: STRING!
         $email_address: STRING!
         $office_location: STRING!
-        $birthday: DATE!
+        $birthday: STRING!
     ) {
         newStaff: createStaff(
-            fieldwork_id: $fieldwork_id
-            site_name: $site_name
-            survey_type: $survey_type
-            logsheet_date: $logsheet_date
-            julian_day: $julian_day
-            marker: $marker
-            receiver_serialnumber: $receiver_serialnumber
-            antenna_serialnumber: $antenna_serialnumber
-            height: $height
-            north: $north
-            east: $east
-            south: $south
-            west: $west
-            time_start: $time_start
-            time_end: $time_end
-            azimuth: $azimuth
-            failure_time: $failure_time
-            receiver_status: $receiver_status
-            antenna_status: $antenna_status
-            rod_num: $rod_num
-            rod_correction: $rod_correction
-            avg_slant_height: $avg_slant_height
-            ip_add: $ip_add
-            netmask: $netmask
-            gateway: $gateway
-            dns: $dns
-            local_tcp_port: $local_tcp_port
-            latitude: $latitude
-            longitude: $longitude
-            site_sketch_id: $site_sketch_id
-            observed_situation: $observed_situation
-            lodging_road_information: $lodging_road_information
-            contact_id: $contact_id
-            others: $others
+            first_name: $first_name
+            last_name: $last_name
+            nickname: $nickname
+            position: $position_name
+            contact_num: $contact_num
+            division_name: $division_name
+            email_address: $email_address
+            office_location: $office_location
+            birthday: $birthday
         ) {
             id
-            logsheet_date
-            time_start
-            time_end
+            first_name
+            last_name
         }
     }
 `
@@ -183,4 +157,4 @@ const form =  reduxForm({
 	form: 'newStaff'
 })
 
-export default graphql(StaffQuery)(form(StaffForm));
+export default graphql(addNewStaff)(graphql(StaffQuery)(form(StaffForm)));

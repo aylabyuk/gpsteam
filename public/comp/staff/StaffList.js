@@ -1,10 +1,52 @@
 import React, { Component } from 'react';
+import { cloneDeep, sortBy } from 'lodash'
 
 //ui
 import { List, ListItem, Avatar } from 'material-ui';
 import {fullWhite, transparent, grey500} from 'material-ui/styles/colors';
 
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
+const staffCreated = gql`
+  subscription staffCreated {
+    staffCreated {
+        id
+        first_name
+        last_name
+        nickname
+        position_id
+        contact_num
+        division_id
+        email_address
+        office_location
+        birthday
+    }
+  }
+`;
+
 class StaffList extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.subscription && !nextProps.data.loading) {
+            let { subscribeToMore } = this.props.data
+            this.subscription = [
+                subscribeToMore({
+                    document: staffCreated,
+                    updateQuery: (previousResult, { subscriptionData }) => {
+
+                        const newContact = subscriptionData.data.staffCreated
+                        const newResult = cloneDeep(previousResult)
+                        
+                        newResult.allStaff.push(subscriptionData.data.staffCreated)
+                        return newResult
+                    },
+                })
+            ]
+        }
+    }
+
     render() {
         let { data } = this.props
 

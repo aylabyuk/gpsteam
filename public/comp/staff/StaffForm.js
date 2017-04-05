@@ -148,15 +148,17 @@ class StaffForm extends Component {
     }
 
     handleSubmitStaff(d) {
-        console.log(d)
+
+        let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
+        let div = this.props.data.allDivision.find((x) => x.division == d.divisionName)
 
         this.props.mutate({ variables: {
             first_name: d.firstName,
             last_name: d.lastName,
             nickname: d.nickName,
-            position_id: d.positionName,
+            position_id: pos.id,
             contact_num: d.contactNum,
-            division_id: d.divisionName,
+            division_id: div.id,
             email_address: d.email,
             office_location: d.officeLocation,
             birthday: d.birthday

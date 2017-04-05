@@ -98,7 +98,7 @@ const addNewLogSheet = gql`
 class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
-        console.log(d)
+        //console.log(d)
 
         this.props.mutate({ variables: {
             fieldwork_id: 0,
@@ -139,7 +139,7 @@ class LogSheetButtons extends Component {
             console.log('got data', data);
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
-      });
+        });
     }
 
     render() {

@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form'
-import { reduxForm } from 'redux-form'
+import { reduxForm, reset } from 'redux-form'
+import { validateStaffInfo as validate } from './validateStaffInfo'
+
+//component
+import StaffList from './StaffList'
 
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 //ui
-import { Paper, AppBar, TextField, AutoComplete, Drawer, FlatButton, RaisedButton, List, ListItem, DatePicker } from 'material-ui';
+import { Paper, AppBar, TextField, AutoComplete, Drawer, 
+        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar } from 'material-ui';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -21,6 +26,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
     <AutoComplete
+        errorText = {touched && error} 
         floatingLabelText={label}
         filter={AutoComplete.caseInsensitiveFilter}
         openOnFocus={true}
@@ -48,7 +54,8 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         hintText={label}
         floatingLabelText={label}
         onChange = {(event, value) => {input.onChange(value)} } 
-        onBlur = {(value) => { value = '' }}/>
+        onBlur = {(value) => { value = '' }}
+        fullWidth={true}/>
 )
 
 const style = {
@@ -56,29 +63,30 @@ const style = {
   display: 'inline-block',
   padding: 10,
   maxWidth: '100vw',
+  height: '100vh',
   display: 'flex',
   flexDirection: 'column'
 };
 
 const addNewStaff = gql`
     mutation addNewStaff(
-        $first_name: STRING!
-        $last_name: STRING!
-        $nickname: STRING!
-        $position_name: STRING!
-        $contact_num: STRING!
-        $division_name: STRING!
-        $email_address: STRING!
-        $office_location: STRING!
-        $birthday: STRING!
+        $first_name: String!
+        $last_name: String!
+        $nickname: String!
+        $position_id: Int!
+        $contact_num: String!
+        $division_id: Int!
+        $email_address: String
+        $office_location: String!
+        $birthday: Date!
     ) {
         newStaff: createStaff(
             first_name: $first_name
             last_name: $last_name
             nickname: $nickname
-            position: $position_name
+            position_id: $position_id
             contact_num: $contact_num
-            division_name: $division_name
+            division_id: $division_id
             email_address: $email_address
             office_location: $office_location
             birthday: $birthday
@@ -92,18 +100,21 @@ const addNewStaff = gql`
 
 const StaffQuery = gql`query StaffQuery {
   allPosition {
+    id
     position_name
   }
   allDivision{
+    id
     division
   }
   allStaff {
+    id
     first_name
     last_name
     nickname
-    position_name
+    position_id
     contact_num
-    division_name
+    division_id
     email_address
     office_location
     birthday
@@ -113,14 +124,58 @@ const StaffQuery = gql`query StaffQuery {
 class StaffForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {open: false};
+        this.state = {open: false, openSnackBar: false, snackBarMsg: ''};
     }
 
     handleToggle = () => this.setState({open: !this.state.open});
 
+    handleToggleSnackBar(msg) {
+        this.setState({
+            snackBarMsg: msg,
+            openSnackBar: !this.state.openSnackBar
+        });
+    }
+
+    handleRequestClose = () => {
+        this.setState({
+            openSnackBar: false,
+            snackBarMsg: ''
+        });
+    };
+
+    handleReset() {
+        this.props.dispatch(reset('newStaff'));
+    }
+
+    handleSubmitStaff(d) {
+        console.log(d)
+
+        this.props.mutate({ variables: {
+            first_name: d.firstName,
+            last_name: d.lastName,
+            nickname: d.nickName,
+            position_id: d.positionName,
+            contact_num: d.contactNum,
+            division_id: d.divisionName,
+            email_address: d.email,
+            office_location: d.officeLocation,
+            birthday: d.birthday
+        } }).then((data) => {
+            let d = data.data.newStaff
+            console.log('got new staff data', d);
+            let msg = 'New Staff Created: ' + d.first_name + ' ' + d.last_name
+            this.handleToggleSnackBar(msg)
+            this.handleReset()
+        }).catch((error) => {
+            console.log('there was an error sending the query: ', error);
+            let msg = 'an error has occured'
+            this.handleToggleSnackBar(msg)
+        });
+
+    }
 
     render() {
-        let { loading, allPosition, allDivision } = this.props.data
+        let { loading, allPosition, allDivision, allStaff } = this.props.data
 
         if(loading) {
             return <div>loading..</div>
@@ -130,7 +185,8 @@ class StaffForm extends Component {
                     <AppBar
                         title="Manage Staff"
                         iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
-                    />        
+                    />
+                    <StaffList data={this.props.data} />
                     <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>
                         <div style={{padding: 10}}>
                             <RaisedButton label="Close" secondary fullWidth onTouchTap={this.handleToggle}/>
@@ -143,10 +199,15 @@ class StaffForm extends Component {
                             <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name })}/>
                             <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division })} />
                             <Field name='officeLocation' label="office location" component={renderTextField}  />
-                            <RaisedButton label="Add" primary fullWidth />
+                            <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
                         </div>
                     </Drawer>
-
+                    <Snackbar
+                        open={this.state.openSnackBar}
+                        message={this.state.snackBarMsg}
+                        autoHideDuration={4000}
+                        onRequestClose={this.handleRequestClose}
+                    />
                 </Paper>
             );
         }
@@ -154,7 +215,8 @@ class StaffForm extends Component {
 }
 
 const form =  reduxForm({  
-	form: 'newStaff'
+	form: 'newStaff',
+    validate
 })
 
 export default graphql(addNewStaff)(graphql(StaffQuery)(form(StaffForm)));

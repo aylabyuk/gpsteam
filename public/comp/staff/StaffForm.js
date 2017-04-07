@@ -75,11 +75,11 @@ const addNewStaff = gql`
         $last_name: String!
         $nickname: String!
         $position_id: Int!
-        $contact_num: String!
         $division_id: Int!
-        $email_address: String
         $office_location: String!
         $birthday: Date!
+        $contact_numbers: Object
+        $emails: Object
     ) {
         newStaff: createStaff(
             first_name: $first_name
@@ -138,17 +138,37 @@ class StaffForm extends Component {
     }
 
     handleSubmitStaff(d) {
+        console.log(d)
 
         let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
         let div = this.props.data.allDivision.find((x) => x.division == d.divisionName)
+
+        // get emails and contact#s
+        let emails = []
+        let contactNums = []
+        let fields = Object.keys(d)
+
+        for(let i=0;i<fields.length;++i)
+        {
+            if(fields[i].includes('email'))
+            {
+                emails.push(fields[i]);
+            }
+            if(fields[i].includes('contact'))
+            {
+                contactNums.push(fields[i]);
+            }
+        }
+
+        console.log(emails, contactNums)
 
         this.props.mutate({ variables: {
             first_name: d.firstName,
             last_name: d.lastName,
             nickname: d.nickName,
             position_id: pos.id,
-            contact_num: d.contactNum,
             division_id: div.id,
+            contact_num: d.contactNum,
             email_address: d.email,
             office_location: d.officeLocation,
             birthday: d.birthday

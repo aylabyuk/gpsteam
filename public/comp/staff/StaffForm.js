@@ -13,6 +13,7 @@ import { graphql } from 'react-apollo';
 //ui
 import { Paper, AppBar, TextField, AutoComplete, Drawer, 
         FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar } from 'material-ui';
+import MultipleForm from './MultipleForm'
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -105,20 +106,9 @@ const StaffQuery = gql`query StaffQuery {
   }
   allDivision{
     id
-    division
+    division_name
   }
-  allStaff {
-    id
-    first_name
-    last_name
-    nickname
-    position_id
-    contact_num
-    division_id
-    email_address
-    office_location
-    birthday
-  }
+  
 }`;
 
 class StaffForm extends Component {
@@ -188,19 +178,19 @@ class StaffForm extends Component {
                         title="Manage Staff"
                         iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
                     />
-                    <StaffList data={this.props.data} />
+                    {/*<StaffList data={this.props.data} />*/}
                     <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>
                         <div style={{padding: 10}}>
                             <RaisedButton label="Close" secondary fullWidth onTouchTap={this.handleToggle}/>
                             <Field name='firstName' label="first name" component={renderTextField}  />
                             <Field name='lastName' label="last name" component={renderTextField}  />
                             <Field name='nickName' label="nick name" component={renderTextField}  />
-                            <Field name='contactNum' label="contact number" component={renderTextField}  />
-                            <Field name='email' label="email address" component={renderTextField}  />
                             <Field name='birthday' label="birthday" component={renderDatePicker} autoOk={false}/>
                             <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name })}/>
-                            <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division })} />
+                            <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name })} />
                             <Field name='officeLocation' label="office location" component={renderTextField}  />
+                            <MultipleForm name='email' />
+                            <MultipleForm name='contact number' />
                             <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
                         </div>
                     </Drawer>

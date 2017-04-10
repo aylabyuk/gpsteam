@@ -40,7 +40,7 @@ class MultipleForm extends Component {
         };
 
         return (
-            <ParentComponent type={name} addChild={this.onAddChild.bind(this)}>
+            <ParentComponent type={name} addChild={this.onAddChild.bind(this)} numChildren={this.state.numChildren}>
                 {children}
             </ParentComponent>
         );
@@ -58,7 +58,7 @@ class ParentComponent extends Component {
         return(
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', marginBottom: '20px' }}>
                 {this.props.children}
-                <FlatButton label={'add ' + this.props.type} onTouchTap={this.props.addChild} secondary/>
+                <FlatButton style={ this.props.numChildren === 4 ? { display: 'none' } : null } label={'add ' + this.props.type} onTouchTap={this.props.addChild} secondary/>
             </div>
         )
     }

@@ -78,20 +78,20 @@ const addNewStaff = gql`
         $division_id: Int!
         $office_location: String!
         $birthday: Date!
-        $contact_numbers: Object
-        $emails: Object
+        $contact_numbers: [ContactNumberInput]
+        $emails: [EmailInput]
     ) {
-        newStaff: createStaff(
+        newStaff: createStaff( input: {
             first_name: $first_name
             last_name: $last_name
             nickname: $nickname
             position_id: $position_id
-            contact_num: $contact_num
             division_id: $division_id
-            email_address: $email_address
             office_location: $office_location
             birthday: $birthday
-        ) {
+            contact_numbers: $contact_numbers
+            emails: $emails
+       } ) {
             id
             first_name
             last_name
@@ -141,26 +141,7 @@ class StaffForm extends Component {
         console.log(d)
 
         let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
-        let div = this.props.data.allDivision.find((x) => x.division == d.divisionName)
-
-        // get emails and contact#s
-        let emails = []
-        let contactNums = []
-        let fields = Object.keys(d)
-
-        for(let i=0;i<fields.length;++i)
-        {
-            if(fields[i].includes('email'))
-            {
-                emails.push(fields[i]);
-            }
-            if(fields[i].includes('contact'))
-            {
-                contactNums.push(fields[i]);
-            }
-        }
-
-        console.log(emails, contactNums)
+        let div = this.props.data.allDivision.find((x) => x.division_name == d.divisionName)
 
         this.props.mutate({ variables: {
             first_name: d.firstName,
@@ -168,10 +149,18 @@ class StaffForm extends Component {
             nickname: d.nickName,
             position_id: pos.id,
             division_id: div.id,
-            contact_num: d.contactNum,
-            email_address: d.email,
             office_location: d.officeLocation,
-            birthday: d.birthday
+            birthday: d.birthday,
+            emails: [
+                    { address:  d.email1},
+                    { address:  d.email2},
+                    { address:  d.email3}
+            ],
+            contact_numbers:[
+                    {number: d.contactnumber1},
+                    {number: d.contactnumber2},
+                    {number: d.contactnumber3},
+            ]
         } }).then((data) => {
             let d = data.data.newStaff
             console.log('got new staff data', d);
@@ -210,7 +199,7 @@ class StaffForm extends Component {
                             <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name })} />
                             <Field name='officeLocation' label="office location" component={renderTextField}  />
                             <MultipleForm name='email' />
-                            <MultipleForm name='contact number' />
+                            <MultipleForm name='contactnumber' />
                             <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
                         </div>
                     </Drawer>

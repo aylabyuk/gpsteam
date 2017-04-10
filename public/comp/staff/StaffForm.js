@@ -61,12 +61,11 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
 
 const style = {
   margin: 2,
-  display: 'inline-block',
+  marginTop: 50,
+  display: 'block',
   padding: 10,
   maxWidth: '100vw',
-  height: '100vh',
-  display: 'flex',
-  flexDirection: 'column'
+  minHeight: '100vh'
 };
 
 const addNewStaff = gql`
@@ -108,7 +107,30 @@ const StaffQuery = gql`query StaffQuery {
     id
     division_name
   }
-  
+  allStaff {
+    id
+	first_name
+    last_name
+    nickname
+    position {
+      id
+      position_name
+    }
+    division {
+      id
+      division_name
+    }
+    contact_numbers {
+      id
+      number
+    }
+    emails {
+      id
+      address
+    }
+    office_location
+    birthday
+  }
 }`;
 
 class StaffForm extends Component {
@@ -138,8 +160,6 @@ class StaffForm extends Component {
     }
 
     handleSubmitStaff(d) {
-        console.log(d)
-
         let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
         let div = this.props.data.allDivision.find((x) => x.division_name == d.divisionName)
 
@@ -167,6 +187,10 @@ class StaffForm extends Component {
             let d = data.data.newStaff
             console.log('got new staff data', d);
             let msg = 'New Staff Created: ' + d.first_name + ' ' + d.last_name
+
+           console.log(this.props)
+
+
             this.handleToggleSnackBar(msg)
             this.handleReset()
         }).catch((error) => {
@@ -184,34 +208,37 @@ class StaffForm extends Component {
             return <div>loading..</div>
         } else {
             return (
-                <Paper style={style} zDepth={1}>
+                <div>
                     <AppBar
-                        title="Manage Staff"
-                        iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
-                    />
-                    {/*<StaffList data={this.props.data} />*/}
-                    <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>
-                        <div style={{padding: 10}}>
-                            <RaisedButton label="Close" secondary fullWidth onTouchTap={this.handleToggle}/>
-                            <Field name='firstName' label="first name" component={renderTextField}  />
-                            <Field name='lastName' label="last name" component={renderTextField}  />
-                            <Field name='nickName' label="nick name" component={renderTextField}  />
-                            <Field name='birthday' label="birthday" component={renderDatePicker} autoOk={false}/>
-                            <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name })}/>
-                            <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name })} />
-                            <Field name='officeLocation' label="office location" component={renderTextField}  />
-                            <MultipleForm name='email' />
-                            <MultipleForm name='contactnumber' />
-                            <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
-                        </div>
-                    </Drawer>
-                    <Snackbar
-                        open={this.state.openSnackBar}
-                        message={this.state.snackBarMsg}
-                        autoHideDuration={4000}
-                        onRequestClose={this.handleRequestClose}
-                    />
-                </Paper>
+                            style={{position: 'fixed', top: 0, left: 0}}
+                            title="Manage Staff"
+                            iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
+                        />
+                    <Paper style={style} zDepth={1}>
+                        <StaffList data={this.props.data} />
+                        <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>
+                            <div style={{padding: 10}}>
+                                <RaisedButton label="Close" secondary fullWidth onTouchTap={this.handleToggle}/>
+                                <Field name='firstName' label="first name" component={renderTextField}  />
+                                <Field name='lastName' label="last name" component={renderTextField}  />
+                                <Field name='nickName' label="nick name" component={renderTextField}  />
+                                <Field name='birthday' label="birthday" component={renderDatePicker} autoOk={false}/>
+                                <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name }) } />
+                                <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name }) } />
+                                <Field name='officeLocation' label="office location" component={renderTextField}  />
+                                <MultipleForm name='email' />
+                                <MultipleForm name='contactnumber' />
+                                <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
+                            </div>
+                        </Drawer>
+                        <Snackbar
+                            open={this.state.openSnackBar}
+                            message={this.state.snackBarMsg}
+                            autoHideDuration={4000}
+                            onRequestClose={this.handleRequestClose}
+                        />
+                    </Paper>
+                </div>
             );
         }
     }

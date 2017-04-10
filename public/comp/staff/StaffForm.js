@@ -74,8 +74,8 @@ const addNewStaff = gql`
         $first_name: String!
         $last_name: String!
         $nickname: String!
-        $position_id: Int!
-        $division_id: Int!
+        $positionId: Int!
+        $divisionId: Int!
         $office_location: String!
         $birthday: Date!
         $contact_numbers: [ContactNumberInput]
@@ -85,8 +85,8 @@ const addNewStaff = gql`
             first_name: $first_name
             last_name: $last_name
             nickname: $nickname
-            position_id: $position_id
-            division_id: $division_id
+            positionId: $positionId
+            divisionId: $divisionId
             office_location: $office_location
             birthday: $birthday
             contact_numbers: $contact_numbers
@@ -143,24 +143,26 @@ class StaffForm extends Component {
         let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
         let div = this.props.data.allDivision.find((x) => x.division_name == d.divisionName)
 
+        let emails = [], contacts = []
+
+        d.email1 ? emails.push({address: d.email1}) : null
+        d.email2 ? emails.push({address: d.email2}) : null
+        d.email3 ? emails.push({address: d.email3}) : null
+
+        d.contactnumber1 ? contacts.push({number: d.contactnumber1}) : null
+        d.contactnumber2 ? contacts.push({number: d.contactnumber2}) : null
+        d.contactnumber3 ? contacts.push({number: d.contactnumber3}) : null
+
         this.props.mutate({ variables: {
             first_name: d.firstName,
             last_name: d.lastName,
             nickname: d.nickName,
-            position_id: pos.id,
-            division_id: div.id,
+            positionId: pos.id,
+            divisionId: div.id,
             office_location: d.officeLocation,
             birthday: d.birthday,
-            emails: [
-                    { address:  d.email1},
-                    { address:  d.email2},
-                    { address:  d.email3}
-            ],
-            contact_numbers:[
-                    {number: d.contactnumber1},
-                    {number: d.contactnumber2},
-                    {number: d.contactnumber3},
-            ]
+            emails: emails,
+            contact_numbers: contacts
         } }).then((data) => {
             let d = data.data.newStaff
             console.log('got new staff data', d);

@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 
 //components
 import DateFields from './DateFields'
+import ObserversFields from './ObserversFields'
 import SiteFields from './SiteFields'
 import HardwareFields from './HardwareFields'
 import MeasurementFields from './MeasurementFields'
@@ -57,6 +58,7 @@ class LogSheetForm extends Component {
                         iconClassNameRight="muidocs-icon-navigation-expand-more"
                     />
                     <DateFields />
+                    <ObserversFields />
                     <SiteFields siteNames={allSitename ? allSitename : [{site_name: 'loading..'}]}/>
                     <HardwareFields receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
                             antennas={allAntenna ? allAntenna : [{serial_number: 'loading..'}]} />

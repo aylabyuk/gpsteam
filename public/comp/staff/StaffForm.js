@@ -190,7 +190,6 @@ class StaffForm extends Component {
 
            console.log(this.props)
 
-
             this.handleToggleSnackBar(msg)
             this.handleReset()
         }).catch((error) => {
@@ -207,6 +206,7 @@ class StaffForm extends Component {
         if(loading) {
             return <div>loading..</div>
         } else {
+            window.dispatchEvent(new Event('resize'))
             return (
                 <div>
                     <AppBar

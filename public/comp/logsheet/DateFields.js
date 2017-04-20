@@ -11,15 +11,6 @@ Date.prototype.julianDate = function(){
     return j
 };
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField 
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
-)
-
 const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
     <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
     <DatePicker 
@@ -56,7 +47,6 @@ class DateFields extends Component {
         return (
         <form>
             <Field name="logdate" label='log date' component={renderDatePicker} autoOk={false} />
-            <Field name="observers" component={renderTextField} label='observers' />
         </form>
         );
     }

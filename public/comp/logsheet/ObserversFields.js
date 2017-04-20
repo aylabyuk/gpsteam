@@ -34,7 +34,7 @@ class ObserversFields extends Component {
                     autoScrollBodyContent={true}
                     bodyStyle={{padding: 0}}
                     onRequestClose={this.handleClose}
-                    repositionOnUpdate={true}>
+                    repositionOnUpdate={true} >
                     
                     <StaffForm />
 

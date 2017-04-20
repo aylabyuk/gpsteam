@@ -65,7 +65,8 @@ const style = {
   display: 'block',
   padding: 10,
   maxWidth: '100vw',
-  minHeight: '100vh'
+  minHeight: '100vh',
+  overflow: 'hidden'
 };
 
 const addNewStaff = gql`
@@ -200,13 +201,17 @@ class StaffForm extends Component {
 
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        window.dispatchEvent(new Event('resize'));
+    }
+    
+
     render() {
         let { loading, allPosition, allDivision, allStaff } = this.props.data
 
         if(loading) {
             return <div>loading..</div>
         } else {
-            window.dispatchEvent(new Event('resize'))
             return (
                 <div>
                     <AppBar

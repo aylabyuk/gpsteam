@@ -12,7 +12,7 @@ import { graphql } from 'react-apollo';
 
 //ui
 import { Paper, AppBar, TextField, AutoComplete, Drawer, 
-        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar } from 'material-ui';
+        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress } from 'material-ui';
 import MultipleForm from './MultipleForm'
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
@@ -60,13 +60,11 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
 )
 
 const style = {
-  margin: 2,
-  marginTop: 50,
+  margin: 0,
   display: 'block',
-  padding: 10,
+  padding: 0,
   maxWidth: '100vw',
-  minHeight: '100vh',
-  overflow: 'hidden'
+  minHeight: '100vh'
 };
 
 const addNewStaff = gql`
@@ -137,7 +135,7 @@ const StaffQuery = gql`query StaffQuery {
 class StaffForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {open: false, openSnackBar: false, snackBarMsg: ''};
+        this.state = {open: this.props.openDrawer, openSnackBar: false, snackBarMsg: ''};
     }
 
     handleToggle = () => this.setState({open: !this.state.open});
@@ -210,15 +208,15 @@ class StaffForm extends Component {
         let { loading, allPosition, allDivision, allStaff } = this.props.data
 
         if(loading) {
-            return <div>loading..</div>
+            return <LinearProgress mode="indeterminate" />
         } else {
             return (
                 <div>
-                    <AppBar
+                    {/*<AppBar
                             style={{position: 'fixed', top: 0, left: 0}}
                             title="Manage Staff"
                             iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
-                        />
+                        />*/}
                     <Paper style={style} zDepth={1}>
                         <StaffList data={this.props.data} />
                         <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>

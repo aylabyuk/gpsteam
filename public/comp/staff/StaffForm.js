@@ -15,6 +15,7 @@ import { Paper, AppBar, TextField, AutoComplete, Drawer,
         FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress, Tab, Tabs } from 'material-ui';
 import MultipleForm from './MultipleForm'
 import SwipeableViews from 'react-swipeable-views';
+import {GenericScrollBox, ScrollAxes, FastTrack} from 'react-scroll-box';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -217,11 +218,6 @@ class StaffForm extends Component {
         } else {
             return (
                 <div>
-                    {/*<AppBar
-                            style={{position: 'fixed', top: 0, left: 0}}
-                            title="Manage Staff"
-                            iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
-                        />*/}
                     <Paper style={style} zDepth={1}>
                          <Tabs
                             onChange={this.handleChange}
@@ -234,21 +230,28 @@ class StaffForm extends Component {
                             index={this.state.slideIndex}
                             onChangeIndex={this.handleChange}>
 
-                            <StaffList data={this.props.data} />
-                            <div style={{padding: 10}}>
-                                <Field name='firstName' label="first name" component={renderTextField}  />
-                                <Field name='lastName' label="last name" component={renderTextField}  />
-                                <Field name='nickName' label="nick name" component={renderTextField}  />
-                                <Field name='birthday' label="birthday" component={renderDatePicker} autoOk={false}/>
-                                <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name }) } />
-                                <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name }) } />
-                                <Field name='officeLocation' label="office location" component={renderTextField}  />
-                                <MultipleForm name='email' />
-                                <MultipleForm name='contactnumber' />
-                                <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
-                            </div>
+                            <GenericScrollBox style={{height: '700px'}} fastTrack={FastTrack.PAGING}>
+                                <div className="scroll-box__viewport">
+                                    <StaffList data={this.props.data} />
+                                </div>
+                            </GenericScrollBox>
+
+                            <GenericScrollBox style={{height: '700px', padding: 10}} fastTrack={FastTrack.PAGING}>
+                                <div className="scroll-box__viewport">
+                                    <Field name='firstName' label="first name" component={renderTextField}  />
+                                    <Field name='lastName' label="last name" component={renderTextField}  />
+                                    <Field name='nickName' label="nick name" component={renderTextField}  />
+                                    <Field name='birthday' label="birthday" component={renderDatePicker} autoOk={false}/>
+                                    <Field name='positionName' label="position" component={renderAutoCompleteField}  dataSource={allPosition.map((a) => { return a.position_name }) } />
+                                    <Field name='divisionName' label="division" component={renderAutoCompleteField}  dataSource={allDivision.map((a) => { return a.division_name }) } />
+                                    <Field name='officeLocation' label="office location" component={renderTextField}  />
+                                    <MultipleForm name='email' />
+                                    <MultipleForm name='contactnumber' />
+                                    <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
+                                </div>
+                            </GenericScrollBox>
                         </SwipeableViews>
-                        
+
                         <Snackbar
                             open={this.state.openSnackBar}
                             message={this.state.snackBarMsg}

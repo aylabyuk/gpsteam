@@ -37,7 +37,7 @@ class ObserversFields extends Component {
 
                 <Dialog
                     open={this.state.open}
-                    autoScrollBodyContent={true}
+                    autoScrollBodyContent={false}
                     bodyStyle={{padding: 0}}
                     onRequestClose={this.handleClose}
                     repositionOnUpdate={true} >

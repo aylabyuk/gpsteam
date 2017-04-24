@@ -12,8 +12,9 @@ import { graphql } from 'react-apollo';
 
 //ui
 import { Paper, AppBar, TextField, AutoComplete, Drawer, 
-        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress } from 'material-ui';
+        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress, Tab, Tabs } from 'material-ui';
 import MultipleForm from './MultipleForm'
+import SwipeableViews from 'react-swipeable-views';
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -135,10 +136,14 @@ const StaffQuery = gql`query StaffQuery {
 class StaffForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {open: this.props.openDrawer, openSnackBar: false, snackBarMsg: ''};
+        this.state = {slideIndex: 0, openSnackBar: false, snackBarMsg: ''};
     }
 
-    handleToggle = () => this.setState({open: !this.state.open});
+    handleChange = (value) => {
+        this.setState({
+            slideIndex: value,
+        });
+    };
 
     handleToggleSnackBar(msg) {
         this.setState({
@@ -218,10 +223,19 @@ class StaffForm extends Component {
                             iconElementRight={<FlatButton label="Create New" onTouchTap={this.handleToggle} />}
                         />*/}
                     <Paper style={style} zDepth={1}>
-                        <StaffList data={this.props.data} />
-                        <Drawer width={300} openSecondary={true} open={this.state.open} docked={true} onRequestChange={(open) => this.setState({open})}>
+                         <Tabs
+                            onChange={this.handleChange}
+                            value={this.state.slideIndex} >
+                            <Tab label="List" value={0} />
+                            <Tab label="Create New" value={1} />
+                        </Tabs>
+
+                        <SwipeableViews
+                            index={this.state.slideIndex}
+                            onChangeIndex={this.handleChange}>
+
+                            <StaffList data={this.props.data} />
                             <div style={{padding: 10}}>
-                                <RaisedButton label="Close" secondary fullWidth onTouchTap={this.handleToggle}/>
                                 <Field name='firstName' label="first name" component={renderTextField}  />
                                 <Field name='lastName' label="last name" component={renderTextField}  />
                                 <Field name='nickName' label="nick name" component={renderTextField}  />
@@ -233,7 +247,8 @@ class StaffForm extends Component {
                                 <MultipleForm name='contactnumber' />
                                 <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
                             </div>
-                        </Drawer>
+                        </SwipeableViews>
+                        
                         <Snackbar
                             open={this.state.openSnackBar}
                             message={this.state.snackBarMsg}

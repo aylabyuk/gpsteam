@@ -64,9 +64,7 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
 const style = {
   margin: 0,
   display: 'block',
-  padding: 0,
-  maxWidth: '100vw',
-  minHeight: '100vh'
+  padding: 0
 };
 
 const addNewStaff = gql`
@@ -209,7 +207,6 @@ class StaffForm extends Component {
         window.dispatchEvent(new Event('resize'));
     }
     
-
     render() {
         let { loading, allPosition, allDivision, allStaff } = this.props.data
 
@@ -219,6 +216,11 @@ class StaffForm extends Component {
             return (
                 <div>
                     <Paper style={style} zDepth={1}>
+
+                         <AppBar
+                            title="Manage Staff"
+                        />
+
                          <Tabs
                             onChange={this.handleChange}
                             value={this.state.slideIndex} >
@@ -230,13 +232,13 @@ class StaffForm extends Component {
                             index={this.state.slideIndex}
                             onChangeIndex={this.handleChange}>
 
-                            <GenericScrollBox style={{height: '700px'}} fastTrack={FastTrack.PAGING}>
+                            <GenericScrollBox style={{height: '650px'}} fastTrack={FastTrack.PAGING} nativeScroll={false}>
                                 <div className="scroll-box__viewport">
-                                    <StaffList data={this.props.data} />
+                                    <StaffList data={this.props.data} selectedStaffs={this.props.selectedStaffs}/>
                                 </div>
                             </GenericScrollBox>
 
-                            <GenericScrollBox style={{height: '700px', padding: 10}} fastTrack={FastTrack.PAGING}>
+                            <GenericScrollBox style={{height: '650px', padding: 10}} fastTrack={FastTrack.PAGING} >
                                 <div className="scroll-box__viewport">
                                     <Field name='firstName' label="first name" component={renderTextField}  />
                                     <Field name='lastName' label="last name" component={renderTextField}  />

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { cloneDeep, sortBy } from 'lodash'
+import { connect } from 'react-redux'
+import { changeSelectedStaffs } from '../../actions/index'
 
 //ui
 import { List, ListItem, Avatar } from 'material-ui';
-import {fullWhite, transparent, grey500} from 'material-ui/styles/colors';
+import {fullWhite, transparent, grey500, indigo400} from 'material-ui/styles/colors';
 
 //graphql
 import gql from 'graphql-tag';
@@ -39,6 +41,10 @@ const staffCreated = gql`
 `;
 
 class StaffList extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {selectedStaffs: this.props.selectedStaffsGlobal};
+    }
 
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
@@ -59,6 +65,21 @@ class StaffList extends Component {
         }
     }
 
+    handleSelected(id) {
+
+        var newArray = this.state.selectedStaffs
+
+        var i = newArray.indexOf(id);
+        if(i != -1) {
+            newArray.splice(i, 1);
+        } else {
+            newArray.push(id)
+        }
+        
+        this.setState({ selectedStaffs: newArray })
+        this.props.changeSelectedStaffs(newArray)
+    }
+
     render() {
         let { data } = this.props
 
@@ -74,12 +95,17 @@ class StaffList extends Component {
                     <ListItem
                         leftAvatar={
                             <Avatar
-                                color={fullWhite} backgroundColor={grey500}
+                                color={fullWhite} 
+                                backgroundColor={
+                                    this.state.selectedStaffs.indexOf(d.id) != -1 ? 
+                                    indigo400 : grey500
+                                }
                                 style={{left: 8}}
                             > { firstChar + secondChar } </Avatar>
                         }
                         primaryText={ d.first_name + ' ' + d.last_name + ' (' + d.position.position_name + '/' + d.division.division_name + ')' }
                         key={ d.id }
+                        onTouchTap={()=> this.handleSelected(d.id)}
                     /> 
                 )
             }) }
@@ -88,4 +114,11 @@ class StaffList extends Component {
     }
 }
 
-export default StaffList;
+function mapStateToProps(state) {  
+	return {
+		selectedStaffsGlobal: state.ui.selectedStaffs
+	}
+}
+
+
+export default connect(mapStateToProps, { changeSelectedStaffs })(StaffList);

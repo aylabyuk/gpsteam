@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
 import { validateStaffInfo as validate } from './validateStaffInfo'
+import SelectedStaffs from './SelectedStaffs'
 
 //component
 import StaffList from './StaffList'
@@ -217,10 +218,8 @@ class StaffForm extends Component {
                 <div>
                     <Paper style={style} zDepth={1}>
 
-                         <AppBar
-                            title="Manage Staff"
-                        />
-
+                         <AppBar title="Manage Staff" />
+                         
                          <Tabs
                             onChange={this.handleChange}
                             value={this.state.slideIndex} >
@@ -234,7 +233,7 @@ class StaffForm extends Component {
 
                             <GenericScrollBox style={{height: '650px'}} fastTrack={FastTrack.PAGING} nativeScroll={false}>
                                 <div className="scroll-box__viewport">
-                                    <StaffList data={this.props.data} selectedStaffs={this.props.selectedStaffs}/>
+                                    <StaffList data={this.props.data} />
                                 </div>
                             </GenericScrollBox>
 

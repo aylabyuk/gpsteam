@@ -65,15 +65,16 @@ class StaffList extends Component {
         }
     }
 
-    handleSelected(id) {
+    handleSelected(id, nname, initials) {
 
         var newArray = this.state.selectedStaffs
 
-        var i = newArray.indexOf(id);
+        var i = newArray.findIndex(x => x.id==id)
+
         if(i != -1) {
             newArray.splice(i, 1);
         } else {
-            newArray.push(id)
+            newArray.push({ id, nname, initials })
         }
         
         this.setState({ selectedStaffs: newArray })
@@ -97,7 +98,7 @@ class StaffList extends Component {
                             <Avatar
                                 color={fullWhite} 
                                 backgroundColor={
-                                    this.state.selectedStaffs.indexOf(d.id) != -1 ? 
+                                    this.state.selectedStaffs.findIndex(x => x.id==d.id) != -1 ? 
                                     indigo400 : grey500
                                 }
                                 style={{left: 8}}
@@ -105,7 +106,7 @@ class StaffList extends Component {
                         }
                         primaryText={ d.first_name + ' ' + d.last_name + ' (' + d.position.position_name + '/' + d.division.division_name + ')' }
                         key={ d.id }
-                        onTouchTap={()=> this.handleSelected(d.id)}
+                        onTouchTap={()=> this.handleSelected(d.id, d.nickname, firstChar + secondChar)}
                     /> 
                 )
             }) }
@@ -119,6 +120,5 @@ function mapStateToProps(state) {
 		selectedStaffsGlobal: state.ui.selectedStaffs
 	}
 }
-
 
 export default connect(mapStateToProps, { changeSelectedStaffs })(StaffList);

@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
+// ui
+import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar} from 'material-ui'
+import { blueGrey400, purple800 } from 'material-ui/styles/colors'
+
+import { cloneDeep, sortBy } from 'lodash'
+
+const style = {
+  margin: 2,
+  display: 'inline-block',
+  padding: 10,
+  width: '50vw'
+};
+
+const logsheetCreated = gql`
+    subscription logsheetCreated {
+        logsheetCreated {
+            site {
+                id
+                site_name
+                logsheets {
+                    id
+                    logsheet_date
+                }
+            }
+        }
+    }
+`;
+
+const SitesWithLogsheetQuery = gql`query SitesWithLogsheetQuery {
+	sitesWithLogsheet {
+        id
+        site_name
+        logsheets {
+            id
+            logsheet_date
+        }
+	}  
+}`;
+
+class LogsheetViewer extends Component {
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.subscription && !nextProps.data.loading) {
+            let { subscribeToMore } = this.props.data
+            this.subscription = [
+                subscribeToMore({
+                    document: logsheetCreated,
+                    updateQuery: (previousResult, { subscriptionData }) => {
+
+                        const receivedObject = subscriptionData.data.logsheetCreated
+                        const newResult = cloneDeep(previousResult)
+
+                        console.log('Object', receivedObject);
+                        console.log('Array', newResult)
+
+                        // const objectInNewResult = newResult.filter((r)=> { return r.id == receivedObject.id })
+
+                        // console.log(objectInNewResult);
+
+
+                        return newResult
+                    },
+                })
+            ]
+        }
+    }
+
+    render() {
+        let { loading, sitesWithLogsheet } = this.props.data
+
+        if(loading) {
+            return <LinearProgress mode="indeterminate" />
+        } else {
+            return (
+                <Paper style={style}>
+                    <List>
+                        { sitesWithLogsheet.map((s)=> {
+                            return(
+                                <ListItem 
+                                    key={s.id}
+                                    primaryText={s.site_name}
+                                    secondaryText={ s.logsheets.length + ' logsheets' }
+                                    initiallyOpen={false}
+                                    nestedItems={ 
+                                        s.logsheets.map((l)=> {
+                                            let ldate = new Date(l.logsheet_date)
+                                            return(
+                                                <ListItem
+                                                    key={l.id}
+                                                    primaryText={ ldate.toDateString() }
+                                                />
+                                            )
+                                        })
+                                    }
+                                />
+                            )
+                        }) }
+                    </List>
+                </Paper>
+            );
+        }
+    }
+}
+
+export default graphql(SitesWithLogsheetQuery)(LogsheetViewer);

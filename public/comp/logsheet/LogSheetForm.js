@@ -19,7 +19,7 @@ import LogSheetButtons from './LogSheetButtons'
 
 
 //ui
-import { Paper, AppBar, Divider } from 'material-ui';
+import { Paper, Divider } from 'material-ui';
 
 import styles from '../../css/home.css';
 
@@ -49,14 +49,10 @@ class LogSheetForm extends Component {
         let { loading, allSitename, allReceiver, allAntenna } = this.props.data
 
         if(loading) {
-            return <div>loading..</div>
+            return <div></div>
         } else {
             return (
                 <Paper style={style} zDepth={1}>
-                    <AppBar
-                        title="Log Sheet"
-                        iconClassNameRight="muidocs-icon-navigation-expand-more"
-                    />
                     <DateFields />
                     <ObserversFields />
                     <SiteFields siteNames={allSitename ? allSitename : [{site_name: 'loading..'}]}/>

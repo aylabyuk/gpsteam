@@ -14,6 +14,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import NotFoundPage from './comp/NotFoundPage'
 import _LogSheet from './comp/logsheet/_LogSheet'
 import _Staff from './comp/staff/_Staff'
+import LogSheetViewer from './comp/logsheetViewer/LogsheetViewer'
 
 //apollo client
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
@@ -73,6 +74,7 @@ render(
         <Router history={history}>
             <Route path="/" component={App}>
                 <IndexRoute component={_LogSheet} />
+                <Route path="/logsheets" component={LogSheetViewer} />
                 <Route path="/staff" component={_Staff} />
 
                 <Route path="*" component={NotFoundPage} />

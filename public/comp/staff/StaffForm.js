@@ -3,6 +3,7 @@ import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
 import { validateStaffInfo as validate } from './validateStaffInfo'
 import SelectedStaffs from './SelectedStaffs'
+import { cloneDeep, sortBy } from 'lodash'
 
 //component
 import StaffList from './StaffList'
@@ -67,6 +68,35 @@ const style = {
   display: 'block',
   padding: 0
 };
+
+const staffCreated = gql`
+  subscription staffCreated {
+    staffCreated {
+        id
+        first_name
+        last_name
+        nickname
+        position {
+            id
+            position_name
+        }
+        division {
+            id
+            division_name
+        }
+        contact_numbers {
+            id
+            number
+        }
+        emails {
+            id
+            address
+        }
+        office_location
+        birthday
+    }
+  }
+`;
 
 const addNewStaff = gql`
     mutation addNewStaff(
@@ -136,7 +166,11 @@ const StaffQuery = gql`query StaffQuery {
 class StaffForm extends Component {
     constructor(props) {
         super(props);
-        this.state = {slideIndex: 0, openSnackBar: false, snackBarMsg: ''};
+        this.state = {
+            slideIndex: 0, 
+            openSnackBar: false,
+            snackBarMsg: ''
+        };
     }
 
     handleChange = (value) => {
@@ -192,7 +226,9 @@ class StaffForm extends Component {
             console.log('got new staff data', d);
             let msg = 'New Staff Created: ' + d.first_name + ' ' + d.last_name
 
-           console.log(this.props)
+            // when successfully save go to new staff 
+            this.handleChange(0)
+            
 
             this.handleToggleSnackBar(msg)
             this.handleReset()
@@ -202,6 +238,27 @@ class StaffForm extends Component {
             this.handleToggleSnackBar(msg)
         });
 
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!this.subscription && !nextProps.data.loading) {
+            let { subscribeToMore } = this.props.data
+            this.subscription = [
+                subscribeToMore({
+                    document: staffCreated,
+                    updateQuery: (previousResult, { subscriptionData }) => {
+
+                        const newContact = subscriptionData.data.staffCreated
+                        const newResult = cloneDeep(previousResult)
+                        
+                        newResult.allStaff.push(subscriptionData.data.staffCreated)
+
+                        //console.log(newResult)
+                        return newResult
+                    },
+                })
+            ]
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -231,13 +288,13 @@ class StaffForm extends Component {
                             index={this.state.slideIndex}
                             onChangeIndex={this.handleChange}>
 
-                            <GenericScrollBox style={{height: '650px'}} fastTrack={FastTrack.PAGING} nativeScroll={false}>
+                            <GenericScrollBox style={{height: '650px'}} fastTrack={FastTrack.PAGING} captureWheel={false}>
                                 <div className="scroll-box__viewport">
-                                    <StaffList data={this.props.data} />
+                                    <StaffList data={this.props.data} id='stafflist'/>
                                 </div>
                             </GenericScrollBox>
 
-                            <GenericScrollBox style={{height: '650px', padding: 10}} fastTrack={FastTrack.PAGING} >
+                            <GenericScrollBox style={{height: '650px', padding: 10}} fastTrack={FastTrack.PAGING} captureWheel={false}>
                                 <div className="scroll-box__viewport">
                                     <Field name='firstName' label="first name" component={renderTextField}  />
                                     <Field name='lastName' label="last name" component={renderTextField}  />

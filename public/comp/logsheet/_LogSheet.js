@@ -25,7 +25,7 @@ class _LogSheet extends Component {
             <Paper style={styles.paper}>
                 <AppBar title="Logsheet" iconClassNameRight="muidocs-icon-navigation-expand-more" />
 
-                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px'}}>
 
                     <GridList
                         cellHeight={825}

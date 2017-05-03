@@ -11,8 +11,7 @@ import { blueGrey400, purple800 } from 'material-ui/styles/colors'
 const style = {
   margin: 2,
   display: 'inline-block',
-  padding: 10,
-  width: '50vw'
+  padding: 10
 };
 
 const logsheetCreated = gql`
@@ -79,7 +78,6 @@ class LogsheetViewer extends Component {
             return <LinearProgress mode="indeterminate" />
         } else {
             return (
-                <Paper style={style}>
                     <List>
                         { sitesWithLogsheet.map((s)=> {
                             return(
@@ -103,7 +101,6 @@ class LogsheetViewer extends Component {
                             )
                         }) }
                     </List>
-                </Paper>
             );
         }
     }

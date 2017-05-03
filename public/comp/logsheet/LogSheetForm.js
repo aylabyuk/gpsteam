@@ -20,17 +20,8 @@ import LogSheetButtons from './LogSheetButtons'
 
 //ui
 import { Paper, Divider } from 'material-ui';
-
+import {GenericScrollBox, ScrollAxes, FastTrack} from 'react-scroll-box';
 import styles from '../../css/home.css';
-
-const style = {
-  margin: 2,
-  display: 'inline-block',
-  padding: 10,
-  maxWidth: '100vw',
-  display: 'flex',
-  flexDirection: 'column'
-};
 
 const LogSheetQuery = gql`query LogSheetQuery {
   allSitename {
@@ -52,7 +43,7 @@ class LogSheetForm extends Component {
             return <div></div>
         } else {
             return (
-                <Paper style={style} zDepth={1}>
+                <div>
                     <DateFields />
                     <ObserversFields />
                     <SiteFields siteNames={allSitename ? allSitename : [{site_name: 'loading..'}]}/>
@@ -67,7 +58,7 @@ class LogSheetForm extends Component {
                     <Divider />
                     <br />
                     <LogSheetButtons contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
-                </Paper>
+                </div>
             );
         }
     }

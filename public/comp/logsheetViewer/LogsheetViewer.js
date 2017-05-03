@@ -8,8 +8,6 @@ import { graphql } from 'react-apollo';
 import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar} from 'material-ui'
 import { blueGrey400, purple800 } from 'material-ui/styles/colors'
 
-import { cloneDeep, sortBy } from 'lodash'
-
 const style = {
   margin: 2,
   display: 'inline-block',
@@ -54,15 +52,18 @@ class LogsheetViewer extends Component {
                     updateQuery: (previousResult, { subscriptionData }) => {
 
                         const receivedObject = subscriptionData.data.logsheetCreated
-                        const newResult = cloneDeep(previousResult)
+                        const newResult = _.cloneDeep(previousResult)
+                        const indexOfSite = newResult.sitesWithLogsheet.map(function(e) { return e.id; }).indexOf(receivedObject.site.id);
 
-                        console.log('Object', receivedObject);
-                        console.log('Array', newResult)
+                        const logsheetToInsert = _.maxBy(receivedObject.site.logsheets, (o) => {
+                            return parseInt(o.id);
+                        })
 
-                        // const objectInNewResult = newResult.filter((r)=> { return r.id == receivedObject.id })
-
-                        // console.log(objectInNewResult);
-
+                        if(indexOfSite < 0) {
+                            newResult.sitesWithLogsheet.push(receivedObject.site)
+                        } else {
+                            newResult.sitesWithLogsheet[indexOfSite].logsheets.push(logsheetToInsert)
+                        }
 
                         return newResult
                     },

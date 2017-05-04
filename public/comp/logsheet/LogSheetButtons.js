@@ -52,7 +52,7 @@ const addNewLogSheet = gql`
         $contactPersonId: Int
         $teamId: Int
   ) {
-        newLogSheet: createLogSheet(input: {
+        newLogSheet: createLogsheet(input: {
             survey_type: $survey_type
             logsheet_date: $logsheet_date
             julian_day: $julian_day
@@ -100,11 +100,17 @@ class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
 
-        let observers = []
+        let observers = [], selectedSite
 
         this.props.selectedStaffs.map((x)=> {
             observers.push({ id: x.id })
         })
+
+        selectedSite = this.props.siteNames.find((site)=> {
+            return site.site_name == d.sitename
+        })
+
+        console.log(selectedSite)
 
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
@@ -112,7 +118,7 @@ class LogSheetButtons extends Component {
             julian_day: d.logdate.julianDate(),
             marker: d.marker,
             observers: observers,
-            siteNameId: $siteNameId,
+            siteNameId: selectedSite.id,
             height: d.height,
             north: d.north,
             east: d.east,

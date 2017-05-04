@@ -57,7 +57,7 @@ class LogSheetForm extends Component {
                     <SiteContactPersonFields contactId={this.props.contactId} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <LogSheetButtons contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
+                    <LogSheetButtons siteNames={allSitename} contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
         }

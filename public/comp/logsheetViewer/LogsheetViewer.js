@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 // ui
-import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar} from 'material-ui'
+import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui'
 import { blueGrey400, purple800 } from 'material-ui/styles/colors'
 
 const style = {
@@ -71,6 +71,11 @@ class LogsheetViewer extends Component {
         }
     }
 
+    handleLogsheetViewer(id) {
+        this.props.handleChange(1)
+        console.log(id)
+    }
+
     render() {
         let { loading, sitesWithLogsheet } = this.props.data
 
@@ -78,6 +83,12 @@ class LogsheetViewer extends Component {
             return <LinearProgress mode="indeterminate" />
         } else {
             return (
+                <div>
+                    <Toolbar>
+                        <ToolbarGroup>
+                            <ToolbarTitle text="Sites with Logsheets" />
+                        </ToolbarGroup>
+                    </Toolbar>
                     <List>
                         { sitesWithLogsheet.map((s)=> {
                             return(
@@ -92,8 +103,8 @@ class LogsheetViewer extends Component {
                                             return(
                                                 <ListItem
                                                     key={l.id}
-                                                    primaryText={ ldate.toDateString() }
-                                                />
+                                                    primaryText={ ldate.toDateString() } 
+                                                    onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
                                             )
                                         })
                                     }
@@ -101,6 +112,7 @@ class LogsheetViewer extends Component {
                             )
                         }) }
                     </List>
+                </div>
             );
         }
     }

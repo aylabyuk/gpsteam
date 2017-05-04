@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import LogSheetForm from './LogSheetForm';
-import LogSheetViewer from '../logsheetViewer/LogsheetViewer';
+import _LogSheetViewer from '../logsheetViewer/_LogsheetViewer';
 
 // ui
 import { AppBar, Paper, GridList} from 'material-ui'
+import SwipeableViews from 'react-swipeable-views';
 
 const styles = {
   gridList: {
@@ -59,11 +60,11 @@ class _LogSheet extends Component {
                     </GridList>
 
                     <GridList
-                        cellHeight={this.state.height - 100}
-                        cols={1}
-                        style={styles.gridList} 
-                        id="style-5" >
-                        <LogSheetViewer />
+                    cellHeight={this.state.height - 100}
+                    cols={1}
+                    style={styles.gridList} 
+                    id="style-5" >
+                        <_LogSheetViewer />
                     </GridList>
 
                 </div>

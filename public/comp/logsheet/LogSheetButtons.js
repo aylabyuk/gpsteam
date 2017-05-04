@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Paper, AppBar, Divider } from 'material-ui';
 import { connect } from 'react-redux'
+import {reset} from 'redux-form';
 
 import { RaisedButton } from 'material-ui';
 
@@ -176,6 +177,10 @@ const addNewLogSheet = gql`
 
 class LogSheetButtons extends Component {
 
+    handleReset() {
+        this.props.dispatch(reset('logsheet'));
+    }
+
     handleSubmitLog(d) {
 
         let observers = [], selectedSite
@@ -225,6 +230,7 @@ class LogSheetButtons extends Component {
             teamId: null
         } }).then((data) => {
             console.log('got data', data);
+            this.handleReset()
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
         });

@@ -10,13 +10,15 @@ class _LogsheetVeiwer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            slideIndex: 0
+            slideIndex: 0,
+            currentLogsheetId: null
         };
     }
 
-    handleChange = (value) => {
+    handleChange = (value, id) => {
         this.setState({
             slideIndex: value,
+            currentLogsheetId: id
         });
     };
 
@@ -24,7 +26,7 @@ class _LogsheetVeiwer extends Component {
         return (
             <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange}>
                 <LogsheetViewer handleChange={this.handleChange}/>
-                <SingleLogsheet handleChange={this.handleChange}/>
+                <SingleLogsheet currentLogsheet={this.state.currentLogsheetId} handleChange={this.handleChange}/>
             </SwipeableViews>
         );
     }

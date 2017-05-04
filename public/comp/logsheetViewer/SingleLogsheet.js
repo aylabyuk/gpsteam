@@ -21,8 +21,9 @@ const styles = {
   },
 };
 
-const SingleLogsheetQuery = gql` query SingleLogsheet($id: ID) {
-    singleLogsheet(id: $id) {
+const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
+    singleLogsheet(id: $currentLogsheet) {
+        id
         survey_type
         logsheet_date
         julian_day
@@ -126,15 +127,21 @@ class SingleLogsheet extends Component {
                         <IconButton
                             iconStyle={styles.smallIcon}
                             style={styles.small}
-                            onTouchTap={() => this.props.handleChange(0) } >
+                            onTouchTap={() => this.props.handleChange(0, null) } >
                                 <Back />
                         </IconButton>
                         <ToolbarTitle text="Logsheet Details" />
                     </ToolbarGroup>
                 </Toolbar>
+
+                <p>
+                    { JSON.stringify(this.props.data.singleLogsheet, null, 5) }
+                </p>
             </div>
         );
     }
 }
 
-export default graphql(SingleLogsheetQuery, { options: { variables: { id: 209 } }, })(SingleLogsheet);
+export default graphql(SingleLogsheetQuery, {
+  options: ({ currentLogsheet }) => ({ variables: { currentLogsheet } }),
+})(SingleLogsheet);

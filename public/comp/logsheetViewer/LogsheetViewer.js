@@ -72,8 +72,7 @@ class LogsheetViewer extends Component {
     }
 
     handleLogsheetViewer(id) {
-        this.props.handleChange(1)
-        console.log(id)
+        this.props.handleChange(1, id)
     }
 
     render() {

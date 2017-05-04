@@ -14,12 +14,35 @@ const styles = {
   },
   paper: {
     width: 'auto',
-    height: 'auto',
-    padding: 8
+    height: '100%',
+    padding: 5
   }
 };
 
 class _LogSheet extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        };
+
+        this.updateDimensions = this.updateDimensions.bind(this);
+
+    }
+    updateDimensions() {
+        this.setState({width: window.innerWidth, height: window.innerHeight});
+    }
+    componentWillMount() {
+        this.updateDimensions();
+    }
+    componentDidMount() {
+        window.addEventListener("resize", this.updateDimensions);
+    }
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
     render() {
         return ( 
             <Paper style={styles.paper}>
@@ -28,18 +51,18 @@ class _LogSheet extends Component {
                 <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px'}}>
 
                     <GridList
-                        cellHeight={825}
+                        cellHeight={this.state.height - 100}
                         cols={1}
                         style={styles.gridList} 
-                         id="style-5" >
+                        id="style-5" >
                         <LogSheetForm />
                     </GridList>
 
                     <GridList
-                        cellHeight={825}
+                        cellHeight={this.state.height - 100}
                         cols={1}
                         style={styles.gridList} 
-                         id="style-5" >
+                        id="style-5" >
                         <LogSheetViewer />
                     </GridList>
 

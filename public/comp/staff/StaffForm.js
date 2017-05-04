@@ -14,10 +14,24 @@ import { graphql } from 'react-apollo';
 
 //ui
 import { Paper, AppBar, TextField, AutoComplete, Drawer, 
-        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress, Tab, Tabs } from 'material-ui';
+        FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress, Tab, Tabs, GridList } from 'material-ui';
 import MultipleForm from './MultipleForm'
 import SwipeableViews from 'react-swipeable-views';
 import {GenericScrollBox, ScrollAxes, FastTrack} from 'react-scroll-box';
+
+const styles = {
+  gridList: {
+    width: '100%',
+    height: '100%',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  paper: {
+    width: 'auto',
+    height: 'auto',
+    padding: 8
+  }
+};
 
 const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -288,14 +302,20 @@ class StaffForm extends Component {
                             index={this.state.slideIndex}
                             onChangeIndex={this.handleChange}>
 
-                            <GenericScrollBox style={{height: '650px'}} fastTrack={FastTrack.PAGING} captureWheel={false}>
-                                <div className="scroll-box__viewport">
-                                    <StaffList data={this.props.data} id='stafflist'/>
-                                </div>
-                            </GenericScrollBox>
+                            <GridList
+                                cellHeight={650}
+                                cols={1}
+                                style={styles.gridList} 
+                                id="style-5" >
+                                <StaffList data={this.props.data} id='stafflist'/>
+                            </GridList>
 
-                            <GenericScrollBox style={{height: '650px', padding: 10}} fastTrack={FastTrack.PAGING} captureWheel={false}>
-                                <div className="scroll-box__viewport">
+                            <GridList
+                                cellHeight={650}
+                                cols={1}
+                                style={styles.gridList} 
+                                id="style-5" >
+                                <div style={{padding: '5px'}}>
                                     <Field name='firstName' label="first name" component={renderTextField}  />
                                     <Field name='lastName' label="last name" component={renderTextField}  />
                                     <Field name='nickName' label="nick name" component={renderTextField}  />
@@ -307,7 +327,8 @@ class StaffForm extends Component {
                                     <MultipleForm name='contactnumber' />
                                     <RaisedButton label="Add" primary fullWidth onTouchTap={this.props.handleSubmit(this.handleSubmitStaff.bind(this))}/>
                                 </div>
-                            </GenericScrollBox>
+                            </GridList>
+
                         </SwipeableViews>
 
                         <Snackbar

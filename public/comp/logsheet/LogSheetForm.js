@@ -19,7 +19,7 @@ import LogSheetButtons from './LogSheetButtons'
 
 
 //ui
-import { Paper, Divider } from 'material-ui';
+import { Paper, Divider, LinearProgress } from 'material-ui';
 import styles from '../../css/home.css';
 
 const LogSheetQuery = gql`query LogSheetQuery {
@@ -40,7 +40,7 @@ class LogSheetForm extends Component {
         let { loading, allSitename, allReceiver, allAntenna } = this.props.data
 
         if(loading) {
-            return <div></div>
+            return <LinearProgress mode="indeterminate" />
         } else {
             return (
                 <div>

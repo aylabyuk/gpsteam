@@ -20,11 +20,11 @@ import LogSheetButtons from './LogSheetButtons'
 
 //ui
 import { Paper, Divider } from 'material-ui';
-import {GenericScrollBox, ScrollAxes, FastTrack} from 'react-scroll-box';
 import styles from '../../css/home.css';
 
 const LogSheetQuery = gql`query LogSheetQuery {
   allSitename {
+    id
     site_name
   }
   allReceiver {

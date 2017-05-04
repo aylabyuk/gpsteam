@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Paper, AppBar, Divider } from 'material-ui';
+import { connect } from 'react-redux'
 
 import { RaisedButton } from 'material-ui';
 
@@ -15,51 +16,49 @@ Date.prototype.julianDate = function(){
 };
 
 const addNewLogSheet = gql`
-    mutation addNewLogSheet(
-        $fieldwork_id: ID!
-        $site_name: String
-        $survey_type: String
-        $logsheet_date: Date
+    mutation createLogsheet(
+        $survey_type: String!
+        $logsheet_date: Date!
         $julian_day: Int
         $marker: String
-        $receiver_serialnumber: String
-        $antenna_serialnumber: String
-        $height: Double
-        $north: Double
-        $east: Double
-        $south: Double
-        $west: Double
-        $time_start: Date
-        $time_end: Date
+        $observers: [StaffIdInput]
+        $siteNameId: Int!
+        $height: Float
+        $north: Float!
+        $east: Float!
+        $south: Float!
+        $west: Float!
+        $time_start: Time
+        $time_end: Time
         $azimuth: Int
-        $failure_time: Date
+        $failure_time: Time
         $receiver_status: String
         $antenna_status: String
         $rod_num: Int
         $rod_correction: Int
-        $avg_slant_height: Double
+        $avg_slant_height: Float
         $ip_add: String
         $netmask: String
         $gateway: String
         $dns: String
         $local_tcp_port: String
-        $latitude: Double
-        $longitude: Double
-        $site_sketch_id: ID
+        $latitude: Float
+        $longitude: Float
         $observed_situation: String
         $lodging_road_information: String
-        $contact_id: Int
         $others: String
-    ) {
-        newLogSheet: createLogSheet(
-            fieldwork_id: $fieldwork_id
-            site_name: $site_name
+        $antennaId: String!
+        $receiverId: String!
+        $contactPersonId: Int
+        $teamId: Int
+  ) {
+        newLogSheet: createLogSheet(input: {
             survey_type: $survey_type
             logsheet_date: $logsheet_date
             julian_day: $julian_day
             marker: $marker
-            receiver_serialnumber: $receiver_serialnumber
-            antenna_serialnumber: $antenna_serialnumber
+            observers: $observers
+            siteNameId: $siteNameId
             height: $height
             north: $north
             east: $east
@@ -81,12 +80,14 @@ const addNewLogSheet = gql`
             local_tcp_port: $local_tcp_port
             latitude: $latitude
             longitude: $longitude
-            site_sketch_id: $site_sketch_id
             observed_situation: $observed_situation
             lodging_road_information: $lodging_road_information
-            contact_id: $contact_id
             others: $others
-        ) {
+            antennaId: $antennaId
+            receiverId: $receiverId
+            contactPersonId: $contactPersonId
+            teamId: $teamId
+        }) {
             id
             logsheet_date
             time_start
@@ -98,17 +99,20 @@ const addNewLogSheet = gql`
 class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
-        //console.log(d)
+
+        let observers = []
+
+        this.props.selectedStaffs.map((x)=> {
+            observers.push({ id: x.id })
+        })
 
         this.props.mutate({ variables: {
-            fieldwork_id: 0,
-            site_name: d.sitename,
-            survey_type: 'campaign',
+            survey_type: 'CAMPAIGN',
             logsheet_date: d.logdate,
             julian_day: d.logdate.julianDate(),
             marker: d.marker,
-            receiver_serialnumber: d.receiverSN,
-            antenna_serialnumber: d.antennaSN,
+            observers: observers,
+            siteNameId: $siteNameId,
             height: d.height,
             north: d.north,
             east: d.east,
@@ -130,11 +134,13 @@ class LogSheetButtons extends Component {
             local_tcp_port: d.localTcpPort,
             latitude: d.lat,
             longitude: d.long,
-            // site_sketch_id: $site_sketch_id,
             observed_situation: d.unusualAbnormalObservation,
             lodging_road_information: d.lodgingOrRoadInfo,
-            contact_id: this.props.contactId,
-            // others: $others,
+            others: d.pertinentInfo,
+            antennaId: d.antennaSN,
+            receiverId: d.receiverSN,
+            contactPersonId: this.props.selectedContactId,
+            teamId: null
         } }).then((data) => {
             console.log('got data', data);
         }).catch((error) => {
@@ -153,4 +159,11 @@ class LogSheetButtons extends Component {
     }
 }
 
-export default graphql(addNewLogSheet)(LogSheetButtons);
+function mapStateToProps(state) {  
+	return {
+		selectedStaffs: state.ui.selectedStaffs,
+        selectedContact: state.ui.selectedContactId
+	}
+}
+
+export default connect(mapStateToProps)(graphql(addNewLogSheet)(LogSheetButtons));

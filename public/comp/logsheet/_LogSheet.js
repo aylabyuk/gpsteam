@@ -3,7 +3,7 @@ import LogSheetForm from './LogSheetForm';
 import LogSheetViewer from '../logsheetViewer/LogsheetViewer';
 
 // ui
-import { AppBar, Paper, GridList, GridTile } from 'material-ui'
+import { AppBar, Paper, GridList} from 'material-ui'
 
 const styles = {
   gridList: {

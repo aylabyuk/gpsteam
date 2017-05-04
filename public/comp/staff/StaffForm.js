@@ -17,7 +17,6 @@ import { Paper, AppBar, TextField, AutoComplete, Drawer,
         FlatButton, RaisedButton, List, ListItem, DatePicker, Snackbar, LinearProgress, Tab, Tabs, GridList } from 'material-ui';
 import MultipleForm from './MultipleForm'
 import SwipeableViews from 'react-swipeable-views';
-import {GenericScrollBox, ScrollAxes, FastTrack} from 'react-scroll-box';
 
 const styles = {
   gridList: {

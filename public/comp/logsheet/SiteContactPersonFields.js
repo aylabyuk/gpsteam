@@ -11,7 +11,7 @@ import { changeSelectedContactId } from '../../actions/index'
 
 //ui
 import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
-    Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem } from 'material-ui'
+    Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem, GridList } from 'material-ui'
 import  ActionSearch from 'material-ui/svg-icons/action/search'
 
 //graphql
@@ -160,11 +160,18 @@ class SiteContactPersonFields extends Component {
                     actions={actions}
                     modal={true}
                     open={this.state.open}
-                    autoScrollBodyContent={true}
                     bodyStyle={{padding: 0}}
                     repositionOnUpdate={false}>
                     
-                    <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose}/>
+                    <GridList
+                        cellHeight={650}
+                        cols={1}
+                        style={{width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden'}} 
+                        id="style-5" >
+                        <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose} />                    
+                    </GridList>
+
+                    
 
                 </Dialog>
 

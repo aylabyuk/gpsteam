@@ -89,9 +89,87 @@ const addNewLogSheet = gql`
             teamId: $teamId
         }) {
             id
+            survey_type
             logsheet_date
+            julian_day
+            marker
+            observers {
+            id
+            first_name
+            last_name
+            nickname
+            position {
+                id
+                position_name
+            }
+            division {
+                id
+                division_name
+            }
+            contact_numbers {
+                id
+                number
+            }
+            emails {
+                id
+                address
+            }
+            office_location
+            birthday
+            }
+            site {
+            id
+            site_name
+            }
+            height
+            north
+            east
+            south
+            west
             time_start
             time_end
+            azimuth
+            failure_time
+            receiver_status
+            antenna_status
+            rod_num
+            rod_correction
+            avg_slant_height
+            ip_add
+            netmask
+            gateway
+            dns
+            local_tcp_port
+            latitude
+            longitude
+            observed_situation
+            lodging_road_information
+            others
+            antenna {
+            id
+            serial_number
+            type
+            part_number
+            }
+            receiver {
+            id
+            serial_number
+            type
+            part_number
+            }
+            contact {
+                id
+                first_name
+                last_name
+                position
+                contact_number
+                organization
+                email_add
+                address_one
+                address_two
+                city
+                province
+            }
         }
     }
 `
@@ -109,8 +187,6 @@ class LogSheetButtons extends Component {
         selectedSite = this.props.siteNames.find((site)=> {
             return site.site_name == d.sitename
         })
-
-        console.log(selectedSite)
 
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
@@ -145,7 +221,7 @@ class LogSheetButtons extends Component {
             others: d.pertinentInfo,
             antennaId: d.antennaSN,
             receiverId: d.receiverSN,
-            contactPersonId: this.props.selectedContactId,
+            contactPersonId: this.props.selectedContact,
             teamId: null
         } }).then((data) => {
             console.log('got data', data);

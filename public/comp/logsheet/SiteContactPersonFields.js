@@ -82,17 +82,15 @@ class SiteContactPersonFields extends Component {
     componentDidUpdate() {
         let result = this.props.data.allContact.find(x => x.id === this.props.contactId)
 
-        if(this.props.contactId == 0) {
-            this.props.change('contactFirstName', '')
-            this.props.change('contactLastName', '')
-            this.props.change('contactNumber', '')
-        }
-
         if(result) {
             this.props.change('contactFirstName', result.first_name)
             this.props.change('contactLastName', result.last_name)
             this.props.change('contactNumber', result.contact_number)
-        } 
+        } else {
+            this.props.change('contactFirstName', '')
+            this.props.change('contactLastName', '')
+            this.props.change('contactNumber', '')
+        }
 
     }
 

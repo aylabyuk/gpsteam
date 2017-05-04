@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Details from './Details'
 
 // ui
 import { IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator } from 'material-ui'
@@ -120,9 +121,12 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
 
 class SingleLogsheet extends Component {
     render() {
+        
+        let { loading, singleLogsheet } = this.props.data
+
         return (
             <div>
-                <Toolbar>
+                <Toolbar noGutter>
                     <ToolbarGroup>
                         <IconButton
                             iconStyle={styles.smallIcon}
@@ -134,9 +138,8 @@ class SingleLogsheet extends Component {
                     </ToolbarGroup>
                 </Toolbar>
 
-                <p>
-                    { JSON.stringify(this.props.data.singleLogsheet, null, 5) }
-                </p>
+                <Details data={singleLogsheet} loading={loading}/>
+
             </div>
         );
     }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Paper, AppBar, Divider } from 'material-ui';
 import { connect } from 'react-redux'
-import {reset} from 'redux-form';
+import { reset, reduxForm } from 'redux-form';
+import { resetSelectedStaffs, resetContactId } from '../../actions/index';
 
 import { RaisedButton } from 'material-ui';
 
@@ -179,6 +180,8 @@ class LogSheetButtons extends Component {
 
     handleReset() {
         this.props.dispatch(reset('logsheet'));
+        this.props.resetContactId()
+        this.props.resetSelectedStaffs()
     }
 
     handleSubmitLog(d) {
@@ -254,4 +257,8 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps)(graphql(addNewLogSheet)(LogSheetButtons));
+const form =  reduxForm({  
+	form: 'logsheet'    
+})
+
+export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs })(graphql(addNewLogSheet)(form(LogSheetButtons)));

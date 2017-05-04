@@ -1,6 +1,6 @@
 import axios from 'axios'
 import cookie from 'react-cookie'
-import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF } from './types'
+import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -29,6 +29,22 @@ export function removeSelectedStaff(id) {
 		dispatch({
 			type: REMOVE_SELECTED_STAFF,
 			payload: id
+		})
+	}
+}
+
+export function resetSelectedStaffs() {
+	return function(dispatch) {
+		dispatch({
+			type: RESET_SELECTED_STAFFS
+		})
+	}
+}
+
+export function resetContactId() {
+	return function(dispatch) {
+		dispatch({
+			type: RESET_CONTACT_ID
 		})
 	}
 }

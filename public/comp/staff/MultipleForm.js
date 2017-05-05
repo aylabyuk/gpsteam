@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
+import { normalizePhone } from '../formValidators/formValidators'
 
 // ui
 import { TextField, FlatButton } from 'material-ui';
@@ -18,7 +19,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 class CustField extends Component {
     render() {
         return (
-            <Field name={this.props.name} label={this.props.label} component={renderTextField}  /> 
+            <Field name={this.props.name} label={this.props.label} component={renderTextField} normalize={this.props.normalize} /> 
         )
     }
 }
@@ -36,7 +37,7 @@ class MultipleForm extends Component {
         const name = this.props.name;
 
         for (var i = 1; i < this.state.numChildren; i += 1) {
-            children.push(<CustField name={name+i} label={name+' '+i} key={i} />);
+            children.push(<CustField name={name+i} label={name+' '+i} key={i} normalize={ name == 'contactnumber' ? normalizePhone : null }/>);
         };
 
         return (

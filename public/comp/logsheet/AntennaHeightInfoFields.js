@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { Field, formValueSelector } from 'redux-form'
+import { Field } from 'redux-form'
 
 //ui
 import { TextField, DatePicker } from 'material-ui'
@@ -25,21 +24,10 @@ class AntennaHeightInfoFields extends Component {
     render() {
         return (
             <div>
-                <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Antenna Height Information</h5>
+                <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Antenna Information</h5>
                 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                    <DatePicker hintText='Observation Date' floatingLabelText='Observation Date' 
-                        disabled={true} 
-                        value={this.props.logdate ? new Date(this.props.logdate) : null}
-                        formatDate={new Intl.DateTimeFormat('en-US', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric',
-                                weekday: 'long'
-                        }).format}/>
-                    <TextField hintText='Session(Day of Year)' floatingLabelText='Session(Day of Year)' disabled={true} value={this.props.logdate ? this.props.logdate.julianDate() : ''} />
                     <Field name='rodNo' label="rod no." component={renderTextField} />
                     <Field name='rodCorrection' label="rod correction" component={renderTextField}  />
-                    <TextField hintText='average slant antenna height' floatingLabelText='average slant antenna height' disabled={true} />
                     <Field name='ipAddress' label="IP address" component={renderTextField} />
                     <Field name='netmask' label="netmask" component={renderTextField}  />
                     <Field name='gateway' label="gateway" component={renderTextField} />
@@ -52,17 +40,5 @@ class AntennaHeightInfoFields extends Component {
         );
     }
 }
-
-const selector = formValueSelector('logsheet') 
-AntennaHeightInfoFields = connect(
-  state => {
-    const logdate = selector(state, 'logdate')
-    const aveSlantHeight = selector(state, 'aveSlantHeight')
-    return {
-      logdate,
-      aveSlantHeight
-    }
-  }
-)(AntennaHeightInfoFields)
 
 export default AntennaHeightInfoFields;

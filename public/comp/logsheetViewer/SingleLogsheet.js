@@ -57,7 +57,6 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         id
         site_name
         }
-        height
         north
         east
         south

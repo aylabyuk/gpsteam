@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
-import { validateStaffInfo as validate } from './validateStaffInfo'
+import { validateStaffInfo as validate } from '../formValidators/formValidators'
 import SelectedStaffs from './SelectedStaffs'
 import { cloneDeep, sortBy } from 'lodash'
 

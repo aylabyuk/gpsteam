@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm, Field } from 'redux-form'
-import { validateContactDetails as validate } from './validateContactDetails'
+import { validateContactDetails as validate } from '../formValidators/formValidators'
 
 //apollo
 import gql from 'graphql-tag';

@@ -183,7 +183,7 @@ class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
 
-        let observers = [], selectedSite
+        let observers = [], selectedSite, aveSlantHeight
 
         this.props.selectedStaffs.map((x)=> {
             observers.push({ id: x.id })
@@ -192,6 +192,8 @@ class LogSheetButtons extends Component {
         selectedSite = this.props.siteNames.find((site)=> {
             return site.site_name == d.sitename
         })
+
+        aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
@@ -212,7 +214,7 @@ class LogSheetButtons extends Component {
             antenna_status: d.antennaStatus,
             rod_num: d.rodNo,
             rod_correction: d.rodCorrection,
-            avg_slant_height: d.aveSlantHeight,
+            avg_slant_height: aveSlantHeight,
             ip_add: d.ipAddress,
             netmask: d.netmask,
             gateway: d.gateway,
@@ -254,7 +256,7 @@ function mapStateToProps(state) {
 }
 
 const form =  reduxForm({  
-	form: 'logsheet'    
+	form: 'logsheet'
 })
 
 export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs })(graphql(addNewLogSheet)(form(LogSheetButtons)));

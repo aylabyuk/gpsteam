@@ -169,7 +169,7 @@ class SiteContactPersonFields extends Component {
                     repositionOnUpdate={false}>
                     
                     <GridList
-                        cellHeight={650}
+                        cellHeight={window.innerHeight * 0.6}
                         cols={1}
                         style={{width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden'}} 
                         id="style-5" >

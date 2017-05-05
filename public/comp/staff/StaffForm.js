@@ -302,7 +302,7 @@ class StaffForm extends Component {
                             onChangeIndex={this.handleChange}>
 
                             <GridList
-                                cellHeight={650}
+                                cellHeight={window.innerHeight * 0.6}
                                 cols={1}
                                 style={styles.gridList} 
                                 id="style-5" >
@@ -310,7 +310,7 @@ class StaffForm extends Component {
                             </GridList>
 
                             <GridList
-                                cellHeight={650}
+                                cellHeight={window.innerHeight * 0.6}
                                 cols={1}
                                 style={styles.gridList} 
                                 id="style-5" >

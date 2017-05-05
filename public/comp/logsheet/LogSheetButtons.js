@@ -30,10 +30,10 @@ const addNewLogSheet = gql`
         $east: Float!
         $south: Float!
         $west: Float!
-        $time_start: Time
-        $time_end: Time
+        $time_start: String
+        $time_end: String
         $azimuth: Int
-        $failure_time: Time
+        $failure_time: String
         $receiver_status: String
         $antenna_status: String
         $rod_num: Int

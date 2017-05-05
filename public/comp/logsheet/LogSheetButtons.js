@@ -25,7 +25,6 @@ const addNewLogSheet = gql`
         $marker: String
         $observers: [StaffIdInput]
         $siteNameId: Int!
-        $height: Float
         $north: Float!
         $east: Float!
         $south: Float!
@@ -61,7 +60,6 @@ const addNewLogSheet = gql`
             marker: $marker
             observers: $observers
             siteNameId: $siteNameId
-            height: $height
             north: $north
             east: $east
             south: $south
@@ -123,7 +121,6 @@ const addNewLogSheet = gql`
             id
             site_name
             }
-            height
             north
             east
             south
@@ -203,7 +200,6 @@ class LogSheetButtons extends Component {
             marker: d.marker,
             observers: observers,
             siteNameId: selectedSite.id,
-            height: d.height,
             north: d.north,
             east: d.east,
             south: d.south,

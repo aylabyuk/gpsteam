@@ -39,7 +39,7 @@ class AntennaHeightInfoFields extends Component {
                     <TextField hintText='Session(Day of Year)' floatingLabelText='Session(Day of Year)' disabled={true} value={this.props.logdate ? this.props.logdate.julianDate() : ''} />
                     <Field name='rodNo' label="rod no." component={renderTextField} />
                     <Field name='rodCorrection' label="rod correction" component={renderTextField}  />
-                    <TextField hintText='average slant antenna height' floatingLabelText='average slant antenna height' disabled={true} value={this.props.aveSlantHeight ? this.props.aveSlantHeight : ''}/>
+                    <TextField hintText='average slant antenna height' floatingLabelText='average slant antenna height' disabled={true} />
                     <Field name='ipAddress' label="IP address" component={renderTextField} />
                     <Field name='netmask' label="netmask" component={renderTextField}  />
                     <Field name='gateway' label="gateway" component={renderTextField} />

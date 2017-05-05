@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { Field } from 'redux-form'
+import { Field, formValueSelector } from 'redux-form'
+import { connect } from 'react-redux'
 
 //ui
 import { TextField } from 'material-ui'
@@ -15,6 +16,8 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 
 class MeasurementFields extends Component {
     render() {
+        let height = this.props.averageSlantHeight ?  this.props.averageSlantHeight : ''
+
         return (
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Measurements</h5>
@@ -23,13 +26,28 @@ class MeasurementFields extends Component {
                     <div style={{flexGrow: 1}}><Field name="east" component={renderTextField} label="east" /></div>
                     <div style={{flexGrow: 1}}><Field name="south" component={renderTextField} label="south" /></div>
                     <div style={{flexGrow: 1}}><Field name="west" component={renderTextField} label="west" /></div>
-                    <div style={{flexGrow: 1}}><Field name="height" component={renderTextField} label="height" /></div>
-                    <div style={{flexGrow: 1}}><Field name="aveSlantHeight" component={renderTextField} label="slant height" /></div>
+                    <div style={{flexGrow: 1}}><TextField floatingLabelText="slant height" disabled={true} value={height}/></div>
                     <div style={{flexGrow: 1}}><Field name="azimuth" component={renderTextField} label="azimuth(deg)" /></div>
                 </form>
             </div>
         );
     }
 }
+
+const selector = formValueSelector('logsheet') 
+MeasurementFields = connect(
+  state => {
+    const n = parseFloat(selector(state, 'north'))
+    const e = parseFloat(selector(state, 'east'))
+    const s = parseFloat(selector(state, 'south'))
+    const w = parseFloat(selector(state, 'west'))
+
+    const averageSlantHeight = (n + e + s + w) / 4
+
+    return {
+      averageSlantHeight
+    }
+  }
+)(MeasurementFields)
 
 export default MeasurementFields;

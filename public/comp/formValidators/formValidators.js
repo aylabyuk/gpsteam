@@ -42,6 +42,63 @@ export const validateStaffInfo = values => {
   return errors
 }
 
+export const validateContactDetails = values => {
+  const errors = {}
+  if (!values.first_name) {
+    errors.first_name = 'Required'
+  }
+  if (!values.last_name) {
+    errors.last_name = 'Required'
+  }
+  if (!values.contact_number) {
+    errors.contact_number = 'Required'
+  }
+  if (!values.email_add) {
+    errors.email_add = ''
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email_add)) {
+    errors.email_add = 'This is not a valid email address'
+  }
+  return errors
+}
+
+export const validateLogsheet = values => {
+  const errors = {}
+  if (!values.logdate) {
+    errors.logdate = 'Required'
+  }
+  if (!values.sitename) {
+    errors.sitename = 'Required'
+  }
+  if (!values.location) {
+    errors.location = 'Required'
+  }
+  if (!values.marker) {
+    errors.marker = 'Required'
+  }
+  if (!values.receiverSN) {
+    errors.receiverSN = 'Required'
+  }
+  if (!values.antennaSN) {
+    errors.antennaSN = 'Required'
+  }
+  if (!values.north) {
+    errors.north = 'Required'
+  }
+  if (!values.east) {
+    errors.east = 'Required'
+  }
+  if (!values.south) {
+    errors.south = 'Required'
+  }
+  if (!values.west) {
+    errors.west = 'Required'
+  }
+  if (!values.azimuth) {
+    errors.azimuth = 'Required'
+  }
+  return errors
+}
+
 export const normalizePhone = (value) => {
   if (!value) {
     return value
@@ -84,22 +141,17 @@ export const onlyDecimal = value => {
   }
 }
 
+export const numberAddress = value => {
+  value = value
+   .replace(/[^0-9.]/g, '') // Remove all chars except numbers and .
 
-export const validateContactDetails = values => {
-  const errors = {}
-  if (!values.first_name) {
-    errors.first_name = 'Required'
-  }
-  if (!values.last_name) {
-    errors.last_name = 'Required'
-  }
-  if (!values.contact_number) {
-    errors.contact_number = 'Required'
-  }
-  if (!values.email_add) {
-    errors.email_add = ''
-  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email_add)) {
-    errors.email_add = 'This is not a valid email address'
-  }
-  return errors
+  return value
 }
+
+export const wholeNumber = value => {
+  value = value
+   .replace(/[^0-9]/g, '') // Remove all chars except numbers
+
+  return value
+}
+

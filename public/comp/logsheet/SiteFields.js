@@ -15,6 +15,7 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
       searchText={input.value}
       openOnFocus={false}
       maxSearchResults={20}
+      errorText={touched && error}
     />
 )
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form'
-
+import { numberAddress, onlyDecimal, wholeNumber } from '../formValidators/formValidators'
 //ui
 import { TextField, DatePicker } from 'material-ui'
 
@@ -26,13 +26,13 @@ class AntennaHeightInfoFields extends Component {
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Antenna Information</h5>
                 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                    <Field name='rodNo' label="rod no." component={renderTextField} />
-                    <Field name='rodCorrection' label="rod correction" component={renderTextField}  />
-                    <Field name='ipAddress' label="IP address" component={renderTextField} />
-                    <Field name='netmask' label="netmask" component={renderTextField} />
-                    <Field name='gateway' label="gateway" component={renderTextField} />
+                    <Field name='rodNo' label="rod no." component={renderTextField} normalize={onlyDecimal}/>
+                    <Field name='rodCorrection' label="rod correction" component={renderTextField} />
+                    <Field name='ipAddress' label="IP address" component={renderTextField} normalize={numberAddress}/>
+                    <Field name='netmask' label="netmask" component={renderTextField} normalize={numberAddress}/>
+                    <Field name='gateway' label="gateway" component={renderTextField} normalize={numberAddress}/>
                     <Field name='dns' label="DNS" component={renderTextField}  />
-                    <Field name='localTcpPort' label="local TCP port" component={renderTextField}  />
+                    <Field name='localTcpPort' label="local TCP port" component={renderTextField}  normalize={wholeNumber}/>
                     <Field name='lat' label="rough coordinate - latitude" component={renderTextField} />
                     <Field name='long' label="rough coordinate - longitude" component={renderTextField} />
                 </div>

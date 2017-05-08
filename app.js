@@ -30,5 +30,5 @@ app.get('*', function (req, res) {
 var port = process.env.PORT || 8080
 
 app.listen(port, function () {
-    // console.log('listening to this joint on port '+ port);
+    console.log('listening to this joint on port '+ port);
 });

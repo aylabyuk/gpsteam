@@ -17,6 +17,9 @@ import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
 import LogSheetButtons from './LogSheetButtons'
 
+//validation 
+import { validateLogsheet as validate } from '../formValidators/formValidators'
+
 
 //ui
 import { Paper, Divider, LinearProgress } from 'material-ui';
@@ -65,7 +68,8 @@ class LogSheetForm extends Component {
 }
 
 const form =  reduxForm({  
-	form: 'logsheet'
+	form: 'logsheet',
+    validate
 })
 
 function mapStateToProps(state) {  

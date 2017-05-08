@@ -27,7 +27,8 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         hintText={label}
         floatingLabelText={label}
         onChange = {(event, value) => {input.onChange(value)} } 
-        onBlur = {(value) => { value = '' }}/>
+        onBlur = {(value) => { value = '' }}
+        maxDate={new Date()}/>
     <TextField  style={{marginLeft: 5}} floatingLabelText='day of year'  hintText='day of year' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
        fullWidth={false} 
         />

@@ -57,22 +57,31 @@ export const normalizePhone = (value) => {
   return `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 6)}-${onlyNums.slice(6, 10)}`
 }
 
-export const normalizeIP = (value) => {
-  if (!value) {
-    return value
+export const onlyDecimal = value => {
+  value = value
+    .replace(/[^0-9.]/g, '') // Remove all chars except numbers and .
+
+  // Create an array with sections split by .
+  const sections = value.split('.')
+
+  // Remove any leading 0s apart from single 0
+  if (sections[0] !== '0' && sections[0] !== '00') {
+    sections[0] = sections[0].replace(/^0+/, '')
+  } else {
+    sections[0] = '0'
   }
 
-  const onlyNums = value.replace(/[^\d]/g, '')
-  if (onlyNums.length <= 3) {
-    return onlyNums
+  // If numbers exist after first .
+  if (sections[1]) {
+    // Join first two sections and truncate end section to length 2
+    return sections[0] + '.' + sections[1]
+  // If original value had a decimal place at the end, add it back
+  } else if (value.indexOf('.') !== -1) {
+    return sections[0] + '.'
+  // Otherwise, return only section
+  } else {
+    return sections[0]
   }
-  if (onlyNums.length <= 6) {
-    return `${onlyNums.slice(0, 3)}.${onlyNums.slice(3)}`
-  }
-  if (onlyNums.length == 7) {
-    return `${onlyNums.slice(0, 3)}.${onlyNums.slice(3)}.`
-  }
-  return `${onlyNums.slice(0, 3)}.${onlyNums.slice(3, 6)}.${onlyNums.slice(6, 10)}`
 }
 
 

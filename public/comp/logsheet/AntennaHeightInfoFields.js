@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Field } from 'redux-form'
-import { normalizeIP } from '../formValidators/formValidators'
 
 //ui
 import { TextField, DatePicker } from 'material-ui'
@@ -29,7 +28,7 @@ class AntennaHeightInfoFields extends Component {
                 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
                     <Field name='rodNo' label="rod no." component={renderTextField} />
                     <Field name='rodCorrection' label="rod correction" component={renderTextField}  />
-                    <Field name='ipAddress' label="IP address" component={renderTextField} normalize={normalizeIP}/>
+                    <Field name='ipAddress' label="IP address" component={renderTextField} />
                     <Field name='netmask' label="netmask" component={renderTextField} />
                     <Field name='gateway' label="gateway" component={renderTextField} />
                     <Field name='dns' label="DNS" component={renderTextField}  />

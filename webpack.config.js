@@ -13,14 +13,13 @@ module.exports = {
         publicPath: '/'
     },
     plugins: [
-         new webpack.DefinePlugin({
+        new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the react lib size
                 'NODE_ENV': JSON.stringify('production'),
             }
         }),
         new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin({
             mangle: true,
             compress: {
@@ -35,9 +34,8 @@ module.exports = {
             },
             exclude: [/\.min\.js$/gi] // skip pre-minified libs
         }),
-        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoErrorsPlugin(),
+        new webpack.NoEmitOnErrorsPlugin(),
         new CompressionPlugin({
             asset: "[path].gz[query]",
             algorithm: "gzip",
@@ -47,25 +45,30 @@ module.exports = {
         })
     ],
     module: {
-        loaders: [
-            {
-                test: /\.jsx?$/,
-                exclude: /node_modules/,
-                loader: "babel",
-                query: {
-                    presets: ['es2015', 'react', 'react-hmre', 'stage-1']
-                }
-            },
+        rules: [
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader'
+                use: [
+                   'style-loader',
+                   'css-loader'
+                ]
             },
-            { 
+            {
                 test: [/\.png$/, /\.eot$/, /\.woff2$/, /\.woff$/, /\.ttf$/, /\.svg$/],
-                loader: 'url' 
+                loader: 'url-loader'
+            },
+            {
+                test: /\.jsx?$/,
+                loader: "babel-loader",
+                exclude: /node_modules/,
+                options: {
+                    presets: ['es2015', 'react', 'react-hmre', 'stage-1']
+                }
+                
             }
-
         ]
     },
     watch: true
 }
+
+// process.traceDeprecation = true

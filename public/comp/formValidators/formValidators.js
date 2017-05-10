@@ -93,9 +93,6 @@ export const validateLogsheet = values => {
   if (!values.west) {
     errors.west = 'Required'
   }
-  if (!values.azimuth) {
-    errors.azimuth = 'Required'
-  }
   return errors
 }
 

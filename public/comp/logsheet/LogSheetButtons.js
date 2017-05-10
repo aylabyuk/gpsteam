@@ -23,7 +23,7 @@ const addNewLogSheet = gql`
         $logsheet_date: Date!
         $julian_day: Int
         $marker: String
-        $observers: [StaffIdInput]
+        $observers: [StaffIdInput!]
         $siteNameId: Int!
         $north: Float!
         $east: Float!

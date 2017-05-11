@@ -4,6 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 var webpack = require('webpack');
 
 module.exports = {
+    devtool: 'inline-source-map',
     entry: [
         'webpack-hot-middleware/client',
         './public/_primary.js',
@@ -17,34 +18,12 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env': {
                 // This has effect on the react lib size
-                'NODE_ENV': JSON.stringify('production'),
+                'NODE_ENV': JSON.stringify('development'),
             }
-        }),
-        new webpack.optimize.AggressiveMergingPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            mangle: true,
-            compress: {
-                warnings: false, // Suppress uglification warnings
-                pure_getters: true,
-                unsafe: true,
-                unsafe_comps: true,
-                screw_ie8: true
-            },
-            output: {
-                comments: false,
-            },
-            exclude: [/\.min\.js$/gi] // skip pre-minified libs
         }),
         new CleanWebpackPlugin(['dist/*.*'], { verbose: true, dry: false }),
         new webpack.HotModuleReplacementPlugin(),
-        new webpack.NoEmitOnErrorsPlugin(),
-        new CompressionPlugin({
-            asset: "[path].gz[query]",
-            algorithm: "gzip",
-            test: /\.js$|\.css$|\.html$/,
-            threshold: 10240,
-            minRatio: 0
-        })
+        new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
         rules: [
@@ -69,7 +48,8 @@ module.exports = {
                 
             }
         ]
-    }
+    },
+    watch: true
 }
 
 // process.traceDeprecation = true

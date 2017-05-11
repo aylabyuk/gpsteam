@@ -28,34 +28,15 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         survey_type
         logsheet_date
         julian_day
+        location
         marker
         observers {
-        id
-        first_name
-        last_name
-        nickname
-        position {
-            id
-            position_name
-        }
-        division {
-            id
-            division_name
-        }
-        contact_numbers {
-            id
-            number
-        }
-        emails {
-            id
-            address
-        }
-        office_location
-        birthday
+            first_name
+            last_name
+            nickname
         }
         site {
-        id
-        site_name
+            site_name
         }
         north
         east
@@ -67,53 +48,19 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         failure_time
         receiver_status
         antenna_status
-        rod_num
-        rod_correction
         avg_slant_height
-        ip_add
-        netmask
-        gateway
-        dns
-        local_tcp_port
-        latitude
-        longitude
         observed_situation
         lodging_road_information
         others
         antenna {
-        id
-        serial_number
-        type
-        part_number
+            serial_number
+            type
+            part_number
         }
         receiver {
-        id
-        serial_number
-        type
-        part_number
-        }
-        contact {
-        id
-        first_name
-        last_name
-        position
-        contact_number
-        organization
-        email_add
-        address_one
-        address_two
-        city
-        province
-        }
-        team {
-        name
-        description
-        fieldwork {
-            name
-            description
-            start_date
-            end_date
-        }
+            serial_number
+            type
+            part_number
         }
     }
   } `;

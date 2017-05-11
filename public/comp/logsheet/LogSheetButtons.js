@@ -22,6 +22,7 @@ const addNewLogSheet = gql`
         $survey_type: String!
         $logsheet_date: Date!
         $julian_day: Int
+        $location: String!
         $marker: String
         $observers: [StaffIdInput!]
         $siteNameId: Int!
@@ -58,6 +59,7 @@ const addNewLogSheet = gql`
             logsheet_date: $logsheet_date
             julian_day: $julian_day
             marker: $marker
+            location: $location
             observers: $observers
             siteNameId: $siteNameId
             north: $north
@@ -88,38 +90,18 @@ const addNewLogSheet = gql`
             contactPersonId: $contactPersonId
             teamId: $teamId
         }) {
-            id
             survey_type
             logsheet_date
             julian_day
+            location
             marker
             observers {
-            id
-            first_name
-            last_name
-            nickname
-            position {
-                id
-                position_name
-            }
-            division {
-                id
-                division_name
-            }
-            contact_numbers {
-                id
-                number
-            }
-            emails {
-                id
-                address
-            }
-            office_location
-            birthday
+                first_name
+                last_name
+                nickname
             }
             site {
-            id
-            site_name
+                site_name
             }
             north
             east
@@ -131,43 +113,19 @@ const addNewLogSheet = gql`
             failure_time
             receiver_status
             antenna_status
-            rod_num
-            rod_correction
             avg_slant_height
-            ip_add
-            netmask
-            gateway
-            dns
-            local_tcp_port
-            latitude
-            longitude
             observed_situation
             lodging_road_information
             others
             antenna {
-            id
-            serial_number
-            type
-            part_number
+                serial_number
+                type
+                part_number
             }
             receiver {
-            id
-            serial_number
-            type
-            part_number
-            }
-            contact {
-                id
-                first_name
-                last_name
-                position
-                contact_number
-                organization
-                email_add
-                address_one
-                address_two
-                city
-                province
+                serial_number
+                type
+                part_number
             }
         }
     }
@@ -200,6 +158,7 @@ class LogSheetButtons extends Component {
             logsheet_date: d.logdate,
             julian_day: d.logdate.julianDate(),
             marker: d.marker,
+            location: d.location,
             observers: observers,
             siteNameId: selectedSite.id,
             north: d.north,

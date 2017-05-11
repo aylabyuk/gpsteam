@@ -15,7 +15,7 @@ import NotFoundPage from './comp/NotFoundPage'
 import _LogSheet from './comp/logsheet/_LogSheet'
 import _Staff from './comp/staff/_Staff'
 import LogSheetViewer from './comp/logsheetViewer/LogsheetViewer'
-import Sites from './comp/sites/Sites'
+import _Sites from './comp/sites/_Sites'
 
 //apollo client
 import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
@@ -77,7 +77,7 @@ render(
                 <IndexRoute component={_LogSheet} />
                 <Route path="/logsheets" component={LogSheetViewer} />
                 <Route path="/staff" component={_Staff} />
-                <Route path="/sites" component={Sites} />
+                <Route path="/sites" component={_Sites} />
 
                 <Route path="*" component={NotFoundPage} />
             </Route>

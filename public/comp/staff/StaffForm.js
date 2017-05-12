@@ -288,7 +288,7 @@ class StaffForm extends Component {
                 <div>
                     <Paper style={style} zDepth={1}>
 
-                         <AppBar title="Manage Staff" />
+                         <AppBar title="Manage Staffs" />
                          
                          <Tabs
                             onChange={this.handleChange}

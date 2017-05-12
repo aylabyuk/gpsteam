@@ -70,7 +70,7 @@ if(module.hot) {
     })
 }
 
-render(
+const primary = () => (
     <ApolloProvider client={apolloClient} store={store}>
         <Router history={history}>
             <Route path="/" component={App}>
@@ -82,6 +82,7 @@ render(
                 <Route path="*" component={NotFoundPage} />
             </Route>
         </Router>
-    </ApolloProvider >,
-    document.getElementById("app")
+    </ApolloProvider >
 )
+
+export default primary;

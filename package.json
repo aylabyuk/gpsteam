@@ -4,8 +4,8 @@
   "description": "GPSteam web application",
   "main": "index.js",
   "scripts": {
-    "watch:build": "webpack -p",
-    "watch:server": "nodemon ./app.js -e js,css,html \"./public\""
+    "dev": "webpack-dev-server",
+    "prod": "webpack -p"
   },
   "author": "Oriel Absin",
   "license": "ISC",
@@ -62,6 +62,8 @@
     "compression-webpack-plugin": "^0.4.0",
     "eslint": "^3.13.1",
     "eslint-plugin-react": "^6.9.0",
-    "webpack": "^2.5.1"
+    "html-webpack-plugin": "^2.28.0",
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
   }
 }

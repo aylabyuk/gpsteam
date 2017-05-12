@@ -150,7 +150,7 @@ const StaffQuery = gql`query StaffQuery {
     id
     division_name
   }
-  allStaff {
+  allStaff(order: "first_name") {
     id
 	first_name
     last_name

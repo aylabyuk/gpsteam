@@ -47,7 +47,7 @@ class _LogSheet extends Component {
     render() {
         return ( 
             <Paper style={styles.paper}>
-                <AppBar title="Logsheet" iconClassNameRight="muidocs-icon-navigation-expand-more" />
+                <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
 
                 <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px'}}>
 

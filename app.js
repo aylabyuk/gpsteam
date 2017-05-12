@@ -1,33 +1,16 @@
-/* eslint-disable */
+var path = require("path"),  
+    express = require("express");
 
-var express = require('express')
-var path = require('path')
-var config = require('./webpack.config.js');
-var webpack = require('webpack');
-var webpackDevMiddleware = require('webpack-dev-middleware');
-var webpackHotMiddleware = require('webpack-hot-middleware');
-var favicon = require('serve-favicon');
+var DIST_DIR = path.join(__dirname, "dist"),  
+    PORT = 3000,
+    app = express();
 
-var app = express();
+//Serving the files on the dist folder
+app.use(express.static(DIST_DIR));
 
-app.use(favicon(__dirname + '/views/favicon.ico'));
-
-var compiler = webpack(config);
-
-app.use(webpackDevMiddleware(compiler, {noInfo: true, publicPath: config.output.publicPath}))
-app.use(webpackHotMiddleware(compiler));
-
-app.use(express.static('./dist'));
-
-app.set('views', __dirname + '/views');
-app.set('view engine', 'pug');
-
-app.get('*', function (req, res) {
-    res.render("index");
+//Send index.html when the user access the web
+app.get("*", function (req, res) {  
+  res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
-var port = process.env.PORT || 8080
-
-app.listen(port, function () {
-    console.log('listening to this joint on port '+ port);
-});
+app.listen(PORT);

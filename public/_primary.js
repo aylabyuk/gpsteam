@@ -70,17 +70,21 @@ if(module.hot) {
     })
 }
 
+const routes = (
+    <Route path="/" component={App}>
+        <IndexRoute component={_LogSheet} />
+        <Route path="/logsheets" component={LogSheetViewer} />
+        <Route path="/staff" component={_Staff} />
+        <Route path="/sites" component={_Sites} />
+
+        <Route path="*" component={NotFoundPage} />
+    </Route>
+)
+
 const primary = () => (
     <ApolloProvider client={apolloClient} store={store}>
         <Router history={history}>
-            <Route path="/" component={App}>
-                <IndexRoute component={_LogSheet} />
-                <Route path="/logsheets" component={LogSheetViewer} />
-                <Route path="/staff" component={_Staff} />
-                <Route path="/sites" component={_Sites} />
-
-                <Route path="*" component={NotFoundPage} />
-            </Route>
+            {routes}
         </Router>
     </ApolloProvider >
 )

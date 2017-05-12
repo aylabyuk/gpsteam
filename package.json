@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server",
-    "prod": "npm run clean && NODE_ENV=production webpack -p",
-    "clean": "rimraf ./dist/*"
+    "prod": "npm run clean && webpack -p",
+    "clean": "rimraf ./dist/*",
+    "start": "nodemon app.js",
+    "buildrun": "npm run prod && npm run start"
   },
   "author": "Oriel Absin",
   "license": "ISC",

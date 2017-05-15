@@ -19,7 +19,7 @@ class MainComponent extends React.Component {
 	render() {
 		return (
 			<MuiThemeProvider>
-				<BrowserRouter>
+				<BrowserRouter >
 					<div>
 						<Route exact path='/' component={_Logsheet} />
 						<Route path='/staff' component={_Staff} />

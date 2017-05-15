@@ -7,6 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var isProd = process.env.NODE_ENV === 'production'
 
 module.exports = {
+    devtool: 'source-map',
     entry: [
         'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',

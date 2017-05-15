@@ -1,12 +1,8 @@
 import React, {Component} from 'react'
 import { Router, Route } from 'react-router'
 
-//routes
-import routes from './Routes'
-
 // redux
 import { createBrowserHistory } from 'history';
-import { syncHistoryWithStore } from 'react-router-redux';
 import reduxThunk from 'redux-thunk'
 import rootReducer from './reducers/index'
 import { applyMiddleware, createStore } from 'redux';
@@ -18,6 +14,8 @@ import { ApolloProvider } from 'react-apollo'
 
 //subscription client
 import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws';
+
+import App from './App'
 
 // Create regular NetworkInterface by using apollo-client's API: 
 const networkInterface = createBatchingNetworkInterface({
@@ -54,11 +52,9 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const history = syncHistoryWithStore(createBrowserHistory(), store);
-
 const primary = () => (
   <ApolloProvider client={apolloClient} store={store} >
-    <Router history={history} children={routes} />
+    <App />
   </ApolloProvider>
 )
 

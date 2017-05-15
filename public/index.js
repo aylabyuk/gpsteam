@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import { AppContainer } from 'react-hot-loader';
 // AppContainer is a necessary wrapper component for HMR
@@ -9,7 +10,7 @@ import primary from './_primary';
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component/>
+        <Component/>
     </AppContainer>,
     document.getElementById('app')
   );

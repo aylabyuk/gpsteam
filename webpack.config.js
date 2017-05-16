@@ -62,7 +62,8 @@ module.exports = {
         stats: "errors-only",
         hot: true,
         publicPath: '/',
-        historyApiFallback: true
+        historyApiFallback: true,
+        port: 3000
     }
 }
 

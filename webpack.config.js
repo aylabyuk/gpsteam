@@ -61,7 +61,8 @@ module.exports = {
         compress: true,
         stats: "errors-only",
         hot: true,
-        publicPath: '/'
+        publicPath: '/',
+        historyApiFallback: true
     }
 }
 

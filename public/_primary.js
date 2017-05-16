@@ -52,10 +52,15 @@ const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const primary = () => (
-  <ApolloProvider client={apolloClient} store={store} >
-    <App />
-  </ApolloProvider>
-)
 
-export default primary
+class primary extends Component {
+  render() {
+    return (
+     <ApolloProvider client={apolloClient} store={store} >
+      <App routes={this.props.routes()}/>
+    </ApolloProvider>
+    );
+  }
+}
+
+export default primary;

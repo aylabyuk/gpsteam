@@ -14,7 +14,6 @@ class MainComponent extends React.Component {
 	}
 	
 	render() {
-		console.log(this)
 		return (
 			<MuiThemeProvider>
 				<BrowserRouter >

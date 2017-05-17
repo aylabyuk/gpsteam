@@ -34,7 +34,7 @@ const years = () => {
 
     for(let i = 2000; i <= now; i++) arr.push(i.toString());
 
-    return arr
+    return arr.reverse()
 }
 
 const months = () => {

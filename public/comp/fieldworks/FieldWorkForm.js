@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
 
 import { reduxForm, Field } from 'redux-form'
-import { TextField, AutoComplete } from 'material-ui'
+import { TextField, AutoComplete, FlatButton, Dialog } from 'material-ui'
 import moment from 'moment'
+import { connect } from 'react-redux'
+import { removeSelectedStaff } from '../../actions/index'
+
+import _Staff from '../staff/_Staff'
+import SelectedStaffs from '../staff/SelectedStaffs'
+
 
 const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
   <TextField 
@@ -42,12 +48,42 @@ const months = () => {
 }
 
 class FieldWorkForm extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { openDialog: false };
+    }
+
+    handleOpen = () => {
+        this.setState({openDialog: true});
+    };
+
+    handleClose = () => {
+        this.setState({openDialog: false});
+    };
+
     render() {
         return (
-            <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
-                <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='year' label="year" dataSource={years()} component={renderAutoCompleteField}  />
-                <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='month' label="month" dataSource={months()} component={renderAutoCompleteField}  />
-                <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='description' label="description" component={renderTextField}  />
+            <div style={{textAlign: "center"}}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
+                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='year' label="year" dataSource={years()} component={renderAutoCompleteField}  />
+                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='month' label="month" dataSource={months()} component={renderAutoCompleteField}  />
+                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='description' label="description" component={renderTextField}  />
+                    <br />
+                    <FlatButton label='Select Staffs for this fieldwork' fullWidth primary onTouchTap={() => this.handleOpen() }/>
+                </div>
+                <SelectedStaffs selectedStaffs={this.props.selectedStaffs} removeSelectedStaff={this.props.removeSelectedStaff}/>
+
+                <Dialog
+                    modal={false}
+                    open={this.state.openDialog}
+                    onRequestClose={()=> this.handleClose()}
+                    bodyStyle={{padding: 0}}
+                    repositionOnUpdate={true}>
+                    
+                    <_Staff />
+
+                </Dialog>
+
             </div>
         );
     }
@@ -57,5 +93,10 @@ const form =  reduxForm({
 	form: 'newFieldwork'
 })
 
+function mapStateToProps(state) {  
+	return {
+		selectedStaffs: state.ui.selectedStaffs
+	}
+}
 
-export default form(FieldWorkForm);
+export default connect(mapStateToProps, { removeSelectedStaff })(form(FieldWorkForm));

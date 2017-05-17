@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux'
 
 // components
 import FieldWorkList from './FieldWorkList'
 import FieldWorkForm from './FieldWorkForm'
+
+import { resetSelectedStaffs } from '../../actions/index'
 
 // ui
 import { Paper, Toolbar, ToolbarGroup, ToolbarTitle, FlatButton, GridList, Dialog } from 'material-ui'
@@ -97,7 +100,8 @@ class _FieldWork extends Component {
                     modal={true}
                     actions={actions}
                     open={this.state.openDialog}
-                    contentStyle={{maxWidth: '565px'}}>
+                    contentStyle={{maxWidth: '565px'}}
+                    onRequestClose={()=>this.props.resetSelectedStaffs()}>
                     
                     <FieldWorkForm />
 
@@ -108,4 +112,4 @@ class _FieldWork extends Component {
     }
 }
 
-export default _FieldWork;
+export default connect(null , { resetSelectedStaffs })(_FieldWork);

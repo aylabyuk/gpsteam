@@ -27,19 +27,21 @@ class _LogSheet extends Component {
             width: window.innerWidth,
             height: window.innerHeight
         };
-
         this.updateDimensions = this.updateDimensions.bind(this);
-
     }
+
     updateDimensions() {
         this.setState({width: window.innerWidth, height: window.innerHeight});
     }
+
     componentWillMount() {
         this.updateDimensions();
     }
+
     componentDidMount() {
         window.addEventListener("resize", this.updateDimensions);
     }
+    
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
     }
@@ -60,10 +62,10 @@ class _LogSheet extends Component {
                     </GridList>
 
                     <GridList
-                    cellHeight={this.state.height - 100}
-                    cols={1}
-                    style={styles.gridList} 
-                    id="style-5" >
+                        cellHeight={this.state.height - 100}
+                        cols={1}
+                        style={styles.gridList} 
+                        id="style-5" >
                         <_LogSheetViewer />
                     </GridList>
 

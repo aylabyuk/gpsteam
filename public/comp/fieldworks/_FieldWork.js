@@ -42,6 +42,7 @@ class _FieldWork extends Component {
     };
 
     handleClose = () => {
+        this.props.reset()
         this.setState({openDialog: false});
     };
 

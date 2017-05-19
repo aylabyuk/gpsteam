@@ -17,13 +17,13 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
         mode='portrait'
         errorText = {touched && error} 
         {...input}
-        value = {input.value !== ''? new Date(input.value) : null}
+        value = { input.value !== ''? new Date(input.value): null}
         formatDate={new Intl.DateTimeFormat('en-US', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric',
                 weekday: 'long'
-        }).format}
+        }).format }
         hintText={label}
         floatingLabelText={label}
         onChange = {(event, value) => {input.onChange(value)} } 

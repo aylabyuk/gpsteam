@@ -7,7 +7,7 @@ import  ActionSearch from 'material-ui/svg-icons/action/search'
 
 import StaffForm from '../staff/StaffForm'
 import SelectedStaffs from '../staff/SelectedStaffs'
-import { removeSelectedStaff, resetSelectedStaffs } from '../../actions/index'
+import { removeSelectedStaff } from '../../actions/index'
 
 
 class ObserversFields extends Component {
@@ -25,7 +25,6 @@ class ObserversFields extends Component {
     };
 
     handleClose = () => {
-        this.props.resetSelectedStaffs();
         this.setState({open: false});
     }
 
@@ -62,4 +61,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, { removeSelectedStaff, resetSelectedStaffs })(ObserversFields);
+export default connect(mapStateToProps, { removeSelectedStaff })(ObserversFields);

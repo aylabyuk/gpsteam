@@ -24,7 +24,7 @@ const addNewLogSheet = gql`
         $julian_day: Int
         $location: String!
         $marker: String
-        $observers: [StaffIdInput!]
+        $observers: [StaffIdInput]!
         $siteNameId: Int!
         $north: Float!
         $east: Float!
@@ -52,7 +52,6 @@ const addNewLogSheet = gql`
         $antennaId: String!
         $receiverId: String!
         $contactPersonId: Int
-        $teamId: Int
   ) {
         newLogSheet: createLogsheet(input: {
             survey_type: $survey_type
@@ -88,7 +87,6 @@ const addNewLogSheet = gql`
             antennaId: $antennaId
             receiverId: $receiverId
             contactPersonId: $contactPersonId
-            teamId: $teamId
         }) {
             survey_type
             logsheet_date
@@ -127,6 +125,10 @@ const addNewLogSheet = gql`
                 type
                 part_number
             }
+            contact {
+                first_name
+                last_name
+            }
         }
     }
 `
@@ -141,7 +143,7 @@ class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
 
-        let observers = [], selectedSite, aveSlantHeight
+        let observers = [], selectedSite, aveSlantHeight, contact
 
         this.props.selectedStaffs.map((x)=> {
             observers.push({ id: x.id })
@@ -153,9 +155,12 @@ class LogSheetButtons extends Component {
 
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
+        console.log('data before submit:', d)
+        console.log('logdate b4 submit', new Date(d.logdate))
+
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
-            logsheet_date: d.logdate,
+            logsheet_date: new Date(d.logdate),
             julian_day: d.logdate.julianDate(),
             marker: d.marker,
             location: d.location,
@@ -186,8 +191,7 @@ class LogSheetButtons extends Component {
             others: d.pertinentInfo,
             antennaId: d.antennaSN,
             receiverId: d.receiverSN,
-            contactPersonId: this.props.selectedContact,
-            teamId: null
+            contactPersonId: this.props.selectedContact ? this.props.selectedContact : null
         } }).then((data) => {
             console.log('got data', data);
             this.handleReset()

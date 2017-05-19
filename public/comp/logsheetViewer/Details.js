@@ -41,7 +41,7 @@ class Details extends Component {
                 </div>
             );
         } else {
-            console.log(data)
+            // console.log(data)
 
             return (
                 <JSONTree data={ data } theme={ theme }/>

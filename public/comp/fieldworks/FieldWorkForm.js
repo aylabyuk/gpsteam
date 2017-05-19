@@ -88,10 +88,5 @@ class FieldWorkForm extends Component {
     }
 }
 
-function mapStateToProps(state) {  
-	return {
-		selectedStaffs: state.ui.selectedStaffs
-	}
-}
 
-export default connect(mapStateToProps, { removeSelectedStaff, resetSelectedStaffs })(FieldWorkForm);
+export default connect(null, { removeSelectedStaff, resetSelectedStaffs })(FieldWorkForm);

@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { validateFieldworkInfo as validate } from '../formValidators/formValidators'
 
-
 // components
 import FieldWorkList from './FieldWorkList'
 import FieldWorkForm from './FieldWorkForm'
@@ -63,7 +62,7 @@ class _FieldWork extends Component {
     }
 
     handleSubmit(d) {
-        console.log(d)
+        console.log(d, this.props.selectedStaffs)
         this.handleClose
     }
 
@@ -108,7 +107,7 @@ class _FieldWork extends Component {
                     open={this.state.openDialog}
                     contentStyle={{maxWidth: '565px'}}>
                     
-                    <FieldWorkForm />
+                    <FieldWorkForm selectedStaffs={this.props.selectedStaffs}/>
 
                 </Dialog>
 
@@ -122,4 +121,10 @@ const form =  reduxForm({
     validate
 })
 
-export default form(_FieldWork);
+function mapStateToProps(state) {  
+	return {
+		selectedStaffs: state.ui.selectedStaffs
+	}
+}
+
+export default connect(mapStateToProps, null)(form(_FieldWork));

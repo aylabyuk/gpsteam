@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form'
 import { TextField, AutoComplete, FlatButton, Dialog } from 'material-ui'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { removeSelectedStaff } from '../../actions/index'
+import { removeSelectedStaff, resetSelectedStaffs } from '../../actions/index'
 
 import _Staff from '../staff/_Staff'
 import SelectedStaffs from '../staff/SelectedStaffs'
@@ -61,6 +61,12 @@ class FieldWorkForm extends Component {
         this.setState({openDialog: false});
     };
 
+    componentWillUnmount() {
+        console.log("reset staff")
+        this.props.resetSelectedStaffs()
+    }
+    
+
     render() {
         return (
             <div style={{textAlign: "center"}}>
@@ -99,4 +105,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, { removeSelectedStaff })(form(FieldWorkForm));
+export default connect(mapStateToProps, { removeSelectedStaff, resetSelectedStaffs })(form(FieldWorkForm));

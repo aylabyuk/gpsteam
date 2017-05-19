@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
+import { reduxForm } from 'redux-form'
+import { validateFieldworkInfo as validate } from '../formValidators/formValidators'
+
 
 // components
 import FieldWorkList from './FieldWorkList'
@@ -58,6 +61,11 @@ class _FieldWork extends Component {
         window.removeEventListener("resize", this.updateDimensions);
     }
 
+    handleSubmit(d) {
+        console.log(d)
+        this.handleClose
+    }
+
     render() {
 
         const actions = [
@@ -69,8 +77,7 @@ class _FieldWork extends Component {
         <FlatButton
             label="Submit"
             primary={true}
-            disabled={true}
-            onTouchTap={this.handleClose}
+            onTouchTap={this.props.handleSubmit(this.handleSubmit.bind(this))}
         />,
         ];
 
@@ -109,4 +116,9 @@ class _FieldWork extends Component {
     }
 }
 
-export default _FieldWork;
+const form =  reduxForm({  
+	form: 'fieldwork',
+    validate
+})
+
+export default form(_FieldWork);

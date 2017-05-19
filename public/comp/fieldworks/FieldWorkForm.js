@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 
 import { reduxForm, Field } from 'redux-form'
 import { TextField, AutoComplete, FlatButton, Dialog } from 'material-ui'
-import moment from 'moment'
 import { connect } from 'react-redux'
 import { removeSelectedStaff, resetSelectedStaffs } from '../../actions/index'
+
+import { years, months } from '../formValidators/formValidators'
 
 import _Staff from '../staff/_Staff'
 import SelectedStaffs from '../staff/SelectedStaffs'
@@ -23,7 +24,7 @@ const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ..
 const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
   <AutoComplete
       floatingLabelText={label}
-      filter={AutoComplete.caseInsensitiveFilter}
+      filter={AutoComplete.noFilter}
       openOnFocus={true}
       dataSource={dataSource}
       listStyle={{ maxHeight: 200, overflow: 'auto' }}
@@ -33,19 +34,6 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
       textFieldStyle={{width: '100%'}}
     />
 )
-
-const years = () => {
-    let arr = Array();
-    let now = new Date().getFullYear();
-
-    for(let i = 2000; i <= now; i++) arr.push(i.toString());
-
-    return arr.reverse()
-}
-
-const months = () => {
-    return moment.months()
-}
 
 class FieldWorkForm extends Component {
     constructor(props) {
@@ -62,22 +50,27 @@ class FieldWorkForm extends Component {
     };
 
     componentWillUnmount() {
-        console.log("reset staff")
         this.props.resetSelectedStaffs()
     }
     
 
     render() {
+
+        const style = { 
+            flexGrow: 1,
+            marginLeft: 2,
+            marginRight: 2
+        }
+
         return (
-            <div style={{textAlign: "center"}}>
+            <div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
-                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='year' label="year" dataSource={years()} component={renderAutoCompleteField}  />
-                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='month' label="month" dataSource={months()} component={renderAutoCompleteField}  />
-                    <Field style={{flexGrow: 1, marginLeft: 2, marginRight: 2 }} name='description' label="description" component={renderTextField}  />
-                    <br />
-                    <FlatButton label='Select Staffs for this fieldwork' fullWidth primary onTouchTap={() => this.handleOpen() }/>
+                    <Field style={style} name='year' label="year" dataSource={years()} component={renderAutoCompleteField} />
+                    <Field style={style} name='month' label="month" dataSource={months()} component={renderAutoCompleteField}  />
+                    <Field style={style} name='description' label="description" component={renderTextField}  />         
+                    <FlatButton style={{marginTop: '30px'}} label='Select Staffs for this fieldwork' fullWidth primary onTouchTap={() => this.handleOpen() }/>
                 </div>
-                <SelectedStaffs selectedStaffs={this.props.selectedStaffs} removeSelectedStaff={this.props.removeSelectedStaff}/>
+                <SelectedStaffs style={{textAlign: "center"}} selectedStaffs={this.props.selectedStaffs} removeSelectedStaff={this.props.removeSelectedStaff}/>
 
                 <Dialog
                     modal={false}
@@ -95,14 +88,10 @@ class FieldWorkForm extends Component {
     }
 }
 
-const form =  reduxForm({  
-	form: 'newFieldwork'
-})
-
 function mapStateToProps(state) {  
 	return {
 		selectedStaffs: state.ui.selectedStaffs
 	}
 }
 
-export default connect(mapStateToProps, { removeSelectedStaff, resetSelectedStaffs })(form(FieldWorkForm));
+export default connect(mapStateToProps, { removeSelectedStaff, resetSelectedStaffs })(FieldWorkForm);

@@ -1,3 +1,18 @@
+import moment from 'moment'
+
+export const years = () => {
+    let arr = Array();
+    let now = new Date().getFullYear();
+
+    for(let i = 2000; i <= now; i++) arr.push(i.toString());
+
+    return arr.reverse()
+}
+
+export const months = () => {
+    return moment.months()
+}
+
 export const validateStaffInfo = values => {
   const errors = {}
   if (!values.firstName) {
@@ -58,6 +73,27 @@ export const validateContactDetails = values => {
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email_add)) {
     errors.email_add = 'This is not a valid email address'
   }
+  return errors
+}
+
+export const validateFieldworkInfo = values => {
+  const errors = {}
+  if(!values.year) {
+    errors.year = 'please provide a year'
+  } else if(!years().includes(values.year)) {
+    errors.year = 'this is not a valid year value'
+  }
+
+  if(!values.month) {
+    errors.month = 'please provide a month'
+  } else if(!months().includes(values.month)) {
+    errors.month = 'this is not a valid month value'
+  }
+
+  if(!values.description) {
+    errors.description = 'please provide fieldwork description'
+  }
+
   return errors
 }
 

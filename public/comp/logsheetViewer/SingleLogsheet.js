@@ -62,6 +62,21 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
             type
             part_number
         }
+        rod_num
+        rod_correction
+        ip_add
+        netmask
+        gateway
+        dns
+        local_tcp_port
+        latitude
+        longitude
+        contact {
+            first_name
+            last_name
+            email_add
+            contact_number
+        }
     }
   } `;
 

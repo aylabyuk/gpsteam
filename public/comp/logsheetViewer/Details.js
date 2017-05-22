@@ -1,32 +1,27 @@
 import React, { Component } from 'react';
+import Tab1 from './Tab1'
+import Tab2 from './Tab2'
+import Tab3 from './Tab3'
 
-// ui
-import { CircularProgress } from 'material-ui'
-import JSONTree from 'react-json-tree'
-
-const theme = {
-  scheme: 'monokai',
-  author: 'wimer hazenberg (http://www.monokai.nl)',
-  base00: '#272822',
-  base01: '#383830',
-  base02: '#49483e',
-  base03: '#75715e',
-  base04: '#a59f85',
-  base05: '#f8f8f2',
-  base06: '#f5f4f1',
-  base07: '#f9f8f5',
-  base08: '#f92672',
-  base09: '#fd971f',
-  base0A: '#f4bf75',
-  base0B: '#a6e22e',
-  base0C: '#a1efe4',
-  base0D: '#66d9ef',
-  base0E: '#ae81ff',
-  base0F: '#cc6633'
-};
+// ui 
+import { Tab, Tabs, CircularProgress } from 'material-ui'
+import SwipeableViews from 'react-swipeable-views'
 
 
 class Details extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            slideIndex: 0,
+        };
+    }
+
+    handleChange = (value) => {
+        this.setState({
+            slideIndex: value,
+        });
+    };
+
     render() {
         let { data, loading } = this.props
 
@@ -41,10 +36,19 @@ class Details extends Component {
                 </div>
             );
         } else {
-            // console.log(data)
-
             return (
-                <JSONTree data={ data } theme={ theme }/>
+                <div>
+                <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
+                    <Tab label="details" value={0} />
+                    <Tab label="measurements" value={1} />
+                    <Tab label="others" value={2} />
+                </Tabs>
+                <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} >
+                    <Tab1 d={data} />
+                    <Tab2 d={data} />
+                    <Tab3 d={data} />
+                </SwipeableViews>
+                </div>
             );
         }
     }

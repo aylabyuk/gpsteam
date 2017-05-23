@@ -17,19 +17,30 @@ import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transpo
 
 import App from './App'
 
+
+
+const isDevServer = process.argv[1].indexOf('webpack-dev-server') >= 0;
+
+let PORT
+
+if(isDevServer){
+  PORT=4040
+} else {
+  PORT=4000
+}
+
 // Create regular NetworkInterface by using apollo-client's API: 
 const networkInterface = createBatchingNetworkInterface({
   opts: {
     credentials: "same-origin",
   },
   batchInterval: 20,
-  uri: "http://192.168.1.208:4000/graphql",
+  uri: "http://192.168.1.208:" + PORT + "/graphql",
 });
 
 // connect to web-socket for subscription
-const wsClient = new SubscriptionClient(`ws://192.168.1.208:4000/`, {
+const wsClient = new SubscriptionClient("ws://192.168.1.208:" + PORT + "/", {
     reconnect: true,
-    uri: "http://192.168.1.208:4000/graphql",
     connectionParams: {
         // Pass any arguments for initialization 
     }

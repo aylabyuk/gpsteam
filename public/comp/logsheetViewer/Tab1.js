@@ -7,6 +7,8 @@ class Tab1 extends Component {
     render() {
         let { d } = this.props
 
+        console.log(d)
+
         return (
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
@@ -54,10 +56,10 @@ class Tab1 extends Component {
                         <TableHeaderColumn>antenna serial number</TableHeaderColumn>
                         <TableRowColumn>{d.antenna.serial_number}</TableRowColumn>
                     </TableRow>
-                    <TableRow >
+                    {/*{d.contact.first_name ? <TableRow >
                         <TableHeaderColumn>contact person</TableHeaderColumn>
                         <TableRowColumn>{d.contact.first_name + ' ' + d.contact.last_name + ' / ' + d.contact.contact_number}</TableRowColumn>
-                    </TableRow>
+                    </TableRow>: '' }*/}
                 </TableBody>
             </Table>
         );

@@ -23,20 +23,13 @@ const networkInterface = createBatchingNetworkInterface({
     credentials: "same-origin",
   },
   batchInterval: 20,
-<<<<<<< HEAD
-  uri: "http://192.168.1.208:4040/graphql",
-});
-
-// connect to web-socket for subscription
-const wsClient = new SubscriptionClient(`ws://192.168.1.208:4040/`, {
-=======
   uri: "http://192.168.1.208:4000/graphql",
 });
 
 // connect to web-socket for subscription
 const wsClient = new SubscriptionClient(`ws://192.168.1.208:4000/`, {
->>>>>>> change ip add
     reconnect: true,
+    uri: "http://192.168.1.208:4000/graphql",
     connectionParams: {
         // Pass any arguments for initialization 
     }

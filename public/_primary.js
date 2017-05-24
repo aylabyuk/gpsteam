@@ -17,13 +17,9 @@ import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transpo
 
 import App from './App'
 
-
-
-const isDevServer = process.argv[1].indexOf('webpack-dev-server') >= 0;
-
 let PORT
 
-if(isDevServer){
+if(window.location.port == '8080'){
   PORT=4040
 } else {
   PORT=4000

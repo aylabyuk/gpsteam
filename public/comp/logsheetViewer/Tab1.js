@@ -6,9 +6,6 @@ import { Table, TableBody, TableRowColumn, TableRow, TableHeaderColumn } from 'm
 class Tab1 extends Component {
     render() {
         let { d } = this.props
-
-        console.log(d)
-
         return (
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >

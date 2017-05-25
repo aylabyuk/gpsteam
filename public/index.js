@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import D3 from 'd3'
 
 import { AppContainer } from 'react-hot-loader';
 import Primary from './_primary'

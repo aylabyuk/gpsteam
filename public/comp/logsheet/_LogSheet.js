@@ -56,16 +56,14 @@ class _LogSheet extends Component {
                     <GridList
                         cellHeight={this.state.height - 100}
                         cols={1}
-                        style={styles.gridList} 
-                        id="style-5" >
+                        style={styles.gridList} >
                         <LogSheetForm />
                     </GridList>
 
                     <GridList
                         cellHeight={this.state.height - 100}
                         cols={1}
-                        style={styles.gridList} 
-                        id="style-5" >
+                        style={styles.gridList} >
                         <_LogSheetViewer />
                     </GridList>
 

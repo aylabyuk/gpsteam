@@ -25,6 +25,7 @@ const Clearable = ComposedComponent => class extends React.Component {
                     { ...this.props.input }
                     autoOk={false}
                     ref="timePicker"
+                    defaultTime={this.props.defaultTime}
                     value={this.props.input.value !== '' ? new Date(this.props.input.value) : null}
                     onChange={(event, value) => {this.props.input.onChange(value)}} 
                     onBlur = {(value) => { value = '' } }

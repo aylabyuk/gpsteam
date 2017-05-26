@@ -14,10 +14,8 @@ class TimeFields extends Component {
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Time Logs and Status</h5>
                 <form style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                    <Field name="startTime" component={ClearableTimePicker} label="start time(UTC)" 
-                        defaultTime={ new Date(null,null,null,0,0,0,0)} />
-                    <Field name="endTime" component={ClearableTimePicker} label="end time(UTC)"
-                        defaultTime={ new Date(null,null,null,23,59,0,0)} />
+                    <Field name="startTime" component={ClearableTimePicker} label="start time(UTC)" />
+                    <Field name="endTime" component={ClearableTimePicker} label="end time(UTC)" />
                     <Field name="failureTime" component={ClearableTimePicker} label="failure time(UTC)"/>
                 </form>
             </div>

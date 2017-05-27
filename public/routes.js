@@ -4,11 +4,11 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 
 // components
-import _Logsheet from './comp/logsheet/_Logsheet'
 import _Staff from './comp/staff/_Staff'
 import _FieldWork from './comp/fieldworks/_FieldWork'
 import MainDashboard from './comp/dashboard/MainDashboard'
 import NotFoundPage from './comp/NotFoundPage'
+import _Logsheet from './comp/logsheet/_LogSheet'
 
 const routes = () => {
     return(

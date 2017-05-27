@@ -18,11 +18,14 @@ import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transpo
 import App from './App'
 
 let PORT
+let ip
 
 if(window.location.port == '8080'){
   PORT=4040
+  ip="localhost:"
 } else {
   PORT=4000
+  ip="192.168.1.208:"
 }
 
 // Create regular NetworkInterface by using apollo-client's API: 
@@ -31,11 +34,11 @@ const networkInterface = createBatchingNetworkInterface({
     credentials: "same-origin",
   },
   batchInterval: 20,
-  uri: "http://192.168.1.208:" + PORT + "/graphql",
+  uri: "http://" + ip + PORT + "/graphql",
 });
 
 // connect to web-socket for subscription
-const wsClient = new SubscriptionClient("ws://192.168.1.208:" + PORT + "/", {
+const wsClient = new SubscriptionClient("ws://" + ip + PORT + "/", {
     reconnect: true,
     connectionParams: {
         // Pass any arguments for initialization 

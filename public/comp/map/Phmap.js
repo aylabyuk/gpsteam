@@ -12,12 +12,14 @@ class Phmap extends Component {
 
   render() {
     return (
-      <GoogleMapReact
-        defaultCenter={this.props.center}
-        defaultZoom={this.props.zoom}
-      >
-        
-      </GoogleMapReact>
+      <div id='this' style={{width: this.props.width, height: this.props.height}}>
+        <GoogleMapReact
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+        >
+          
+        </GoogleMapReact>
+      </div>
     );
   }
 }

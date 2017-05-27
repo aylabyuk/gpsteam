@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom'
 
 import GoogleMapReact from 'google-map-react';
 
-import ContainerDimensions from 'react-container-dimensions'
-
 
 class Phmap extends Component {
   static defaultProps = {

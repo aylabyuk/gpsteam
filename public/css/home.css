@@ -69,20 +69,20 @@ body {
 .normal {
     width: 10px;
     height: 10px;
-    background: #FF6E40;
+    background: #009688;
 	opacity: 0.8;
+	transition: all .2s ease-in-out;
 }
 
 .hovered {
-	transform: scale(15);
-    background: #F57F17;
-    border: 1px solid #F57F17;
-	opacity: 1;
+	width: 10px;
+    height: 10px;
+	background: #009688;
+	transform: scale(8);
+	transition: all 200ms ease-in;
 }
 
 .hoveredtext {
-	visibility: hidden;
-    background-color: #4E342E;
     color: #fff;
     text-align: center;
     border-radius: 6px;
@@ -94,18 +94,7 @@ body {
     z-index: 999;
 
 	width: 60px;
-    bottom: 60%;
+    bottom: -25px;
     left: 50%; 
     margin-left: -30px;
-}
-
-.hoveredtext::after {
-	content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #4E342E transparent transparent transparent;
 }

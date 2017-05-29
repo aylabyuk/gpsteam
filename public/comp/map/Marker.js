@@ -6,7 +6,7 @@ const defaultStyle = 'circleBase normal'
 
 class Marker extends Component {
     render() {
-        const style = this.props.$hover ? defaultStyle : defaultStyle;
+        const style = this.props.$hover ? hoverStyle : defaultStyle;
         // console.log(this.props)
         return (
             <div>

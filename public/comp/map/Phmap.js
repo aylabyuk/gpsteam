@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 
 import GoogleMapReact from 'google-map-react';
 
+const API_KEY = 'AIzaSyBel2WYgGz9FzJenyjQM_O9Et2x9uEeId8';
 
 class Phmap extends Component {
   static defaultProps = {
@@ -10,12 +11,23 @@ class Phmap extends Component {
     zoom: 6
   };
 
+  createMapOptions() {
+    return {
+      mapTypeControl: true
+    }
+  }
+
   render() {
     return (
       <div id='this' style={{width: this.props.width, height: this.props.height}}>
         <GoogleMapReact
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
+          bootstrapURLKeys={{
+              key: API_KEY,
+          }}
+          options={this.createMapOptions}
+          resetBoundsOnResize ={true}
         >
           
         </GoogleMapReact>

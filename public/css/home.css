@@ -66,10 +66,46 @@ body {
     border-radius: 100%;
 }
 
-.type1 {
-    width: 5px;
-    height: 5px;
+.normal {
+    width: 10px;
+    height: 10px;
     background: #FF6E40;
-	opacity:0.8;
-    border: 1px solid #FF8F00;
+	opacity: 0.8;
+}
+
+.hovered {
+	transform: scale(15);
+    background: #F57F17;
+    border: 1px solid #F57F17;
+	opacity: 1;
+}
+
+.hoveredtext {
+	visibility: hidden;
+    background-color: #4E342E;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+	margin: 10px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 999;
+
+	width: 60px;
+    bottom: 60%;
+    left: 50%; 
+    margin-left: -30px;
+}
+
+.hoveredtext::after {
+	content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #4E342E transparent transparent transparent;
 }

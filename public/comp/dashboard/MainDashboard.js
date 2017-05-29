@@ -6,6 +6,10 @@ import Phmap from '../map/Phmap'
 // ui
 import { AppBar, Paper} from 'material-ui'
 
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
 const styles = {
   center: {
     padding: 5,
@@ -20,6 +24,18 @@ const styles = {
     flex: '1 0 0',
   }
 };
+
+const SiteDetailsQuery = gql`query SiteDetailsQuery {
+    allSiteDetail {
+        name {
+            site_name
+        }
+        location {
+            long
+            lat
+        }
+    }
+}`;
 
 class MainDashboard extends Component {
     constructor(props) {
@@ -48,6 +64,8 @@ class MainDashboard extends Component {
     }
 
     render() {
+
+        let { loading, allSiteDetail } = this.props.data
         
         return (
             <div style={{width: this.state.width, height: this.state.height}}>
@@ -59,7 +77,7 @@ class MainDashboard extends Component {
                     <Paper style={styles.center}>
                         <AutoSizer >
                             {({width, height}) => (
-                                <Phmap width={width} height={height - 80}/>
+                                <Phmap width={width} height={height - 80} sites={allSiteDetail} loading={loading}/>
                             )}
                         </AutoSizer>
                     </Paper>
@@ -72,4 +90,4 @@ class MainDashboard extends Component {
     }
 }
 
-export default MainDashboard;
+export default graphql(SiteDetailsQuery)(MainDashboard);

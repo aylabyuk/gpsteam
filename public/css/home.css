@@ -61,3 +61,15 @@ body {
     border-radius: 9px;
     background-clip: content-box;
 }
+
+.circleBase {
+    border-radius: 100%;
+}
+
+.type1 {
+    width: 5px;
+    height: 5px;
+    background: #FF6E40;
+	opacity:0.8;
+    border: 1px solid #FF8F00;
+}

@@ -71,7 +71,7 @@ class MainDashboard extends Component {
 
         loading ? null : allSiteDetail.map((s) => {
             s.location.lat ?
-            sites.push({ id: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
+            sites.push({ tooltip: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
         })
         
         return (

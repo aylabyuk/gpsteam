@@ -12,7 +12,7 @@ export default class Phmap extends Component {
       lat: 12.8797,
       lng: 121.7740,
       zoom: 6,
-      maxZoom: 20
+      maxZoom: 40
     };
   }
 

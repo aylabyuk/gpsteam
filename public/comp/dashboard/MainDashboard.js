@@ -70,7 +70,8 @@ class MainDashboard extends Component {
         let sites = []
 
         loading ? null : allSiteDetail.map((s) => {
-            sites.push({ id: s.name.site_name, lat: s.location.lat, lng: s.location.long })
+            s.location.lat ?
+            sites.push({ id: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
         })
         
         return (

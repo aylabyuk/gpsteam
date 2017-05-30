@@ -12,7 +12,7 @@ export default class Phmap extends Component {
       lat: 12.8797,
       lng: 121.7740,
       zoom: 6,
-      maxZoom: 18
+      maxZoom: 20
     };
   }
 
@@ -26,7 +26,7 @@ export default class Phmap extends Component {
     } else {
       return (
         <div id='this' style={{width: this.props.width, height: this.props.height}}>
-        <Map center={position} zoom={this.state.zoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}}>
+        <Map center={position} zoom={this.state.zoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap>
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'

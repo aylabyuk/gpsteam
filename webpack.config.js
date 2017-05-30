@@ -7,9 +7,11 @@ var autoprefixer = require('autoprefixer');
 
 var isProd = process.env.NODE_ENV === 'production'
 
+
 module.exports = {
     devtool: 'source-map',
     entry: [
+        'babel-polyfill',
         'react-hot-loader/patch',
         './public/index.js',
         ],

@@ -9,11 +9,7 @@ import GoogleMapReact from 'google-map-react';
 import ClusterMarker from './markers/ClusterMarker';
 import SimpleMarker from './markers/SimpleMarker';
 import supercluster from 'points-cluster';
-import { susolvkaCoords, markersData } from './data/fakeData';
-
-import { mdata } from './data/markersData'
-
-console.log(mdata)
+import { susolvkaCoords } from './data/fakeData';
 
 const API_KEY = 'AIzaSyBel2WYgGz9FzJenyjQM_O9Et2x9uEeId8';
 
@@ -66,8 +62,7 @@ export const gMapHOC = compose(
   // withState so you could change markers if you want
   withState(
     'markers',
-    'setMarkers',
-    markersData
+    'setMarkers'
   ),
   withState(
     'hoveredMarkerId',
@@ -79,7 +74,7 @@ export const gMapHOC = compose(
     'setMapProps',
     {
       center: susolvkaCoords,
-      zoom: 10
+      zoom: 6
     }
   ),
   // describe events

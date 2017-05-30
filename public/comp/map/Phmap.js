@@ -20,7 +20,7 @@ class Phmap extends Component {
   }
 
   render() {
-    let { sites, loading } = this.props
+    let { markers, loading } = this.props
 
     if(loading) {
       return(
@@ -28,14 +28,14 @@ class Phmap extends Component {
       )
     } else {
 
-      const SiteNodes = this.props.sites
+      const SiteNodes = this.props.markers
       .map((site, index) => (
         <Marker
           // required props
           key={index}
-          lat={site.location.lat}
-          lng={site.location.long} 
-          sitename={site.name.site_name}/>
+          lat={site.lat}
+          lng={site.lng} 
+          sitename={site.id}/>
       ));
 
 

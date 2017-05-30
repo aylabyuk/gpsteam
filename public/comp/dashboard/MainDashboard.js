@@ -7,6 +7,10 @@ import GMap from '../map/GMap'
 // ui
 import { AppBar, Paper} from 'material-ui'
 
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
 const styles = {
   center: {
     padding: 5,
@@ -21,6 +25,18 @@ const styles = {
     flex: '1 0 0',
   }
 };
+
+const SiteDetailsQuery = gql`query SiteDetailsQuery {
+    allSiteDetail {
+        name {
+            site_name
+        }
+        location {
+            long
+            lat
+        }
+    }
+}`;
 
 class MainDashboard extends Component {
     constructor(props) {
@@ -49,6 +65,15 @@ class MainDashboard extends Component {
     }
 
     render() {
+
+        let { loading, allSiteDetail } = this.props.data
+
+        let sites = []
+
+        loading ? null : allSiteDetail.map((s) => {
+            sites.push({ id: s.name.site_name, lat: s.location.lat, lng: s.location.long })
+        })
+        
         return (
             <div style={{width: this.state.width, height: this.state.height}}>
                 <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" />
@@ -59,7 +84,7 @@ class MainDashboard extends Component {
                     <Paper style={styles.center}>
                         <AutoSizer >
                             {({width, height}) => (
-                                <GMap width={width} height={height - 80} />
+                                <GMap width={width} height={height - 80} markers={sites} loading={loading}/>
                             )}
                         </AutoSizer>
                     </Paper>
@@ -72,4 +97,4 @@ class MainDashboard extends Component {
     }
 }
 
-export default MainDashboard;
+export default graphql(SiteDetailsQuery)(MainDashboard);

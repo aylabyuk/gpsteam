@@ -46,15 +46,6 @@ module.exports = {
                 loader: 'url-loader'
             },
             {
-                test: /\.sass$/,
-                use: [
-                    'style-loader',
-                    'css-loader?modules&importLoaders=2&localIdentName=[name]__[local]',
-                    'postcss-loader',
-                    `sass-loader?precision=10&indentedSyntax=sass`,
-                ]
-            },
-            {
                 test: /\.jsx?$/,
                 loader: "babel-loader",
                 exclude: /node_modules/,

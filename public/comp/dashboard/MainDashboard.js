@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { AutoSizer } from 'react-virtualized'
 
 import Phmap from '../map/Phmap'
-import GMap from '../map/GMap'
 
 // ui
 import { AppBar, Paper} from 'material-ui'
@@ -82,9 +81,9 @@ class MainDashboard extends Component {
                         
                     </Paper>
                     <Paper style={styles.center}>
-                        <AutoSizer >
+                        <AutoSizer>
                             {({width, height}) => (
-                                <GMap width={width} height={height - 80} markers={sites} loading={loading}/>
+                                <Phmap width={width} height={height - 80} markers={sites} loading={loading}/>
                             )}
                         </AutoSizer>
                     </Paper>

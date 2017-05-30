@@ -3,6 +3,7 @@ var CompressionPlugin = require("compression-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var autoprefixer = require('autoprefixer');
 
 var isProd = process.env.NODE_ENV === 'production'
 
@@ -41,6 +42,15 @@ module.exports = {
             {
                 test: [/\.png$/, /\.eot$/, /\.woff2$/, /\.woff$/, /\.ttf$/, /\.svg$/],
                 loader: 'url-loader'
+            },
+            {
+                test: /\.sass$/,
+                use: [
+                    'style-loader',
+                    'css-loader?modules&importLoaders=2&localIdentName=[name]__[local]',
+                    'postcss-loader',
+                    `sass-loader?precision=10&indentedSyntax=sass`,
+                ]
             },
             {
                 test: /\.jsx?$/,

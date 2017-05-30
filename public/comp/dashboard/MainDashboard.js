@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import { AutoSizer } from 'react-virtualized'
 
 import Phmap from '../map/Phmap'
+import GMap from '../map/GMap'
 
 // ui
 import { AppBar, Paper} from 'material-ui'
-
-//graphql
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 
 const styles = {
   center: {
@@ -24,18 +21,6 @@ const styles = {
     flex: '1 0 0',
   }
 };
-
-const SiteDetailsQuery = gql`query SiteDetailsQuery {
-    allSiteDetail {
-        name {
-            site_name
-        }
-        location {
-            long
-            lat
-        }
-    }
-}`;
 
 class MainDashboard extends Component {
     constructor(props) {
@@ -64,9 +49,6 @@ class MainDashboard extends Component {
     }
 
     render() {
-
-        let { loading, allSiteDetail } = this.props.data
-        
         return (
             <div style={{width: this.state.width, height: this.state.height}}>
                 <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" />
@@ -77,7 +59,7 @@ class MainDashboard extends Component {
                     <Paper style={styles.center}>
                         <AutoSizer >
                             {({width, height}) => (
-                                <Phmap width={width} height={height - 80} sites={allSiteDetail} loading={loading}/>
+                                <GMap width={width} height={height - 80} />
                             )}
                         </AutoSizer>
                     </Paper>
@@ -90,4 +72,4 @@ class MainDashboard extends Component {
     }
 }
 
-export default graphql(SiteDetailsQuery)(MainDashboard);
+export default MainDashboard;

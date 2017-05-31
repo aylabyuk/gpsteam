@@ -96,7 +96,7 @@ class MainDashboard extends Component {
                                         {
                                             sites.map((s)=> {
                                                 return(
-                                                    <ListItem primaryText={s.id} id={s.id} key={s.id} ref={s.id}/>
+                                                    <ListItem primaryText={s.id} id={s.id} key={s.id} ref={s.id} />
                                                 )
                                             })
                                         }

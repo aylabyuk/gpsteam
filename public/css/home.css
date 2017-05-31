@@ -80,3 +80,10 @@ body {
 	transform: scale(2);
 	transition: all 200ms ease-in;
 }
+
+.viewing {
+	background-color: cadetblue;
+    color: white;
+}
+
+    

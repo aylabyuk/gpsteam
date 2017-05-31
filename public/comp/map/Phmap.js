@@ -29,10 +29,10 @@ export default class Phmap extends Component {
   }
 
   handleMarkerHover(marker) {
-    scrollIntoView(document.getElementById( marker.getTooltip().getContent()), {
-      time: 500, // half a second
-    })
-    // console.log('hover', marker.getTooltip().getContent())
+    let element = document.getElementById( marker.getTooltip().getContent() )
+    scrollIntoView( element , {
+      time: 200
+    }, (type) => { element.children[0].children[0].classList.add('viewing'), console.log(element) }  )
   }
   
   render() {

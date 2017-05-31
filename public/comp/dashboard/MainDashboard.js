@@ -4,7 +4,7 @@ import { AutoSizer } from 'react-virtualized'
 import Phmap from '../map/Phmap'
 
 // ui
-import { AppBar, Paper} from 'material-ui'
+import { AppBar, Paper, List, ListItem} from 'material-ui'
 
 //graphql
 import gql from 'graphql-tag';
@@ -71,7 +71,7 @@ class MainDashboard extends Component {
 
         loading ? null : allSiteDetail.map((s) => {
             s.location.lat ?
-            sites.push({ tooltip: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
+            sites.push({ id: s.name.site_name, tooltip: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
         })
         
         return (
@@ -89,7 +89,21 @@ class MainDashboard extends Component {
                         </AutoSizer>
                     </Paper>
                     <Paper style={styles.right}>
-                        
+                        <AutoSizer>
+                            {({width, height}) => (
+                                <div style={{width, height: height - 80, overflowY: 'scroll'}}>
+                                    <List>
+                                        {
+                                            sites.map((s)=> {
+                                                return(
+                                                    <ListItem primaryText={s.id} key={s.id} ref={s.id}/>
+                                                )
+                                            })
+                                        }
+                                    </List>
+                                </div>
+                            )}
+                        </AutoSizer>
                     </Paper>
                 </div>
             </div>

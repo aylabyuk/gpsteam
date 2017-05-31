@@ -62,40 +62,21 @@ body {
     background-clip: content-box;
 }
 
-.circleBase {
-    border-radius: 100%;
-}
-
-.normal {
-    width: 10px;
+#icn {
+	width: 10px;
     height: 10px;
     background: #009688;
 	opacity: 0.8;
+	padding: 20px;
 	transition: all .2s ease-in-out;
+	border-radius:50%;
+    background-clip:content-box;
 }
 
-.hovered {
+#icn:hover {
 	width: 10px;
     height: 10px;
-	background: #009688;
-	transform: scale(8);
+    background: #009688;
+	transform: scale(2);
 	transition: all 200ms ease-in;
 }
-
-.hoveredtext {
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-	margin: 10px;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 999;
-
-	width: 60px;
-    bottom: -25px;
-    left: 50%; 
-    margin-left: -30px;
-}
-

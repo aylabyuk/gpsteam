@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from 'leaflet'
+import scrollIntoView from 'scroll-into-view'
 
 let siteIcon = L.divIcon({
           className: '',
@@ -28,7 +29,10 @@ export default class Phmap extends Component {
   }
 
   handleMarkerHover(marker) {
-    console.log('hover', marker.getTooltip().getContent())
+    scrollIntoView(document.getElementById( marker.getTooltip().getContent()), {
+      time: 500, // half a second
+    })
+    // console.log('hover', marker.getTooltip().getContent())
   }
   
   render() {

@@ -75,28 +75,28 @@ class MainDashboard extends Component {
         })
         
         return (
-            <div style={{width: this.state.width, height: this.state.height}}>
+            <div id='cont' style={{width: this.state.width, height: this.state.height}}>
                 <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" />
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: '100%'}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.left}>
                         
                     </Paper>
                     <Paper style={styles.center}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <Phmap width={width} height={height - 80} markers={sites} loading={loading}/>
+                                <Phmap width={width} height={height} markers={sites} loading={loading}/>
                             )}
                         </AutoSizer>
                     </Paper>
                     <Paper style={styles.right}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <div style={{width, height: height - 80, overflowY: 'scroll'}}>
+                                <div style={{width, height: height, overflowY: 'scroll'}}>
                                     <List>
                                         {
                                             sites.map((s)=> {
                                                 return(
-                                                    <ListItem primaryText={s.id} key={s.id} ref={s.id}/>
+                                                    <ListItem primaryText={s.id} id={s.id} key={s.id} ref={s.id}/>
                                                 )
                                             })
                                         }

@@ -3,15 +3,19 @@ import LogSheetForm from './LogSheetForm';
 import _LogSheetViewer from '../logsheetViewer/_LogsheetViewer';
 
 // ui
-import { AppBar, Paper, GridList} from 'material-ui'
+import { AppBar, Paper, GridList, GridTile} from 'material-ui'
 import SwipeableViews from 'react-swipeable-views';
 
 const styles = {
   gridList: {
     width: '100%',
     height: '100%',
-    overflowY: 'auto',
+    overflowY: 'hidden',
     overflowX: 'hidden',
+  },
+  gridTile: {
+      overflowX: 'hidden',
+      overflowY: 'auto',
   },
   paper: {
     width: 'auto',
@@ -55,16 +59,17 @@ class _LogSheet extends Component {
 
                     <GridList
                         cellHeight={this.state.height - 100}
-                        cols={1}
+                        cols={2}
                         style={styles.gridList} >
-                        <LogSheetForm />
-                    </GridList>
 
-                    <GridList
-                        cellHeight={this.state.height - 100}
-                        cols={1}
-                        style={styles.gridList} >
-                        <_LogSheetViewer />
+                        <GridTile style={styles.gridTile}>
+                            <LogSheetForm />
+                        </GridTile>
+
+                        <GridTile>
+                            <_LogSheetViewer />
+                        </GridTile>
+
                     </GridList>
 
                 </div>

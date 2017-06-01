@@ -6,6 +6,7 @@ import { Table, TableBody, TableRowColumn, TableRow, TableHeaderColumn } from 'm
 class Tab1 extends Component {
     render() {
         let { d } = this.props
+        let dt = new Date(d.logsheet_date)
         return (
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
@@ -31,7 +32,7 @@ class Tab1 extends Component {
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>logsheet date</TableHeaderColumn>
-                        <TableRowColumn>{d.logsheet_date.substring(0,10)}</TableRowColumn>
+                        <TableRowColumn>{ dt.toDateString() }</TableRowColumn>
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>day of year</TableHeaderColumn>

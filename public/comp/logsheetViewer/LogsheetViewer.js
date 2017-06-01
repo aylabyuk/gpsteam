@@ -7,6 +7,7 @@ import { graphql } from 'react-apollo';
 // ui
 import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui'
 import { blueGrey400, purple800 } from 'material-ui/styles/colors'
+import { AutoSizer } from 'react-virtualized'
 
 const style = {
   margin: 2,
@@ -82,35 +83,40 @@ class LogsheetViewer extends Component {
             return <LinearProgress mode="indeterminate" />
         } else {
             return (
-                <div>
+                <div style={{overflowY: 'hidden', height: '100%'}}>
                     <Toolbar>
                         <ToolbarGroup>
                             <ToolbarTitle text="Sites with Logsheets" />
                         </ToolbarGroup>
                     </Toolbar>
-                    <List>
-                        { sitesWithLogsheet.map((s)=> {
-                            return(
-                                <ListItem 
-                                    key={s.id}
-                                    primaryText={s.site_name}
-                                    secondaryText={ s.logsheets.length + ' logsheets' }
-                                    initiallyOpen={false}
-                                    nestedItems={ 
-                                        s.logsheets.map((l)=> {
-                                            let ldate = new Date(l.logsheet_date)
-                                            return(
-                                                <ListItem
-                                                    key={l.id}
-                                                    primaryText={ ldate.toDateString() } 
-                                                    onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
-                                            )
-                                        })
-                                    }
-                                />
-                            )
-                        }) }
-                    </List>
+
+                    <AutoSizer>
+                            {({width, height}) => (
+                                <List style={{width, height, overflowY: 'scroll'}}>
+                                    { sitesWithLogsheet.map((s)=> {
+                                        return(
+                                            <ListItem 
+                                                key={s.id}
+                                                primaryText={s.site_name}
+                                                secondaryText={ s.logsheets.length + ' logsheets' }
+                                                initiallyOpen={false}
+                                                nestedItems={ 
+                                                    s.logsheets.map((l)=> {
+                                                        let ldate = new Date(l.logsheet_date)
+                                                        return(
+                                                            <ListItem
+                                                                key={l.id}
+                                                                primaryText={ ldate.toDateString() } 
+                                                                onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
+                                                        )
+                                                    })
+                                                }
+                                            />
+                                        )
+                                    }) }
+                                </List>
+                            )}
+                    </AutoSizer>
                 </div>
             );
         }

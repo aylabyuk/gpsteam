@@ -66,7 +66,7 @@ class _LogSheet extends Component {
                             <LogSheetForm />
                         </GridTile>
 
-                        <GridTile>
+                        <GridTile style={{height: '100%'}}>
                             <_LogSheetViewer />
                         </GridTile>
 

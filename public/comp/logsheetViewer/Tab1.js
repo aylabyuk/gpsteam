@@ -32,7 +32,7 @@ class Tab1 extends Component {
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>logsheet date</TableHeaderColumn>
-                        <TableRowColumn>{ dt.getFullYear() + '/' + dt.getMonth() + '/' + dt.getDate() }</TableRowColumn>
+                        <TableRowColumn>{ dt.toDateString() }</TableRowColumn>
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>day of year</TableHeaderColumn>

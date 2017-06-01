@@ -91,12 +91,14 @@ class MainDashboard extends Component {
                     <Paper style={styles.right}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <div style={{width, height: height, overflowY: 'scroll'}}>
+                                <div style={{width, height: height, overflowY: 'scroll', overflowX: 'hidden'}}>
                                     <List>
                                         {
                                             sites.map((s)=> {
                                                 return(
-                                                    <ListItem primaryText={s.id} id={s.id} key={s.id} ref={s.id} />
+                                                    <div className='listitem'  key={s.id}>
+                                                        <ListItem primaryText={s.id} id={s.id} ref={s.id} />
+                                                    </div>
                                                 )
                                             })
                                         }

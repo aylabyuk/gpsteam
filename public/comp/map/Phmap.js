@@ -25,7 +25,7 @@ export default class Phmap extends Component {
   }
 
   handleMarkerClick(marker) {
-    console.log('click',marker.getTooltip().getContent())
+    //console.log('click',marker.getTooltip().getContent())
   }
 
   handleMarkerHover(marker) {

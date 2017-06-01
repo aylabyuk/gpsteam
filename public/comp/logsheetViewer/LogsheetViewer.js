@@ -92,7 +92,7 @@ class LogsheetViewer extends Component {
 
                     <AutoSizer>
                             {({width, height}) => (
-                                <List style={{width, height, overflowY: 'scroll'}}>
+                                <List style={{width, height: height - 70, overflowY: 'scroll'}}>
                                     { sitesWithLogsheet.map((s)=> {
                                         return(
                                             <ListItem 

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
+import { changeClickedSite } from '../../actions/index'
+import { connect } from 'react-redux'
 
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
@@ -12,7 +14,7 @@ let siteIcon = L.divIcon({
           html: `<div id="icn" />`,
         });
 
-export default class Phmap extends Component {
+class Phmap extends Component {
   constructor() {
     super();
     this.state = {
@@ -25,14 +27,20 @@ export default class Phmap extends Component {
   }
 
   handleMarkerClick(marker) {
-    //console.log('click',marker.getTooltip().getContent())
+    
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    
+  }
+  
   handleMarkerHover(marker) {
-    let element = document.getElementById( marker.getTooltip().getContent() )
+
+    let sitename =  marker.getTooltip().getContent() 
+    let element = document.getElementById(sitename)
     scrollIntoView( element , {
       time: 200
-    }, (type) => { element.children[0].children[0].classList.add('viewing'), console.log(element) }  )
+    }, (type) => { this.props.changeClickedSite(sitename) }  )
   }
   
   render() {
@@ -57,13 +65,14 @@ export default class Phmap extends Component {
               wrapperOptions={{enableDefaultStyle: true}} 
               onMarkerClick={(marker) => this.handleMarkerClick(marker) } 
               ref={(markerClusterGroup) => {
-                this.markerClusterGroup = markerClusterGroup.leafletElement
+                
+                  this.markerClusterGroup = markerClusterGroup.leafletElement
+                  this.markerClusterGroup.on('mouseover', (marker) => {
+                    this.handleMarkerHover(marker.layer)
+                  })
 
-                this.markerClusterGroup.on('mouseover', (marker) => {
-                  this.handleMarkerHover(marker.layer)
-                }) 
-
-            }}/>
+              }}
+            />
                          
             : markers.map((s)=> {
               return (<Marker position={[s.lat, s.lng]}  key={s.tooltip} riseOnHover icon={siteIcon}>
@@ -79,3 +88,11 @@ export default class Phmap extends Component {
     }
   }
 }
+
+function mapStateToProps(state) {  
+	return {
+		clickedSite: state.ui.clickedSite
+	}
+}
+
+export default connect(mapStateToProps, { changeClickedSite })(Phmap);

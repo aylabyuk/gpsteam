@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { AutoSizer } from 'react-virtualized'
 
 import Phmap from '../map/Phmap'
+import RightPanel from './RightPanel'
 
 // ui
 import { AppBar, Paper, List, ListItem} from 'material-ui'
+import { Motion, spring } from 'react-motion'
 
 //graphql
 import gql from 'graphql-tag';
@@ -42,7 +44,8 @@ class MainDashboard extends Component {
         super(props);
         this.state = {
             width: window.innerWidth,
-            height: window.innerHeight
+            height: window.innerHeight,
+            hover: false
         };
         this.updateDimensions = this.updateDimensions.bind(this);
     }
@@ -91,19 +94,7 @@ class MainDashboard extends Component {
                     <Paper style={styles.right}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <div style={{width, height: height, overflowY: 'scroll', overflowX: 'hidden'}}>
-                                    <List>
-                                        {
-                                            sites.map((s)=> {
-                                                return(
-                                                    <div className='listitem'  key={s.id}>
-                                                        <ListItem primaryText={s.id} id={s.id} ref={s.id} />
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                    </List>
-                                </div>
+                                <RightPanel sites={sites} dimensions={{width, height}}/>
                             )}
                         </AutoSizer>
                     </Paper>

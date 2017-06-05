@@ -8,6 +8,9 @@ import RightPanel from './RightPanel'
 import { AppBar, Paper, List, ListItem} from 'material-ui'
 import { Motion, spring } from 'react-motion'
 
+// leaflet map
+import L from 'leaflet'
+
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -45,9 +48,10 @@ class MainDashboard extends Component {
         this.state = {
             width: window.innerWidth,
             height: window.innerHeight,
-            hover: false
+            hoveredSite: ''
         };
         this.updateDimensions = this.updateDimensions.bind(this);
+        this.changeHoveredSite = this.changeHoveredSite.bind(this);
     }
 
     updateDimensions() {
@@ -64,6 +68,20 @@ class MainDashboard extends Component {
     
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
+    }
+
+    changeHoveredSite(sitename) {
+        let hoveredSite = this.props.data.allSiteDetail.filter((site) => {
+            return site.name.site_name === sitename
+        })
+
+        console.log(hoveredSite)
+
+        let leafletmap = window.leafletmap
+
+        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }).addTo(leafletmap.leafletElement)
+        
+
     }
 
     render() {
@@ -94,7 +112,7 @@ class MainDashboard extends Component {
                     <Paper style={styles.right}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <RightPanel sites={sites} dimensions={{width, height}}/>
+                                <RightPanel sites={sites} dimensions={{width, height}} changeHoveredSite={this.changeHoveredSite}/>
                             )}
                         </AutoSizer>
                     </Paper>

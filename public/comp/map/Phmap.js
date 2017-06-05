@@ -14,6 +14,17 @@ let siteIcon = L.divIcon({
           html: `<div id="icn" />`,
         });
 
+
+function distance(lat1, lon1, lat2, lon2) {
+  var p = 0.017453292519943295;    // Math.PI / 180
+  var c = Math.cos;
+  var a = 0.5 - c((lat2 - lat1) * p)/2 + 
+          c(lat1 * p) * c(lat2 * p) * 
+          (1 - c((lon2 - lon1) * p))/2;
+
+  return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+}
+
 class Phmap extends Component {
   constructor() {
     super();
@@ -22,25 +33,25 @@ class Phmap extends Component {
       lng: 121.7740,
       zoom: 6,
       maxZoom: 40,
-      clustering: true
+      clustering: true,
+      clusterIsSet: false
     };
   }
 
   handleMarkerClick(marker) {
-    
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    
-  }
-  
-  handleMarkerHover(marker) {
-
     let sitename =  marker.getTooltip().getContent() 
     let element = document.getElementById(sitename)
     scrollIntoView( element , {
       time: 200
     }, (type) => { this.props.changeClickedSite(sitename) }  )
+  }
+
+  handleMarkerHover(marker) {
+
+  }
+
+  setCluster() {
+    this.setState({clusterIsSet: true})
   }
   
   render() {
@@ -51,9 +62,29 @@ class Phmap extends Component {
     if(loading) {
       return(<h1>Loading map...</h1>)
     } else {
+      
+      // to see distances less than 0.5 km radius
+      // for(let i = 0; i< markers.length; i++) {
+      //   for(let j = 0; j<markers.length; j++) {
+
+      //     let distanxa = distance(markers[i].lat, markers[i].lng, markers[j].lat, markers[j].lng )
+
+      //     if(distanxa <= 0.5 && distanxa != 0) {
+      //       console.log(markers[i].id + ' - ' + markers[j].id + ' = ' + distanxa)
+      //     }
+
+      //   }
+      // }
+
+
       return (
         <div id='this' style={{width: this.props.width, height: this.props.height}}>
-        <Map center={position} zoom={this.state.zoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap >
+        <Map center={position} zoom={this.state.zoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap 
+          ref={(leafletmap) => {
+              window.leafletmap = leafletmap
+            }
+          }>
+
           <TileLayer
             attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
@@ -65,11 +96,15 @@ class Phmap extends Component {
               wrapperOptions={{enableDefaultStyle: true}} 
               onMarkerClick={(marker) => this.handleMarkerClick(marker) } 
               ref={(markerClusterGroup) => {
-                
-                  this.markerClusterGroup = markerClusterGroup.leafletElement
+
+                if(!this.state.clusterIsSet) {
+                  //console.log(this.state.clusterIsSet)
+                  this.markerClusterGroup = markerClusterGroup.leafletElement 
                   this.markerClusterGroup.on('mouseover', (marker) => {
                     this.handleMarkerHover(marker.layer)
                   })
+                  this.setCluster()
+                }
 
               }}
             />

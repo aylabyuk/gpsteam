@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+
 // ui
 import { AppBar, Paper, List, ListItem} from 'material-ui'
 
@@ -11,8 +12,8 @@ class RightPanel extends Component {
                     {
                         this.props.sites.map((s)=> {
                             return(
-                                <div className='listitem'  key={s.id}>
-                                    <ListItem primaryText={s.id} id={s.id} ref={s.id} />
+                                <div className='listitem'  key={s.id} >
+                                    <ListItem primaryText={s.id} id={s.id} ref={s.id} onMouseEnter={() => this.props.changeHoveredSite(s.id)}/>
                                 </div>
                             )
                         })
@@ -23,4 +24,5 @@ class RightPanel extends Component {
     }
 }
 
-export default RightPanel;
+
+export default RightPanel

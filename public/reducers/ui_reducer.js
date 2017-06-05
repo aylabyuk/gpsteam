@@ -1,6 +1,6 @@
 import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE } from '../actions/types'
 
-const INITIAL_STATE = {selectedContactId: 0, selectedStaffs: [], clickedSite: null}
+const INITIAL_STATE = {selectedContactId: 0, selectedStaffs: [], clickedSite: null, hoveredSite: null}
 
 function ui(state = INITIAL_STATE, action) {  
 	switch(action.type) {

@@ -74,14 +74,12 @@ class MainDashboard extends Component {
         let hoveredSite = this.props.data.allSiteDetail.filter((site) => {
             return site.name.site_name === sitename
         })
-
-        console.log(hoveredSite)
-
         let leafletmap = window.leafletmap
+        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }, { opacity: 0.5 })
 
-        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }).addTo(leafletmap.leafletElement)
-        
+        previewMarker.addTo(leafletmap.leafletElement)
 
+        window.previewMarker = previewMarker
     }
 
     render() {

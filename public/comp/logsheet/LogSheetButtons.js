@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { reset, reduxForm } from 'redux-form';
 import { resetSelectedStaffs, resetContactId, toggleLogsheetSubmitting } from '../../actions/index';
 
-import { RaisedButton, LinearProgress } from 'material-ui';
-import notify from 'react-materialui-notifications'
+import { RaisedButton, LinearProgress, Snackbar } from 'material-ui';
 
 //graphql
 import gql from 'graphql-tag';
@@ -136,6 +135,17 @@ const addNewLogSheet = gql`
 `
 
 class LogSheetButtons extends Component {
+    constructor(props) {
+    super(props);
+        this.state = {
+            open: false,
+            message: ''
+        };
+    }
+
+    toggleSnackbar(open, message) {
+        this.setState({open, message})
+    } 
 
     handleReset() {
         this.props.dispatch(reset('logsheet'));
@@ -161,6 +171,8 @@ class LogSheetButtons extends Component {
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
         console.log('logdate b4 submit', new Date(d.logdate))
+
+        this.toggleSnackbar(true, 'submitting logsheet information, please wait')
 
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
@@ -198,20 +210,32 @@ class LogSheetButtons extends Component {
             contactPersonId: this.props.selectedContact ? this.props.selectedContact : null
         } }).then((data) => {
             console.log('got data', data);
+            this.toggleSnackbar(false, '')
+            this.toggleSnackbar(true, 'logsheet information successfully submitted')
             this.props.toggleLogsheetSubmitting()
             this.handleReset()
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
+            this.toggleSnackbar(false, '')
+            this.toggleSnackbar(true, 'logsheet information submission failed, try again')
             this.props.toggleLogsheetSubmitting()
         });
     }
 
     render() {
         return (
+            <div>
                 <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
                     primary disabled={this.props.logsheetSubmitting} fullWidth>
                         {this.props.logsheetSubmitting ? <LinearProgress mode="indeterminate" /> : null}
                 </RaisedButton>
+                <Snackbar
+                    open={this.state.open}
+                    message={this.state.message}
+                    autoHideDuration={4000}
+                    onRequestClose={this.handleRequestClose}
+                />
+            </div>
         );
     }
 }

@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { Paper, AppBar, Divider } from 'material-ui';
 import { connect } from 'react-redux'
 import { reset, reduxForm } from 'redux-form';
-import { resetSelectedStaffs, resetContactId } from '../../actions/index';
+import { resetSelectedStaffs, resetContactId, toggleLogsheetSubmitting } from '../../actions/index';
 
-import { RaisedButton } from 'material-ui';
+import { RaisedButton, LinearProgress } from 'material-ui';
+import notify from 'react-materialui-notifications'
 
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+
 
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
@@ -143,6 +145,9 @@ class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
 
+        console.log('submitting data', d)
+        this.props.toggleLogsheetSubmitting()
+
         let observers = [], selectedSite, aveSlantHeight, contact
 
         this.props.selectedStaffs.map((x)=> {
@@ -155,7 +160,6 @@ class LogSheetButtons extends Component {
 
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
-        console.log('data before submit:', d)
         console.log('logdate b4 submit', new Date(d.logdate))
 
         this.props.mutate({ variables: {
@@ -194,19 +198,20 @@ class LogSheetButtons extends Component {
             contactPersonId: this.props.selectedContact ? this.props.selectedContact : null
         } }).then((data) => {
             console.log('got data', data);
+            this.props.toggleLogsheetSubmitting()
             this.handleReset()
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
+            this.props.toggleLogsheetSubmitting()
         });
     }
 
     render() {
         return (
-             <div style={{ display: 'flex', justifyContent: ' space-around ' }}>
                 <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
-                    primary buttonStyle={{ width: 150 }}/>
-                <RaisedButton label='cancel' primary buttonStyle={{ width: 150 }}/>
-            </div>
+                    primary disabled={this.props.logsheetSubmitting} fullWidth>
+                        {this.props.logsheetSubmitting ? <LinearProgress mode="indeterminate" /> : null}
+                </RaisedButton>
         );
     }
 }
@@ -214,7 +219,8 @@ class LogSheetButtons extends Component {
 function mapStateToProps(state) {  
 	return {
 		selectedStaffs: state.ui.selectedStaffs,
-        selectedContact: state.ui.selectedContactId
+        selectedContact: state.ui.selectedContactId,
+        logsheetSubmitting: state.ui.logsheetSubmitting
 	}
 }
 
@@ -222,4 +228,4 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs })(graphql(addNewLogSheet)(form(LogSheetButtons)));
+export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting })(graphql(addNewLogSheet)(form(LogSheetButtons)));

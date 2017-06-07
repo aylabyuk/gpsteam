@@ -1,6 +1,6 @@
-import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE } from '../actions/types'
+import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING } from '../actions/types'
 
-const INITIAL_STATE = {selectedContactId: 0, selectedStaffs: [], clickedSite: null, hoveredSite: null}
+const INITIAL_STATE = {selectedContactId: 0, selectedStaffs: [], clickedSite: null, hoveredSite: null, logsheetSubmitting: false}
 
 function ui(state = INITIAL_STATE, action) {  
 	switch(action.type) {
@@ -17,6 +17,8 @@ function ui(state = INITIAL_STATE, action) {
 			return { ...state, selectedStaffs: [] }
 		case CLICKED_SITE: 
 			return { ...state, clickedSite: action.payload }
+		case TOGGLE_LOGSHEET_SUBMITTING: 
+			return { ...state, logsheetSubmitting: !state.logsheetSubmitting }
 	}
 	
 	return state

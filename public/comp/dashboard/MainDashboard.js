@@ -75,7 +75,10 @@ class MainDashboard extends Component {
             return site.name.site_name === sitename
         })
         let leafletmap = window.leafletmap
-        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }, { opacity: 0.5 })
+
+        let icon = new L.icon({})
+
+        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }, { opacity: 0.5,  })
 
         previewMarker.addTo(leafletmap.leafletElement)
 

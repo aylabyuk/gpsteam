@@ -38,6 +38,11 @@ class Phmap extends Component {
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.props.clickedSite)
+  }
+  
+
   handleMarkerClick(marker) {
     let sitename =  marker.getTooltip().getContent() 
     let element = document.getElementById(sitename)
@@ -69,7 +74,7 @@ class Phmap extends Component {
 
       //     let distanxa = distance(markers[i].lat, markers[i].lng, markers[j].lat, markers[j].lng )
 
-      //     if(distanxa <= 0.5 && distanxa != 0) {
+      //     if(distanxa <= 0.01 && distanxa != 0) {
       //       console.log(markers[i].id + ' - ' + markers[j].id + ' = ' + distanxa)
       //     }
 
@@ -99,8 +104,8 @@ class Phmap extends Component {
 
                 if(!this.state.clusterIsSet) {
                   //console.log(this.state.clusterIsSet)
-                  this.markerClusterGroup = markerClusterGroup.leafletElement 
-                  this.markerClusterGroup.on('mouseover', (marker) => {
+                  window.markerClusterGroup = markerClusterGroup.leafletElement 
+                  window.markerClusterGroup.on('mouseover', (marker) => {
                     this.handleMarkerHover(marker.layer)
                   })
                   this.setCluster()

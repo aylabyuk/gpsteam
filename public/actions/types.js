@@ -3,4 +3,5 @@ export const SELECTED_CONTACT_ID = 'selected_contact_id',
 	REMOVE_SELECTED_STAFF = 'remove_selected_staff',
 	RESET_SELECTED_STAFFS = 'reset_selected_staffs',
 	RESET_CONTACT_ID = 'reset_contact_id',
-	CLICKED_SITE = 'clicked_site'
+	CLICKED_SITE = 'clicked_site',
+	TOGGLE_LOGSHEET_SUBMITTING = 'toggle_logsheet_submitting'

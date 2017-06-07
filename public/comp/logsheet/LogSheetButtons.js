@@ -147,6 +147,12 @@ class LogSheetButtons extends Component {
         this.setState({open, message})
     } 
 
+    handleRequestClose = () => {
+        this.setState({
+        open: false,
+        });
+    };
+
     handleReset() {
         this.props.dispatch(reset('logsheet'));
         this.props.resetContactId()
@@ -172,7 +178,7 @@ class LogSheetButtons extends Component {
 
         console.log('logdate b4 submit', new Date(d.logdate))
 
-        this.toggleSnackbar(true, 'submitting logsheet information, please wait')
+        this.toggleSnackbar(this.props.logsheetSubmitting, 'submitting logsheet information, please wait')
 
         this.props.mutate({ variables: {
             survey_type: 'CAMPAIGN',
@@ -210,15 +216,13 @@ class LogSheetButtons extends Component {
             contactPersonId: this.props.selectedContact ? this.props.selectedContact : null
         } }).then((data) => {
             console.log('got data', data);
-            this.toggleSnackbar(false, '')
-            this.toggleSnackbar(true, 'logsheet information successfully submitted')
             this.props.toggleLogsheetSubmitting()
+            this.toggleSnackbar(!this.props.logsheetSubmitting, 'logsheet information successfully submitted')
             this.handleReset()
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
-            this.toggleSnackbar(false, '')
-            this.toggleSnackbar(true, 'logsheet information submission failed, try again')
             this.props.toggleLogsheetSubmitting()
+            this.toggleSnackbar(true, 'logsheet information submission failed, try again')
         });
     }
 

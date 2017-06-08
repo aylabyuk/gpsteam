@@ -174,9 +174,14 @@ class LogSheetButtons extends Component {
             return site.site_name == d.sitename
         })
 
-        aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
+        // test if site is typed correctly
+        if(selectedSite == undefined) {
+            this.props.toggleLogsheetSubmitting()
+            this.toggleSnackbar(true, 'FAILED: ' + d.sitename + ' is not a valid site')
+            return 0
+        }
 
-        console.log('logdate b4 submit', new Date(d.logdate))
+        aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
         this.toggleSnackbar(this.props.logsheetSubmitting, 'submitting logsheet information, please wait')
 

@@ -188,3 +188,7 @@ export const wholeNumber = value => {
   return value
 }
 
+export const normalizeUpperCase = (value) => {
+  return value.toUpperCase()
+}
+

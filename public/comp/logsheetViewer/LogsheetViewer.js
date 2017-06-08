@@ -95,11 +95,12 @@ class LogsheetViewer extends Component {
                                 <List style={{width, height: height - 70, overflowY: 'scroll'}}>
                                     { sitesWithLogsheet.map((s)=> {
                                         return(
-                                            <ListItem 
+                                            <ListItem
                                                 key={s.id}
                                                 primaryText={s.site_name}
                                                 secondaryText={ s.logsheets.length + ' logsheets' }
                                                 initiallyOpen={false}
+                                                primaryTogglesNestedList={true}
                                                 nestedItems={ 
                                                     s.logsheets.map((l)=> {
                                                         let ldate = new Date(l.logsheet_date)

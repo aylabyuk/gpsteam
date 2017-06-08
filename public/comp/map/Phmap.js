@@ -37,10 +37,6 @@ class Phmap extends Component {
       clusterIsSet: false
     };
   }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.clickedSite)
-  }
   
 
   handleMarkerClick(marker) {
@@ -54,6 +50,19 @@ class Phmap extends Component {
   handleMarkerHover(marker) {
 
   }
+
+  componentDidUpdate(prevProps, prevState) {
+
+      // uncomment to see Ph bounding box
+      // if(window.leafletmap) {
+      //   let map = window.leafletmap.leafletElement
+      //   let bounds = [[21.12178056, 126.60500000], [4.41495556, 114.28194444]];
+      //   L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
+      //   map.fitBounds(bounds);
+      // }
+      
+  }
+  
 
   setCluster() {
     this.setState({clusterIsSet: true})
@@ -80,6 +89,15 @@ class Phmap extends Component {
 
       //   }
       // }
+
+      // to check if markers are within the Ph bounds
+      let bounds = [[21.12178056, 126.60500000], [4.41495556, 114.28194444]];
+      let rect = L.rectangle(bounds, {color: "#ff7800", weight: 1})
+
+      for(let i = 0; i< markers.length; i++) {
+        let isInside = rect.getBounds().contains(new L.LatLng(markers[i].lat, markers[i].lng))
+        !isInside ? console.log(markers[i].id) : null
+      }
 
 
       return (

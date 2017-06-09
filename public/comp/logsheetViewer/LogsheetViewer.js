@@ -136,7 +136,7 @@ class LogsheetViewer extends Component {
                                                                             return(
                                                                                 <ListItem
                                                                                     key={Math.random()}
-                                                                                    primaryText={new Date(l.logsheet_date).toDateString()}
+                                                                                    primaryText={new Date(l.logsheet_date).toDateString().substring(0, 11)}
                                                                                     onTouchTap={ () => this.handleLogsheetViewer(l.id) }
                                                                                 />
                                                                             )

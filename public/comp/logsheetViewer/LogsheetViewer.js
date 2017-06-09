@@ -76,15 +76,6 @@ class LogsheetViewer extends Component {
         this.props.handleChange(1, id)
     }
 
-    // renderChilrenLevel1() {
-    //     return(
-    //         <ListItem
-    //             key={l.id}
-    //             primaryText={ ldate.toDateString() } 
-    //             onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
-    //     )
-    // }
-
     render() {
         let { loading, sitesWithLogsheet } = this.props.data
 
@@ -105,8 +96,19 @@ class LogsheetViewer extends Component {
                                     { sitesWithLogsheet.map((s)=> {
 
                                         let years = []
+                                        let sortedLogsheets = []
 
-                                        s.logsheets.map((l)=> {
+                                        s.logsheets.map((l) => {
+                                            return sortedLogsheets.push(l)
+                                        })
+
+                                        sortedLogsheets.sort((a,b) => {
+                                            a = new Date(a.logsheet_date);
+                                            b = new Date(b.logsheet_date);
+                                            return a>b ? -1 : a<b ? 1 : 0;
+                                        })
+
+                                        sortedLogsheets.map((l)=> {
                                             let ldate = new Date(l.logsheet_date)
                                             if(!years.includes(ldate.getFullYear())) {
                                                 years.push(ldate.getFullYear())
@@ -117,7 +119,7 @@ class LogsheetViewer extends Component {
                                             <ListItem
                                                 key={s.id}
                                                 primaryText={s.site_name}
-                                                secondaryText={ s.logsheets.length + ' logsheets' }
+                                                secondaryText={ sortedLogsheets.length + ' logsheets' }
                                                 initiallyOpen={false}
                                                 primaryTogglesNestedList={true}
                                                 nestedItems={ 
@@ -129,7 +131,7 @@ class LogsheetViewer extends Component {
                                                                 initiallyOpen={false}
                                                                 primaryTogglesNestedList={true}
                                                                 nestedItems={
-                                                                    s.logsheets.map((l) => {
+                                                                    sortedLogsheets.map((l) => {
                                                                         if(new Date(l.logsheet_date).getFullYear() == y) {
                                                                             return(
                                                                                 <ListItem

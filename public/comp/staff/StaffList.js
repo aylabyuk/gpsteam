@@ -32,13 +32,26 @@ class StaffList extends Component {
     render() {
         let { data } = this.props
 
+        // arrange initials alphabetically
+        let mstaffData = []
+        data.allStaff.map((d) => { mstaffData.push(d) });
+        let staffData = mstaffData.sort((a,b) => {
+            let initialsA = a.first_name.charAt(0) + a.last_name.charAt(0)
+            let initialsB = b.first_name.charAt(0) + b.last_name.charAt(0)
+
+            if (initialsA < initialsB)
+                return -1;
+            if (initialsA > initialsB)
+                return 1;
+            return 0;
+        })
+
         return (
-            <List>
-            { data.allStaff.map((d) => {
+            <List >
+            { staffData.map((d) => {
                 let fullname = d.first_name + ' ' + d.last_name
                
-                let firstChar = d.first_name.charAt(0)
-                let secondChar = d.last_name.charAt(0)
+                let initials = d.first_name.charAt(0) + d.last_name.charAt(0)
 
                 return (
                     <ListItem
@@ -50,12 +63,12 @@ class StaffList extends Component {
                                     indigo400 : grey500
                                 }
                                 style={{left: 8}}
-                            > { firstChar + secondChar } </Avatar>
+                            > { initials }</Avatar>
                         }
                         primaryText={ d.first_name + ' ' + d.last_name + ' (' + d.position.position_name + '/' + d.division.division_name + ')' }
                         id= { d.id }
                         key={ d.id }
-                        onTouchTap={()=> this.handleSelected(d.id, d.nickname, firstChar + secondChar)}
+                        onTouchTap={()=> this.handleSelected(d.id, d.nickname, initials)}
                     />
                 )
             }) }

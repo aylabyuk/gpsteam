@@ -76,6 +76,15 @@ class LogsheetViewer extends Component {
         this.props.handleChange(1, id)
     }
 
+    // renderChilrenLevel1() {
+    //     return(
+    //         <ListItem
+    //             key={l.id}
+    //             primaryText={ ldate.toDateString() } 
+    //             onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
+    //     )
+    // }
+
     render() {
         let { loading, sitesWithLogsheet } = this.props.data
 
@@ -94,6 +103,16 @@ class LogsheetViewer extends Component {
                             {({width, height}) => (
                                 <List style={{width, height: height - 70, overflowY: 'scroll'}}>
                                     { sitesWithLogsheet.map((s)=> {
+
+                                        let years = []
+
+                                        s.logsheets.map((l)=> {
+                                            let ldate = new Date(l.logsheet_date)
+                                            if(!years.includes(ldate.getFullYear())) {
+                                                years.push(ldate.getFullYear())
+                                            }
+                                        })
+
                                         return(
                                             <ListItem
                                                 key={s.id}
@@ -102,13 +121,27 @@ class LogsheetViewer extends Component {
                                                 initiallyOpen={false}
                                                 primaryTogglesNestedList={true}
                                                 nestedItems={ 
-                                                    s.logsheets.map((l)=> {
-                                                        let ldate = new Date(l.logsheet_date)
+                                                    years.map((y) => {
                                                         return(
                                                             <ListItem
-                                                                key={l.id}
-                                                                primaryText={ ldate.toDateString() } 
-                                                                onTouchTap={ () => this.handleLogsheetViewer(l.id) } />
+                                                                key={y}
+                                                                primaryText={y}
+                                                                initiallyOpen={false}
+                                                                primaryTogglesNestedList={true}
+                                                                nestedItems={
+                                                                    s.logsheets.map((l) => {
+                                                                        if(new Date(l.logsheet_date).getFullYear() == y) {
+                                                                            return(
+                                                                                <ListItem
+                                                                                    key={Math.random()}
+                                                                                    primaryText={new Date(l.logsheet_date).toDateString()}
+                                                                                    onTouchTap={ () => this.handleLogsheetViewer(l.id) }
+                                                                                />
+                                                                            )
+                                                                        }
+                                                                    })
+                                                                }
+                                                            />
                                                         )
                                                     })
                                                 }

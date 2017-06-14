@@ -31,22 +31,22 @@ class Tab2 extends Component {
                         <TableHeaderColumn>average slant height</TableHeaderColumn>
                         <TableRowColumn>{d.avg_slant_height}</TableRowColumn>
                     </TableRow>
-                    { d.azimuth ? <TableRow>
+                    <TableRow>
                         <TableHeaderColumn>azimuth</TableHeaderColumn>
-                        <TableRowColumn>{d.azimuth}</TableRowColumn>
+                        <TableRowColumn>{d.azimuth ? d.azimuth : ''}</TableRowColumn>
                     </TableRow> : '' }
-                    { d.time_start ? <TableRow>
+                    <TableRow>
                         <TableHeaderColumn>start time</TableHeaderColumn>
-                        <TableRowColumn>{moment(new Date(d.time_start)).format('HH:mm')}</TableRowColumn>
-                    </TableRow> : '' }
-                    { d.time_end ? <TableRow>
+                        <TableRowColumn>{d.time_end ? moment(new Date(d.time_start)).format('HH:mm'): ''}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
                         <TableHeaderColumn>end time</TableHeaderColumn>
-                        <TableRowColumn>{ d.time_end ? moment(new Date(d.time_end)).format('HH:mm') : ''}</TableRowColumn>
-                    </TableRow> : '' }
-                    { d.failure_time ? <TableRow>
+                        <TableRowColumn>{d.time_end ? moment(new Date(d.time_end)).format('HH:mm') : ''}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
                         <TableHeaderColumn>failure time</TableHeaderColumn>
                         <TableRowColumn>{d.failure_time ? moment(new Date(d.failure_time)).format('HH:mm') : ''}</TableRowColumn>
-                    </TableRow> : ''}
+                    </TableRow>
                 </TableBody>
             </Table>
         );

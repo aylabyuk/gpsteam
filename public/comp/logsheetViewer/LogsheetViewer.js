@@ -20,7 +20,7 @@ const logsheetCreated = gql`
         logsheetCreated {
             site {
                 id
-                site_name
+                name
                 logsheets {
                     id
                     logsheet_date
@@ -33,7 +33,7 @@ const logsheetCreated = gql`
 const SitesWithLogsheetQuery = gql`query SitesWithLogsheetQuery {
 	sitesWithLogsheet {
         id
-        site_name
+        name
         logsheets {
             id
             logsheet_date
@@ -118,7 +118,7 @@ class LogsheetViewer extends Component {
                                         return(
                                             <ListItem
                                                 key={s.id}
-                                                primaryText={s.site_name}
+                                                primaryText={s.name}
                                                 secondaryText={ sortedLogsheets.length + ' logsheets' }
                                                 initiallyOpen={false}
                                                 primaryTogglesNestedList={true}

@@ -26,7 +26,7 @@ const addNewLogSheet = gql`
         $location: String!
         $marker: String
         $observers: [StaffIdInput]!
-        $siteNameId: Int!
+        $siteId: Int!
         $north: Float!
         $east: Float!
         $south: Float!
@@ -61,7 +61,7 @@ const addNewLogSheet = gql`
             marker: $marker
             location: $location
             observers: $observers
-            siteNameId: $siteNameId
+            siteId: $siteId
             north: $north
             east: $east
             south: $south
@@ -100,7 +100,7 @@ const addNewLogSheet = gql`
                 nickname
             }
             site {
-                site_name
+                name
             }
             north
             east
@@ -171,7 +171,7 @@ class LogSheetButtons extends Component {
         })
 
         selectedSite = this.props.siteNames.find((site)=> {
-            return site.site_name == d.sitename
+            return site.name == d.sitename
         })
 
         // test if site is typed correctly

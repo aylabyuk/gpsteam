@@ -36,7 +36,7 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
             nickname
         }
         site {
-            site_name
+            name
         }
         north
         east

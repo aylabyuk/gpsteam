@@ -16,7 +16,7 @@ class Tab1 extends Component {
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>site</TableHeaderColumn>
-                        <TableRowColumn>{d.site.site_name}</TableRowColumn>
+                        <TableRowColumn>{d.site.name}</TableRowColumn>
                     </TableRow>
                     <TableRow >
                         <TableHeaderColumn>marker</TableHeaderColumn>

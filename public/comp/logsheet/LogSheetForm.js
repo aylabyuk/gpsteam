@@ -26,9 +26,9 @@ import { Paper, Divider, LinearProgress } from 'material-ui';
 import styles from '../../css/home.css';
 
 const LogSheetQuery = gql`query LogSheetQuery {
-  allSitename {
+  allSite {
     id
-    site_name
+    name
   }
   allReceiver {
     serial_number
@@ -40,7 +40,7 @@ const LogSheetQuery = gql`query LogSheetQuery {
 
 class LogSheetForm extends Component {
     render() {
-        let { loading, allSitename, allReceiver, allAntenna } = this.props.data
+        let { loading, allSite, allReceiver, allAntenna } = this.props.data
 
         if(loading) {
             return <LinearProgress mode="indeterminate" />
@@ -49,7 +49,7 @@ class LogSheetForm extends Component {
                 <div>
                     <DateFields />
                     <ObserversFields />
-                    <SiteFields siteNames={allSitename ? allSitename : [{site_name: 'loading..'}]}/>
+                    <SiteFields siteNames={allSite ? allSite : [{name: 'loading..'}]}/>
                     <HardwareFields receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
                             antennas={allAntenna ? allAntenna : [{serial_number: 'loading..'}]} />
                     <MeasurementFields />
@@ -60,7 +60,7 @@ class LogSheetForm extends Component {
                     <SiteContactPersonFields contactId={this.props.contactId} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <LogSheetButtons siteNames={allSitename} contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
+                    <LogSheetButtons siteNames={allSite} contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
         }

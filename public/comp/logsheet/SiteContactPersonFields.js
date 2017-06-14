@@ -90,7 +90,7 @@ class SiteContactPersonFields extends Component {
                         const newContact = subscriptionData.data.contactCreated
                         const newResult = cloneDeep(previousResult)
 
-                        this.props.changeSelectedContactId(newContact.id)
+                        this.props.changeSelectedContact(newContact)
                         
                         newResult.allContact.push(subscriptionData.data.contactCreated)
                         return newResult

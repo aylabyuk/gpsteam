@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { reduxForm, Field } from 'redux-form'
+import { reduxForm, Field, reset } from 'redux-form'
 import { validateContactDetails as validate } from '../formValidators/formValidators'
 
 //apollo
@@ -65,6 +65,7 @@ class NewContactDialog extends Component {
             city: d.city,
             province: d.province
         } }).then(() => {
+            this.props.dispatch(reset('newContact'))
             this.props.closeParent()
             this.props.close()
         }).catch((error) => {

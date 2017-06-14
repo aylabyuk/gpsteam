@@ -1,13 +1,13 @@
-import { SELECTED_CONTACT_ID, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING } from './types'
+import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
 
 
-export function changeSelectedContactId(id) {
+export function changeSelectedContact(id) {
 	return function(dispatch) {
 		dispatch({
-			type: SELECTED_CONTACT_ID,
+			type: SELECTED_CONTACT,
 			payload: id
 		})
 	}

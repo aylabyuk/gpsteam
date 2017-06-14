@@ -6,7 +6,7 @@ import SiteContacts from '../contacts/SiteContacts'
 import NewContactDialog from '../contacts/NewContactDialog'
 import { setSelectedContactKey } from '../../actions/index'
 import { apolloClient } from '../../_primary'
-import { changeSelectedContactId } from '../../actions/index'
+import { changeSelectedContact } from '../../actions/index'
 
 
 //ui
@@ -77,25 +77,6 @@ class SiteContactPersonFields extends Component {
 
     handleNewContact = () => {
         this.setState({openNew: true});
-    }
-
-    componentDidUpdate() {
-
-        let { allContact } = this.props.data
-
-        if(allContact) {
-            let result = this.props.data.allContact.find(x => x.id === this.props.contactId)
-
-            if(result) {
-                this.props.change('contactFirstName', result.first_name)
-                this.props.change('contactLastName', result.last_name)
-                this.props.change('contactNumber', result.contact_number)
-            } else {
-                this.props.change('contactFirstName', '')
-                this.props.change('contactLastName', '')
-                this.props.change('contactNumber', '')
-            }
-        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -191,4 +172,4 @@ class SiteContactPersonFields extends Component {
     }
 }
 
-export default connect(null, { changeSelectedContactId })(graphql(ContactsQuery)(SiteContactPersonFields))
+export default connect(null, { changeSelectedContact })(graphql(ContactsQuery)(SiteContactPersonFields))

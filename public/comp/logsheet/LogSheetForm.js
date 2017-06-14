@@ -74,7 +74,7 @@ const form =  reduxForm({
 
 function mapStateToProps(state) {  
 	return {
-		contactId: state.ui.selectedContactId,
+		contactId: state.ui.selectedContact,
         initialValues: {
             startTime: new Date(null,null,null,0,0,0,0),
             endTime: new Date(null,null,null,23,59,0,0)

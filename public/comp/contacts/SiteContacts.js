@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { changeSelectedContactId } from '../../actions/index'
+import { changeSelectedContact } from '../../actions/index'
 
 //ui
 import { List, ListItem, Avatar, IconMenu, MenuItem, IconButton } from 'material-ui'
@@ -23,8 +23,8 @@ const rightIconMenu = (
 );
 
 class SiteContacts extends Component {
-    contactPersonChange = (id) => {
-        this.props.changeSelectedContactId(id)
+    contactPersonChange = (contact) => {
+        this.props.changeSelectedContact(contact)
         this.props.closeDialog()
     }
     
@@ -53,7 +53,7 @@ class SiteContacts extends Component {
                             primaryText={ d.first_name + ' ' + d.last_name }
                             secondaryText={ d.contact_number }
                             key={ d.id }
-                            onTouchTap={ () => this.contactPersonChange(d.id)}
+                            onTouchTap={ () => this.contactPersonChange(d)}
                             rightIconButton={rightIconMenu}
                         /> : null
                     )
@@ -64,4 +64,4 @@ class SiteContacts extends Component {
 }   
 
 
-export default connect(null, { changeSelectedContactId })(SiteContacts) 
+export default connect(null, { changeSelectedContact })(SiteContacts) 

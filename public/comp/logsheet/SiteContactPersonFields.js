@@ -99,6 +99,14 @@ class SiteContactPersonFields extends Component {
             ]
         }
     }
+
+    componentWillUpdate(nextProps, nextState) {
+        if(this.props.selectedContact != nextProps.selectedContact) {
+            this.props.change('contactFirstName', nextProps.selectedContact.first_name)
+            this.props.change('contactLastName', nextProps.selectedContact.last_name)
+            this.props.change('contactNumber', nextProps.selectedContact.contact_number)
+        }
+    }
     
 
     render() {

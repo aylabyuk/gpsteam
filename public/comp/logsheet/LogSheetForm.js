@@ -57,10 +57,10 @@ class LogSheetForm extends Component {
                     <StatusFields />
                     <AntennaHeigtInfoFields />
                     <PertinentInfoFields />
-                    <SiteContactPersonFields contactId={this.props.contactId} change={this.props.change}/>
+                    <SiteContactPersonFields selectedContact={this.props.selectedContact} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <LogSheetButtons siteNames={allSite} contactId={this.props.contactId} handleSubmit={this.props.handleSubmit}/>
+                    <LogSheetButtons siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
         }
@@ -74,7 +74,7 @@ const form =  reduxForm({
 
 function mapStateToProps(state) {  
 	return {
-		contactId: state.ui.selectedContact,
+		selectedContact: state.ui.selectedContact,
         initialValues: {
             startTime: new Date(null,null,null,0,0,0,0),
             endTime: new Date(null,null,null,23,59,0,0)

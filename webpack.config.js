@@ -9,7 +9,7 @@ var isProd = process.env.NODE_ENV === 'production'
 
 
 module.exports = {
-    devtool: 'eval-source-map',
+    devtool: 'inline-source-map',
     entry: [
         'babel-polyfill',
         'react-hot-loader/patch',

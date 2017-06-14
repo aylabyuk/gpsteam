@@ -25,7 +25,7 @@ if(window.location.port == '8080'){
   ip="localhost:"
 } else {
   PORT=4000
-  ip="gps-toto-pc:"
+  ip="192.168.1.200:"
 }
 
 // Create regular NetworkInterface by using apollo-client's API: 

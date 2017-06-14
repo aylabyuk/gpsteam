@@ -17,7 +17,7 @@ import { graphql } from 'react-apollo';
 
 const styles = {
   center: {
-    padding: 5,
+    padding: 0,
     flex: '3 0 0'
   },
   left: {
@@ -25,22 +25,29 @@ const styles = {
     flex: '.5 0 0',
   },
   right: {
-    padding: 5,
+    padding: 0,
     flex: '1 0 0',
   }
 };
 
 const SiteDetailsQuery = gql`query SiteDetailsQuery {
-    allSiteDetail {
-        name {
-            site_name
-        }
-        location {
-            long
-            lat
-        }
+    allSite
+    {
+        name
+        long
+        lat
     }
 }`;
+
+// that function returns Leaflet.Popup
+function getLeafletPopup(name) {
+return L.popup({minWidth: 200, closeButton: true})
+    .setContent(`
+    <div>
+        <p>${name}</p>
+    </div>
+    `);
+}
 
 class MainDashboard extends Component {
     constructor(props) {
@@ -71,14 +78,14 @@ class MainDashboard extends Component {
     }
 
     changeHoveredSite(sitename) {
-        let hoveredSite = this.props.data.allSiteDetail.filter((site) => {
-            return site.name.site_name === sitename
+        let hoveredSite = this.props.data.allSite.filter((site) => {
+            return site.name === sitename
         })
         let leafletmap = window.leafletmap
 
         let icon = new L.icon({})
 
-        let previewMarker = new L.marker({ lat: hoveredSite[0].location.lat, lng: hoveredSite[0].location.long }, { opacity: 0.5,  })
+        let previewMarker = new L.marker({ lat: hoveredSite[0].lat, lng: hoveredSite[0].long }, { opacity: 0.5,  })
 
         previewMarker.addTo(leafletmap.leafletElement)
 
@@ -87,22 +94,23 @@ class MainDashboard extends Component {
 
     render() {
 
-        let { loading, allSiteDetail } = this.props.data
+        let { loading, allSite } = this.props.data
 
         let sites = []
 
-        loading ? null : allSiteDetail.map((s) => {
-            s.location.lat ?
-            sites.push({ id: s.name.site_name, tooltip: s.name.site_name, lat: s.location.lat, lng: s.location.long }) : null
+        loading ? null : allSite.map((s) => {
+            s.lat ?
+            sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long, 
+                popup: getLeafletPopup(s.name) }) : null
         })
         
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
                 <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" />
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
-                    <Paper style={styles.left}>
+                    {/*<Paper style={styles.left}>
                         
-                    </Paper>
+                    </Paper>*/}
                     <Paper style={styles.center}>
                         <AutoSizer>
                             {({width, height}) => (

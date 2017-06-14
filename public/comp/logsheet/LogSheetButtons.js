@@ -181,7 +181,7 @@ class LogSheetButtons extends Component {
             return 0
         }
 
-        
+        console.log('selected site',selectedSite)
 
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
@@ -194,7 +194,7 @@ class LogSheetButtons extends Component {
             marker: d.marker,
             location: d.location,
             observers: observers,
-            siteNameId: selectedSite.id,
+            siteId: selectedSite.id,
             north: d.north,
             east: d.east,
             south: d.south,
@@ -220,7 +220,7 @@ class LogSheetButtons extends Component {
             others: d.pertinentInfo,
             antennaId: d.antennaSN,
             receiverId: d.receiverSN,
-            contactPersonId: this.props.selectedContact ? this.props.selectedContact : null
+            contactPersonId: this.props.selectedContact ? this.props.selectedContact.id : null
         } }).then((data) => {
             console.log('got data', data);
             this.props.toggleLogsheetSubmitting()
@@ -254,7 +254,7 @@ class LogSheetButtons extends Component {
 function mapStateToProps(state) {  
 	return {
 		selectedStaffs: state.ui.selectedStaffs,
-        selectedContact: state.ui.selectedContactId,
+        selectedContact: state.ui.selectedContact,
         logsheetSubmitting: state.ui.logsheetSubmitting
 	}
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Tab1 from './Tab1'
 import Tab2 from './Tab2'
-import Tab3 from './Tab3'
 
 // ui 
 import { Tab, Tabs, CircularProgress } from 'material-ui'
@@ -40,13 +39,11 @@ class Details extends Component {
                 <div>
                 <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
                     <Tab label="details" value={0} />
-                    <Tab label="measurements" value={1} />
-                    <Tab label="others" value={2} />
+                    <Tab label="others" value={1} />
                 </Tabs>
                 <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} >
                     <Tab1 d={data} />
                     <Tab2 d={data} />
-                    <Tab3 d={data} />
                 </SwipeableViews>
                 </div>
             );

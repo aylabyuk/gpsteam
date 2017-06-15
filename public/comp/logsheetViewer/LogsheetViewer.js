@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment'
 
 //graphql
 import gql from 'graphql-tag';
@@ -136,7 +137,7 @@ class LogsheetViewer extends Component {
                                                                             return(
                                                                                 <ListItem
                                                                                     key={Math.random()}
-                                                                                    primaryText={new Date(l.logsheet_date).toDateString().substring(0, 11)}
+                                                                                    primaryText={moment(new Date(l.logsheet_date)).format('MMMM D - dddd')}
                                                                                     onTouchTap={ () => this.handleLogsheetViewer(l.id) }
                                                                                 />
                                                                             )

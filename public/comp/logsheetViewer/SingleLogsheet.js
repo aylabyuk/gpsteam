@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Details from './Details'
+import moment from 'moment'
 
 // ui
 import { IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator } from 'material-ui'
@@ -84,6 +85,12 @@ class SingleLogsheet extends Component {
     render() {
         
         let { loading, singleLogsheet } = this.props.data
+        let title = ''
+
+        if(singleLogsheet) {
+            let logdate = new Date(singleLogsheet.logsheet_date)
+            title = singleLogsheet.site.name + ' - ' + moment(logdate).format('MM/DD/YYYY - dddd')
+        }
 
         return (
             <div>
@@ -95,7 +102,7 @@ class SingleLogsheet extends Component {
                             onTouchTap={() => this.props.handleChange(0, null) } >
                                 <Back />
                         </IconButton>
-                        <ToolbarTitle text="Logsheet Details" />
+                        <ToolbarTitle text={title} />
                     </ToolbarGroup>
                 </Toolbar>
 

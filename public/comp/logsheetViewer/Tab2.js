@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment'
 
 // ui
 import { Table, TableBody, TableRowColumn, TableRow, TableHeaderColumn } from 'material-ui'
@@ -12,40 +11,52 @@ class Tab2 extends Component {
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
                     <TableRow>
-                        <TableHeaderColumn>north</TableHeaderColumn>
-                        <TableRowColumn>{d.north}</TableRowColumn>
+                        <TableHeaderColumn>rod number</TableHeaderColumn>
+                        <TableRowColumn>{d.rod_num}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>east</TableHeaderColumn>
-                        <TableRowColumn>{d.east}</TableRowColumn>
+                        <TableHeaderColumn>rod correction</TableHeaderColumn>
+                        <TableRowColumn>{d.rod_correction}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>south</TableHeaderColumn>
-                        <TableRowColumn>{d.south}</TableRowColumn>
+                        <TableHeaderColumn>ip address</TableHeaderColumn>
+                        <TableRowColumn>{d.ip_add}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>west</TableHeaderColumn>
-                        <TableRowColumn>{d.west}</TableRowColumn>
+                        <TableHeaderColumn>netmask</TableHeaderColumn>
+                        <TableRowColumn>{d.netmask}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>average slant height</TableHeaderColumn>
-                        <TableRowColumn>{d.avg_slant_height}</TableRowColumn>
+                        <TableHeaderColumn>gateway</TableHeaderColumn>
+                        <TableRowColumn>{d.gateway}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>azimuth</TableHeaderColumn>
-                        <TableRowColumn>{d.azimuth ? d.azimuth : ''}</TableRowColumn>
-                    </TableRow> : '' }
-                    <TableRow>
-                        <TableHeaderColumn>start time</TableHeaderColumn>
-                        <TableRowColumn>{d.time_end ? moment(new Date(d.time_start)).format('HH:mm'): ''}</TableRowColumn>
+                        <TableHeaderColumn>dns</TableHeaderColumn>
+                        <TableRowColumn>{d.dns}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>end time</TableHeaderColumn>
-                        <TableRowColumn>{d.time_end ? moment(new Date(d.time_end)).format('HH:mm') : ''}</TableRowColumn>
+                        <TableHeaderColumn>local tcp port</TableHeaderColumn>
+                        <TableRowColumn>{d.local_tcp_port}</TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <TableHeaderColumn>failure time</TableHeaderColumn>
-                        <TableRowColumn>{d.failure_time ? moment(new Date(d.failure_time)).format('HH:mm') : ''}</TableRowColumn>
+                        <TableHeaderColumn>rough coordinate - latitude</TableHeaderColumn>
+                        <TableRowColumn>{d.latitude}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                        <TableHeaderColumn>rough coordinate - longitude</TableHeaderColumn>
+                        <TableRowColumn>{d.longitude}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                        <TableHeaderColumn>unusual/abnormal situation observed</TableHeaderColumn>
+                        <TableRowColumn>{d.observed_situation}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                        <TableHeaderColumn>lodging or road information</TableHeaderColumn>
+                        <TableRowColumn>{d.lodging_road_information}</TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                        <TableHeaderColumn>other pertinent information</TableHeaderColumn>
+                        <TableRowColumn>{d.others}</TableRowColumn>
                     </TableRow>
                 </TableBody>
             </Table>

@@ -13,7 +13,7 @@ import { ApolloProvider } from 'react-apollo'
 
 
 //subscription client
-import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws';
+import {SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 
 import App from './App'
 
@@ -25,7 +25,7 @@ if(window.location.port == '8080'){
   ip="localhost:"
 } else {
   PORT=4000
-  ip="localhost:"
+  ip="192.168.1.200:"
 }
 
 // Create regular NetworkInterface by using apollo-client's API: 

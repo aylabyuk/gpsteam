@@ -33,7 +33,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
 
 const ContactsQuery = gql`
     query ContactsQuery {
-    allContact(order: "last_name ASC") {
+    allContact(order: "last_name") {
         id
         first_name
         last_name

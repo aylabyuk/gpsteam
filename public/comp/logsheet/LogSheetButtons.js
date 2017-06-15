@@ -3,6 +3,7 @@ import { Paper, AppBar, Divider } from 'material-ui';
 import { connect } from 'react-redux'
 import { reset, reduxForm } from 'redux-form';
 import { resetSelectedStaffs, resetContactId, toggleLogsheetSubmitting } from '../../actions/index';
+import { apolloClient } from '../../_primary'
 
 import { RaisedButton, LinearProgress, Snackbar } from 'material-ui';
 
@@ -134,6 +135,19 @@ const addNewLogSheet = gql`
     }
 `
 
+const checkDuplicate = gql`
+    query checkDuplicateLogsheetEntry( $name: String!, $date: Date!)
+    {
+        possibleDuplicate: checkDuplicateLogsheetEntry(name: $name, date: $date) {
+            name
+            logsheets {
+                id
+                logsheet_date
+            }
+        }
+    }
+`
+
 class LogSheetButtons extends Component {
     constructor(props) {
     super(props);
@@ -161,6 +175,15 @@ class LogSheetButtons extends Component {
 
     handleSubmitLog(d) {
 
+        // check if logsheet has possible duplicate
+        // apolloClient.query({query: checkDuplicate, variables: { name: d.sitename, date: new Date(d.logdate) }})
+        //     .then((result) => {
+        //         if(result) {
+        //             console.log('possible duplicate: ', result)
+        //             return 0
+        //         }
+        //     })
+
         console.log('submitting data', d)
         this.props.toggleLogsheetSubmitting()
 
@@ -180,8 +203,6 @@ class LogSheetButtons extends Component {
             this.toggleSnackbar(true, 'FAILED: ' + d.sitename + ' is not a valid site')
             return 0
         }
-
-        console.log('selected site',selectedSite)
 
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 

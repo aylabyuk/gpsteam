@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 
 // ui
 import LogsheetViewer from './LogsheetViewer'
@@ -6,7 +6,7 @@ import SwipeableViews from 'react-swipeable-views';
 
 import SingleLogsheet from './SingleLogsheet'
 
-class _LogsheetVeiwer extends PureComponent {
+class _LogsheetVeiwer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +14,11 @@ class _LogsheetVeiwer extends PureComponent {
             currentLogsheetId: null
         };
     }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return nextProps == this.props
+    }
+    
 
     handleChange = (value, id) => {
         this.setState({

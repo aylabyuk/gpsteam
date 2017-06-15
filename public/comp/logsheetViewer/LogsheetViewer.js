@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment'
 
 //graphql
@@ -42,7 +42,7 @@ const SitesWithLogsheetQuery = gql`query SitesWithLogsheetQuery {
 	}  
 }`;
 
-class LogsheetViewer extends PureComponent {
+class LogsheetViewer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Details from './Details'
 import moment from 'moment'
 
@@ -81,7 +81,7 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
     }
   } `;
 
-class SingleLogsheet extends Component {
+class SingleLogsheet extends PureComponent {
     render() {
         
         let { loading, singleLogsheet } = this.props.data

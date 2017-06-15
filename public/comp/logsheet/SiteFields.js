@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Field } from 'redux-form'
 import { normalizeUpperCase } from '../formValidators/formValidators'
 
@@ -30,7 +30,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-class SiteFields extends Component {
+class SiteFields extends PureComponent {
     render() {
         return (
             <form>

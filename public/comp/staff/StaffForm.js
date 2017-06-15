@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
 import { validateStaffInfo as validate } from '../formValidators/formValidators'
@@ -176,7 +176,7 @@ const StaffQuery = gql`query StaffQuery {
   }
 }`;
 
-class StaffForm extends Component {
+class StaffForm extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

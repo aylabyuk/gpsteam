@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 // ui
 import LogsheetViewer from './LogsheetViewer'
@@ -6,7 +6,7 @@ import SwipeableViews from 'react-swipeable-views';
 
 import SingleLogsheet from './SingleLogsheet'
 
-class _LogsheetVeiwer extends Component {
+class _LogsheetVeiwer extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

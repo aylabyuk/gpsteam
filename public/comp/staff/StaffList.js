@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { cloneDeep, sortBy } from 'lodash'
 import { connect } from 'react-redux'
 import { changeSelectedStaffs } from '../../actions/index'
@@ -11,7 +11,7 @@ import {fullWhite, transparent, grey500, indigo400} from 'material-ui/styles/col
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-class StaffList extends Component {
+class StaffList extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {selectedStaffs: this.props.selectedStaffsGlobal};

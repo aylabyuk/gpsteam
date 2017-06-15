@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { changeSelectedContact } from '../../actions/index'
 
@@ -22,7 +22,7 @@ const rightIconMenu = (
   </IconMenu>
 );
 
-class SiteContacts extends Component {
+class SiteContacts extends PureComponent {
     contactPersonChange = (contact) => {
         this.props.changeSelectedContact(contact)
         this.props.closeDialog()

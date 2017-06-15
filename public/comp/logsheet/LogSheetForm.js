@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import { reduxForm } from 'redux-form'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag';
@@ -38,7 +38,7 @@ const LogSheetQuery = gql`query LogSheetQuery {
   }
 }`;
 
-class LogSheetForm extends Component {
+class LogSheetForm extends PureComponent {
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
 

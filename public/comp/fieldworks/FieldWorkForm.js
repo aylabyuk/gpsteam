@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 import { reduxForm, Field } from 'redux-form'
 import { TextField, AutoComplete, FlatButton, Dialog } from 'material-ui'
@@ -35,7 +35,7 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
     />
 )
 
-class FieldWorkForm extends Component {
+class FieldWorkForm extends PureComponent {
     constructor(props) {
         super(props);
         this.state = { openDialog: false };

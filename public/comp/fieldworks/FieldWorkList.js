@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 // ui
 import { List, ListItem } from 'material-ui'
 
-class FieldWorkList extends Component {
+class FieldWorkList extends PureComponent {
     render() {
         return (
             <List>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Paper, AppBar, Divider } from 'material-ui';
 import { connect } from 'react-redux'
 import { reset, reduxForm } from 'redux-form';
@@ -148,7 +148,7 @@ const checkDuplicate = gql`
     }
 `
 
-class LogSheetButtons extends Component {
+class LogSheetButtons extends PureComponent {
     constructor(props) {
     super(props);
         this.state = {

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field } from 'redux-form'
 import { numberAddress, onlyDecimal, wholeNumber } from '../formValidators/formValidators'
 //ui
@@ -20,7 +20,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-class AntennaHeightInfoFields extends Component {
+class AntennaHeightInfoFields extends PureComponent {
     render() {
         return (
             <div>

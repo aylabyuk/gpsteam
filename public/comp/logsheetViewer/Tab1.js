@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment'
 
 // ui
@@ -9,7 +9,7 @@ const s = {
     marginBottom: '10px'
 }
 
-class Tab1 extends Component {
+class Tab1 extends PureComponent {
     render() {
         let { d } = this.props
         let dt = new Date(d.logsheet_date);
@@ -74,8 +74,8 @@ class Tab1 extends Component {
                     <TableRow >
                         <TableHeaderColumn>observers</TableHeaderColumn>
                         <TableRowColumn>{
-                            d.observers.map((o)=> {
-                                return (<div key={Math.random()} style={s}>{o.first_name + ' ' + o.last_name}</div>) 
+                            d.observers.map((o, index)=> {
+                                return (<div key={index} style={s}>{o.first_name + ' ' + o.last_name}</div>) 
                             })    
                         }</TableRowColumn>
                     </TableRow>

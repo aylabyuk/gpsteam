@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 // ui
 import { Table, TableBody, TableRowColumn, TableRow, TableHeaderColumn } from 'material-ui'
 
-class Tab2 extends Component {
+class Tab2 extends PureComponent {
     render() {
         let { d } = this.props
 

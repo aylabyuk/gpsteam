@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom'
 import { changeClickedSite } from '../../actions/index'
 import { connect } from 'react-redux'
@@ -14,7 +14,7 @@ let siteIcon = L.divIcon({
           html: `<div id="icn" />`,
         });
 
-class Phmap extends Component {
+class Phmap extends PureComponent {
   constructor() {
     super();
     this.state = {

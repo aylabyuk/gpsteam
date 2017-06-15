@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { reduxForm } from 'redux-form'
 import { validateFieldworkInfo as validate } from '../formValidators/formValidators'
@@ -25,7 +25,7 @@ const styles = {
   }
 };
 
-class _FieldWork extends Component {
+class _FieldWork extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

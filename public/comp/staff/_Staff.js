@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import StaffForm from './StaffForm'
 
-class Staff extends Component {
+class Staff extends PureComponent {
     render() {
         return (
             <div>

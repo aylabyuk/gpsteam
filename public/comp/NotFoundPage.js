@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 
 import { Paper } from 'material-ui'
 
@@ -16,7 +16,7 @@ const style = {
     backgroundSize: 'cover'
 }
 
-class NotFoundPage extends Component {
+class NotFoundPage extends PureComponent {
 	render() {
 		return (
             <Paper style={style}>

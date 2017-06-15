@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { reduxForm, Field, reset } from 'redux-form'
 import { validateContactDetails as validate } from '../formValidators/formValidators'
 
@@ -51,7 +51,7 @@ const addNewContactPerson = gql`
   }
 `;
 
-class NewContactDialog extends Component {
+class NewContactDialog extends PureComponent {
     handleAdd(d) {
         this.props.mutate({ variables: {
             first_name: d.first_name,

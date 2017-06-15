@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Field } from 'redux-form'
 import { connect } from 'react-redux'
 
@@ -8,7 +8,7 @@ import ClearableTimePicker from './ClearableTimePicker';
 import { TimePicker, Checkbox, IconButton} from 'material-ui'
 import ContentClear from 'material-ui/svg-icons/content/clear';
 
-class TimeFields extends Component {
+class TimeFields extends PureComponent {
     render() {
         return (
             <div>

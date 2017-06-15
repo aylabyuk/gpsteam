@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment'
 
 //graphql
@@ -42,7 +42,7 @@ const SitesWithLogsheetQuery = gql`query SitesWithLogsheetQuery {
 	}  
 }`;
 
-class LogsheetViewer extends Component {
+class LogsheetViewer extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
@@ -132,11 +132,11 @@ class LogsheetViewer extends Component {
                                                                 initiallyOpen={false}
                                                                 primaryTogglesNestedList={true}
                                                                 nestedItems={
-                                                                    sortedLogsheets.map((l) => {
+                                                                    sortedLogsheets.map((l,index) => {
                                                                         if(new Date(l.logsheet_date).getFullYear() == y) {
                                                                             return(
                                                                                 <ListItem
-                                                                                    key={Math.random()}
+                                                                                    key={index}
                                                                                     primaryText={moment(new Date(l.logsheet_date)).format('MMMM D - dddd')}
                                                                                     onTouchTap={ () => this.handleLogsheetViewer(l.id) }
                                                                                 />

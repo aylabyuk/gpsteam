@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Tab1 from './Tab1'
 import Tab2 from './Tab2'
 
@@ -7,7 +7,7 @@ import { Tab, Tabs, CircularProgress } from 'material-ui'
 import SwipeableViews from 'react-swipeable-views'
 
 
-class Details extends Component {
+class Details extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

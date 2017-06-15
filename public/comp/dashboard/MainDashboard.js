@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { AutoSizer } from 'react-virtualized'
 
 import Phmap from '../map/Phmap'
@@ -49,7 +49,7 @@ return L.popup({minWidth: 200, closeButton: true})
     `);
 }
 
-class MainDashboard extends Component {
+class MainDashboard extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

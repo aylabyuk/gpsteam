@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field } from 'redux-form'
 import { reduxForm, reset } from 'redux-form'
 import { normalizePhone } from '../formValidators/formValidators'
@@ -16,7 +16,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-class CustField extends Component {
+class CustField extends PureComponent {
     render() {
         return (
             <Field name={this.props.name} label={this.props.label} component={renderTextField} normalize={this.props.normalize} /> 
@@ -24,7 +24,7 @@ class CustField extends Component {
     }
 }
 
-class MultipleForm extends Component {
+class MultipleForm extends PureComponent {
     constructor (props) {
         super(props);
         this.state = {
@@ -54,7 +54,7 @@ class MultipleForm extends Component {
     }
 }
 
-class ParentComponent extends Component {
+class ParentComponent extends PureComponent {
     render () {
         return(
             <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', marginBottom: '20px' }}>

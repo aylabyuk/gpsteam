@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field } from 'redux-form'
 
 //ui
@@ -16,7 +16,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-class StatusFields extends Component {
+class StatusFields extends PureComponent {
     render() {
         return (
             <div>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 
 // ui
@@ -18,7 +18,7 @@ const styles = {
 };
 
 
-class SelectedStaffs extends Component {
+class SelectedStaffs extends PureComponent {
 
     handleRequestDelete(id) {
        this.props.removeSelectedStaff(id)

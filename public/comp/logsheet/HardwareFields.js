@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import ApolloClient from 'apollo-client';
@@ -27,7 +27,7 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
 
 ///Get receiver information
 
-class ReceiverInfo extends Component {
+class ReceiverInfo extends PureComponent {
     render() {
         const { Receiver } = this.props.data
         return(
@@ -55,7 +55,7 @@ const ReceiverInfoWithData = graphql(CurrentSelectedReceiver, {
 
 ///Get antenna information
 
-class AntennaInfo extends Component {
+class AntennaInfo extends PureComponent {
     render() {
         const { Antenna } = this.props.data
         return(
@@ -84,7 +84,7 @@ const AntennaInfoWithData = graphql(CurrentSelectedAntenna, {
 
 //hardware fields component
 
-class HardwareFields extends Component {
+class HardwareFields extends PureComponent {
    render() {
         let receivers_SNs = this.props.receivers.map((a) => { return a.serial_number }),
             antennas_SNs = this.props.antennas.map((a) => { return a.serial_number })

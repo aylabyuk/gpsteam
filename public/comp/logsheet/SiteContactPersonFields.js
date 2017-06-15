@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { Field, change } from 'redux-form'
 
@@ -52,7 +52,7 @@ const contactCreated = gql`
   }
 `;
 
-class SiteContactPersonFields extends Component {
+class SiteContactPersonFields extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {

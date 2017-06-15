@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Field } from 'redux-form'
 
 //ui
@@ -35,7 +35,7 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
     </div>
 )
 
-class DateFields extends Component {
+class DateFields extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {

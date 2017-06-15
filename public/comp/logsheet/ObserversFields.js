@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 
 // ui
@@ -10,7 +10,7 @@ import SelectedStaffs from '../staff/SelectedStaffs'
 import { removeSelectedStaff } from '../../actions/index'
 
 
-class ObserversFields extends Component {
+class ObserversFields extends PureComponent {
 
     constructor(props) {
         super(props)

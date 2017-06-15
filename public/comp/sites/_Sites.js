@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Sites from './Sites'
 
-class _Sites extends Component {
+class _Sites extends PureComponent {
     render() {
         return (
             <div>

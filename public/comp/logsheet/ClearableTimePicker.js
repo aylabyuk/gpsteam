@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import Moment from 'moment';
 import TimePicker from 'material-ui/TimePicker';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 
-const Clearable = ComposedComponent => class extends React.Component {
+const Clearable = ComposedComponent => class extends React.PureComponent {
 
     clearDate (event) {
         event.preventDefault();

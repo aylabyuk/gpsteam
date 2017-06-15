@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from 'react-redux'
 import { reduxForm, Field } from 'redux-form'
 
@@ -19,7 +19,7 @@ const renderTextField = ({ input, label, multiLine, fullWidth, meta: { touched, 
   />
 )
 
-class PertinentInfoFields extends Component {
+class PertinentInfoFields extends PureComponent {
     render() {
         return (
             <div>

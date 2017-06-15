@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 import { onlyDecimal } from '../formValidators/formValidators'
@@ -15,7 +15,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
   />
 )
 
-class MeasurementFields extends Component {
+class MeasurementFields extends PureComponent {
     render() {
         let height = this.props.averageSlantHeight ?  this.props.averageSlantHeight : ''
 

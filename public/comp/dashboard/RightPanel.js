@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import L from 'leaflet'
 import { connect } from 'react-redux'
 import { changeClickedSite } from '../../actions/index'
@@ -6,7 +6,7 @@ import { changeClickedSite } from '../../actions/index'
 // ui
 import { AppBar, Paper, List, ListItem} from 'material-ui'
 
-class RightPanel extends Component {
+class RightPanel extends PureComponent {
 
     removePreviewMarker() {
         let leafletmap = window.leafletmap.leafletElement

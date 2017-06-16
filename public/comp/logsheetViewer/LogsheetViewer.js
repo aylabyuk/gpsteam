@@ -48,7 +48,6 @@ class LogsheetViewer extends Component {
         if(this.props.data.sitesWithLogsheet != nextProps.data.sitesWithLogsheet) {
             return true
         }
-
         return false
     }
     
@@ -71,13 +70,23 @@ class LogsheetViewer extends Component {
 
                         if(indexOfSite < 0) {
                             newResult.sitesWithLogsheet.push(receivedObject.site)
+
+                            // sort alphabetically via sitename
+                            newResult.sitesWithLogsheet.sort((a,b) => {
+                                let siteA = a.name
+                                let siteB = b.name
+                                return (siteA < siteB) ? -1 : (siteA > siteB) ? 1 : 0
+                            })
+
                         } else {
                             newResult.sitesWithLogsheet[indexOfSite].logsheets.push(logsheetToInsert)
                         }
 
-                        console.log('prev', previousResult)
-                        console.log('subscription data', subscriptionData)
-                        console.log('new', newResult)
+                        
+
+                        // console.log('prev', previousResult)
+                        // console.log('subscription data', subscriptionData)
+                        // console.log('new', sortedResult)
                         return newResult
                     },
                 })

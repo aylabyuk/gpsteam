@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import LogSheetForm from './LogSheetForm';
 import _LogSheetViewer from '../logsheetViewer/_LogsheetViewer';
 
@@ -24,7 +24,7 @@ const styles = {
   }
 };
 
-class _LogSheet extends PureComponent {
+class _LogSheet extends Component {
     constructor(props) {
         super(props);
         this.state = {

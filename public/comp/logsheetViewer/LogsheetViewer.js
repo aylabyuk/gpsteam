@@ -44,6 +44,15 @@ const SitesWithLogsheetQuery = gql`query SitesWithLogsheetQuery {
 
 class LogsheetViewer extends Component {
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if(this.props.data.sitesWithLogsheet != nextProps.data.sitesWithLogsheet) {
+            return true
+        }
+
+        return false
+    }
+    
+
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
             let { subscribeToMore } = this.props.data
@@ -66,6 +75,9 @@ class LogsheetViewer extends Component {
                             newResult.sitesWithLogsheet[indexOfSite].logsheets.push(logsheetToInsert)
                         }
 
+                        console.log('prev', previousResult)
+                        console.log('subscription data', subscriptionData)
+                        console.log('new', newResult)
                         return newResult
                     },
                 })

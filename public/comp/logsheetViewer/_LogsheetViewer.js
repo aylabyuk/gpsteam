@@ -15,11 +15,6 @@ class _LogsheetVeiwer extends Component {
         };
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        return nextProps == this.props
-    }
-    
-
     handleChange = (value, id) => {
         this.setState({
             slideIndex: value,

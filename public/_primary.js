@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Perf from 'react-addons-perf'
 import { Router, Route } from 'react-router'
 
 // redux
@@ -19,6 +20,8 @@ import App from './App'
 
 let PORT
 let ip
+
+window.Perf = Perf
 
 if(window.location.port == '8080'){
   PORT=4040

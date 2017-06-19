@@ -8,6 +8,8 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from 'leaflet'
 import scrollIntoView from 'scroll-into-view'
 
+import SitePopup from './SitePopup'
+ 
 let siteIcon = L.divIcon({
           className: '',
           iconSize: [24, 24],
@@ -24,12 +26,28 @@ class Phmap extends Component {
       maxZoom: 20,
       minZoom: 6,
       clustering: true,
-      clusterIsSet: false
+      clusterIsSet: false,
+      popup: false
     };
   }
 
   setCluster() {
     this.setState({clusterIsSet: true})
+  }
+
+  removePopup = () => {
+    this.setState({
+      popup: false
+    })
+  }
+
+  addPopup = (marker) => {
+    this.setState({
+      popup: { 
+        key: marker._tooltip._content,
+        position: marker.getLatLng()
+      }
+    })
   }
   
   render() {
@@ -57,6 +75,7 @@ class Phmap extends Component {
             <MarkerClusterGroup
               markers={markers}
               wrapperOptions={{enableDefaultStyle: true}} 
+              onMarkerClick={(marker) => this.addPopup(marker) }
               ref={(markerClusterGroup) => {
 
                 if(!this.state.clusterIsSet) {
@@ -75,6 +94,13 @@ class Phmap extends Component {
                 </Tooltip>
               </Marker>)
             }) }
+
+            {this.state.popup && 
+              <Popup
+                key={`popup-${this.state.popup.key + Math.random()}`}
+                position={this.state.popup.position} 
+                children={<SitePopup popup={this.state.popup} remove={this.removePopup}/>} />
+            }
 
         </Map>
         </div >

@@ -39,17 +39,6 @@ const SiteDetailsQuery = gql`query SiteDetailsQuery {
     }
 }`;
 
-
-// that function returns Leaflet.Popup
-function getLeafletPopup(name) {
-return L.popup({minWidth: 200, closeButton: true})
-    .setContent(`
-    <div>
-        <p>${name}</p>
-    </div>
-    `);
-}
-
 class MainDashboard extends PureComponent {
     constructor(props) {
         super(props);
@@ -101,8 +90,7 @@ class MainDashboard extends PureComponent {
 
         loading ? null : allSite.map((s) => {
             s.lat ?
-            sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long, 
-                popup: getLeafletPopup(s.name) }) : null
+            sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long }) : null
         })
         
         return (

@@ -39,6 +39,7 @@ const SiteDetailsQuery = gql`query SiteDetailsQuery {
     }
 }`;
 
+
 // that function returns Leaflet.Popup
 function getLeafletPopup(name) {
 return L.popup({minWidth: 200, closeButton: true})

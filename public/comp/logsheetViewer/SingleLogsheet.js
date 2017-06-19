@@ -99,7 +99,7 @@ class SingleLogsheet extends PureComponent {
                         <IconButton
                             iconStyle={styles.smallIcon}
                             style={styles.small}
-                            onTouchTap={() => this.props.handleChange(0, null) } >
+                            onTouchTap={() => this.props.handleChange(1, null) } >
                                 <Back />
                         </IconButton>
                         <ToolbarTitle text={title} />

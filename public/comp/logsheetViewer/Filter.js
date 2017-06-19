@@ -58,6 +58,7 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
                 year: 'numeric',
                 weekday: 'long'
         }).format }
+        autoOk={true}
         hintText={label}
         floatingLabelText={label}
         onChange = {(event, value) => {input.onChange(value)} } 

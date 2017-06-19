@@ -9,7 +9,8 @@ import rootReducer from './reducers/index'
 import { applyMiddleware, createStore } from 'redux';
 
 //apollo client
-import ApolloClient, { createBatchingNetworkInterface } from 'apollo-client'
+import ApolloClient from 'apollo-client'
+import { createBatchNetworkInterface } from 'apollo-upload-client'
 import { ApolloProvider } from 'react-apollo'
 
 
@@ -32,7 +33,7 @@ if(window.location.port == '8080'){
 }
 
 // Create regular NetworkInterface by using apollo-client's API: 
-const networkInterface = createBatchingNetworkInterface({
+const networkInterface = createBatchNetworkInterface({
   opts: {
     credentials: "same-origin",
   },

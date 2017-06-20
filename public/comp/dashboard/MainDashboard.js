@@ -107,13 +107,13 @@ class MainDashboard extends PureComponent {
                             )}
                         </AutoSizer>
                     </Paper>
-                    <Paper style={styles.right}>
+                    {/*<Paper style={styles.right}>
                         <AutoSizer>
                             {({width, height}) => (
                                 <RightPanel sites={sites} dimensions={{width, height}} changeHoveredSite={this.changeHoveredSite}/>
                             )}
                         </AutoSizer>
-                    </Paper>
+                    </Paper>*/}
                 </div>
             </div>
         );

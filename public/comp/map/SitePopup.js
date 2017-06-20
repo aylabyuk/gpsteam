@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
+import { apolloClient } from '../../_primary' 
 
+// graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
+// ui
 import { Card, CardHeader, CardTitle, CardActions, CardText, FlatButton } from 'material-ui'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+const uploadPreview = gql`
+    mutation updateSiteTimeseriesPreview(
+        $siteName: String!,
+        $timeseriesPreview: File!
+    ) {
+        updateSiteTimeseriesPreview(siteName: $siteName, timeseriesPreview: $timeseriesPreview)
+        {
+            id
+        }
+    }
+`
+
 class SitePopup extends Component {
+
+
+    handleNewPreview({target}) {
+        console.log(target.files[0])
+        console.log(this.props)
+        apolloClient.mutate({mutation: uploadPreview, variables: { siteName: this.props.popup.key, timeseriesPreview: target.files[0] } })
+    }
+
     render() {
         return (
             <MuiThemeProvider>
@@ -11,18 +37,18 @@ class SitePopup extends Component {
                     <Card>
                         <CardHeader
                         title={this.props.popup.position.lat + ', ' + this.props.popup.position.lng}
-                        subtitle="Campaign Survey"
+                        subtitle="Campaign"
                         />
                         <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
                         <CardText>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+                            <label htmlFor="file-upload" className="custom-file-upload">
+                                Upload Timeseries Preview for this site
+                            </label>
+                            <input type='file' id="file-upload" accept={'image/jpeg,image/png'} required onChange={this.handleNewPreview.bind(this)} />
                         </CardText>
                         <CardActions>
-                            <FlatButton label="View Info" onClick={() => console.log("test")}/>
-                            <FlatButton label="Close" onClick={() => this.props.remove()}/>
+                            <FlatButton primary label="View Details" onClick={() => console.log("test")}/>
+                            <FlatButton secondary label="Close" onClick={() => this.props.remove()}/>
                         </CardActions>
                     </Card>
                     <center><div className="arrow-down" /></center>

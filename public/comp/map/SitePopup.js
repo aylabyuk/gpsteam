@@ -9,6 +9,9 @@ import { graphql } from 'react-apollo';
 import { Card, CardHeader, CardTitle, CardActions, CardText, FlatButton } from 'material-ui'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+// server
+import { ip, PORT } from '../../_primary'
+
 const uploadPreview = gql`
     mutation updateSiteTimeseriesPreview(
         $siteName: String!,
@@ -38,7 +41,8 @@ class SitePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           path: false
+           path: false,
+           name: '',
         };
     }
 
@@ -47,13 +51,19 @@ class SitePopup extends Component {
         apolloClient.mutate({mutation: uploadPreview, variables: { siteName: this.props.popup.key, timeseriesPreview: target.files[0] } })
     }
 
-    componentDidMount() {
+    requestForPreview() {
         let preview = apolloClient.query({query: getPreview, variables: { name: this.props.popup.key } })
 
         preview.then((d) => {
-          console.log(d.data.siteTimeseriesPreview)
-          this.setState({ path: d.data.siteTimeseriesPreview.path })
+          if(d.data.siteTimeseriesPreview) {
+            this.setState({ name: d.data.siteTimeseriesPreview.name })
+            this.setState({ path: d.data.siteTimeseriesPreview.path })
+          }
         })
+    }
+
+    componentDidMount() {
+        this.requestForPreview()
     }
     
     render() {
@@ -67,11 +77,11 @@ class SitePopup extends Component {
                         />
                         <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
                         <CardText>
-                            { this.state.path ? <img id='previewTimeseries' src={'http://localhost:4040/timeseries/TAWI.jpg'} /> : 
+                            { this.state.path ? <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.state.name } /> : 
                             <div>
-                                <label htmlFor="file-upload" className="custom-file-upload">
+                                <center><label htmlFor="file-upload" className="custom-file-upload">
                                     Upload Timeseries Preview for this site
-                                </label>
+                                </label></center>
                                 <input type='file' id="file-upload" accept={'image/jpeg,image/png'} required onChange={this.handleNewPreview.bind(this)} /> 
                             </div>} 
                         </CardText>

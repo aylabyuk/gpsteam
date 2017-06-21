@@ -92,7 +92,10 @@ body {
 .leaflet-popup-tip,
 .leaflet-popup-content-wrapper {
     background-color : transparent;
-	box-shadow: 0 0px 14px rgba(0,0,0,0.0)
+	box-shadow: 0 0px 14px rgba(0,0,0,0.0);
+}
+.leaflet-popup-content {
+	width:auto !important;
 }
 
 .arrow-down {

@@ -19,8 +19,8 @@ import {SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transp
 
 import App from './App'
 
-let PORT
-let ip
+export let PORT
+export let ip
 
 window.Perf = Perf
 

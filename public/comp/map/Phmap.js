@@ -99,7 +99,10 @@ class Phmap extends Component {
               <Popup
                 key={`popup-${this.state.popup.key + Math.random()}`}
                 position={this.state.popup.position} 
-                children={<SitePopup popup={this.state.popup} remove={this.removePopup}/>} />
+                children={<SitePopup popup={this.state.popup} remove={this.removePopup}/>} 
+                ref={(popup) => {
+                  
+                }} />
             }
 
         </Map>

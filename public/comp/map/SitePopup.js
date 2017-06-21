@@ -20,6 +20,7 @@ const uploadPreview = gql`
         updateSiteTimeseriesPreview(siteName: $siteName, timeseriesPreview: $timeseriesPreview)
         {
             id
+            name
         }
     }
 `
@@ -41,30 +42,34 @@ class SitePopup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-           path: false,
-           name: '',
+           name: null,
         };
     }
 
     handleNewPreview({target}) {
         console.log('saving file', target.files[0])
         apolloClient.mutate({mutation: uploadPreview, variables: { siteName: this.props.popup.key, timeseriesPreview: target.files[0] } })
+            .then((d) => {
+                this.setState({ name: d.data.updateSiteTimeseriesPreview.name })
+            }).catch((err) => {
+                console.log(err)
+            })
     }
 
     requestForPreview() {
         let preview = apolloClient.query({query: getPreview, variables: { name: this.props.popup.key } })
 
         preview.then((d) => {
-          if(d.data.siteTimeseriesPreview) {
-            this.setState({ name: d.data.siteTimeseriesPreview.name })
-            this.setState({ path: d.data.siteTimeseriesPreview.path })
-          }
+            if(d.data.siteTimeseriesPreview) {
+                this.setState({ name: d.data.siteTimeseriesPreview.name })
+            }
         })
     }
 
     componentDidMount() {
         this.requestForPreview()
     }
+
     
     render() {
         return (
@@ -77,13 +82,13 @@ class SitePopup extends Component {
                         />
                         <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
                         <CardText>
-                            { this.state.path ? <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.state.name } /> : 
+                            { this.state.name ? <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.state.name } /> : 
                             <div>
                                 <center><label htmlFor="file-upload" className="custom-file-upload">
                                     Upload Timeseries Preview for this site
                                 </label></center>
                                 <input type='file' id="file-upload" accept={'image/jpeg,image/png'} required onChange={this.handleNewPreview.bind(this)} /> 
-                            </div>} 
+                            </div> } 
                         </CardText>
                         <CardActions>
                             <FlatButton primary label="View Details" onClick={() => console.log("test")}/>

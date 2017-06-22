@@ -117,7 +117,7 @@ class SingleLogsheet extends PureComponent {
                         </IconButton>
                         }
                     >
-                        <MenuItem primaryText="Edit" />
+                        <MenuItem primaryText="Update" />
                         <MenuItem primaryText="Delete" />
                     </IconMenu>
                     </ToolbarGroup>

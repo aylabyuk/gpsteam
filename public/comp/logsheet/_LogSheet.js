@@ -7,16 +7,6 @@ import { AppBar, Paper, GridList, GridTile} from 'material-ui'
 import SwipeableViews from 'react-swipeable-views';
 
 const styles = {
-  gridList: {
-    width: '100%',
-    height: '100%',
-    overflowY: 'hidden',
-    overflowX: 'hidden',
-  },
-  gridTile: {
-      overflowX: 'hidden',
-      overflowY: 'auto',
-  },
   paper: {
     width: 'auto',
     height: '100%',
@@ -54,24 +44,9 @@ class _LogSheet extends Component {
         return ( 
             <Paper style={styles.paper}>
                 <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
-
-                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px'}}>
-
-                    <GridList
-                        cellHeight={this.state.height - 100}
-                        cols={2}
-                        style={styles.gridList} >
-
-                        <GridTile style={styles.gridTile}>
-                            <LogSheetForm />
-                        </GridTile>
-
-                        <GridTile style={{height: '100%'}}>
-                            <_LogSheetViewer />
-                        </GridTile>
-
-                    </GridList>
-
+                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px', justifyContent: 'center'}}>
+                    <Paper style={{ maxWidth: '800px', padding: '0px 25px 0px 25px', maxHeight: '100%'}}><LogSheetForm /></Paper>
+                    {/*<_LogSheetViewer />*/}
                 </div>
             </Paper>
         );

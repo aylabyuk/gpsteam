@@ -9,7 +9,7 @@ import SwipeableViews from 'react-swipeable-views';
 const styles = {
   paper: {
     width: 'auto',
-    height: '100%',
+    height: 'auto',
     padding: 5
   }
 };
@@ -44,8 +44,8 @@ class _LogSheet extends Component {
         return ( 
             <Paper style={styles.paper}>
                 <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
-                <div style={{ display: 'flex', flexDirection: 'row', marginTop: '5px', justifyContent: 'center'}}>
-                    <Paper style={{ maxWidth: '800px', padding: '0px 25px 0px 25px', maxHeight: '100%'}}><LogSheetForm /></Paper>
+                <div style={{ height: '100vh', display: 'flex', flexDirection: 'row', marginTop: '5px', justifyContent: 'center' }}>
+                    <Paper style={{ maxWidth: '800px', padding: '0px 25px 0px 25px', maxHeight: '100%', overflow: 'auto'}}><LogSheetForm /></Paper>
                     {/*<_LogSheetViewer />*/}
                 </div>
             </Paper>

@@ -129,6 +129,9 @@ export const validateLogsheet = values => {
   if (!values.west) {
     errors.west = 'Required'
   }
+  if (!values.startTime) {
+    errors.startTime = 'Required'
+  }
   return errors
 }
 

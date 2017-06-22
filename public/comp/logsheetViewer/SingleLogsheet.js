@@ -3,7 +3,8 @@ import Details from './Details'
 import moment from 'moment'
 
 // ui
-import { IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator } from 'material-ui'
+import { IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator, IconMenu, MenuItem } from 'material-ui'
+import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
 import Back from 'material-ui/svg-icons/navigation/chevron-left';
 
 //graphql
@@ -103,6 +104,22 @@ class SingleLogsheet extends PureComponent {
                                 <Back />
                         </IconButton>
                         <ToolbarTitle text={title} />
+                    </ToolbarGroup>
+                    <ToolbarGroup>
+                    <ToolbarSeparator />
+                    <IconMenu
+                        iconButtonElement={
+                        <IconButton 
+                        iconStyle={styles.smallIcon}
+                        style={styles.small}
+                        touch={true}>
+                            <NavigationExpandMoreIcon />
+                        </IconButton>
+                        }
+                    >
+                        <MenuItem primaryText="Edit" />
+                        <MenuItem primaryText="Delete" />
+                    </IconMenu>
                     </ToolbarGroup>
                 </Toolbar>
 

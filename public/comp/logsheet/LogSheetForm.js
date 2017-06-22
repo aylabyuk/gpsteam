@@ -76,10 +76,11 @@ const form =  reduxForm({
 function mapStateToProps(state) {  
 	return {
 		selectedContact: state.ui.selectedContact,
-        initialValues: {
-            startTime: new Date(null,null,null,0,0,0,0),
-            endTime: new Date(null,null,null,23,59,0,0)
-        }
+        // uncomment the lines below to enable initial values for time
+        // initialValues: {
+        //     startTime: new Date(null,null,null,0,0,0,0),
+        //     endTime: new Date(null,null,null,23,59,0,0)
+        // }
 	}
 }
 

@@ -1,10 +1,10 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import Moment from 'moment';
 import TimePicker from 'material-ui/TimePicker';
 import IconButton from 'material-ui/IconButton';
 import Clear from 'material-ui/svg-icons/content/clear';
 
-const Clearable = ComposedComponent => class extends React.PureComponent {
+const Clearable = ComposedComponent => class extends React.Component {
 
     clearDate (event) {
         event.preventDefault();
@@ -19,6 +19,7 @@ const Clearable = ComposedComponent => class extends React.PureComponent {
     }
     
     render () {
+        let { meta } = this.props
         return (
             <div style={{position: 'relative', flexGrow: 1}}>
                 <ComposedComponent
@@ -29,7 +30,8 @@ const Clearable = ComposedComponent => class extends React.PureComponent {
                     onChange={(event, value) => {this.props.input.onChange(value)}} 
                     onBlur = {(value) => { value = '' } }
                     floatingLabelText={this.props.label}
-                    format="24hr"/>
+                    format="24hr"
+                    errorText = {meta.touched && meta.error} />
                 {this.props.input.value &&
                 <IconButton ref="button" onClick={this.clearDate.bind(this)} style={{position: 'absolute', bottom: '10px',right: '4px', padding: '0', width: '24px', height: '24px'}}>
                     <Clear />

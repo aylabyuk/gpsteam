@@ -3,10 +3,14 @@ import React, { PureComponent } from 'react';
 // ui
 import { Table, TableBody, TableRowColumn, TableRow, TableHeaderColumn } from 'material-ui'
 
+const s = {
+    marginTop: '10px',
+    marginBottom: '10px'
+}
+
 class Tab2 extends PureComponent {
     render() {
         let { d } = this.props
-
         return (
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
@@ -58,6 +62,15 @@ class Tab2 extends PureComponent {
                         <TableHeaderColumn>other pertinent information</TableHeaderColumn>
                         <TableRowColumn>{d.others}</TableRowColumn>
                     </TableRow>
+                    <TableRow>
+                        <TableHeaderColumn>contact person</TableHeaderColumn>
+                        <TableRowColumn>
+                            {d.contact ? <div>
+                                <div style={s}><strong>name: </strong>{d.contact.first_name + ' ' + d.contact.last_name}</div>
+                                <div style={s}><strong>contact number: </strong>{d.contact.contact_number}</div>
+                            </div> : <div>no record</div> }
+                        </TableRowColumn>
+                    </TableRow> 
                 </TableBody>
             </Table>
         );

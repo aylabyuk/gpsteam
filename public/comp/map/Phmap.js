@@ -3,12 +3,47 @@ import ReactDOM from 'react-dom'
 import { changeClickedSite } from '../../actions/index'
 import { connect } from 'react-redux'
 
+// ui
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from 'leaflet'
 import scrollIntoView from 'scroll-into-view'
 
+// graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { apolloClient } from '../../_primary' 
+
 import SitePopup from './SitePopup'
+
+const uploadPreview = gql`
+    mutation updateSiteTimeseriesPreview(
+        $siteName: String!,
+        $timeseriesPreview: File!
+    ) {
+        updateSiteTimeseriesPreview(siteName: $siteName, timeseriesPreview: $timeseriesPreview)
+        {
+            id
+            name
+            type
+            size
+            path
+        }
+    }
+`
+
+const getPreview = gql`
+    query siteTimeseriesPreview(
+        $name: String!
+    ) {
+        siteTimeseriesPreview(name: $name) {
+            path
+            type
+            name
+            size
+        }
+    }
+`
  
 let siteIcon = L.divIcon({
           className: '',
@@ -27,7 +62,8 @@ class Phmap extends Component {
       minZoom: 6,
       clustering: true,
       clusterIsSet: false,
-      popup: false
+      popup: false,
+      path: ''
     };
   }
 
@@ -48,6 +84,16 @@ class Phmap extends Component {
         position: marker.getLatLng()
       }
     })
+  }
+
+  handleNewPreview({target}) {
+    apolloClient.mutate({mutation: uploadPreview, variables: { siteName: this.props.popup.key, timeseriesPreview: target.files[0] } })
+      .then((d) => {
+        console.log('got data ',d)
+        // this.setState({ path: d.data.updateSiteTimeseriesPreview.path })
+      }).catch((err) => {
+        console.log(err)
+      })
   }
   
   render() {
@@ -99,10 +145,10 @@ class Phmap extends Component {
               <Popup
                 key={`popup-${this.state.popup.key + Math.random()}`}
                 position={this.state.popup.position} 
-                children={<SitePopup popup={this.state.popup} remove={this.removePopup}/>} 
-                ref={(popup) => {
-                  
-                }} />
+                children={
+                  <SitePopup popup={this.state.popup} previewUrl={this.state.previewUrl} remove={this.removePopup}
+                    newPreview={this.handleNewPreview} requestPreview={this.requestForPreview} filename={this.state.filename}/> 
+                  }/>
             }
 
         </Map>

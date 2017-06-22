@@ -44,7 +44,11 @@ class LogSheetForm extends PureComponent {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
 
         if(loading) {
-            return <LinearProgress mode="indeterminate" />
+            return (
+                <div style={{width: '500px', paddingTop: '5px'}}>
+                    <LinearProgress mode="indeterminate" />
+                </div>
+            );
         } else {
             return (
                 <div>

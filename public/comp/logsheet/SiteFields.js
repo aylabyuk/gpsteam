@@ -18,15 +18,17 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
       openOnFocus={false}
       maxSearchResults={20}
       errorText={touched && error}
+      
     />
 )
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+const renderTextField = ({fullWidth, input, label, meta: { touched, error }, ...custom }) => (
   <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}
     {...custom}
+    fullWidth={fullWidth}
   />
 )
 
@@ -35,11 +37,12 @@ class SiteFields extends PureComponent {
         return (
             <form>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Site</h5>
-                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                    <Field name="sitename" style={{flexGrow: 1}} component={renderAutoCompleteField}  dataSource={this.props.siteNames.map((a) => { return a.name })} normalize={normalizeUpperCase}/>
-                    <Field name="location" style={{flexGrow: 1}} component={renderTextField} label='location' />
-                    <Field name="marker" style={{flexGrow: 1}} component={renderTextField} label='marker' />
+                <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                    <div style={{flex: '1 1'}}><Field style={{flex: '1 1'}} name="sitename" component={renderAutoCompleteField}  dataSource={this.props.siteNames.map((a) => { return a.name })} normalize={normalizeUpperCase}/></div>
+                    <div style={{flex: '1 1'}}><Field style={{flex: '1 1'}} name="marker" component={renderTextField} label='marker' /></div>
+                    <div style={{flex: '1 1'}} />
                 </div>
+                <Field name="location" fullWidth={true} component={renderTextField} label='location' />
             </form>
         );
     }

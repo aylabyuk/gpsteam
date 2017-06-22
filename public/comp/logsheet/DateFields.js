@@ -12,26 +12,35 @@ Date.prototype.julianDate = function(){
 };
 
 const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
-    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
-    <DatePicker 
-        mode='portrait'
-        errorText = {touched && error} 
-        {...input}
-        value = { input.value !== ''? new Date(input.value): null}
-        formatDate={new Intl.DateTimeFormat('en-US', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                weekday: 'long'
-        }).format }
-        hintText={label}
-        floatingLabelText={label}
-        onChange = {(event, value) => {input.onChange(value)} } 
-        onBlur = {(value) => { value = '' }}
-        maxDate={new Date()}/>
-    <TextField  style={{marginLeft: 5}} floatingLabelText='day of year'  hintText='day of year' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
-       fullWidth={false} 
-        />
+    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+    
+        <div style={{flex: '1 1'}}>
+            <DatePicker 
+                mode='portrait'
+                errorText = {touched && error} 
+                {...input}
+                value = { input.value !== ''? new Date(input.value): null}
+                formatDate={new Intl.DateTimeFormat('en-US', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                        weekday: 'long'
+                }).format }
+                hintText={label}
+                floatingLabelText={label}
+                onChange = {(event, value) => {input.onChange(value)} } 
+                onBlur = {(value) => { value = '' }}
+                maxDate={new Date()}/>
+        </div>
+
+        <div style={{flex: '1 1'}}>
+            <TextField floatingLabelText='day of year' hintText='day of year' value={input.value.julianDate ? input.value.julianDate() : ''} disabled={true}
+            fullWidth={false} 
+                />
+        </div>
+
+        <div style={{flex: '1 1'}} />
+
     </div>
 )
 

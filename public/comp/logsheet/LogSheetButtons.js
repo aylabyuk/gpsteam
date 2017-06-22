@@ -256,7 +256,7 @@ class LogSheetButtons extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{marginBottom: '40px'}}>
                 <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
                     primary disabled={this.props.logsheetSubmitting} fullWidth>
                         {this.props.logsheetSubmitting ? <LinearProgress mode="indeterminate" /> : null}

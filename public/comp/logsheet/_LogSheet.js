@@ -5,14 +5,7 @@ import _LogSheetViewer from '../logsheetViewer/_LogsheetViewer';
 // ui
 import { AppBar, Paper, GridList, GridTile} from 'material-ui'
 import SwipeableViews from 'react-swipeable-views';
-
-const styles = {
-  paper: {
-    width: 'auto',
-    height: 'auto',
-    padding: 5
-  }
-};
+import { AutoSizer } from 'react-virtualized';
 
 class _LogSheet extends Component {
     constructor(props) {
@@ -42,12 +35,16 @@ class _LogSheet extends Component {
 
     render() {
         return ( 
-            <Paper style={styles.paper}>
+            <Paper style={{ padding: 5, height: '100vh'}}>
                 <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
-                <div style={{ height: '100vh', display: 'flex', flexDirection: 'row', marginTop: '5px', justifyContent: 'center' }}>
-                    <Paper style={{ maxWidth: '800px', padding: '0px 25px 0px 25px', maxHeight: '100%', overflow: 'auto'}}><LogSheetForm /></Paper>
-                    {/*<_LogSheetViewer />*/}
-                </div>
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <div style={{ height: height-50, width, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                            <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}><LogSheetForm /></Paper>
+                            {/*<_LogSheetViewer />*/}
+                        </div>
+                    )}
+                </AutoSizer>
             </Paper>
         );
     }

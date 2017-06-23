@@ -106,72 +106,69 @@ class LogsheetViewer extends Component {
             return <LinearProgress mode="indeterminate" />
         } else {
             return (
-                <div style={{overflowY: 'hidden', height: '100%'}}>
-                    <AppBar iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
-                    
-                    <AutoSizer>
-                            {({width, height}) => (
-                                <List style={{width, height: height - 70, overflowY: 'scroll'}}>
-                                    { sitesWithLogsheet.map((s)=> {
+                <div style={{ display: 'flex', flexDirection: 'column', height: '100vh'}}>
+                    <AppBar style={{ flex: '0 0 auto' }} iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
+                    <Paper style={{ flex: '1 1 auto', position: 'relative', overflowY: 'auto' }}>
+                        <List>
+                            { sitesWithLogsheet.map((s)=> {
 
-                                        let years = []
-                                        let sortedLogsheets = []
+                                let years = []
+                                let sortedLogsheets = []
 
-                                        s.logsheets.map((l) => {
-                                            return sortedLogsheets.push(l)
-                                        })
+                                s.logsheets.map((l) => {
+                                    return sortedLogsheets.push(l)
+                                })
 
-                                        sortedLogsheets.sort((a,b) => {
-                                            a = new Date(a.logsheet_date);
-                                            b = new Date(b.logsheet_date);
-                                            return a>b ? -1 : a<b ? 1 : 0;
-                                        })
+                                sortedLogsheets.sort((a,b) => {
+                                    a = new Date(a.logsheet_date);
+                                    b = new Date(b.logsheet_date);
+                                    return a>b ? -1 : a<b ? 1 : 0;
+                                })
 
-                                        sortedLogsheets.map((l)=> {
-                                            let ldate = new Date(l.logsheet_date)
-                                            if(!years.includes(ldate.getFullYear())) {
-                                                years.push(ldate.getFullYear())
-                                            }
-                                        })
+                                sortedLogsheets.map((l)=> {
+                                    let ldate = new Date(l.logsheet_date)
+                                    if(!years.includes(ldate.getFullYear())) {
+                                        years.push(ldate.getFullYear())
+                                    }
+                                })
 
-                                        return(
-                                            <ListItem
-                                                key={s.id}
-                                                primaryText={s.name}
-                                                secondaryText={ sortedLogsheets.length + ' logsheets' }
-                                                initiallyOpen={false}
-                                                primaryTogglesNestedList={true}
-                                                nestedItems={ 
-                                                    years.map((y) => {
-                                                        return(
-                                                            <ListItem
-                                                                key={y}
-                                                                primaryText={y}
-                                                                initiallyOpen={false}
-                                                                primaryTogglesNestedList={true}
-                                                                nestedItems={
-                                                                    sortedLogsheets.map((l,index) => {
-                                                                        if(new Date(l.logsheet_date).getFullYear() == y) {
-                                                                            return(
-                                                                                <ListItem
-                                                                                    key={index}
-                                                                                    primaryText={moment(new Date(l.logsheet_date)).format('MMMM D - dddd')}
-                                                                                    onTouchTap={ () => this.handleLogsheetViewer(l.id) }
-                                                                                />
-                                                                            )
-                                                                        }
-                                                                    })
+                                return(
+                                    <ListItem
+                                        key={s.id}
+                                        primaryText={s.name}
+                                        secondaryText={ sortedLogsheets.length + ' logsheets' }
+                                        initiallyOpen={false}
+                                        primaryTogglesNestedList={true}
+                                        nestedItems={ 
+                                            years.map((y) => {
+                                                return(
+                                                    <ListItem
+                                                        key={y}
+                                                        primaryText={y}
+                                                        initiallyOpen={false}
+                                                        primaryTogglesNestedList={true}
+                                                        nestedItems={
+                                                            sortedLogsheets.map((l,index) => {
+                                                                if(new Date(l.logsheet_date).getFullYear() == y) {
+                                                                    return(
+                                                                        <ListItem
+                                                                            key={index}
+                                                                            primaryText={moment(new Date(l.logsheet_date)).format('MMMM D - dddd')}
+                                                                            onTouchTap={ () => this.handleLogsheetViewer(l.id) }
+                                                                        />
+                                                                    )
                                                                 }
-                                                            />
-                                                        )
-                                                    })
-                                                }
-                                            />
-                                        )
-                                    }) }
-                                </List>
-                            )}
-                    </AutoSizer>
+                                                            })
+                                                        }
+                                                    />
+                                                )
+                                            })
+                                        }
+                                    />
+                                )
+                            }) }
+                        </List>
+                    </Paper>
                 </div>
             );
         }

@@ -26,8 +26,8 @@ class _LogsheetVeiwer extends Component {
 
     render() {
         return (
-            <div style={{height: '100%'}}>
-            <SwipeableViews style={{height: '100%'}} containerStyle={{height: '100%'}} index={this.state.slideIndex} onChangeIndex={this.handleChange}>
+            <div>
+            <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange}>
                 <Filter handleChange={this.handleChange}/>
                 <LogsheetViewer handleChange={this.handleChange}/>
                 <SingleLogsheet currentLogsheet={this.state.currentLogsheetId} handleChange={this.handleChange}/>

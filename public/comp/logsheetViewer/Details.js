@@ -3,7 +3,7 @@ import Tab1 from './Tab1'
 import Tab2 from './Tab2'
 
 // ui 
-import { Tab, Tabs, CircularProgress } from 'material-ui'
+import { Tab, Tabs, CircularProgress, FlatButton } from 'material-ui'
 import SwipeableViews from 'react-swipeable-views'
 
 
@@ -45,6 +45,7 @@ class Details extends PureComponent {
                     <Tab1 d={data} />
                     <Tab2 d={data} />
                 </SwipeableViews>
+                <FlatButton fullWidth secondary label='review this logsheet' onTouchTap={()=> this.props.toggleDrawer() }/>
                 </div>
             );
         }

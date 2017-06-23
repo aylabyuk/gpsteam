@@ -3,9 +3,26 @@ import LogSheetForm from './LogSheetForm';
 import _LogSheetViewer from '../logsheetViewer/_LogsheetViewer';
 
 // ui
-import { AppBar, Paper, GridList, GridTile} from 'material-ui'
+import { AppBar, Paper, GridList, GridTile, IconMenu, MenuItem, IconButton} from 'material-ui'
 import SwipeableViews from 'react-swipeable-views';
 import { AutoSizer } from 'react-virtualized';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import { white } from 'material-ui/styles/colors'
+
+const AppBarMenu = (props) => (
+  <IconMenu
+    {...props}
+    iconButtonElement={
+      <IconButton ><MoreVertIcon color={white}/></IconButton>
+    }
+    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+  >
+    <MenuItem primaryText="Search for Logsheets" />
+    <MenuItem primaryText="Switch to Continuous" />
+    <MenuItem primaryText="Close" />
+  </IconMenu>
+);
 
 class _LogSheet extends Component {
     constructor(props) {
@@ -37,7 +54,7 @@ class _LogSheet extends Component {
     render() {
         return ( 
             <Paper style={{ padding: 0, height: '100vh'}}>
-                <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
+                <AppBar title="Logsheets" iconElementRight={<AppBarMenu />}/>
                 <AutoSizer>
                     {({ height, width }) => (
                         <div style={{ height: height-65, width, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>

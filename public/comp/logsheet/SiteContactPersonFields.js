@@ -14,6 +14,7 @@ import { FlatButton, Dialog, TextField, IconButton, CircularProgress,
     Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem, GridList } from 'material-ui'
 import  ActionSearch from 'material-ui/svg-icons/action/search'
 import Clear from 'material-ui/svg-icons/content/clear';
+import SearchBar from 'material-ui-search-bar'
 
 //graphql
 import gql from 'graphql-tag';
@@ -157,16 +158,14 @@ class SiteContactPersonFields extends PureComponent {
                 <Dialog
                     title={ <div style={{padding: 0}}>
                         <Toolbar>
-                            <ToolbarGroup>
-                                <ToolbarTitle text="Site Contacts List" />
+                             <ToolbarGroup>
+                                <ToolbarTitle text="Contacts" />
                             </ToolbarGroup> 
                             <ToolbarGroup>
-                                <Menu disableAutoFocus={true}>
-                                    <MenuItem leftIcon={<ActionSearch color='#fff' style={{left: 32}}/>} disabled={true}>
-                                        <TextField fullWidth={true} id='searchContact' value={this.state.searchText}
-                                        hintText='Search' onChange={e => this.setState({ searchText: e.target.value })}/>
-                                    </MenuItem>
-                                </Menu> 
+                                <SearchBar 
+                                    onRequestSearch={(value) => null }
+                                    value={this.state.searchText}
+                                    onChange={(value) => this.setState({ searchText: value })}/>
                             </ToolbarGroup>
                         </Toolbar></div>
                         }

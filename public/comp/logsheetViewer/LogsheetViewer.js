@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import moment from 'moment'
+import { connect } from 'react-redux'
 
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 // ui
-import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui'
+import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, Toolbar, ToolbarGroup, ToolbarTitle, IconButton} from 'material-ui'
 import { blueGrey400, purple800 } from 'material-ui/styles/colors'
 import { AutoSizer } from 'react-virtualized'
+import NavigationClose  from 'material-ui/svg-icons/navigation/close';
+import { toggleLogsheetViewerDrawer } from '../../actions/index'
 
 const style = {
   margin: 2,
@@ -106,12 +109,8 @@ class LogsheetViewer extends Component {
         } else {
             return (
                 <div style={{overflowY: 'hidden', height: '100%'}}>
-                    <Toolbar>
-                        <ToolbarGroup>
-                            <ToolbarTitle text="Sites with Logsheets" />
-                        </ToolbarGroup>
-                    </Toolbar>
-
+                    <AppBar iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
+                    
                     <AutoSizer>
                             {({width, height}) => (
                                 <List style={{width, height: height - 70, overflowY: 'scroll'}}>
@@ -181,4 +180,4 @@ class LogsheetViewer extends Component {
     }
 }
 
-export default graphql(SitesWithLogsheetQuery)(LogsheetViewer);
+export default connect( null, { toggleLogsheetViewerDrawer })(graphql(SitesWithLogsheetQuery)(LogsheetViewer));

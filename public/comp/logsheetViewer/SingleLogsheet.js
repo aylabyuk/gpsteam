@@ -1,28 +1,18 @@
 import React, { PureComponent } from 'react';
 import Details from './Details'
 import moment from 'moment'
+import { connect } from 'react-redux'
+import { toggleLogsheetViewerDrawer } from '../../actions/index'
 
 // ui
-import { IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator, IconMenu, MenuItem } from 'material-ui'
+import { AppBar, IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator, IconMenu, MenuItem } from 'material-ui'
 import NavigationExpandMoreIcon from 'material-ui/svg-icons/navigation/expand-more';
-import Back from 'material-ui/svg-icons/navigation/chevron-left';
+import Back from 'material-ui/svg-icons/navigation/arrow-back';
+import NavigationClose  from 'material-ui/svg-icons/navigation/close';
 
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
-const styles = {
-  smallIcon: {
-    width: 36,
-    height: 36,
-    color: 'white'
-  },
-  small: {
-    width: 72,
-    height: 72,
-    padding: 16,
-  },
-};
 
 const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
     singleLogsheet(id: $currentLogsheet) {
@@ -95,34 +85,12 @@ class SingleLogsheet extends PureComponent {
 
         return (
             <div>
-                <Toolbar noGutter>
-                    <ToolbarGroup>
-                        <IconButton
-                            iconStyle={styles.smallIcon}
-                            style={styles.small}
+                <AppBar titleStyle={{ fontSize: '20px' }} title={title} iconElementLeft={ <IconButton
                             onTouchTap={() => this.props.handleChange(1, null) } >
                                 <Back />
-                        </IconButton>
-                        <ToolbarTitle text={title} />
-                    </ToolbarGroup>
-                    <ToolbarGroup>
-                    <ToolbarSeparator />
-                    <IconMenu
-                        iconButtonElement={
-                        <IconButton 
-                        iconStyle={styles.smallIcon}
-                        style={styles.small}
-                        touch={true}>
-                            <NavigationExpandMoreIcon />
-                        </IconButton>
-                        }
-                    >
-                        <MenuItem primaryText="Update" />
-                        <MenuItem primaryText="Delete" />
-                    </IconMenu>
-                    </ToolbarGroup>
-                </Toolbar>
-
+                        </IconButton> } 
+                        iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
+                
                 <Details data={singleLogsheet} loading={loading}/>
 
             </div>
@@ -130,6 +98,6 @@ class SingleLogsheet extends PureComponent {
     }
 }
 
-export default graphql(SingleLogsheetQuery, {
+export default connect( null, { toggleLogsheetViewerDrawer })(graphql(SingleLogsheetQuery, {
   options: ({ currentLogsheet }) => ({ variables: { currentLogsheet } }),
-})(SingleLogsheet);
+})(SingleLogsheet));

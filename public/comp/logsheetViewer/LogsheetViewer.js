@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 // ui
-import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, Toolbar, ToolbarGroup, ToolbarTitle, IconButton} from 'material-ui'
+import { AppBar, Card, Paper, LinearProgress,  List, ListItem, Avatar, IconButton} from 'material-ui'
 import { blueGrey400, purple800 } from 'material-ui/styles/colors'
 import { AutoSizer } from 'react-virtualized'
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';

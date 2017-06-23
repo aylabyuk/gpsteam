@@ -8,7 +8,6 @@ const Clearable = ComposedComponent => class extends React.Component {
 
     clearDate (event) {
         event.preventDefault();
-
         // We manually reach into the composed component and set it's date to null.
         let newDate = '';
         this.refs.timePicker.setState({
@@ -31,7 +30,8 @@ const Clearable = ComposedComponent => class extends React.Component {
                     onBlur = {(value) => { value = '' } }
                     floatingLabelText={this.props.label}
                     format="24hr"
-                    errorText = {meta.touched && meta.error} />
+                    errorText = {meta.touched && meta.error} 
+                    disabled={this.props.disabled}/>
                 {this.props.input.value &&
                 <IconButton ref="button" onClick={this.clearDate.bind(this)} style={{position: 'absolute', bottom: '10px',right: '4px', padding: '0', width: '24px', height: '24px'}}
                     tooltip="clear" tooltipPosition="top-center" >

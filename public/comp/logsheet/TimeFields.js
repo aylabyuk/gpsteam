@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import { Field } from 'redux-form'
+import { Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 
 import ClearableTimePicker from './ClearableTimePicker';
@@ -14,13 +14,25 @@ class TimeFields extends PureComponent {
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Time Logs and Status</h5>
                 <form style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                    <Field name="startTime" component={ClearableTimePicker} label="start time(UTC)" />
-                    <Field name="endTime" component={ClearableTimePicker} label="end time(UTC)" />
-                    <Field name="failureTime" component={ClearableTimePicker} label="failure time(UTC)"/>
+                    <Field name="startTime" disabled={false} component={ClearableTimePicker} label="start time(UTC)" />
+                    <Field name="endTime"  disabled={this.props.failureTime ? true : false} component={ClearableTimePicker} label="end time(UTC)" />
+                    <Field name="failureTime"  disabled={this.props.endTime ? true : false} component={ClearableTimePicker} label="failure time(UTC)"/>
                 </form>
             </div>
         );
     }
 }
 
-export default TimeFields
+const selector = formValueSelector('logsheet') 
+TimeFields = connect(
+  state => {
+    const endTime = selector(state, 'endTime')
+    const failureTime = selector(state, 'failureTime')
+    return {
+      endTime,
+      failureTime
+    }
+  }
+)(TimeFields)
+
+export default TimeFields;

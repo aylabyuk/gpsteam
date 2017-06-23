@@ -40,8 +40,10 @@ const LogSheetQuery = gql`query LogSheetQuery {
 
 
 class LogSheetForm extends PureComponent {
+
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
+        let { logsheetToReview } = this.props
 
         if(loading) {
             return (
@@ -78,13 +80,50 @@ const form =  reduxForm({
 })
 
 function mapStateToProps(state) {  
+
+    let { logsheetToReview } = state.ui
+    let l = logsheetToReview
+
+    const toReview = l ? {
+        logdate: new Date(l.logsheet_date),
+        sitename: l.site.name,
+        marker: l.marker,
+        location: l.location,
+        receiverSN: l.receiver.serial_number,
+        antennaSN: l.antenna.serial_number,
+        north: l.north,
+        east: l.east,
+        south: l.south,
+        west: l.west,
+        azimuth: l.azimuth,
+        startTime: l.time_start,
+        endTime: l.time_end,
+        failureTime: l.failure_time,
+        receiverStatus: l.receiver_status,
+        antennaStatus: l.antenna_status,
+        rodNo: l.rod_num,
+        rodCorrection: l.rod_correction,
+        ipAddress: l.ip_add,
+        netmask: l.netmask,
+        gateway: l.gateway,
+        dns: l.dns,
+        localTcpPort: l.local_tcp_port,
+        lat: l.latitude,
+        long: l.longitude,
+        unusualAbnormalObservation: l.observed_situation,
+        lodgingOrRoadInfo: l.lodging_road_information,
+        pertinentInfo: l.others,
+        // contactFirstName: l.contact.first_name,
+        // contactLastName: l.contact.last_name,
+        // contactNumber: l.contact.number
+    } : null
+
 	return {
 		selectedContact: state.ui.selectedContact,
-        // uncomment the lines below to enable initial values for time
-        // initialValues: {
-        //     startTime: new Date(null,null,null,0,0,0,0),
-        //     endTime: new Date(null,null,null,23,59,0,0)
-        // }
+        logsheetToReview: state.ui.logsheetToReview,
+
+        // if logsheetToReview has value set initial values of fields
+        initialValues: toReview
 	}
 }
 

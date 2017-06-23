@@ -13,6 +13,7 @@ class Details extends PureComponent {
         this.state = {
             slideIndex: 0,
         };
+        this.handleReviewBtn = this.handleReviewBtn.bind(this)
     }
 
     handleChange = (value) => {
@@ -20,6 +21,11 @@ class Details extends PureComponent {
             slideIndex: value,
         });
     };
+
+    handleReviewBtn = (data) => {
+        this.props.toggleDrawer()
+        this.props.reviewLogsheet(data)
+    }
 
     render() {
         let { data, loading } = this.props
@@ -45,7 +51,7 @@ class Details extends PureComponent {
                     <Tab1 d={data} />
                     <Tab2 d={data} />
                 </SwipeableViews>
-                <FlatButton fullWidth secondary label='review this logsheet' onTouchTap={()=> this.props.toggleDrawer() }/>
+                <FlatButton fullWidth secondary label='review this logsheet' onTouchTap={()=> this.handleReviewBtn(data) }/>
                 </div>
             );
         }

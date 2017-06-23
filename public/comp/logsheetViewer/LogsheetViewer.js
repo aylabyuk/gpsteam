@@ -85,8 +85,6 @@ class LogsheetViewer extends Component {
                             newResult.sitesWithLogsheet[indexOfSite].logsheets.push(logsheetToInsert)
                         }
 
-                        
-
                         // console.log('prev', previousResult)
                         // console.log('subscription data', subscriptionData)
                         // console.log('new', sortedResult)

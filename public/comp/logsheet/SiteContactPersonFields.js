@@ -13,6 +13,7 @@ import { changeSelectedContact } from '../../actions/index'
 import { FlatButton, Dialog, TextField, IconButton, CircularProgress, 
     Toolbar, ToolbarSeparator, ToolbarGroup, ToolbarTitle, Menu, MenuItem, GridList } from 'material-ui'
 import  ActionSearch from 'material-ui/svg-icons/action/search'
+import Clear from 'material-ui/svg-icons/content/clear';
 
 //graphql
 import gql from 'graphql-tag';
@@ -20,14 +21,22 @@ import { graphql } from 'react-apollo';
 
 import { cloneDeep, sortBy } from 'lodash'
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
-  <TextField hintText={label}
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-    disabled={true}
-  />
+const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error }, ...custom }) => (
+    <div style={{position: 'relative', display: 'inline-block'}}>
+        <div style={{position: 'absolute', right: 12, top: 25, width: 20, height: 20}}>
+            { label == 'number' && clearIcon ? <IconButton tooltip="clear" tooltipPosition="top-center" onTouchTap={()=> clear() }>
+                <Clear />
+            </IconButton> : null}
+        </div>
+        <TextField
+            hintText={label}
+            floatingLabelText={label}
+            errorText={touched && error}
+            {...input}
+            {...custom}
+            disabled={true}
+            />
+    </div>
 )
 
 
@@ -77,6 +86,13 @@ class SiteContactPersonFields extends PureComponent {
 
     handleNewContact = () => {
         this.setState({openNew: true});
+    }
+
+    handleClear = () => {
+        this.props.changeSelectedContact(null)
+        this.props.change('contactFirstName', '')
+        this.props.change('contactLastName', '')
+        this.props.change('contactNumber', '')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -132,11 +148,10 @@ class SiteContactPersonFields extends PureComponent {
                 { this.props.data.loading ? <CircularProgress /> : 
                     <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
 
-
                 <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}} >
                     <Field name="contactFirstName" component={renderTextField} label="first name" />
                     <Field name="contactLastName" component={renderTextField} label="last name" />
-                    <Field name="contactNumber" component={renderTextField} label="number" />
+                    <Field name="contactNumber" component={renderTextField} clear={this.handleClear} label="number" clearIcon={this.props.selectedContact ? true : false}/>
                 </div>
                 
                 <Dialog
@@ -164,20 +179,22 @@ class SiteContactPersonFields extends PureComponent {
                     <GridList
                         cellHeight={window.innerHeight * 0.6}
                         cols={1}
-                        style={{width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden'}} 
-                        id="style-5" >
+                        style={{width: '100%', height: '100%', overflowY: 'auto', overflowX: 'hidden'}} >
                         <SiteContacts contacts={this.props.data.allContact} filter={this.state.searchText} closeDialog={this.handleClose} />                    
                     </GridList>
-
-                    
 
                 </Dialog>
 
                 <NewContactDialog open={this.state.openNew} close={this.handleNewClose} closeParent={this.handleClose}/>
-
             </div>
         );
     }
+}
+
+function mapStateToProps(state) {  
+	return {
+		selectedContact: state.ui.selectedContact
+	}
 }
 
 export default connect(null, { changeSelectedContact })(graphql(ContactsQuery)(SiteContactPersonFields))

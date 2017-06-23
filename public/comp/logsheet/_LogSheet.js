@@ -40,7 +40,7 @@ class _LogSheet extends Component {
                 <AppBar title="Logsheets" iconClassNameRight="muidocs-icon-navigation-expand-more" />
                 <AutoSizer>
                     {({ height, width }) => (
-                        <div style={{ height: height-55, width, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                        <div style={{ height: height-65, width, display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
                             <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}><LogSheetForm /></Paper>
                             {/*<_LogSheetViewer />*/}
                         </div>

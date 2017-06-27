@@ -17,9 +17,11 @@ import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
 import LogSheetButtons from './LogSheetButtons'
 
+// state
+import { changeSelectedStaffs, changeSelectedContact } from '../../actions/index'
+
 //validation 
 import { validateLogsheet as validate } from '../formValidators/formValidators'
-
 
 //ui
 import { Paper, Divider, LinearProgress } from 'material-ui';
@@ -40,6 +42,43 @@ const LogSheetQuery = gql`query LogSheetQuery {
 
 
 class LogSheetForm extends PureComponent {
+
+    reinitializeForm(data) {
+        let  { initialize, changeSelectedStaffs, changeSelectedContact } = this.props
+
+        let observerIds = []
+
+
+        data.observers.map((o)=> {
+            observerIds.push({ 
+                id: o.id,
+                nname: o.nickname,
+                initials: o.first_name.charAt(0) + o.last_name.charAt(0)
+            })
+        })
+
+        console.log(data)
+        initialize(data)
+        changeSelectedStaffs(observerIds)
+        changeSelectedContact({
+            id: data.contact.id,
+            first_name: data.contact.first_name,
+            last_name: data.contact.last_name,
+            contact_number: data.contact.contact_number,
+        })
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        if(nextProps.toReview != null) {
+            if(this.props.toReview == null) {
+                this.reinitializeForm(nextProps.toReview)
+            } else if(this.props.toReview.id != nextProps.toReview.id) {
+                this.reinitializeForm(nextProps.toReview)
+            }
+        }
+
+    }
+    
 
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
@@ -85,6 +124,7 @@ function mapStateToProps(state) {
     let l = logsheetToReview
 
     const toReview = l ? {
+        id: l.id,
         logdate: new Date(l.logsheet_date),
         sitename: l.site.name,
         marker: l.marker,
@@ -113,6 +153,8 @@ function mapStateToProps(state) {
         unusualAbnormalObservation: l.observed_situation,
         lodgingOrRoadInfo: l.lodging_road_information,
         pertinentInfo: l.others,
+        observers: l.observers,
+        contact: l.contact,
         // contactFirstName: l.contact.first_name,
         // contactLastName: l.contact.last_name,
         // contactNumber: l.contact.number
@@ -120,11 +162,8 @@ function mapStateToProps(state) {
 
 	return {
 		selectedContact: state.ui.selectedContact,
-        logsheetToReview: state.ui.logsheetToReview,
-
-        // if logsheetToReview has value set initial values of fields
-        initialValues: toReview
+        toReview: toReview
 	}
 }
 
-export default connect(mapStateToProps)(graphql(LogSheetQuery)(form(LogSheetForm)))
+export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact })(graphql(LogSheetQuery)(form(LogSheetForm)))

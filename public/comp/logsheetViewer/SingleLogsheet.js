@@ -23,6 +23,7 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         location
         marker
         observers {
+            id
             first_name
             last_name
             nickname
@@ -64,6 +65,7 @@ const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         latitude
         longitude
         contact {
+            id
             first_name
             last_name
             email_add

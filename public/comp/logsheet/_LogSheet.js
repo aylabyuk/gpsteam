@@ -41,10 +41,9 @@ class _LogSheet extends Component {
                     )}
                 </AutoSizer>
 
-                <Drawer containerStyle={{overflow: 'hidden'}} width={400} open={this.props.open} openSecondary={true}>
+                <Drawer docked={false} containerStyle={{overflow: 'hidden'}} width={400} open={this.props.open} openSecondary={true}>
                     <_LogSheetViewer />
                 </Drawer>
-
 
             </Paper>
         );

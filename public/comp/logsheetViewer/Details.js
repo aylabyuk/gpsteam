@@ -47,7 +47,7 @@ class Details extends PureComponent {
                     <Tab label="details" value={0} />
                     <Tab label="others" value={1} />
                 </Tabs>
-                <SwipeableViews animateHeight containerStyle={{ height: '80vh', flex: '1 1 auto', position: 'relative'}} index={this.state.slideIndex} onChangeIndex={this.handleChange} >
+                <SwipeableViews containerStyle={{ height: '80vh', flex: '1 1 auto', position: 'relative'}} index={this.state.slideIndex} onChangeIndex={this.handleChange} >
                     <Tab1 d={data} />
                     <Tab2 d={data} />
                 </SwipeableViews>

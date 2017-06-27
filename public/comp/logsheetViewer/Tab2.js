@@ -12,6 +12,7 @@ class Tab2 extends PureComponent {
     render() {
         let { d } = this.props
         return (
+            <div style={{overflowY: 'scroll', height: '100%'}}>
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
                     <TableRow>
@@ -73,6 +74,7 @@ class Tab2 extends PureComponent {
                     </TableRow> 
                 </TableBody>
             </Table>
+            </div>
         );
     }
 }

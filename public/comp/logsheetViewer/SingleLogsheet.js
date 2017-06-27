@@ -90,9 +90,7 @@ class SingleLogsheet extends PureComponent {
                                 <Back />
                         </IconButton> } 
                         iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
-                
-                <Details reviewLogsheet={this.props.reviewLogsheetMode} toggleDrawer={this.props.toggleLogsheetViewerDrawer} data={singleLogsheet} loading={loading}/>
-
+                    <Details reviewLogsheet={this.props.reviewLogsheetMode} toggleDrawer={this.props.toggleLogsheetViewerDrawer} data={singleLogsheet} loading={loading}/>
             </div>
         );
     }

@@ -38,7 +38,7 @@ body {
  *  scrollbar
  */
 
-/*::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
@@ -61,7 +61,7 @@ body {
 }
 ::-webkit-scrollbar-thumb:horizontal:active {
 	background: rgb(0, 188, 212);
-}*/
+}
 
 #icn {
 	width: 10px;

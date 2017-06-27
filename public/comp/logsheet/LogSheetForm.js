@@ -57,15 +57,19 @@ class LogSheetForm extends PureComponent {
             })
         })
 
-        console.log(data)
         initialize(data)
         changeSelectedStaffs(observerIds)
-        changeSelectedContact({
-            id: data.contact.id,
-            first_name: data.contact.first_name,
-            last_name: data.contact.last_name,
-            contact_number: data.contact.contact_number,
-        })
+        
+        if(data.contact) {
+            changeSelectedContact({
+                id: data.contact.id,
+                first_name: data.contact.first_name,
+                last_name: data.contact.last_name,
+                contact_number: data.contact.contact_number,
+            })
+        } else {
+            changeSelectedContact(null)
+        }
     }
 
     componentWillUpdate(nextProps, nextState) {

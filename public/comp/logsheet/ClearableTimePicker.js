@@ -32,7 +32,7 @@ const Clearable = ComposedComponent => class extends React.Component {
                     format="24hr"
                     errorText = {meta.touched && meta.error} 
                     disabled={this.props.disabled}/>
-                {this.props.input.value &&
+                {this.props.input.value && !this.props.disabled &&
                 <IconButton ref="button" onClick={this.clearDate.bind(this)} style={{position: 'absolute', bottom: '10px',right: '4px', padding: '0', width: '24px', height: '24px'}}
                     tooltip="clear" tooltipPosition="top-center" >
                     <Clear />

@@ -4,7 +4,7 @@ import { Field } from 'redux-form'
 //ui
 import { TextField } from 'material-ui'
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+const renderTextField = ({ input, label, disabled, meta: { touched, error }, ...custom }) => (
   <TextField 
     floatingLabelText={label}
     errorText={touched && error}
@@ -13,6 +13,7 @@ const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) 
     multiLine={true}
     fullWidth={true}
     rowsMax={3}
+    disabled={disabled}
   />
 )
 
@@ -20,8 +21,8 @@ class StatusFields extends PureComponent {
     render() {
         return (
             <div>
-                <Field name="receiverStatus"  component={renderTextField} label='receiver status' />
-                <Field name="antennaStatus"  component={renderTextField} label='antenna status' />
+                <Field name="receiverStatus" disabled={this.props.ro} component={renderTextField} label='receiver status' />
+                <Field name="antennaStatus" disabled={this.props.ro} component={renderTextField} label='antenna status' />
             </div>
         );
     }

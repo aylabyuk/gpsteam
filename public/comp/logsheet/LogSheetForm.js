@@ -95,22 +95,26 @@ class LogSheetForm extends PureComponent {
                 </div>
             );
         } else {
+
+            // ro = readonly
+            let ro = this.props.toReview != null ? true : false
+
             return (
                 <div>
-                    <DateFields />
-                    <ObserversFields />
-                    <SiteFields siteNames={allSite ? allSite : [{name: 'loading..'}]}/>
-                    <HardwareFields receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
+                    <DateFields ro={ro} />
+                    <ObserversFields ro={ro}/>
+                    <SiteFields ro={ro} siteNames={allSite ? allSite : [{name: 'loading..'}]}/>
+                    <HardwareFields ro={ro} receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
                             antennas={allAntenna ? allAntenna : [{serial_number: 'loading..'}]} />
-                    <MeasurementFields />
-                    <TimeFields />
-                    <StatusFields />
-                    <AntennaHeigtInfoFields />
-                    <PertinentInfoFields />
-                    <SiteContactPersonFields selectedContact={this.props.selectedContact} change={this.props.change}/>
+                    <MeasurementFields ro={ro}/>
+                    <TimeFields ro={ro}/>
+                    <StatusFields ro={ro}/>
+                    <AntennaHeigtInfoFields ro={ro}/>
+                    <PertinentInfoFields ro={ro}/>
+                    <SiteContactPersonFields ro={ro} selectedContact={this.props.selectedContact} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <LogSheetButtons siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
+                    <LogSheetButtons readonly={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
         }

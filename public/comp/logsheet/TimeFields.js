@@ -14,9 +14,9 @@ class TimeFields extends PureComponent {
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Time Logs and Status</h5>
                 <form style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}}>
-                    <Field name="startTime" disabled={false} component={ClearableTimePicker} label="start time(UTC)" />
-                    <Field name="endTime"  disabled={this.props.failureTime ? true : false} component={ClearableTimePicker} label="end time(UTC)" />
-                    <Field name="failureTime"  disabled={this.props.endTime ? true : false} component={ClearableTimePicker} label="failure time(UTC)"/>
+                    <Field name="startTime" disabled={false || this.props.ro} component={ClearableTimePicker} label="start time(UTC)" />
+                    <Field name="endTime"  disabled={this.props.failureTime ? true : false || this.props.ro} component={ClearableTimePicker} label="end time(UTC)" />
+                    <Field name="failureTime"  disabled={this.props.endTime ? true : false || this.props.ro} component={ClearableTimePicker} label="failure time(UTC)"/>
                 </form>
             </div>
         );

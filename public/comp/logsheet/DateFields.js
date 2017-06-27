@@ -11,7 +11,7 @@ Date.prototype.julianDate = function(){
     return j
 };
 
-const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error } }) => (
+const renderDatePicker = ({ input, label, defaultValue, disabled, meta: { touched, error } }) => (
     <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
     
         <div style={{flex: '1 1'}}>
@@ -30,7 +30,8 @@ const renderDatePicker = ({ input, label, defaultValue, meta: { touched, error }
                 floatingLabelText={label}
                 onChange = {(event, value) => {input.onChange(value)} } 
                 onBlur = {(value) => { value = '' }}
-                maxDate={new Date()}/>
+                maxDate={new Date()}
+                disabled={disabled}/>
         </div>
 
         <div style={{flex: '1 1'}}>
@@ -56,7 +57,8 @@ class DateFields extends PureComponent {
         
         return (
         <form>
-            <Field name="logdate" label='log date' component={renderDatePicker} autoOk={false} />
+            <Field name="logdate" label='log date' component={renderDatePicker} autoOk={false} 
+                disabled={this.props.ro}/>
         </form>
         );
     }

@@ -35,7 +35,7 @@ class SelectedStaffs extends Component {
             {this.props.selectedStaffs.map((s)=>{
                 return(
                 <Chip
-                    onRequestDelete={()=> this.handleRequestDelete(s.id)}
+                    onRequestDelete={()=> this.props.ro ? alert('read only mode') : this.handleRequestDelete(s.id)}
                     onTouchTap={this.handleTouchTap}
                     style={styles.chip}
                     key={s.id}>

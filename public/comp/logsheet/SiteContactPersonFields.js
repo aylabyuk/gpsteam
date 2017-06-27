@@ -147,12 +147,12 @@ class SiteContactPersonFields extends PureComponent {
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Contact Person</h5>
 
                 { this.props.data.loading ? <CircularProgress /> : 
-                    <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> }
+                    !this.props.ro ? <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> : null }
 
                 <div style={{display: "flex", flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap'}} >
                     <Field name="contactFirstName" component={renderTextField} label="first name" />
                     <Field name="contactLastName" component={renderTextField} label="last name" />
-                    <Field name="contactNumber" component={renderTextField} clear={this.handleClear} label="number" clearIcon={this.props.selectedContact ? true : false}/>
+                    <Field name="contactNumber" component={renderTextField} clear={this.handleClear} label="number" clearIcon={this.props.selectedContact && !this.props.ro ? true : false}/>
                 </div>
                 
                 <Dialog

@@ -11,12 +11,13 @@ Date.prototype.julianDate = function(){
     return j
 };
 
-const renderTextField = ({ input, label, meta: { touched, error }, ...custom }) => (
+const renderTextField = ({ input, label, disabled, meta: { touched, error }, ...custom }) => (
   <TextField 
     floatingLabelText={label}
     errorText={touched && error}
     {...input}
     {...custom}
+    disabled={disabled}
   />
 )
 
@@ -26,15 +27,15 @@ class AntennaHeightInfoFields extends PureComponent {
             <div>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Antenna Information</h5>
                 <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-                    <Field name='rodNo' label="rod no." component={renderTextField} normalize={onlyDecimal}/>
-                    <Field name='rodCorrection' label="rod correction" component={renderTextField} />
-                    <Field name='ipAddress' label="IP address" component={renderTextField} normalize={numberAddress}/>
-                    <Field name='netmask' label="netmask" component={renderTextField} normalize={numberAddress}/>
-                    <Field name='gateway' label="gateway" component={renderTextField} normalize={numberAddress}/>
-                    <Field name='dns' label="DNS" component={renderTextField}  />
-                    <Field name='localTcpPort' label="local TCP port" component={renderTextField}  normalize={wholeNumber}/>
-                    <Field name='lat' label="rough coordinate - latitude" component={renderTextField} />
-                    <Field name='long' label="rough coordinate - longitude" component={renderTextField} />
+                    <Field disabled={this.props.ro} name='rodNo' label="rod no." component={renderTextField} normalize={onlyDecimal}/>
+                    <Field disabled={this.props.ro} name='rodCorrection' label="rod correction" component={renderTextField} />
+                    <Field disabled={this.props.ro} name='ipAddress' label="IP address" component={renderTextField} normalize={numberAddress}/>
+                    <Field disabled={this.props.ro} name='netmask' label="netmask" component={renderTextField} normalize={numberAddress}/>
+                    <Field disabled={this.props.ro} name='gateway' label="gateway" component={renderTextField} normalize={numberAddress}/>
+                    <Field disabled={this.props.ro} name='dns' label="DNS" component={renderTextField}  />
+                    <Field disabled={this.props.ro} name='localTcpPort' label="local TCP port" component={renderTextField}  normalize={wholeNumber}/>
+                    <Field disabled={this.props.ro} name='lat' label="rough coordinate - latitude" component={renderTextField} />
+                    <Field disabled={this.props.ro} name='long' label="rough coordinate - longitude" component={renderTextField} />
                 </div>
             </div>
         );

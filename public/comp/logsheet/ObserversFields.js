@@ -36,8 +36,10 @@ class ObserversFields extends PureComponent {
         return (
             <div style={{textAlign: 'center'}}>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Observers</h5>
-                <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} />
-                <SelectedStaffs selectedStaffs={this.props.selectedStaffs} removeSelectedStaff={this.props.removeSelectedStaff}/>
+                {
+                    this.props.ro ? null : <FlatButton label="Select" primary={true} onTouchTap={this.handleOpen} /> 
+                }
+                <SelectedStaffs ro={this.props.ro} selectedStaffs={this.props.selectedStaffs} removeSelectedStaff={this.props.removeSelectedStaff}/>
 
                 <Dialog
                     open={this.state.open}

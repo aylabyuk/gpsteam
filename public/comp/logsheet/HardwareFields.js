@@ -9,7 +9,7 @@ import { graphql, withApollo } from 'react-apollo';
 import { AutoComplete, TextField } from 'material-ui'
 
 
-const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, error } }) => (
+const renderAutoCompleteField = ({ input, label, dataSource, disabled, meta: { touched, error } }) => (
     <AutoComplete
         floatingLabelText={label}
         filter={AutoComplete.caseInsensitiveFilter}
@@ -21,6 +21,7 @@ const renderAutoCompleteField = ({ input, label, dataSource, meta: { touched, er
         maxSearchResults={10}
         openOnFocus={false}
         errorText={touched && error}
+        disabled={disabled}
     />
 )
 
@@ -32,7 +33,7 @@ class ReceiverInfo extends PureComponent {
         const { Receiver } = this.props.data
         return(
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                <div style={{flex: '1 1'}}><Field style={{flexGrow: 1}} name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource} /></div>
+                <div style={{flex: '1 1'}}><Field disabled={this.props.ro} style={{flexGrow: 1}} name="receiverSN" label='receiver serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource} /></div>
                 <div style={{flex: '1 1'}}><TextField style={{flexGrow: 1}} floatingLabelText='receiver type' value={Receiver == null ? '' : Receiver.type}  disabled={true} /></div>
                 <div style={{flex: '1 1'}}><TextField style={{flexGrow: 1}}  floatingLabelText='part number' value={Receiver == null ? '' : Receiver.part_number} disabled={true} /></div>
             </div>
@@ -60,7 +61,7 @@ class AntennaInfo extends PureComponent {
         const { Antenna } = this.props.data
         return(
             <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-                <div style={{flex: '1 1'}}><Field style={{flexGrow: 1}} name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource}/></div>
+                <div style={{flex: '1 1'}}><Field disabled={this.props.ro} style={{flexGrow: 1}} name="antennaSN" label='antenna serial number' component={renderAutoCompleteField}  dataSource={this.props.datasource}/></div>
                 <div style={{flex: '1 1'}}><TextField style={{flexGrow: 1}} floatingLabelText='antenna type' value={Antenna == null ? '' : Antenna.type}  disabled={true} /></div>
                 <div style={{flex: '1 1'}}><TextField style={{flexGrow: 1}} floatingLabelText='part number' value={Antenna == null ? '' : Antenna.part_number} disabled={true} /></div>
             </div>
@@ -95,8 +96,8 @@ class HardwareFields extends PureComponent {
         return (
             <form>
                 <h5 style={{marginTop: 40, textAlign: 'center', color: 'gray'}}>Instruments</h5>
-                <ReceiverInfoWithData serial_number={recIn ? this.props.receiverSN : ''} datasource={receivers_SNs}/>
-                <AntennaInfoWithData serial_number={antIn ? this.props.antennaSN : ''} datasource={antennas_SNs}/>
+                <ReceiverInfoWithData ro={this.props.ro} serial_number={recIn ? this.props.receiverSN : ''} datasource={receivers_SNs}/>
+                <AntennaInfoWithData ro={this.props.ro} serial_number={antIn ? this.props.antennaSN : ''} datasource={antennas_SNs}/>
             </form>
         );
     }

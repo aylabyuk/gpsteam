@@ -14,7 +14,7 @@ class Tab1 extends PureComponent {
         let { d } = this.props
         let dt = new Date(d.logsheet_date);
         return (
-            <div style={{overflowY: 'scroll', height: '100%'}}>
+            <div style={{overflowY: 'scroll', height: '90%', minHeight: '0px'}}>
             <Table selectable={false} style={{marginLeft: '5px', marginRight: '5px', marginTop: '5px'}}>
                 <TableBody displayRowCheckbox={false} >
                     <TableRow >

@@ -47,11 +47,11 @@ class Details extends PureComponent {
                     <Tab label="details" value={0} />
                     <Tab label="others" value={1} />
                 </Tabs>
-                <SwipeableViews animateHeight containerStyle={{ height: '80vh'}} index={this.state.slideIndex} onChangeIndex={this.handleChange} >
+                <SwipeableViews animateHeight containerStyle={{ height: '80vh', flex: '1 1 auto', position: 'relative'}} index={this.state.slideIndex} onChangeIndex={this.handleChange} >
                     <Tab1 d={data} />
                     <Tab2 d={data} />
                 </SwipeableViews>
-                <RaisedButton style={{ bottom: '20px' }}fullWidth secondary label='review this logsheet' onTouchTap={()=> this.handleReviewBtn(data) }/>
+                <RaisedButton style={{ position: 'fixed', bottom: '0px' }} fullWidth secondary label='review this logsheet' onTouchTap={()=> this.handleReviewBtn(data) }/>
                 </div>
             );
         }

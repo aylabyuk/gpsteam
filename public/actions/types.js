@@ -6,4 +6,5 @@ export const SELECTED_CONTACT = 'selected_contact',
 	CLICKED_SITE = 'clicked_site',
 	TOGGLE_LOGSHEET_SUBMITTING = 'toggle_logsheet_submitting',
 	TOGGLE_LOGSHEET_VIEWER_DRAWER = 'toggle_logsheet_viewer_drawer',
-	REVIEW_LOGSHEET = 'set_logsheet_review'
+	REVIEW_LOGSHEET = 'set_logsheet_review',
+	LOGSHEET_MODE = 'set_logsheet_mode'

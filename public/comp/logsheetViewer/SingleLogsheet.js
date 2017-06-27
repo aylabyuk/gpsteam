@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Details from './Details'
 import moment from 'moment'
 import { connect } from 'react-redux'
-import { toggleLogsheetViewerDrawer, reviewLogsheetMode } from '../../actions/index'
+import { toggleLogsheetViewerDrawer, reviewLogsheet, setLogsheetMode } from '../../actions/index'
 
 // ui
 import { AppBar, IconButton, Toolbar, ToolbarGroup, ToolbarTitle, ToolbarSeparator, IconMenu, MenuItem } from 'material-ui'
@@ -92,12 +92,12 @@ class SingleLogsheet extends PureComponent {
                                 <Back />
                         </IconButton> } 
                         iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
-                    <Details reviewLogsheet={this.props.reviewLogsheetMode} toggleDrawer={this.props.toggleLogsheetViewerDrawer} data={singleLogsheet} loading={loading}/>
+                    <Details reviewLogsheet={this.props.reviewLogsheet} setLogsheetMode={this.props.setLogsheetMode} toggleDrawer={this.props.toggleLogsheetViewerDrawer} data={singleLogsheet} loading={loading}/>
             </div>
         );
     }
 }
 
-export default connect( null, { toggleLogsheetViewerDrawer, reviewLogsheetMode })(graphql(SingleLogsheetQuery, {
+export default connect( null, { toggleLogsheetViewerDrawer, reviewLogsheet, setLogsheetMode })(graphql(SingleLogsheetQuery, {
   options: ({ currentLogsheet }) => ({ variables: { currentLogsheet } }),
 })(SingleLogsheet));

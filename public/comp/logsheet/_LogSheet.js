@@ -16,6 +16,7 @@ import { toggleLogsheetViewerDrawer } from '../../actions/index'
 class _LogSheet extends Component {
     render() {
         const AppBarMenu = (props) => (
+            <div>
             <IconMenu
                 {...props}
                 iconButtonElement={
@@ -28,6 +29,7 @@ class _LogSheet extends Component {
                 <MenuItem primaryText="Switch to Continuous" />
                 <MenuItem primaryText="Close" />
             </IconMenu>
+            </div>
         );
 
         return ( 
@@ -44,7 +46,6 @@ class _LogSheet extends Component {
                 <Drawer docked={false} containerStyle={{overflow: 'hidden'}} width={400} open={this.props.open} openSecondary={true}>
                     <_LogSheetViewer />
                 </Drawer>
-
             </Paper>
         );
     }
@@ -53,6 +54,7 @@ class _LogSheet extends Component {
 function mapStateToProps(state) {  
 	return {
 		open: state.ui.logsheetViewerDrawer,
+        logsheetMode: state.ui.logsheetMode
 	}
 }
 

@@ -97,7 +97,7 @@ class LogSheetForm extends PureComponent {
         } else {
 
             // ro = readonly
-            let ro = this.props.toReview != null ? true : false
+            let ro = this.props.logsheetMode == 'readonly' ? true : false
 
             return (
                 <div>
@@ -170,6 +170,7 @@ function mapStateToProps(state) {
 
 	return {
 		selectedContact: state.ui.selectedContact,
+        logsheetMode: state.ui.logsheetMode,
         toReview: toReview
 	}
 }

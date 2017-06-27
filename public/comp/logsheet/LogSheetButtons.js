@@ -5,7 +5,10 @@ import { reset, reduxForm } from 'redux-form';
 import { resetSelectedStaffs, resetContactId, toggleLogsheetSubmitting } from '../../actions/index';
 import { apolloClient } from '../../_primary'
 
-import { RaisedButton, LinearProgress, Snackbar } from 'material-ui';
+import { RaisedButton, CircularProgress, Snackbar, FloatingActionButton } from 'material-ui';
+import Edit from 'material-ui/svg-icons/editor/mode-edit'
+import Send from 'material-ui/svg-icons/content/send'
+import { orange700 as circColor } from 'material-ui/styles/colors'
 
 //graphql
 import gql from 'graphql-tag';
@@ -147,13 +150,32 @@ const checkDuplicate = gql`
         }
     }
 `
+const fabStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 20,
+    bottom: 20,
+    left: 'auto',
+    position: 'fixed',
+};
+
+const circStyle = {
+    margin: 0,
+    top: 'auto',
+    right: 18.5,
+    bottom: 18,
+    left: 'auto',
+    position: 'fixed'
+}
 
 class LogSheetButtons extends Component {
     constructor(props) {
     super(props);
         this.state = {
             open: false,
-            message: ''
+            message: '',
+            submitSuccess: false,
+            progressValue: 1
         };
     }
 
@@ -236,7 +258,7 @@ class LogSheetButtons extends Component {
             local_tcp_port: d.localTcpPort,
             latitude: d.lat,
             longitude: d.long,
-            observed_situation: d.unusualAbnormalObservation,
+            observed_situation: d.unusualAbnormalObservation100,
             lodging_road_information: d.lodgingOrRoadInfo,
             others: d.pertinentInfo,
             antennaId: d.antennaSN,
@@ -244,6 +266,7 @@ class LogSheetButtons extends Component {
             contactPersonId: this.props.selectedContact ? this.props.selectedContact.id : null
         } }).then((data) => {
             console.log('got data', data);
+            this.setState({ submitSuccess: 'true' })
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(!this.props.logsheetSubmitting, 'logsheet information successfully submitted')
             this.handleReset()
@@ -255,15 +278,30 @@ class LogSheetButtons extends Component {
     }
 
     render() {
+
+        if (this.state.submitSuccess) {
+            this.circ.props.mode = 'determinate'
+            this.circ.props.value = 100
+        } 
+
         return (
             <div style={{marginBottom: '40px'}}>
                 {
-                    !this.props.ro ? null :
-                        <RaisedButton label='submit' onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))} 
-                            primary disabled={this.props.logsheetSubmitting} fullWidth>
-                                {this.props.logsheetSubmitting ? <LinearProgress mode="indeterminate" /> : null}
-                        </RaisedButton>
+                    this.props.ro ? null :
+                        <div>
+                        <FloatingActionButton backgroundColor={null} style={fabStyle} onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))}>
+                                <Send />
+                        </FloatingActionButton>
+                        {!this.props.logsheetSubmitting || this.state.submitSuccess ? 
+                            <CircularProgress size={60} ref={(circ)=> this.circ = circ } color={circColor} style={circStyle}/>: null }
+                        </div>
                 }
+
+
+
+                {/*<FloatingActionButton style={fabStyle}><Edit /></FloatingActionButton>*/}
+
+
                 <Snackbar
                     open={this.state.open}
                     message={this.state.message}

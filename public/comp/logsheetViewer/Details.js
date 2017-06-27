@@ -25,7 +25,7 @@ class Details extends PureComponent {
     handleReviewBtn = (data) => {
         this.props.toggleDrawer()
         this.props.reviewLogsheet(data)
-        window.logsheetMode = 'readonly'
+        this.props.setLogsheetMode('readonly')
     }
 
     render() {

@@ -16,6 +16,8 @@
     "apollo-client": "^1.5.0",
     "apollo-upload-client": "^4.1.1",
     "autoprefixer": "^7.1.1",
+    "box-ui-circular-integration-progress": "0.0.16",
+    "box-ui-circular-progressbar": "0.0.16",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
     "express": "^4.15.3",

@@ -1,8 +1,8 @@
 import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING,
-	TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET } from '../actions/types'
+	TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET, LOGSHEET_MODE } from '../actions/types'
 
 const INITIAL_STATE = {selectedContact: null, selectedStaffs: [], clickedSite: null, hoveredSite: null, logsheetSubmitting: false, logsheetViewerDrawer: false, 
-	logsheetToReview: null}
+	logsheetToReview: null, logsheetMode: 'new'}
 
 function ui(state = INITIAL_STATE, action) {  
 	switch(action.type) {
@@ -25,6 +25,8 @@ function ui(state = INITIAL_STATE, action) {
 			return { ...state, logsheetViewerDrawer: !state.logsheetViewerDrawer }
 		case REVIEW_LOGSHEET: 
 			return { ...state, logsheetToReview: action.payload}
+		case LOGSHEET_MODE: 
+			return { ...state, logsheetMode: action.payload}
 	}
 	
 	return state

@@ -84,7 +84,7 @@ class SingleLogsheet extends PureComponent {
         }
 
         return (
-            <div>
+            <div style={{ overflowY: 'hidden' }}>
                 <AppBar titleStyle={{ fontSize: '20px' }} title={title} iconElementLeft={ <IconButton
                             onTouchTap={() => this.props.handleChange(1, null) } >
                                 <Back />

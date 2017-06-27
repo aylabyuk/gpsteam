@@ -51,7 +51,7 @@ class Details extends PureComponent {
                     <Tab1 d={data} />
                     <Tab2 d={data} />
                 </SwipeableViews>
-                <RaisedButton style={{ position: 'fixed', bottom: '0px' }} fullWidth secondary label='review this logsheet' onTouchTap={()=> this.handleReviewBtn(data) }/>
+                <RaisedButton fullWidth secondary label='review this logsheet' onTouchTap={()=> this.handleReviewBtn(data) }/>
                 </div>
             );
         }

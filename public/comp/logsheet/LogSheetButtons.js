@@ -288,7 +288,7 @@ class LogSheetButtons extends Component {
                         </FloatingActionButton>
                         {
                             this.props.logsheetSubmitting ? 
-                            <CircularProgress size={60} mode={this.state.submitSuccess ? 'determinate' : 'indeterminate'} value={this.state.submitSuccess ? 100 : null} ref={(circ)=> this.circ = circ } color={circColor} style={circStyle}/>
+                            <CircularProgress size={60} color={circColor} style={circStyle}/>
                             : null 
                         }
                         </div>

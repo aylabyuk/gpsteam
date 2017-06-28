@@ -278,12 +278,6 @@ class LogSheetButtons extends Component {
     }
 
     render() {
-
-        if (this.state.submitSuccess) {
-            this.circ.props.mode = 'determinate'
-            this.circ.props.value = 100
-        } 
-
         return (
             <div style={{marginBottom: '40px'}}>
                 {
@@ -292,8 +286,11 @@ class LogSheetButtons extends Component {
                         <FloatingActionButton backgroundColor={null} style={fabStyle} onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))}>
                                 <Send />
                         </FloatingActionButton>
-                        {!this.props.logsheetSubmitting || this.state.submitSuccess ? 
-                            <CircularProgress size={60} ref={(circ)=> this.circ = circ } color={circColor} style={circStyle}/>: null }
+                        {
+                            this.props.logsheetSubmitting ? 
+                            <CircularProgress size={60} mode={this.state.submitSuccess ? 'determinate' : 'indeterminate'} value={this.state.submitSuccess ? 100 : null} ref={(circ)=> this.circ = circ } color={circColor} style={circStyle}/>
+                            : null 
+                        }
                         </div>
                 }
 

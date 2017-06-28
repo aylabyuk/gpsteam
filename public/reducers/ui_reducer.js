@@ -14,7 +14,7 @@ function ui(state = INITIAL_STATE, action) {
 			let index = state.selectedStaffs.findIndex(x => x.id==action.payload)
 			return {  selectedStaffs: [...state.selectedStaffs.slice(0, index), ...state.selectedStaffs.slice(index + 1)] }
 		case RESET_CONTACT_ID: 
-			return { ...state, selectedContactId: 0 }
+			return { ...state, selectedContact: null }
 		case RESET_SELECTED_STAFFS: 
 			return { ...state, selectedStaffs: [] }
 		case CLICKED_SITE: 

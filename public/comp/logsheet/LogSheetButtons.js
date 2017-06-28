@@ -8,6 +8,7 @@ import { apolloClient } from '../../_primary'
 import { RaisedButton, CircularProgress, Snackbar, FloatingActionButton } from 'material-ui';
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Send from 'material-ui/svg-icons/content/send'
+import Check from 'material-ui/svg-icons/navigation/check'
 import { orange700 as circColor } from 'material-ui/styles/colors'
 
 //graphql
@@ -165,7 +166,8 @@ const circStyle = {
     right: 18.5,
     bottom: 18,
     left: 'auto',
-    position: 'fixed'
+    position: 'fixed',
+    zIndex: 9999
 }
 
 class LogSheetButtons extends Component {
@@ -193,6 +195,9 @@ class LogSheetButtons extends Component {
         this.props.dispatch(reset('logsheet'));
         this.props.resetContactId()
         this.props.resetSelectedStaffs()
+
+        // setTimeout( this.setState({ submitSuccess: false }), 20000 )
+
     }
 
     handleSubmitLog(d) {
@@ -283,14 +288,17 @@ class LogSheetButtons extends Component {
                 {
                     this.props.ro ? null :
                         <div>
-                        <FloatingActionButton backgroundColor={null} style={fabStyle} onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))}>
-                                <Send />
-                        </FloatingActionButton>
-                        {
-                            this.props.logsheetSubmitting ? 
-                            <CircularProgress size={60} color={circColor} style={circStyle}/>
-                            : null 
-                        }
+                            {
+                                this.props.logsheetSubmitting && !this.state.submitSuccess ? 
+                                <CircularProgress size={60} color={circColor} style={circStyle}/>
+                                : null 
+                            }
+                            { this.state.submitSuccess ? null : <FloatingActionButton style={fabStyle} onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))}>
+                                    <Send />
+                            </FloatingActionButton> }
+                            { this.state.submitSuccess ? <FloatingActionButton backgroundColor={circColor} style={fabStyle} >
+                                    <Check />
+                            </FloatingActionButton> : null }
                         </div>
                 }
 

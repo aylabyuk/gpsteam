@@ -196,7 +196,7 @@ class LogSheetButtons extends Component {
         this.props.resetContactId()
         this.props.resetSelectedStaffs()
 
-        // setTimeout( this.setState({ submitSuccess: false }), 20000 )
+        setTimeout(function() { this.setState({submitSuccess: false}); }.bind(this), 5000);
 
     }
 

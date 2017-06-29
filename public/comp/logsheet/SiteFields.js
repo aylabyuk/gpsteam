@@ -6,7 +6,7 @@ import { normalizeUpperCase } from '../formValidators/formValidators'
 //ui
 import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
 
-const renderAutoCompleteField = ({ input, label, dataSource, disabled, meta: { touched, error } }) => (
+const renderAutoCompleteField = ({ input, ref, label, dataSource, disabled, meta: { touched, error } }) => (
   <AutoComplete
       floatingLabelText="site name"
       filter={AutoComplete.fuzzyFilter}

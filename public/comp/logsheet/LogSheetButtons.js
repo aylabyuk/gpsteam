@@ -9,7 +9,10 @@ import { RaisedButton, CircularProgress, Snackbar, FloatingActionButton } from '
 import Edit from 'material-ui/svg-icons/editor/mode-edit'
 import Send from 'material-ui/svg-icons/content/send'
 import Check from 'material-ui/svg-icons/navigation/check'
-import { orange700 as circColor } from 'material-ui/styles/colors'
+import Error from 'material-ui/svg-icons/alert/error'
+import { orange700 as circColor, red400 } from 'material-ui/styles/colors'
+
+import { setLogsheetMode } from '../../actions/index'
 
 //graphql
 import gql from 'graphql-tag';
@@ -201,7 +204,7 @@ class LogSheetButtons extends Component {
     }
 
     handleSubmitLog(d) {
-
+      
         // check if logsheet has possible duplicate
         // apolloClient.query({query: checkDuplicate, variables: { name: d.sitename, date: new Date(d.logdate) }})
         //     .then((result) => {
@@ -220,11 +223,10 @@ class LogSheetButtons extends Component {
             observers.push({ id: x.id })
         })
 
+        // test if sitename is one of the list
         selectedSite = this.props.siteNames.find((site)=> {
             return site.name == d.sitename
         })
-
-        // test if site is typed correctly
         if(selectedSite == undefined) {
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(true, 'FAILED: ' + d.sitename + ' is not a valid site')
@@ -263,7 +265,7 @@ class LogSheetButtons extends Component {
             local_tcp_port: d.localTcpPort,
             latitude: d.lat,
             longitude: d.long,
-            observed_situation: d.unusualAbnormalObservation100,
+            observed_situation: d.unusualAbnormalObservation,
             lodging_road_information: d.lodgingOrRoadInfo,
             others: d.pertinentInfo,
             antennaId: d.antennaSN,
@@ -283,29 +285,42 @@ class LogSheetButtons extends Component {
     }
 
     render() {
+        let { logsheetSubmitting, submitFailed, pristine, dirty, invalid, valid, setLogsheetMode, handleSubmit, logsheetMode } = this.props
+        let { submitSuccess } = this.state
+
+        let submitAction
+        if(logsheetMode == 'new') {
+            submitAction = handleSubmit(this.handleSubmitLog.bind(this))
+        } else {
+            submitAction = () => console.log('update function')
+        }
+
         return (
             <div style={{marginBottom: '40px'}}>
                 {
-                    this.props.ro ? null :
+                    this.props.ro ? <FloatingActionButton onTouchTap={()=> setLogsheetMode('write') } style={fabStyle} ><Edit /></FloatingActionButton> :
                         <div>
+                            
                             {
-                                this.props.logsheetSubmitting && !this.state.submitSuccess ? 
+                                logsheetSubmitting && !submitSuccess ? 
                                 <CircularProgress size={60} color={circColor} style={circStyle}/>
                                 : null 
                             }
-                            { this.state.submitSuccess ? null : <FloatingActionButton style={fabStyle} onTouchTap={this.props.handleSubmit(this.handleSubmitLog.bind(this))}>
+
+                            { !submitSuccess ? <FloatingActionButton style={fabStyle} onTouchTap={submitAction} >
                                     <Send />
-                            </FloatingActionButton> }
-                            { this.state.submitSuccess ? <FloatingActionButton backgroundColor={circColor} style={fabStyle} >
+                            </FloatingActionButton> : null }
+
+                            { submitSuccess && pristine ? <FloatingActionButton backgroundColor={circColor} style={fabStyle} >
                                     <Check />
                             </FloatingActionButton> : null }
+
+                            { submitFailed && invalid ? <FloatingActionButton backgroundColor={red400} style={fabStyle} >
+                                    <Error />
+                            </FloatingActionButton> : null }
+                            
                         </div>
                 }
-
-
-
-                {/*<FloatingActionButton style={fabStyle}><Edit /></FloatingActionButton>*/}
-
 
                 <Snackbar
                     open={this.state.open}
@@ -322,7 +337,8 @@ function mapStateToProps(state) {
 	return {
 		selectedStaffs: state.ui.selectedStaffs,
         selectedContact: state.ui.selectedContact,
-        logsheetSubmitting: state.ui.logsheetSubmitting
+        logsheetSubmitting: state.ui.logsheetSubmitting,
+        logsheetMode: state.ui.logsheetMode
 	}
 }
 
@@ -330,4 +346,4 @@ const form =  reduxForm({
 	form: 'logsheet'
 })
 
-export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting })(graphql(addNewLogSheet)(form(LogSheetButtons)));
+export default connect(mapStateToProps, { resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting, setLogsheetMode })(graphql(addNewLogSheet)(form(LogSheetButtons)));

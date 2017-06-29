@@ -114,7 +114,7 @@ class LogSheetForm extends PureComponent {
                     <SiteContactPersonFields ro={ro} selectedContact={this.props.selectedContact} change={this.props.change}/>
                     <Divider />
                     <br />
-                    <LogSheetButtons readonly={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
+                    <LogSheetButtons ro={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
         }

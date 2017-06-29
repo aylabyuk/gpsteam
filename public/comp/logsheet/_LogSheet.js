@@ -10,7 +10,7 @@ import { AutoSizer } from 'react-virtualized';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { white } from 'material-ui/styles/colors'
 
-import { toggleLogsheetViewerDrawer } from '../../actions/index'
+import { toggleLogsheetViewerDrawer, setLogsheetMode } from '../../actions/index'
 
 
 class _LogSheet extends Component {
@@ -25,8 +25,8 @@ class _LogSheet extends Component {
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-                <MenuItem primaryText="Search for Logsheets" onTouchTap={() => this.props.toggleLogsheetViewerDrawer()}/>
-                <MenuItem primaryText="Switch to Continuous" />
+                <MenuItem primaryText="Search" onTouchTap={() => this.props.toggleLogsheetViewerDrawer()}/>
+                <MenuItem primaryText="Create" onTouchTap={() => this.props.setLogsheetMode('new')}/>
                 <MenuItem primaryText="Close" />
             </IconMenu>
             </div>
@@ -58,4 +58,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, { toggleLogsheetViewerDrawer })(_LogSheet);
+export default connect(mapStateToProps, { toggleLogsheetViewerDrawer, setLogsheetMode })(_LogSheet);

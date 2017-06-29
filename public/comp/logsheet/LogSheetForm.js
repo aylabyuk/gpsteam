@@ -1,5 +1,5 @@
 import React, { PureComponent, PropTypes } from 'react';
-import { reduxForm } from 'redux-form'
+import { reduxForm, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -18,7 +18,7 @@ import SiteContactPersonFields from './SiteContactPersonFields'
 import LogSheetButtons from './LogSheetButtons'
 
 // state
-import { changeSelectedStaffs, changeSelectedContact } from '../../actions/index'
+import { changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting, reviewLogsheet } from '../../actions/index'
 
 //validation 
 import { validateLogsheet as validate } from '../formValidators/formValidators'
@@ -71,7 +71,7 @@ class LogSheetForm extends PureComponent {
             changeSelectedContact(null)
         }
     }
-
+    
     componentWillUpdate(nextProps, nextState) {
         if(nextProps.toReview != null) {
             if(this.props.toReview == null) {
@@ -81,12 +81,21 @@ class LogSheetForm extends PureComponent {
             }
         }
 
+        if(nextProps.logsheetMode != this.props.logsheetMode ) {
+            if(nextProps.logsheetMode == 'new') {
+                this.props.resetContactId()
+                this.props.reviewLogsheet(null)
+                this.props.resetSelectedStaffs()
+                this.props.initialize(null)
+                
+                setTimeout(function() { this.setState({submitSuccess: false}); }.bind(this), 5000);
+            }
+        }
     }
     
 
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
-        let { logsheetToReview } = this.props
 
         if(loading) {
             return (
@@ -175,4 +184,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact })(graphql(LogSheetQuery)(form(LogSheetForm)))
+export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, reviewLogsheet })(graphql(LogSheetQuery)(form(LogSheetForm)))

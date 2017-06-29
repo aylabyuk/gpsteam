@@ -171,10 +171,7 @@ function mapStateToProps(state) {
         lodgingOrRoadInfo: l.lodging_road_information,
         pertinentInfo: l.others,
         observers: l.observers,
-        contact: l.contact,
-        // contactFirstName: l.contact.first_name,
-        // contactLastName: l.contact.last_name,
-        // contactNumber: l.contact.number
+        contact: l.contact
     } : null
 
 	return {

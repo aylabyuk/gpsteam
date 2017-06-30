@@ -12,7 +12,7 @@ class _LogsheetVeiwer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            slideIndex: 1,
+            slideIndex: 0,
             currentLogsheetId: null
         };
     }

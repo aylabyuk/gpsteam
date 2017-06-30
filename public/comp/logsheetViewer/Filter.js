@@ -76,11 +76,8 @@ const renderDatePicker = ({ input, fullWidth, label, defaultValue, meta: { touch
 )
 
 class Filter extends Component {
-    handleOpenFlatPickr() {
-      this.dp.flatpickr.open()
-    }
-
     handleDateRange() {
+      this.dp.flatpickr.open()
 
       let from = moment(new Date(this.dp.flatpickr.selectedDates[0])).format('MM/DD/YYYY')
       let to = moment(new Date(this.dp.flatpickr.selectedDates[1])).format('MM/DD/YYYY')
@@ -89,8 +86,12 @@ class Filter extends Component {
         this.props.change('dates', from + ' - ' + to)
       } else { this.props.change('dates', from )}
       
-      if(from === to) {
-        this.props.change('dates', from )
+      if(from != 'Invalid date') {
+        if(from === to) {
+          this.props.change('dates', from )
+        }
+      } else {
+        this.props.change('dates', '')
       }
 
     }
@@ -107,8 +108,8 @@ class Filter extends Component {
                 <div style={{ margin: '10px' }}>
                     <Field name="sitename" fullWidth={true} component={renderAutoCompleteField}  dataSource={allSite.map((s) => { return s.name })}
                       normalize={normalizeUpperCase}/>
-                    <Field name="location" fullWidth={true} component={renderTextField} label='location' />
-                    <Field name="dates" fullWidth={true} onClick={()=> this.handleOpenFlatPickr()} component={renderTextField} label='date/s' />
+                    <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
+                    <Field name="dates" onChange={()=> this.handleDateRange()} fullWidth={true} onClick={()=> this.handleDateRange()} component={renderTextField} label='date/s' />
                     <Flatpickr style={{  visibility: 'hidden' }} options={{ mode: 'range', onChange: this.handleDateRange.bind(this) }} ref={(dp)=> this.dp = dp }/>
                 </div>
                 <RaisedButton primary label='search' fullWidth={true} />

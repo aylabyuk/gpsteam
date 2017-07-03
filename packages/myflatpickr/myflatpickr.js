@@ -48,7 +48,6 @@ class DateTimePicker extends Component {
       window.flatpickr.setDate(props.value, false)
     }
 
-
     // Add prop hooks to options
     for (let hook of hooks) {
       if (props[hook]) {
@@ -120,14 +119,12 @@ class DateTimePicker extends Component {
               window.node = node
 
               document.getElementById('dp').addEventListener("change", (e)=> {
-                if(e.target.value) {
+                if(e.target.value != "") {
                   window.node.setState({ hasValue: true })
-                } else {
-                  window.node.setState({ hasValue: false })
                 }
               })
-
-          }} />
+          }}
+          floatingLabelFixed />
       )
   }
 }

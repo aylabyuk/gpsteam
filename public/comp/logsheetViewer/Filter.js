@@ -8,7 +8,8 @@ import { toggleLogsheetViewerDrawer } from '../../actions/index'
 import MyRangePicker from '../../../packages/myflatpickr/myflatpickr'
 
 // ui
-import { AppBar, IconButton, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, DatePicker } from 'material-ui' 
+import { AppBar, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, IconButton } from 'material-ui' 
+import Clear from 'material-ui/svg-icons/content/clear';
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';
 
 const LogSheetQuery = gql`query LogSheetQuery {
@@ -49,31 +50,17 @@ const renderTextField = ({ input, value, label, meta: { touched, error }, ...cus
   />
 )
 const renderDatePicker = ({ input, fullWidth, label, defaultValue, meta: { touched, error } }) => (
-    <div style={{display: 'flex', flexDirection: 'row', flexWrap: 'wrap'}}>
-    <DatePicker 
-        mode='portrait'
-        container="inline"
-        errorText = {touched && error} 
-        {...input}
-        value = { input.value !== ''? new Date(input.value): null}
-        formatDate={new Intl.DateTimeFormat('en-US', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                weekday: 'long'
-        }).format }
-        autoOk={true}
-        hintText={label}
-        floatingLabelText={label}
-        onChange = {(event, value) => {input.onChange(value)} } 
-        onBlur = {(value) => { value = '' }}
-        fullWidth={fullWidth}
-        maxDate={new Date()}/>
+    <div style={{position: 'relative', display: 'inline-block', width: '100%'}}>
+        <div style={{position: 'absolute', right: 12, top: 25, width: 20, height: 20}}>
+            <IconButton tooltip="clear" tooltipPosition="top-center" >
+                <Clear />
+            </IconButton>
+        </div>
+        <MyRangePicker floatingLabelText={label} fullWidth={fullWidth} options={{ mode: 'range' }} />
     </div>
 )
 
 class Filter extends Component {
-
     render() {
       let { loading, allSite, allReceiver, allAntenna } = this.props.data
 
@@ -87,7 +74,7 @@ class Filter extends Component {
                     <Field name="sitename" fullWidth={true} component={renderAutoCompleteField}  dataSource={allSite.map((s) => { return s.name })}
                       normalize={normalizeUpperCase}/>
                     <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
-                    <MyRangePicker floatingLabelText='dates' fullWidth={true} options={{ mode: 'range' }} />
+                    <Field name='daterange' component={renderDatePicker} label='dates' fullWidth={true} />
                 </div>
                 <RaisedButton primary  label='search' fullWidth={true} />
             </div>

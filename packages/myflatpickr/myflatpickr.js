@@ -45,7 +45,7 @@ class DateTimePicker extends Component {
     const { options } = props
 
     if (props.hasOwnProperty('value')) {
-      this.flatpickr.setDate(props.value, false)
+      window.flatpickr.setDate(props.value, false)
     }
 
 
@@ -67,7 +67,7 @@ class DateTimePicker extends Component {
         value = [value]
       }
 
-      this.flatpickr.set(key, value)
+      window.flatpickr.set(key, value)
     }
   }
 
@@ -86,21 +86,21 @@ class DateTimePicker extends Component {
       }
     }
 
-    this.flatpickr = new Flatpickr(this.node.input, options)
+    window.flatpickr = new Flatpickr(this.node.input, options)
 
     if (this.props.hasOwnProperty('value')) {
-      this.flatpickr.setDate(this.props.value, false)
+      window.flatpickr.setDate(this.props.value, false)
     }
 
   }
 
   componentWillUnmount() {
-    this.flatpickr.destroy()
+    window.flatpickr.destroy()
   }
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    const { fullWidth, floatingLabelText, options, defaultValue, value, children, ...props } = this.props
+    const { fullWidth, onChange, floatingLabelText, options, defaultValue, value, children, ...props } = this.props
 
     // Don't pass hooks to dom node
     for (let hook of hooks) {
@@ -114,7 +114,7 @@ class DateTimePicker extends Component {
         </div>
       )
       : (
-        <TextField id='dp' floatingLabelText={floatingLabelText} fullWidth={fullWidth} id='dp' {...props} defaultValue={defaultValue}
+        <TextField id='dp' floatingLabelText={floatingLabelText} fullWidth={fullWidth} {...props} defaultValue={defaultValue}
           ref={node => { 
               this.node = node
               window.node = node

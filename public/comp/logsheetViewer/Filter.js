@@ -5,12 +5,13 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { normalizeUpperCase } from '../formValidators/formValidators'
 import { toggleLogsheetViewerDrawer } from '../../actions/index'
-import MyRangePicker from '../../../packages/myflatpickr/myflatpickr'
 
 // ui
-import { AppBar, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, IconButton } from 'material-ui' 
+import { AppBar, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, IconButton, Popover } from 'material-ui' 
 import Clear from 'material-ui/svg-icons/content/clear';
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';
+import { DateRange } from 'react-date-range'
+
 
 const LogSheetQuery = gql`query LogSheetQuery {
   allSite {
@@ -38,7 +39,6 @@ const renderAutoCompleteField = ({ input, fullWidth, label, dataSource, meta: { 
       maxSearchResults={20}
       errorText={touched && error}
       fullWidth={fullWidth}
-      floatingLabelFixed
     />
 )
 
@@ -48,28 +48,43 @@ const renderTextField = ({ input, value, label, meta: { touched, error }, ...cus
     errorText={touched && error}
     {...input}
     {...custom}
-    floatingLabelFixed
   />
 )
-const renderDatePicker = ({ input, fullWidth, label, defaultValue, meta: { touched, error } }) => (
-    <div style={{position: 'relative', display: 'inline-block', width: '100%'}}>
-        { window.node.value ? <div style={{position: 'absolute', right: 12, top: 25, width: 20, height: 20}}>
-            <IconButton tooltip="clear" tooltipPosition="top-center" >
-                <Clear />
-            </IconButton>
-        </div>: null }
-        <MyRangePicker floatingLabelText={label} fullWidth={fullWidth} options={{ mode: 'range' }} />
-    </div>
-)
+
 
 class Filter extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      open: false,
+    };
+  }
+
+  handleTouchTap = (event) => {
+    // This prevents ghost click.
+    event.preventDefault();
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    });
+  };
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  handleSelect(range){
+        console.log(range);
+        // An object with two keys, 
+        // 'startDate' and 'endDate' which are Momentjs objects. 
+    }
 
   render() {
     let { loading, allSite, allReceiver, allAntenna } = this.props.data
-
-    window.node = {}
-    window.node.value = null
-
       if(loading) {
         return <LinearProgress mode="indeterminate" />
       } else {
@@ -80,7 +95,17 @@ class Filter extends Component {
                   <Field name="sitename" fullWidth={true} component={renderAutoCompleteField}  dataSource={allSite.map((s) => { return s.name })}
                     normalize={normalizeUpperCase}/>
                   <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
-                  <Field name='daterange' component={renderDatePicker} label='dates' fullWidth={true} />
+                  <TextField name='daterange' onFocus={this.handleTouchTap} fullWidth={true} label='date/s' />
+                  <Popover
+                    open={this.state.open}
+                    anchorEl={this.state.anchorEl}
+                    anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
+                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    onRequestClose={this.handleRequestClose}
+                  >
+                    <DateRange calendars={2} rangedCalendars={true} onInit={this.handleSelect}
+                        onChange={this.handleSelect}/>
+                  </Popover >
               </div>
               <RaisedButton primary  label='search' fullWidth={true} />
           </div>

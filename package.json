@@ -41,6 +41,8 @@
     "react": "^15.6.1",
     "react-addons-perf": "^15.4.2",
     "react-apollo": "^1.4.2",
+    "react-date-range": "^0.9.4",
+    "react-daterange-picker": "^1.1.0",
     "react-dom": "^15.6.1",
     "react-flatpickr": "^3.4.0",
     "react-hot-loader": "^3.0.0-beta.7",

@@ -5,10 +5,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { normalizeUpperCase } from '../formValidators/formValidators'
 import { toggleLogsheetViewerDrawer } from '../../actions/index'
-import Flatpickr from 'react-flatpickr'
-import moment from 'moment'
-
-import '../../css/custom_flatpicker.css'
+import MyRangePicker from '../../../packages/myflatpickr/myflatpickr'
 
 // ui
 import { AppBar, IconButton, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, DatePicker } from 'material-ui' 
@@ -76,25 +73,6 @@ const renderDatePicker = ({ input, fullWidth, label, defaultValue, meta: { touch
 )
 
 class Filter extends Component {
-    handleDateRange() {
-      this.dp.flatpickr.open()
-
-      let from = moment(new Date(this.dp.flatpickr.selectedDates[0])).format('MM/DD/YYYY')
-      let to = moment(new Date(this.dp.flatpickr.selectedDates[1])).format('MM/DD/YYYY')
-
-      if(to != 'Invalid date') {
-        this.props.change('dates', from + ' - ' + to)
-      } else { this.props.change('dates', from )}
-      
-      if(from != 'Invalid date') {
-        if(from === to) {
-          this.props.change('dates', from )
-        }
-      } else {
-        this.props.change('dates', '')
-      }
-
-    }
 
     render() {
       let { loading, allSite, allReceiver, allAntenna } = this.props.data
@@ -109,10 +87,9 @@ class Filter extends Component {
                     <Field name="sitename" fullWidth={true} component={renderAutoCompleteField}  dataSource={allSite.map((s) => { return s.name })}
                       normalize={normalizeUpperCase}/>
                     <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
-                    <Field name="dates" onChange={()=> this.handleDateRange()} fullWidth={true} onClick={()=> this.handleDateRange()} component={renderTextField} label='date/s' />
-                    <Flatpickr style={{  visibility: 'hidden' }} options={{ mode: 'range', onChange: this.handleDateRange.bind(this) }} ref={(dp)=> this.dp = dp }/>
+                    <MyRangePicker floatingLabelText='dates' fullWidth={true} options={{ mode: 'range' }} />
                 </div>
-                <RaisedButton primary label='search' fullWidth={true} />
+                <RaisedButton primary  label='search' fullWidth={true} />
             </div>
           );
         }

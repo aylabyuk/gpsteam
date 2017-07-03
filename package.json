@@ -36,6 +36,7 @@
     "normalize.css": "^7.0.0",
     "points-cluster": "^0.1.4",
     "postcss-loader": "^2.0.6",
+    "prop-types": "^15.5.10",
     "pug": "^2.0.0-rc.2",
     "react": "^15.6.1",
     "react-addons-perf": "^15.4.2",

@@ -10,7 +10,8 @@ import { toggleLogsheetViewerDrawer } from '../../actions/index'
 import { AppBar, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, IconButton, Popover } from 'material-ui' 
 import Clear from 'material-ui/svg-icons/content/clear';
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';
-import { DateRange } from 'react-date-range'
+import ChipInput from 'material-ui-chip-input'
+import DateRangeComponent from './DateRangeComponent'
 
 
 const LogSheetQuery = gql`query LogSheetQuery {
@@ -42,15 +43,22 @@ const renderAutoCompleteField = ({ input, fullWidth, label, dataSource, meta: { 
     />
 )
 
-const renderTextField = ({ input, value, label, meta: { touched, error }, ...custom }) => (
-  <TextField 
-    floatingLabelText={label}
-    errorText={touched && error}
-    {...input}
-    {...custom}
-  />
+const renderTextField = ({clear, fullWidth, clearIcon, input, label, meta: { touched, error }, ...custom }) => (
+    <div style={{position: 'relative', display: 'inline-block', width: '100%'}}>
+        <div style={{position: 'absolute', right: 12, top: 25, width: 20, height: 20}}>
+            { clearIcon ? <IconButton tooltip="clear" tooltipPosition="top-center" onTouchTap={()=> clear() }>
+                <Clear />
+            </IconButton> : null}
+        </div>
+        <TextField
+            floatingLabelText={label}
+            errorText={touched && error}
+            {...input}
+            {...custom}
+            fullWidth={fullWidth}
+            />
+    </div>
 )
-
 
 class Filter extends Component {
   constructor(props) {
@@ -58,6 +66,8 @@ class Filter extends Component {
 
     this.state = {
       open: false,
+      clearIcon: false,
+      myChips: []
     };
   }
 
@@ -78,10 +88,31 @@ class Filter extends Component {
   };
 
   handleSelect(range){
-        console.log(range);
+        // console.log(range);
         // An object with two keys, 
         // 'startDate' and 'endDate' which are Momentjs objects. 
-    }
+
+        let startDate = range.startDate.format('DD/MM/YYYY')
+        let endDate = range.endDate.format('DD/MM/YYYY')
+        
+        this.props.change('daterange', startDate + ' to ' + endDate)
+        this.setState({clearIcon: true})
+  }
+
+  handleClear(){
+    this.props.change('daterange', '')
+    this.setState({clearIcon: false})
+  }
+
+  handleDeleteChip(chip, index){
+    let newData = this.state.myChips.slice()
+    newData.splice(index, 1)
+    this.setState({myChips: newData })
+  }
+
+  handleAddChip(chip){
+    this.setState({myChips: this.state.myChips.concat([chip]) })
+  }
 
   render() {
     let { loading, allSite, allReceiver, allAntenna } = this.props.data
@@ -92,19 +123,28 @@ class Filter extends Component {
           <div>
               <AppBar title='Search Logsheets' iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
               <div style={{ margin: '10px' }}>
-                  <Field name="sitename" fullWidth={true} component={renderAutoCompleteField}  dataSource={allSite.map((s) => { return s.name })}
-                    normalize={normalizeUpperCase}/>
+
+                  <ChipInput
+                    value={this.state.myChips}
+                    dataSource={allSite.map((s) => { return s.name })}
+                    onRequestAdd={(chip) => this.handleAddChip(chip)}
+                    onRequestDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+                    fullWidth
+                    maxSearchResults={20}
+                    listStyle={{ maxHeight: 200, overflow: 'auto' }}
+                    floatingLabelText='site/s'
+                  />
                   <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
-                  <TextField name='daterange' onFocus={this.handleTouchTap} fullWidth={true} label='date/s' />
+                  <Field onKeyPress={()=> {return false}} name='daterange' component={renderTextField} clear={this.handleClear.bind(this)} clearIcon={this.state.clearIcon} onFocus={this.handleTouchTap} fullWidth={true} label='date/s' />
                   <Popover
+                    
                     open={this.state.open}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     onRequestClose={this.handleRequestClose}
                   >
-                    <DateRange calendars={2} rangedCalendars={true} onInit={this.handleSelect}
-                        onChange={this.handleSelect}/>
+                    <DateRangeComponent handleSelect={this.handleSelect.bind(this)}/>
                   </Popover >
               </div>
               <RaisedButton primary  label='search' fullWidth={true} />

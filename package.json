@@ -29,6 +29,7 @@
     "lodash": "^4.17.4",
     "mapbox-gl": "^0.38.0",
     "material-ui": "^0.18.3",
+    "material-ui-chip-input": "^0.15.0",
     "material-ui-search-bar": "^0.2.1",
     "mathjs": "^3.13.3",
     "moment": "^2.18.1",

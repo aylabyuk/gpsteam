@@ -39,13 +39,13 @@ class SitePopup extends Component {
 
                             <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.props.popup.key + '.jpg' } />
 
-                            <RaisedButton
+                            {/*<RaisedButton
                                     label="Upload Timeseries Preview for this site"
                                     labelPosition="before"
                                     style={styles.button}
                                     containerElement="label" >
                                 <input type="file" id="file-upload" style={styles.exampleImageInput} accept={'image/jpeg,image/png'} required onChange={this.props.newPreview.bind(this)}/>
-                            </RaisedButton>
+                            </RaisedButton>*/}
                             
                         </CardText>
                         <CardActions>

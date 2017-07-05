@@ -36,8 +36,8 @@ class SitePopup extends Component {
                         <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
                         <CardText style={{textAlign: 'center'}}>
 
-
                             <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.props.popup.key + '.jpg' } />
+
 
                             {/*<RaisedButton
                                     label="Upload Timeseries Preview for this site"

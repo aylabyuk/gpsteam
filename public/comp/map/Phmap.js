@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 // ui
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
+import { Drawer } from 'material-ui'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from 'leaflet'
 import scrollIntoView from 'scroll-into-view'

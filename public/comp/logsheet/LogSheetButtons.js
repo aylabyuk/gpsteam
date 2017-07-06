@@ -392,7 +392,7 @@ class LogSheetButtons extends Component {
             this.toggleSnackbar(!this.props.logsheetSubmitting, 'logsheet information successfully updated')
             this.handleReset()
         }).catch((err) => {
-            console.log('there was an error sending the query: ', error);
+            console.log('there was an error sending the query: ', err);
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(true, 'logsheet information update failed, try again')
         })

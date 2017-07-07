@@ -21,7 +21,11 @@ const styles = {
 class SelectedStaffs extends Component {
 
     handleRequestDelete(id) {
-       this.props.removeSelectedStaff(id)
+        if (this.props.ro) {
+            alert('cannot remove on read only mode')
+        } else {
+            this.props.removeSelectedStaff(id)
+        }
     }
 
     handleTouchTap() {
@@ -35,16 +39,16 @@ class SelectedStaffs extends Component {
 
             {this.props.selectedStaffs.map((s)=>{
                 return(
-                <Chip
-                    onRequestDelete={()=> this.props.ro ? alert('read only mode') : this.handleRequestDelete(s.id)}
-                    onTouchTap={this.handleTouchTap}
-                    style={styles.chip}
-                    key={s.id}>
-                    <Avatar size={32} >
-                        {s.initials}
-                    </Avatar>
-                    {s.nname}
-                </Chip> )
+                    <Chip
+                        onRequestDelete={() => this.handleRequestDelete(s.id)}
+                        onTouchTap={this.handleTouchTap}
+                        style={styles.chip}
+                        key={s.id}>
+                        <Avatar size={32} >
+                            {s.initials}
+                        </Avatar>
+                        {s.nname}
+                    </Chip> )
             })}
 
                

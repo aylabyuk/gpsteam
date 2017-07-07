@@ -1,5 +1,65 @@
 import gql from 'graphql-tag';
 
+export const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
+        singleLogsheet(id: $currentLogsheet) {
+            id
+            survey_type
+            logsheet_date
+            julian_day
+            location
+            marker
+            observers {
+                id
+                first_name
+                last_name
+                nickname
+            }
+            site {
+                name
+            }
+            north
+            east
+            south
+            west
+            time_start
+            time_end
+            azimuth
+            failure_time
+            receiver_status
+            antenna_status
+            avg_slant_height
+            observed_situation
+            lodging_road_information
+            others
+            antenna {
+                serial_number
+                type
+                part_number
+            }
+            receiver {
+                serial_number
+                type
+                part_number
+            }
+            rod_num
+            rod_correction
+            ip_add
+            netmask
+            gateway
+            dns
+            local_tcp_port
+            latitude
+            longitude
+            contact {
+                id
+                first_name
+                last_name
+                email_add
+                contact_number
+            }
+        }
+    } 
+`
 export const addNewLogSheet = gql`
     mutation createLogsheet(
         $survey_type: String!
@@ -115,7 +175,6 @@ export const addNewLogSheet = gql`
         }
     }
 `
-
 export const updateLogSheet = gql`
     mutation updateLogsheet(
         $id: Int!
@@ -234,7 +293,6 @@ export const updateLogSheet = gql`
         }
     }
 `
-
 export const checkDuplicate = gql`
     query checkDuplicateLogsheetEntry( $name: String!, $date: Date!)
     {

@@ -14,65 +14,7 @@ import NavigationClose  from 'material-ui/svg-icons/navigation/close';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
-    singleLogsheet(id: $currentLogsheet) {
-        id
-        survey_type
-        logsheet_date
-        julian_day
-        location
-        marker
-        observers {
-            id
-            first_name
-            last_name
-            nickname
-        }
-        site {
-            name
-        }
-        north
-        east
-        south
-        west
-        time_start
-        time_end
-        azimuth
-        failure_time
-        receiver_status
-        antenna_status
-        avg_slant_height
-        observed_situation
-        lodging_road_information
-        others
-        antenna {
-            serial_number
-            type
-            part_number
-        }
-        receiver {
-            serial_number
-            type
-            part_number
-        }
-        rod_num
-        rod_correction
-        ip_add
-        netmask
-        gateway
-        dns
-        local_tcp_port
-        latitude
-        longitude
-        contact {
-            id
-            first_name
-            last_name
-            email_add
-            contact_number
-        }
-    }
-  } `;
+import { SingleLogsheetQuery } from '../../gqlFiles/logsheetgql'
 
 class SingleLogsheet extends PureComponent {
     render() {

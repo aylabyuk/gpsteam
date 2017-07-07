@@ -13,9 +13,9 @@
   "author": "Oriel Absin",
   "license": "ISC",
   "dependencies": {
-    "apollo-client": "^1.5.0",
+    "apollo-client": "^1.7.0",
     "apollo-upload-client": "^5.0.0",
-    "autoprefixer": "^7.1.1",
+    "autoprefixer": "^7.1.2",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
     "express": "^4.15.3",
@@ -31,7 +31,7 @@
     "material-ui": "^0.18.6",
     "material-ui-chip-input": "^0.15.0",
     "material-ui-search-bar": "^0.2.4",
-    "mathjs": "^3.14.1",
+    "mathjs": "^3.14.2",
     "moment": "^2.18.1",
     "node-sass": "^4.5.3",
     "normalize.css": "^7.0.0",
@@ -41,7 +41,7 @@
     "pug": "^2.0.0-rc.2",
     "react": "^15.6.1",
     "react-addons-perf": "^15.4.2",
-    "react-apollo": "^1.4.2",
+    "react-apollo": "^1.4.3",
     "react-date-range": "^0.9.4",
     "react-daterange-picker": "^1.1.0",
     "react-dom": "^15.6.1",
@@ -72,7 +72,7 @@
     "url-loader": "^0.5.9",
     "validate.js": "^0.11.1",
     "webpack-dev-middleware": "^1.11.0",
-    "webpack-hot-middleware": "^2.18.1",
+    "webpack-hot-middleware": "^2.18.2",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
@@ -92,7 +92,7 @@
     "eslint": "^4.1.1",
     "eslint-plugin-react": "^7.1.0",
     "html-webpack-plugin": "^2.29.0",
-    "webpack": "^3.0.0",
+    "webpack": "^3.1.0",
     "webpack-dev-server": "^2.5.0"
   }
 }

@@ -29,10 +29,6 @@ class SitePopup extends Component {
             <MuiThemeProvider>
                 <div>
                     <Card style={{width: '500px'}}>
-                        <CardHeader
-                        title={this.props.popup.position.lat + ', ' + this.props.popup.position.lng}
-                        subtitle="Campaign"
-                        />
                         <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
                         <CardText style={{textAlign: 'center'}}>
 

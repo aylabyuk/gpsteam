@@ -9,13 +9,21 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceRoot}/app.js",
-            "cwd": "${workspaceRoot}"
+            "cwd": "${workspaceRoot}",
+            "port": 5858
         },
         {
             "type": "node",
             "request": "attach",
             "name": "Attach to Process",
             "port": 5858
-        }
+        },
+        {
+            "name": "Launch localhost",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:8080/logsheet",
+            "webRoot": "${workspaceRoot}"
+        },
     ]
 }

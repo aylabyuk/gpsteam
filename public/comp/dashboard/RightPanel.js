@@ -23,7 +23,7 @@ class RightPanel extends PureComponent {
 
     render() {
         return (
-            <div style={{width: this.props.dimensions.width, height: this.props.dimensions.height, overflowY: 'scroll', overflowX: 'hidden'}}>
+            <div style={{overflowY: 'scroll', overflowX: 'hidden'}}>
                 <List>
                     {
                         this.props.sites.map((s)=> {

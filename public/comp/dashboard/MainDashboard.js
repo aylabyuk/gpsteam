@@ -5,8 +5,9 @@ import Phmap from '../map/Phmap'
 import RightPanel from './RightPanel'
 
 // ui
-import { AppBar, Paper, List, ListItem} from 'material-ui'
+import { AppBar, Paper, List, ListItem, Drawer} from 'material-ui'
 import { Motion, spring } from 'react-motion'
+import SearchBar from 'material-ui-search-bar'
 
 // leaflet map
 import L from 'leaflet'
@@ -26,7 +27,7 @@ const styles = {
   },
   right: {
     padding: 0,
-    flex: '1 0 0',
+    flex: '.5 0 0',
   }
 };
 
@@ -95,11 +96,9 @@ class MainDashboard extends PureComponent {
         
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
-                <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" />
+                <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" 
+                    iconElementRight={<SearchBar hintText='Search Sites'/>}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
-                    {/*<Paper style={styles.left}>
-                        
-                    </Paper>*/}
                     <Paper style={styles.center}>
                         <AutoSizer>
                             {({width, height}) => (
@@ -107,14 +106,13 @@ class MainDashboard extends PureComponent {
                             )}
                         </AutoSizer>
                     </Paper>
-                    {/*<Paper style={styles.right}>
-                        <AutoSizer>
-                            {({width, height}) => (
-                                <RightPanel sites={sites} dimensions={{width, height}} changeHoveredSite={this.changeHoveredSite}/>
-                            )}
-                        </AutoSizer>
-                    </Paper>*/}
+
                 </div>
+
+                <Drawer openSecondary open={false} >
+                    
+                </Drawer>
+
             </div>
         );
     }

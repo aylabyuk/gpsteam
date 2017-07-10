@@ -63,6 +63,8 @@ class LogsheetViewer extends Component {
                     document: logsheetCreated,
                     updateQuery: (previousResult, { subscriptionData }) => {
 
+                        console.log('DATA:',subscriptionData)
+
                         const receivedObject = subscriptionData.data.logsheetCreated
                         const newResult = _.cloneDeep(previousResult)
                         const indexOfSite = newResult.sitesWithLogsheet.map(function(e) { return e.id; }).indexOf(receivedObject.site.id);

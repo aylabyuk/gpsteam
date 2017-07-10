@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 // ui
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
-import { Drawer } from 'material-ui'
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import L from 'leaflet'
 import scrollIntoView from 'scroll-into-view'
@@ -107,52 +106,53 @@ class Phmap extends Component {
     } else {
       return (
         <div id='this' style={{width: this.props.width, height: this.props.height}}>
-        <Map center={position} zoom={this.state.zoom} minZoom={this.state.minZoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap
-          ref={(leafletmap) => {
-              window.leafletmap = leafletmap
-            }
-          }>
+          <Map center={position} zoom={this.state.zoom} minZoom={this.state.minZoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap
+            ref={(leafletmap) => {
+                window.leafletmap = leafletmap
+              }
+            }>
 
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-          />
-
-          { this.state.clustering ? 
-            <MarkerClusterGroup
-              markers={markers}
-              wrapperOptions={{enableDefaultStyle: true}} 
-              onMarkerClick={(marker) => this.addPopup(marker) }
-              ref={(markerClusterGroup) => {
-
-                if(!this.state.clusterIsSet) {
-                  //console.log(this.state.clusterIsSet)
-                  window.markerClusterGroup = markerClusterGroup.leafletElement 
-                  this.setCluster()
-                }
-
-              }}
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
-                         
-            : markers.map((s)=> {
-              return (<Marker position={[s.lat, s.lng]}  key={s.tooltip} riseOnHover icon={siteIcon}>
-                <Tooltip>
-                  <span>{s.tooltip}</span>
-                </Tooltip>
-              </Marker>)
-            }) }
 
-            {this.state.popup && 
-              <Popup
-                key={`popup-${this.state.popup.key + Math.random()}`}
-                position={this.state.popup.position} 
-                children={
-                  <SitePopup popup={this.state.popup} previewUrl={this.state.previewUrl} remove={this.removePopup}
-                    newPreview={this.handleNewPreview} requestPreview={this.requestForPreview} filename={this.state.filename}/> 
-                  }/>
-            }
+            { this.state.clustering ? 
+              <MarkerClusterGroup
+                markers={markers}
+                wrapperOptions={{enableDefaultStyle: true}} 
+                onMarkerClick={(marker) => this.addPopup(marker) }
+                ref={(markerClusterGroup) => {
 
-        </Map>
+                  if(!this.state.clusterIsSet) {
+                    //console.log(this.state.clusterIsSet)
+                    window.markerClusterGroup = markerClusterGroup.leafletElement 
+                    this.setCluster()
+                  }
+
+                }}
+              />
+                          
+              : markers.map((s)=> {
+                return (<Marker position={[s.lat, s.lng]}  key={s.tooltip} riseOnHover icon={siteIcon}>
+                  <Tooltip>
+                    <span>{s.tooltip}</span>
+                  </Tooltip>
+                </Marker>)
+              }) }
+
+              {this.state.popup && 
+                <Popup
+                  key={`popup-${this.state.popup.key + Math.random()}`}
+                  position={this.state.popup.position} 
+                  children={
+                    <SitePopup popup={this.state.popup} previewUrl={this.state.previewUrl} remove={this.removePopup}
+                      newPreview={this.handleNewPreview} requestPreview={this.requestForPreview} filename={this.state.filename}/> 
+                    }/>
+              }
+
+          </Map>
+
         </div >
       )
     }

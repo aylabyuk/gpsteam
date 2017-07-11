@@ -18,6 +18,8 @@
     "autoprefixer": "^7.1.2",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
+    "d3": "^4.9.1",
+    "d3act": "^3.1.0",
     "express": "^4.15.3",
     "file-loader": "^0.11.2",
     "flatpickr": "^3.0.6",

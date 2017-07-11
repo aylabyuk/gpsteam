@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios'
 
 import Timeseries from './Timeseries'
 
 // ui
-import { AppBar, Paper, Drawer, RaisedButton} from 'material-ui'
+import { AppBar, Paper, Drawer, RaisedButton, TextField} from 'material-ui'
 import { AutoSizer } from 'react-virtualized'
 
 
@@ -31,10 +32,27 @@ const styles = {
     flex: '.5 0 0',
   },
   right: {
-    padding: 0,
+    padding: 10,
     flex: '.5 0 0',
   }
 };
+
+let requestForLine = (data) => { 
+    return new Promise((resolve, reject) => {
+        axios.get(`http://localhost:4040/line/compute`, {
+            params: {
+                data: data
+            }
+        })
+        .then((response) => {
+            resolve(response.data.line)
+        })
+        .catch(function (error) {
+            reject(Error(error))
+		});
+
+    });
+}
 
 class TimeseriesContainer extends Component {
     constructor(props) {
@@ -54,8 +72,25 @@ class TimeseriesContainer extends Component {
                 {date: 2016.6598, east: 650063.8419, north: -1533424.3688, up: -222335.8192},
                 {date: 2016.6626, east: 650063.8489, north: -1533424.3658, up: -222335.8102},
             ],
-            sitename: 'SITE'
+            sitename: 'SITE',
+            earthquake: null,
+            linesEast: [],
+            linesNorth: [],
+            linesUp: []
         };
+    }
+
+    getLines(data) {
+
+       if(this.state.earthquake == null) {
+            requestForLine(data).then((line) => {
+            this.setState({
+                    linesEast: this.state.linesEast.concat([line.east]),
+                    linesNorth: this.state.linesNorth.concat([line.north]),
+                    linesUp: this.state.linesUp.concat([line.up])
+                })
+            })
+       }
     }
 
     handleUpload({target}) {
@@ -90,6 +125,8 @@ class TimeseriesContainer extends Component {
             this.setState({data: jsonFile})
             // console.log(jsonFile);
 
+            this.getLines(jsonFile)
+
         };
 
         reader.onerror = (evt) => {
@@ -98,7 +135,7 @@ class TimeseriesContainer extends Component {
 
         reader.readAsText(file);
 
-        console.log(file)
+        // console.log(file)
         this.setState({ sitename: file.name })
 
     }
@@ -111,13 +148,14 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{margin: 0}}>{this.state.sitename}</h2>
-                            <Timeseries data={this.state.data} name='east'/>
-                            <Timeseries data={this.state.data} name='north'/>
-                            <Timeseries data={this.state.data} name='up'/>
+                            <Timeseries data={this.state.data} line={this.state.linesEast} name='east'/>
+                            <Timeseries data={this.state.data} line={this.state.linesNorth} name='north'/>
+                            <Timeseries data={this.state.data} line={this.state.linesUp} name='up'/>
                         </div>
                     </Paper>
 
-                    <div style={styles.right}>
+                    <div style={{...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.1123' onChange={(e, val)=> this.setState({earthquake: val }) }/>
                         <RaisedButton
                             primary
                             label="Change Data"

@@ -16,6 +16,7 @@
     "apollo-client": "^1.7.0",
     "apollo-upload-client": "^5.0.0",
     "autoprefixer": "^7.1.2",
+    "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
     "d3": "^4.9.1",

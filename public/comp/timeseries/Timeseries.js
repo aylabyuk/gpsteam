@@ -9,10 +9,10 @@ import styles from '../../css/chart.css'
 
 
 const style = {
-  margin: 5,
-  padding: 6,
+  margin: 2,
+  padding: 2,
   width: 1330,
-  height: 292,
+  height: 310,
 };
 
 class Timeseries extends Component {
@@ -35,7 +35,7 @@ class Timeseries extends Component {
 
         return (
             <Paper style={style}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: 2 }}>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 0 }}>
                     <p style={{ verticalAlign: 'text-top', transform: 'rotate(-90deg)', height: 20 }}>{name}(cm)</p>
                     <Chart
                         id='chart'

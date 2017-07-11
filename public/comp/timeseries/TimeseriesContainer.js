@@ -23,7 +23,8 @@ const styles = {
   },
   center: {
     padding: 0,
-    flex: '3 0 0'
+    flex: '3 0 0',
+    textAlign: 'center'
   },
   left: {
     padding: 5,
@@ -52,7 +53,8 @@ class TimeseriesContainer extends Component {
                 {date: 2016.6571, east: 650063.8405, north: -1533424.3651, up: -222335.8365},
                 {date: 2016.6598, east: 650063.8419, north: -1533424.3688, up: -222335.8192},
                 {date: 2016.6626, east: 650063.8489, north: -1533424.3658, up: -222335.8102},
-            ]
+            ],
+            sitename: 'SITE'
         };
     }
 
@@ -64,8 +66,8 @@ class TimeseriesContainer extends Component {
         let jsonFile = []
 
         reader.onload = (event) => {
-            const file = event.target.result;
-            const allLines = file.split(/\r\n|\n/);
+            const fileres = event.target.result;
+            const allLines = fileres.split(/\r\n|\n/);
 
             // Reading line by line
             allLines.map((line) => {
@@ -86,7 +88,8 @@ class TimeseriesContainer extends Component {
             });    
 
             this.setState({data: jsonFile})
-            console.log(jsonFile);
+            // console.log(jsonFile);
+
         };
 
         reader.onerror = (evt) => {
@@ -95,33 +98,36 @@ class TimeseriesContainer extends Component {
 
         reader.readAsText(file);
 
+        console.log(file)
+        this.setState({ sitename: file.name })
+
     }
    
     render() {
 
         return (
             <Paper style={{width: window.innerWidth, height: window.innerHeight}}>
-
-                <AppBar title="Timeseries" iconElementRight={ 
-                            <RaisedButton
-                                label="Upload"
-                                labelPosition="before"
-                                style={styles.button}
-                                containerElement="label" >
-                                    <input type="file" id="file-upload" style={styles.exampleImageInput} accept={'*'} required onChange={this.handleUpload.bind(this)}/>
-                            </RaisedButton>}
-                />
-
-
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: window.innerHeight - 64 }}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: window.innerHeight }}>
                     <Paper>
                         <div style={styles.center}>
-                            
+                            <h2 style={{margin: 0}}>{this.state.sitename}</h2>
                             <Timeseries data={this.state.data} name='east'/>
                             <Timeseries data={this.state.data} name='north'/>
                             <Timeseries data={this.state.data} name='up'/>
                         </div>
                     </Paper>
+
+                    <div style={styles.right}>
+                        <RaisedButton
+                            primary
+                            label="Change Data"
+                            labelPosition="before"
+                            style={styles.button}
+                            containerElement="label" >
+                                <input type="file" id="file-upload" style={styles.exampleImageInput} accept={'*'} required onChange={this.handleUpload.bind(this)}/>
+                        </RaisedButton>
+                    </div>
+
                 </div>
             </Paper>
         );

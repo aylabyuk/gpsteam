@@ -7,7 +7,6 @@ import Timeseries from './Timeseries'
 import { AppBar, Paper, Drawer, RaisedButton, TextField} from 'material-ui'
 import { AutoSizer } from 'react-virtualized'
 
-
 const styles = {
   button: {
     margin: 12,
@@ -76,8 +75,27 @@ class TimeseriesContainer extends Component {
             earthquake: null,
             linesEast: [],
             linesNorth: [],
-            linesUp: []
+            linesUp: [],
+            width: window.innerWidth,
+            height: window.innerHeight,
         };
+        this.updateDimensions = this.updateDimensions.bind(this);
+    }
+
+    updateDimensions() {
+        this.setState({width: window.innerWidth, height: window.innerHeight});
+    }
+
+    componentWillMount() {
+        this.updateDimensions()
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.updateDimensions);
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions);
     }
 
     getLines(data) {
@@ -143,14 +161,14 @@ class TimeseriesContainer extends Component {
     render() {
 
         return (
-            <Paper style={{width: window.innerWidth, height: window.innerHeight}}>
-                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: window.innerHeight }}>
+            <Paper style={{width: this.state.width, height: this.state.height}}>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: this.state.height }}>
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{margin: 0}}>{this.state.sitename}</h2>
-                            <Timeseries data={this.state.data} line={this.state.linesEast} name='east'/>
-                            <Timeseries data={this.state.data} line={this.state.linesNorth} name='north'/>
-                            <Timeseries data={this.state.data} line={this.state.linesUp} name='up'/>
+                            <Timeseries data={this.state.data} lines={this.state.linesEast} name='east'/>
+                            <Timeseries data={this.state.data} lines={this.state.linesNorth} name='north'/>
+                            <Timeseries data={this.state.data} lines={this.state.linesUp} name='up'/>
                         </div>
                     </Paper>
 

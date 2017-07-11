@@ -8,6 +8,10 @@ export default class MyCustomChart {
 
     }
 
+    drawLine(lineData) {
+        console.log('TEST', lineData)
+    }
+
     getColor() {
         return d3.scaleOrdinal(d3.schemeCategory20c);
     }
@@ -19,7 +23,8 @@ export default class MyCustomChart {
         let svg = d3.select(this.el).append('svg')
             .classed(styles.chartSvg, true)
             .attr("width", 1250)
-            .attr("height", 267),
+            .attr("height", 267)
+            .attr("id", data[0].name ),
             width = +svg.attr("width"),
             height = +svg.attr("height");
 

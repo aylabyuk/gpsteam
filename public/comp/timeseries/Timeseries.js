@@ -15,8 +15,7 @@ const style = {
   height: 310,
 };
 
-class Timeseries extends Component {
-
+class Timeseries extends Component {    
     render() {
 
         let { name, data } = this.props

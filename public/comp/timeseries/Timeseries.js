@@ -12,7 +12,7 @@ const style = {
   margin: 5,
   padding: 6,
   width: 1330,
-  height: 260,
+  height: 292,
 };
 
 class Timeseries extends Component {
@@ -45,7 +45,7 @@ class Timeseries extends Component {
                         styles={styles}
                     />
                 </div>
-                <p>year</p>
+                <p style={{margin: 0}}>year</p>
             </Paper>
         );
     }

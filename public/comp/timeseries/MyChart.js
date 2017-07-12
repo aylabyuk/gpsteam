@@ -155,7 +155,7 @@ export default class MyChart {
                 return d.yVal; 
             }) - mean ) 
          
-        console.log(minY, maxY)
+         console.log(minX, maxX)
 
         let beforeX = d3.scaleLinear()
             .domain([d3.min(dataBefore, function (d) {
@@ -165,12 +165,17 @@ export default class MyChart {
             })])
             .range([ minX, maxX ]).nice();
 
+        // focusData = []
+        // dataBefore.map((d) => {
+        //     focusData.push(d.yVal)
+        // })
+        // mean = math.mean(focusData)
         
         let beforeY = d3.scaleLinear()
             .domain([d3.max(dataBefore, function (d) {
-                return d.yVal;
+                return d.yVal - mean;
             }), d3.min(dataBefore, function (d) {
-                return d.yVal;
+                return d.yVal - mean;
             })])
             .range([ maxY , minY ]).nice();
 
@@ -190,7 +195,6 @@ export default class MyChart {
                 .attr("stroke-width", 1.5)
                 .attr("d", beforeLine);
         }
-
 
         function zoomed() {
             view.attr("transform", d3.event.transform);

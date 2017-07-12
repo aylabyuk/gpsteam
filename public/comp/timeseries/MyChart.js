@@ -141,15 +141,6 @@ export default class MyChart {
             }
         })
 
-        // get the mean
-        focusData = [], mean
-        dataBefore.map((d) => {
-            focusData.push(d.yVal)
-        })
-        mean = math.mean(focusData)
-
-        ypercent = (d3.max(dataBefore, function (d) { return d.yVal; }) - mean) * 0.05
-
         let minX = x(d3.min(dataBefore, function (d) {
                 return d.date;
             }))
@@ -159,12 +150,12 @@ export default class MyChart {
 
         let minY = y(d3.min(dataBefore, function (d) {
                 return d.yVal;
-            }) ) - mean
+            }) - mean ) 
         let maxY = y(d3.max(dataBefore, function (d) {
                 return d.yVal; 
-            }) ) - mean
+            }) - mean ) 
          
-        console.log(minY - mean, maxY - mean)
+        console.log(minY, maxY)
 
         let beforeX = d3.scaleLinear()
             .domain([d3.min(dataBefore, function (d) {

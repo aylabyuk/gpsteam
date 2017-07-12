@@ -8,15 +8,13 @@ export default class MyCustomChart {
 
     }
 
-    drawLine(lineData) {
-        console.log('TEST', lineData)
-    }
-
     getColor() {
         return d3.scaleOrdinal(d3.schemeCategory20c);
     }
 
     create(data) {
+
+        // console.log(data)
     
         let styles = this.props.styles
 
@@ -47,6 +45,13 @@ export default class MyCustomChart {
         data.map((d) => {
             d.yVal = d.yVal * 100
         }) 
+
+        //convert yVal of lines to mm also
+        // lines.map((l) => {
+        //     l.map((d) => {
+        //         d.yVal = d.yVal * 100
+        //     })
+        // })
 
         // get the mean
         let focusData = [], mean
@@ -126,20 +131,64 @@ export default class MyCustomChart {
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
 
-        // //draw linear regression line
-        // var line = d3.line()
-        //     .x(function(d) { return x(d.date); })
-        //     .y(function(d) { return y(d.line); });
-            
+        // draw earthquake line
+        let line = d3.line()
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.yVal); })
+
+        let eq = svg.append("path")
+            .datum([ { date: data.earthquake, yVal: -100 }, { date: data.earthquake, yVal: 100 } ])
+            .classed("eq", true)
+            .attr("fill", "none")
+            .attr("stroke", "red" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .attr("d", line);
+        
+        if(data.lines.length >= 1) {
+
         // let lr = svg.append("path")
-        //     .datum(data)
+        //     .datum(data.lines[0])
         //     .classed("lr", true)
         //     .attr("fill", "none")
-        //     .attr("stroke", data[0].line ? "lightgreen" : "")
+        //     .attr("stroke", "lightgreen" )
         //     .attr("stroke-linejoin", "round")
         //     .attr("stroke-linecap", "round")
         //     .attr("stroke-width", 1.5)
         //     .attr("d", line);
+
+            // console.log(data.lines[0])
+            let len = data.lines[0].length-1
+
+            let A = [ data.lines[0][0].date, data.lines[0][0].yVal ]
+            let B = [ data.lines[0][len].date, data.lines[0][len].yVal ]
+            let p0 = pointAtX(A, B, A[0])
+            let p1 = pointAtX(A, B, data.earthquake)
+
+            console.log('p0',p0)
+            console.log('p1',p1)
+
+            let line1 = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return y(d[1]); })
+
+            let lr2 = svg.append("path")
+                .datum([p0, p1])
+                .classed("lr2", true)
+                .attr("fill", "none")
+                .attr("stroke", "lightgreen" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", line1);
+        }
+        
+        function pointAtX(a, b, x) {
+            var slope = (b[1] - a[1]) / (b[0] - a[0])
+            var y = a[1] + (x - a[0]) * slope
+            return [x, y]
+        }
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
@@ -153,6 +202,12 @@ export default class MyCustomChart {
             // svg.select(".lr")
             //     .attr("transform", d3.event.transform)
             //     .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr2")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".eq")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
 

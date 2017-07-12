@@ -18,7 +18,7 @@ const style = {
 class Timeseries extends Component {    
     render() {
 
-        let { name, data } = this.props
+        let { name, data, lines, earthquake } = this.props
         let dd = [], date, yVal, i = 0
         
         data.map((d) => {
@@ -31,6 +31,9 @@ class Timeseries extends Component {
             dd.push({date, yVal, name })
             i++
         })
+
+        dd.lines = lines
+        dd.earthquake = earthquake
 
         return (
             <Paper style={style}>

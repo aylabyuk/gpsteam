@@ -46,13 +46,6 @@ export default class MyCustomChart {
             d.yVal = d.yVal * 1000
         }) 
 
-        //convert yVal of lines to mm also
-        // lines.map((l) => {
-        //     l.map((d) => {
-        //         d.yVal = d.yVal * 100
-        //     })
-        // })
-
         // get the mean
         let focusData = [], mean
         data.map((d) => {
@@ -145,21 +138,61 @@ export default class MyCustomChart {
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
             .attr("d", line);
+
+
+        // PROBLEM: linear lines has different perspective (x, y) than the scatter plot
+
+        let dataBeforeEarthquake = []
+        let dataAfterEarthquake = []
+
+        data.map((d) => {
+            if(d.date <= data.earthquake) { dataBeforeEarthquake.push(d) } 
+        })
+
+        data.map((d) => {
+            if(d.date > data.earthquake) { dataBeforeEarthquake.push(d) } 
+        })
+
+        let lineX = d3.scaleLinear()
+            .domain(d3.extent(dataBeforeEarthquake, function(d) { return d.date }))
+
+        focusData = [], mean
+        dataBeforeEarthquake.map((d) => {
+            focusData.push(d.yVal)
+        })
+        mean = math.mean(focusData)
+
+        let lineY = d3.scaleLinear()
+            .domain([d3.max(dataBeforeEarthquake, function (d) {
+                return d.yVal;
+            }) - mean + ypercent, d3.min(dataBeforeEarthquake, function (d) {
+                return d.yVal;
+            }) - mean - ypercent])
+            .range([margin.top, height - margin.bottom]).nice();
+
+        // let lineY = d3.scaleLinear()
+        //     .domain(d3.extent(dataBeforeEarthquake, function(d) { return d.yVal }))
+
+        let lineXAfter = d3.scaleLinear()
+            .domain(d3.extent(dataAfterEarthquake, function(d) { return d.date }))
+
+        let lineYAfter = d3.scaleLinear()
+            .domain(d3.extent(dataAfterEarthquake, function(d) { return d.yVal }))
         
         if(data.lines.length == 2) {
 
             // DRAW LINE 1
             // console.log(data.lines[0])
-            let len = data.lines[0].length-1
+            let len = data.lines[1].length-1
 
-            let A = [ data.lines[0][0].date, data.lines[0][0].yVal ]
-            let B = [ data.lines[0][len].date, data.lines[0][len].yVal ]
+            let A = [ data.lines[1][0].date, data.lines[1][0].yVal ]
+            let B = [ data.lines[1][len].date, data.lines[1][len].yVal ]
             let p0 = pointAtX(A, B, A[0])
             let p1 = pointAtX(A, B, data.earthquake)
 
             let line1 = d3.line()
-                .x(function(d) { return x(d[0]); })
-                .y(function(d) { return y(d[1]); })
+                .x(function(d) { return lineX(d[0]); })
+                .y(function(d) { return lineY(d[1]); })
 
             let lr2 = svg.append("path")
                 .datum([p0, p1])
@@ -170,24 +203,28 @@ export default class MyCustomChart {
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("d", line1);
-
+            
             // DRAW LINE 2
-            len = data.lines[1].length-1
+            // len = data.lines[1].length-1
 
-             A = [ data.lines[1][0].date, data.lines[1][0].yVal ]
-             B = [ data.lines[1][len].date, data.lines[1][len].yVal ]
-             p0 = pointAtX(A, B, A[0])
-             p1 = pointAtX(A, B, data.earthquake)
+            //  A = [ data.lines[1][0].date, data.lines[1][0].yVal ]
+            //  B = [ data.lines[1][len].date, data.lines[1][len].yVal ]
+            //  p0 = pointAtX(A, B, A[0])
+            //  p1 = pointAtX(A, B, data.earthquake)
 
-            let lr3 = svg.append("path")
-                .datum([p0, p1])
-                .classed("lr3", true)
-                .attr("fill", "none")
-                .attr("stroke", "lightgreen" )
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("stroke-width", 1.5)
-                .attr("d", line1);
+            // let line2 = d3.line()
+            //     .x(function(d) { return lineXAfter(d[0]); })
+            //     .y(function(d) { return lineYAfter(d[1]); })
+
+            // let lr3 = svg.append("path")
+            //     .datum([p0, p1])
+            //     .classed("lr3", true)
+            //     .attr("fill", "none")
+            //     .attr("stroke", "lightgreen" )
+            //     .attr("stroke-linejoin", "round")
+            //     .attr("stroke-linecap", "round")
+            //     .attr("stroke-width", 1.5)
+            //     .attr("d", line2);
         }
         
         function pointAtX(a, b, x) {

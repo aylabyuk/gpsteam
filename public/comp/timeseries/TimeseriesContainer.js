@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
+import regression from 'regression'
 
 import Timeseries from './Timeseries'
 
@@ -108,17 +109,13 @@ class TimeseriesContainer extends Component {
             dates = []
 
         data.map((d) => {
-            // if (d.date <= earthquake) {
-            //     data1.push(d)
-            //     data1dates.push(d.date)
-            // } else if (d.date > earthquake) {
-            //     data2.push(d)
-            //     data2dates.push(d.date)
-            // }
-
-            data1.push(d)
-            data1dates.push(d.date)
-
+            if (d.date <= earthquake) {
+                data1.push(d)
+                data1dates.push(d.date)
+            } else if (d.date > earthquake) {
+                data2.push(d)
+                data2dates.push(d.date)
+            }
         })
 
         // call function to get regression line
@@ -146,29 +143,28 @@ class TimeseriesContainer extends Component {
 
             })
 
-        // requestForLine(data2)
-        //     .then((d) => {
-        //         line2 = d
-        //         // console.log(line2)
-        //         let lineEast = [],
-        //          lineNorth = [],
-        //          lineUp = [], i
+        requestForLine(data2)
+            .then((d) => {
+                line2 = d
+                // console.log(line2)
+                let lineEast = [],
+                 lineNorth = [],
+                 lineUp = [], i
 
-        //         for(i = 0; i <= line2.east.length-1; i++  ) {
-        //             lineEast.push({ date: data2dates[i], yVal: line2.east[i] })
-        //             lineNorth.push({ date: data2dates[i], yVal: line2.north[i] })
-        //             lineUp.push({ date: data2dates[i], yVal: line2.up[i] })
-        //         }
+                for(i = 0; i <= line2.east.length-1; i++  ) {
+                    lineEast.push({ date: data2dates[i], yVal: line2.east[i] })
+                    lineNorth.push({ date: data2dates[i], yVal: line2.north[i] })
+                    lineUp.push({ date: data2dates[i], yVal: line2.up[i] })
+                }
 
-        //         this.setState({
-        //             eastLines: this.state.eastLines.concat([lineEast]),
-        //             northLines: this.state.northLines.concat([lineNorth]),
-        //             upLines: this.state.upLines.concat([lineUp])
-        //         })
-        //     })
+                this.setState({
+                    eastLines: this.state.eastLines.concat([lineEast]),
+                    northLines: this.state.northLines.concat([lineNorth]),
+                    upLines: this.state.upLines.concat([lineUp])
+                })
+            })
 
     }
-
 
 
 

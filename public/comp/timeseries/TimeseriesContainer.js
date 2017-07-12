@@ -108,13 +108,16 @@ class TimeseriesContainer extends Component {
             dates = []
 
         data.map((d) => {
-            if (d.date <= earthquake) {
-                data1.push(d)
-                data1dates.push(d.date)
-            } else if (d.date > earthquake) {
-                data2.push(d)
-                data2dates.push(d.date)
-            }
+            // if (d.date <= earthquake) {
+            //     data1.push(d)
+            //     data1dates.push(d.date)
+            // } else if (d.date > earthquake) {
+            //     data2.push(d)
+            //     data2dates.push(d.date)
+            // }
+
+            data1.push(d)
+            data1dates.push(d.date)
 
         })
 
@@ -143,6 +146,27 @@ class TimeseriesContainer extends Component {
 
             })
 
+        // requestForLine(data2)
+        //     .then((d) => {
+        //         line2 = d
+        //         // console.log(line2)
+        //         let lineEast = [],
+        //          lineNorth = [],
+        //          lineUp = [], i
+
+        //         for(i = 0; i <= line2.east.length-1; i++  ) {
+        //             lineEast.push({ date: data2dates[i], yVal: line2.east[i] })
+        //             lineNorth.push({ date: data2dates[i], yVal: line2.north[i] })
+        //             lineUp.push({ date: data2dates[i], yVal: line2.up[i] })
+        //         }
+
+        //         this.setState({
+        //             eastLines: this.state.eastLines.concat([lineEast]),
+        //             northLines: this.state.northLines.concat([lineNorth]),
+        //             upLines: this.state.upLines.concat([lineUp])
+        //         })
+        //     })
+
     }
 
 
@@ -170,8 +194,8 @@ class TimeseriesContainer extends Component {
                 if (res.length) {
                     jsonFile.push({
                         date: parseFloat(res[0]),
-                        north: parseFloat(res[1]),
-                        east: parseFloat(res[2]),
+                        east: parseFloat(res[1]),
+                        north: parseFloat(res[2]),
                         up: parseFloat(res[3])
                     })
                 }
@@ -188,6 +212,12 @@ class TimeseriesContainer extends Component {
         reader.readAsText(file);
         this.setState({ sitename: file.name })
 
+        // reset states
+        this.setState({
+            eastLines: [],
+            northLines: [],
+            upLines: []
+        })
     }
 
     render() {

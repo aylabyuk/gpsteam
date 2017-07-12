@@ -43,7 +43,7 @@ export default class MyCustomChart {
 
         //convert yVal to mm
         data.map((d) => {
-            d.yVal = d.yVal * 100
+            d.yVal = d.yVal * 1000
         }) 
 
         //convert yVal of lines to mm also
@@ -137,7 +137,7 @@ export default class MyCustomChart {
             .y(function(d) { return y(d.yVal); })
 
         let eq = svg.append("path")
-            .datum([ { date: data.earthquake, yVal: -100 }, { date: data.earthquake, yVal: 100 } ])
+            .datum([ { date: data.earthquake, yVal: -10000 }, { date: data.earthquake, yVal: 10000 } ])
             .classed("eq", true)
             .attr("fill", "none")
             .attr("stroke", "red" )
@@ -146,18 +146,9 @@ export default class MyCustomChart {
             .attr("stroke-width", 1.5)
             .attr("d", line);
         
-        if(data.lines.length >= 1) {
+        if(data.lines.length == 2) {
 
-        // let lr = svg.append("path")
-        //     .datum(data.lines[0])
-        //     .classed("lr", true)
-        //     .attr("fill", "none")
-        //     .attr("stroke", "lightgreen" )
-        //     .attr("stroke-linejoin", "round")
-        //     .attr("stroke-linecap", "round")
-        //     .attr("stroke-width", 1.5)
-        //     .attr("d", line);
-
+            // DRAW LINE 1
             // console.log(data.lines[0])
             let len = data.lines[0].length-1
 
@@ -166,9 +157,6 @@ export default class MyCustomChart {
             let p0 = pointAtX(A, B, A[0])
             let p1 = pointAtX(A, B, data.earthquake)
 
-            console.log('p0',p0)
-            console.log('p1',p1)
-
             let line1 = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return y(d[1]); })
@@ -176,6 +164,24 @@ export default class MyCustomChart {
             let lr2 = svg.append("path")
                 .datum([p0, p1])
                 .classed("lr2", true)
+                .attr("fill", "none")
+                .attr("stroke", "lightgreen" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", line1);
+
+            // DRAW LINE 2
+            len = data.lines[1].length-1
+
+             A = [ data.lines[1][0].date, data.lines[1][0].yVal ]
+             B = [ data.lines[1][len].date, data.lines[1][len].yVal ]
+             p0 = pointAtX(A, B, A[0])
+             p1 = pointAtX(A, B, data.earthquake)
+
+            let lr3 = svg.append("path")
+                .datum([p0, p1])
+                .classed("lr3", true)
                 .attr("fill", "none")
                 .attr("stroke", "lightgreen" )
                 .attr("stroke-linejoin", "round")
@@ -203,6 +209,9 @@ export default class MyCustomChart {
             //     .attr("transform", d3.event.transform)
             //     .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".lr2")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr3")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".eq")

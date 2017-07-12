@@ -3,6 +3,8 @@ import * as d3 from "d3";
 import  Chart  from 'd3act'
 import MyCustomChart from './MyCustomChart'
 
+import MyChart from './MyChart'
+
 //ui
 import Paper from 'material-ui/Paper';
 import styles from '../../css/chart.css'
@@ -18,8 +20,8 @@ const style = {
 class Timeseries extends Component {    
     render() {
 
-        let { name, data, lines, earthquake } = this.props
-        let dd = [], date, yVal, i = 0
+        let { name, data, earthquake, before, after } = this.props
+        let dd = [], date, yVal
         
         data.map((d) => {
             date = d.date
@@ -28,24 +30,43 @@ class Timeseries extends Component {
                 case 'north': yVal = d.north; break;
                 case 'up': yVal = d.up; break;
             }
-            dd.push({date, yVal, name })
-            i++
+            dd.push({date, yVal})
         })
 
-        dd.lines = lines
+        if(before && after){
+
+            let i = 0
+
+            dd.lineBefore = []
+            dd.lineAfter = []
+
+            before[name].map((d) => {
+                dd.lineBefore.push([data[i].date, d ])
+                i++
+            })
+
+            after[name].map((d) => {
+                dd.lineAfter.push([data[i].date, d ])
+                i++
+            })
+
+        }
+
+        
+        dd.name = name
         dd.earthquake = earthquake
 
         return (
             <Paper style={style}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 0 }}>
                     <p style={{ verticalAlign: 'text-top', transform: 'rotate(-90deg)', height: 20 }}>{name}(cm)</p>
-                    <Chart
+                     <Chart
                         id='chart'
                         type={"custom"}
-                        customChart={MyCustomChart}
+                        customChart={MyChart}
                         data={dd}
                         styles={styles}
-                    />
+                    /> 
                 </div>
                 <p style={{margin: 0}}>year</p>
             </Paper>

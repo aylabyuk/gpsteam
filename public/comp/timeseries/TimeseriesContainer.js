@@ -74,14 +74,12 @@ class TimeseriesContainer extends Component {
             ],
             sitename: 'SITE',
             earthquake: 2017.111,
+            linesBefore_enu: null,
+            linesAfter_enu: null,
             width: window.innerWidth,
             height: window.innerHeight,
-            eastLines: [],
-            northLines: [],
-            upLines: []
         };
         this.updateDimensions = this.updateDimensions.bind(this);
-        this.requestLines = this.requestLines.bind(this);
     }
 
     updateDimensions() {
@@ -101,71 +99,33 @@ class TimeseriesContainer extends Component {
     }
 
     requestLines() {
+        let { data, earthquake } = this.state
 
-        // slice data on earthquake date / get dates
-        let { data, earthquake } = this.state,
-            data1 = [], data1dates = [],
-            data2 = [], data2dates = [],
-            dates = []
+        let dataBeforeEarthquake = [],
+            dataAfterEarthquake = []
 
         data.map((d) => {
-            if (d.date <= earthquake) {
-                data1.push(d)
-                data1dates.push(d.date)
-            } else if (d.date > earthquake) {
-                data2.push(d)
-                data2dates.push(d.date)
+            if(d.date < earthquake) {
+                dataBeforeEarthquake.push(d)
+            } else {
+                dataAfterEarthquake.push(d)
             }
         })
 
-        // call function to get regression line
-        let line1, line2
-
-        requestForLine(data1)
-            .then((d) => {
-                line1 = d
-                // console.log(line1)
-                let lineEast = [],
-                 lineNorth = [],
-                 lineUp = [], i
-
-                for(i = 0; i <= line1.east.length-1; i++  ) {
-                    lineEast.push({ date: data1dates[i], yVal: line1.east[i] })
-                    lineNorth.push({ date: data1dates[i], yVal: line1.north[i] })
-                    lineUp.push({ date: data1dates[i], yVal: line1.up[i] })
-                }
-
-                this.setState({
-                    eastLines: this.state.eastLines.concat([lineEast]),
-                    northLines: this.state.northLines.concat([lineNorth]),
-                    upLines: this.state.upLines.concat([lineUp])
+        if(dataBeforeEarthquake.length != 0 && dataAfterEarthquake.length != 0) {
+            requestForLine(dataBeforeEarthquake)
+                .then((lines) => {
+                    this.setState({ linesBefore_enu: lines })
                 })
 
-            })
-
-        requestForLine(data2)
-            .then((d) => {
-                line2 = d
-                // console.log(line2)
-                let lineEast = [],
-                 lineNorth = [],
-                 lineUp = [], i
-
-                for(i = 0; i <= line2.east.length-1; i++  ) {
-                    lineEast.push({ date: data2dates[i], yVal: line2.east[i] })
-                    lineNorth.push({ date: data2dates[i], yVal: line2.north[i] })
-                    lineUp.push({ date: data2dates[i], yVal: line2.up[i] })
-                }
-
-                this.setState({
-                    eastLines: this.state.eastLines.concat([lineEast]),
-                    northLines: this.state.northLines.concat([lineNorth]),
-                    upLines: this.state.upLines.concat([lineUp])
+            requestForLine(dataAfterEarthquake)
+                .then((lines) => {
+                    this.setState({ linesAfter_enu: lines })
                 })
-            })
+        }
 
     }
-
+    
 
 
     handleUpload({ target }) {
@@ -208,25 +168,20 @@ class TimeseriesContainer extends Component {
         reader.readAsText(file);
         this.setState({ sitename: file.name })
 
-        // reset states
-        this.setState({
-            eastLines: [],
-            northLines: [],
-            upLines: []
-        })
     }
 
     render() {
+        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height } = this.state
 
         return (
-            <Paper style={{ width: this.state.width, height: this.state.height }}>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: this.state.height }}>
+            <Paper style={{ width: width, height: height }}>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: height }}>
                     <Paper>
                         <div style={styles.center}>
-                            <h2 style={{ margin: 0 }}>{this.state.sitename}</h2>
-                            <Timeseries data={this.state.data} name='east' lines={this.state.eastLines} earthquake={this.state.earthquake}/>
-                            <Timeseries data={this.state.data} name='north' lines={this.state.northLines} earthquake={this.state.earthquake}/>
-                            <Timeseries data={this.state.data} name='up' lines={this.state.upLines} earthquake={this.state.earthquake}/>
+                            <h2 style={{ margin: 0 }}>{sitename}</h2>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
                         </div>
                     </Paper>
 

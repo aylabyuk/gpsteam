@@ -46,12 +46,7 @@ export default class MyCustomChart {
             d.yVal = d.yVal * 1000
         }) 
 
-        // get the mean
-        let focusData = [], mean
-        data.map((d) => {
-            focusData.push(d.yVal)
-        })
-        mean = math.mean(focusData)
+        
 
         let xallowance = (d3.max(data, function (d) { return d.date;}) - d3.min(data, function (d) {return d.date;})) * .03
 
@@ -62,7 +57,13 @@ export default class MyCustomChart {
                 return d.date + xallowance;
             })])
             .range([margin.left, width - margin.right]).nice();
-
+        
+        // get the mean
+        let focusData = [], mean
+        data.map((d) => {
+            focusData.push(d.yVal)
+        })
+        mean = math.mean(focusData)
 
         let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * 0.05
 

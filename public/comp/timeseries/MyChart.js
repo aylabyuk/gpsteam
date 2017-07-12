@@ -159,12 +159,12 @@ export default class MyChart {
 
         let minY = y(d3.min(dataBefore, function (d) {
                 return d.yVal;
-            }) - mean  )
+            }) ) - mean
         let maxY = y(d3.max(dataBefore, function (d) {
                 return d.yVal; 
-            }) - mean )
+            }) ) - mean
          
-        console.log(data.name + ': ' + minY, maxY)
+        console.log(minY - mean, maxY - mean)
 
         let beforeX = d3.scaleLinear()
             .domain([d3.min(dataBefore, function (d) {
@@ -181,7 +181,7 @@ export default class MyChart {
             }), d3.min(dataBefore, function (d) {
                 return d.yVal;
             })])
-            .range([ minY , maxY ]).nice();
+            .range([ maxY , minY ]).nice();
 
         let beforeLine = d3.line()
             .x(function(d) { return beforeX(d[0]); })

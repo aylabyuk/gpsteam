@@ -32,7 +32,7 @@ export default class MyChart {
         }
 
         let zoom = d3.zoom()
-            .scaleExtent([0, Infinity])
+            .scaleExtent([-1, Infinity])
             .translateExtent([
                 [-100, -100],
                 [width + 100, height + 100]
@@ -60,7 +60,6 @@ export default class MyChart {
         mean = math.mean(focusData)
 
         let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * 0.05
-         
         
         ypercent = 0
 
@@ -135,6 +134,8 @@ export default class MyChart {
             .attr("stroke-width", 1.5)
             .attr("d", line);
 
+        
+        let pre, post
 
         // draw the line before earthquake 
         if(data.earthquake != '' && data.lineBefore) {
@@ -170,16 +171,23 @@ export default class MyChart {
             let beforeLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
+            
+            let A = [ data.lineBefore[0][0], data.lineBefore[0][1] ],
+                B = [ data.lineBefore[data.lineBefore.length-1][0], data.lineBefore[data.lineBefore.length-1][1] ],
+                p0 = pointAtX(A, B, A[0]),
+                p1 = pointAtX(A, B, data.earthquake)
 
             svg.append("path")
-                .datum(data.lineBefore)
                 .classed("lr1", true)
                 .attr("fill", "none")
-                .attr("stroke", "lightgreen" )
+                .attr("stroke", "green" )
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
-                .attr("d", beforeLine);
+                .attr("d", beforeLine([p0, p1]));
+
+            p1[1] = beforeY(p1[1])
+            pre = p1
 
         }
 
@@ -218,16 +226,49 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return afterY(d[1]); })
 
+            let A = [ data.lineAfter[0][0], data.lineAfter[0][1] ],
+                B = [ data.lineAfter[data.lineAfter.length-1][0], data.lineAfter[data.lineAfter.length-1][1] ],
+                p0 = pointAtX(A, B, data.earthquake),
+                p1 = pointAtX(A, B, B[0])
+
             svg.append("path")
-                .datum(data.lineAfter)
                 .classed("lr2", true)
                 .attr("fill", "none")
-                .attr("stroke", "lightgreen" )
+                .attr("stroke", "green" )
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
-                .attr("d", afterLine);
+                .attr("d", afterLine([ p0, p1 ]));
+            
+            
 
+            // draw the line that meets
+            p0[1] = afterY(p0[1])
+            post = p0
+
+            let lineMiddle = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return d[1]; })
+
+            svg.append("path")
+                .classed("lr3", true)
+                .attr("fill", "none")
+                .attr("stroke", "green" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", lineMiddle([ pre, post ]));
+
+            let distance = x(pre[1]) - x(post[1])
+
+            console.log(data.name + ' displacement = ' + distance )
+
+        }
+
+        function pointAtX(a, b, x) {
+            var slope = (b[1] - a[1]) / (b[0] - a[0])
+            var y = a[1] + (x - a[0]) * slope
+            return [x, y]
         }
 
         // if no earthquake
@@ -240,7 +281,7 @@ export default class MyChart {
                 .datum(data.lineBefore)
                 .classed("lr1", true)
                 .attr("fill", "none")
-                .attr("stroke", "lightgreen" )
+                .attr("stroke", "green" )
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
@@ -267,6 +308,9 @@ export default class MyChart {
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".lr2")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr3")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
 

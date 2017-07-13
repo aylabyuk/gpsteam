@@ -183,6 +183,53 @@ export default class MyChart {
 
         }
 
+        // draw the line after earthquake 
+        if(data.earthquake != '' && data.lineAfter) {
+            let dataAfter = []
+            data.map((d) => {
+                if(d.date >= data.earthquake) {
+                    dataAfter.push(d)
+                }
+            })
+
+            // get the mean
+            focusData = [], mean
+            dataAfter.map((d) => {
+                focusData.push(d.yVal)
+            })
+            let afmean = math.mean(focusData)
+
+            let minY = y(d3.min(dataAfter, function (d) {
+                    return d.yVal - mean;
+                })) 
+            let maxY = y(d3.max(dataAfter, function (d) {
+                    return d.yVal - mean; 
+                })) 
+
+            let afterY = d3.scaleLinear()
+                .domain([d3.max(dataAfter, function (d) {
+                    return d.yVal;
+                }) - afmean , d3.min(dataAfter, function (d) {
+                    return d.yVal;
+                }) - afmean ])
+                .range([maxY, minY])
+
+            let afterLine = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return afterY(d[1]); })
+
+            svg.append("path")
+                .datum(data.lineAfter)
+                .classed("lr2", true)
+                .attr("fill", "none")
+                .attr("stroke", "lightgreen" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", afterLine);
+
+        }
+
         // if no earthquake
         if(data.earthquake == '' && data.lineBefore){
             let noEqLine = d3.line()
@@ -217,6 +264,9 @@ export default class MyChart {
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".lr1")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr2")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
 

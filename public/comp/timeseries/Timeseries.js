@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
 import  Chart  from 'd3act'
-import MyCustomChart from './MyCustomChart'
 
 import MyChart from './MyChart'
 
@@ -56,13 +55,12 @@ class Timeseries extends Component {
             let i = 0
 
             dd.lineBefore = []
+            dd.lineAfter = []
 
             before[name].map((d) => {
                 dd.lineBefore.push([data[i].date, d ])
                 i++
             })
-
-
         }
 
         

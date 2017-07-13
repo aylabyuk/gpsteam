@@ -38,7 +38,7 @@ export default class MyChart {
             .scaleExtent([0, Infinity])
             .translateExtent([
                 [-100, -100],
-                [width + 90, height + 100]
+                [width + 100, height + 100]
             ])
             .on("zoom", zoomed);
         
@@ -53,7 +53,7 @@ export default class MyChart {
             }), d3.max(data, function (d) {
                 return d.date;
             })])
-            .range([margin.left, width - margin.right])
+            .range([0, width])
 
         // get the mean
         let focusData = [], mean
@@ -73,7 +73,7 @@ export default class MyChart {
             }) - mean + ypercent, d3.min(data, function (d) {
                 return d.yVal;
             }) - mean - ypercent])
-            .range([margin.top, height - margin.bottom]).nice();
+            .range([0, height]).nice();
 
         let xAxis = d3.axisBottom(x)
             .tickSize(height)
@@ -102,22 +102,7 @@ export default class MyChart {
             
         svg.call(zoom);
 
-        // draw earthquake line
-        let line = d3.line()
-            .x(function(d) { return x(d.date); })
-            .y(function(d) { return y(d.yVal); })
-
-        let eq = svg.append("path")
-            .datum([ { date: data.earthquake, yVal: -999999 }, { date: data.earthquake, yVal: 999999 } ])
-            .classed("eq", true)
-            .attr("fill", "none")
-            .attr("stroke", "red" )
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .attr("d", line);
-
-        //draw the dots
+        // plot the data
         let dots = svg.append("g")
             .classed('dots', true)
             .selectAll(styles.dot)
@@ -134,13 +119,23 @@ export default class MyChart {
             .style("opacity", 1)
             .attr("fill", "white")
             .attr("stroke-width", 2)
-            .attr("stroke", "blue")
-            .on("mouseover", handleMouseover);
-        
-        function handleMouseover(d, i){
-            // console.log(d, i)
-            console.log('date: ' + x(d.date) +', ' + 'yVal: ' + (d.yVal - mean))
-        }
+            .attr("stroke", "blue");
+
+        // draw earthquake line
+        let line = d3.line()
+            .x(function(d) { return x(d.date); })
+            .y(function(d) { return y(d.yVal); })
+
+        let eq = svg.append("path")
+            .datum([ { date: data.earthquake, yVal: -999999 }, { date: data.earthquake, yVal: 999999 } ])
+            .classed("eq", true)
+            .attr("fill", "none")
+            .attr("stroke", "red" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .attr("d", line);
+
 
         // draw the line before earthquake 
         if(data.earthquake != '' && data.lineBefore) {
@@ -159,29 +154,24 @@ export default class MyChart {
             mean = math.mean(focusData)
 
             let minY = y(d3.min(dataBefore, function (d) {
-                    return d.yVal;
-                }) - mean ) 
+                    return d.yVal - mean;
+                })) 
             let maxY = y(d3.max(dataBefore, function (d) {
-                    return d.yVal; 
-                }) - mean ) 
+                    return d.yVal - mean; 
+                })) 
 
             let beforeY = d3.scaleLinear()
-                .domain([d3.max(data, function (d) {
+                .domain([d3.max(dataBefore, function (d) {
                     return d.yVal;
-                }) - mean , d3.min(data, function (d) {
+                }) - mean , d3.min(dataBefore, function (d) {
                     return d.yVal;
                 }) - mean ])
-                .range([margin.top, height - margin.bottom])
+                .range([maxY, minY])
 
             let beforeLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
 
-            let b4 = [] 
-            dataBefore.map((d) => {
-                b4.push([ d.date, d.yVal - mean ])
-            })
-        
             svg.append("path")
                 .datum(data.lineBefore)
                 .classed("lr1", true)
@@ -192,29 +182,6 @@ export default class MyChart {
                 .attr("stroke-width", 1.5)
                 .attr("d", beforeLine);
 
-            let linedots = svg.append("g")
-                .classed('linedots', true)
-                .selectAll(styles.dot)
-                .data(data.lineBefore)
-                .enter().append("circle")
-                .classed(styles.dot, true)
-                .attr("r", 4)
-                .attr("cx", function (d) {
-                    return x(d[0]);
-                })
-                .attr("cy", function (d) {
-                    return beforeY(d[1]);
-                })
-                .style("opacity", 1)
-                .attr("fill", "red")
-                .attr("stroke-width", 2)
-                .attr("stroke", "red")
-                .on("mouseover", handleMouseoverLine);
-
-            function handleMouseoverLine(d, i){
-                // console.log(d, i)
-                console.log('date: ' + x(d[0]) +', ' + 'yVal: ' + (d[1]))
-            }
         }
 
         // if no earthquake
@@ -222,7 +189,7 @@ export default class MyChart {
             let noEqLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return y(d[1]); })
-
+            
             svg.append("path")
                 .datum(data.lineBefore)
                 .classed("lr1", true)
@@ -233,45 +200,15 @@ export default class MyChart {
                 .attr("stroke-width", 1.5)
                 .attr("d", noEqLine);
 
-            let linedots = svg.append("g")
-                .classed('linedots', true)
-                .selectAll(styles.dot)
-                .data(data.lineBefore)
-                .enter().append("circle")
-                .classed(styles.dot, true)
-                .attr("r", 4)
-                .attr("cx", function (d) {
-                    return x(d[0]);
-                })
-                .attr("cy", function (d) {
-                    return y(d[1]);
-                })
-                .style("opacity", 1)
-                .attr("fill", "red")
-                .attr("stroke-width", 2)
-                .attr("stroke", "red")
-                .on("mouseover", handleMouseoverLine);
-
-            function handleMouseoverLine(d, i){
-                // console.log(d, i)
-                console.log('date: ' + x(d[0]) +', ' + 'yVal: ' + (d[1]))
-            }
         }
 
 
         function zoomed() {
             view.attr("transform", d3.event.transform);
+
             svg.select(".dots")
                 .attr("transform", d3.event.transform);
             svg.selectAll(".dots circle").attr("r", function () {
-                return (4 / d3.event.transform.k);
-            }).attr("stroke-width", function () {
-                return (2 / d3.event.transform.k);
-            });
-
-            svg.select(".linedots")
-                .attr("transform", d3.event.transform);
-            svg.selectAll(".linedots circle").attr("r", function () {
                 return (4 / d3.event.transform.k);
             }).attr("stroke-width", function () {
                 return (2 / d3.event.transform.k);
@@ -283,6 +220,7 @@ export default class MyChart {
             svg.select(".lr1")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
+
             gX.call(xAxis.scale(d3.event.transform.rescaleX(x)));
             gY.call(yAxis.scale(d3.event.transform.rescaleY(y)));
 

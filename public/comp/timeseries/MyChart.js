@@ -35,7 +35,7 @@ export default class MyChart {
         }
 
         let zoom = d3.zoom()
-            .scaleExtent([1, Infinity])
+            .scaleExtent([0, Infinity])
             .translateExtent([
                 [-100, -100],
                 [width + 90, height + 100]
@@ -53,7 +53,7 @@ export default class MyChart {
             }), d3.max(data, function (d) {
                 return d.date;
             })])
-            .range([margin.left, width - margin.right]).nice();
+            .range([margin.left, width - margin.right])
 
         // get the mean
         let focusData = [], mean
@@ -63,6 +63,9 @@ export default class MyChart {
         mean = math.mean(focusData)
 
         let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * 0.05
+         
+        
+        ypercent = 0
 
         let y = d3.scaleLinear()
             .domain([d3.max(data, function (d) {
@@ -131,7 +134,13 @@ export default class MyChart {
             .style("opacity", 1)
             .attr("fill", "white")
             .attr("stroke-width", 2)
-            .attr("stroke", "blue");
+            .attr("stroke", "blue")
+            .on("mouseover", handleMouseover);
+        
+        function handleMouseover(d, i){
+            // console.log(d, i)
+            console.log('date: ' + x(d.date) +', ' + 'yVal: ' + (d.yVal - mean))
+        }
 
         // draw the line before earthquake 
         if(data.earthquake != '' && data.lineBefore) {
@@ -142,30 +151,6 @@ export default class MyChart {
                 }
             })
 
-            let minX = x(d3.min(dataBefore, function (d) {
-                    return d.date;
-                }))
-            let maxX = x(d3.max(dataBefore, function (d) {
-                    return d.date;
-                }))
-
-            let minY = y(d3.min(dataBefore, function (d) {
-                    return d.yVal;
-                }) - mean ) 
-            let maxY = y(d3.max(dataBefore, function (d) {
-                    return d.yVal; 
-                }) - mean ) 
-            
-            console.log(minX, maxX)
-
-            let beforeX = d3.scaleLinear()
-                .domain([d3.min(dataBefore, function (d) {
-                    return d.date;
-                }), d3.max(dataBefore, function (d) {
-                    return d.date;
-                })])
-                .range([ minX, maxX ]).nice();
-
             // get the mean
             focusData = [], mean
             dataBefore.map((d) => {
@@ -173,7 +158,12 @@ export default class MyChart {
             })
             mean = math.mean(focusData)
 
-            ypercent = (d3.max(dataBefore, function (d) { return d.yVal; }) - mean) * 0.05
+            let minY = y(d3.min(dataBefore, function (d) {
+                    return d.yVal;
+                }) - mean ) 
+            let maxY = y(d3.max(dataBefore, function (d) {
+                    return d.yVal; 
+                }) - mean ) 
 
             let beforeY = d3.scaleLinear()
                 .domain([d3.max(data, function (d) {
@@ -181,13 +171,17 @@ export default class MyChart {
                 }) - mean , d3.min(data, function (d) {
                     return d.yVal;
                 }) - mean ])
-                .range([margin.top, height - margin.bottom]).nice();
-
+                .range([margin.top, height - margin.bottom])
 
             let beforeLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
 
+            let b4 = [] 
+            dataBefore.map((d) => {
+                b4.push([ d.date, d.yVal - mean ])
+            })
+        
             svg.append("path")
                 .datum(data.lineBefore)
                 .classed("lr1", true)
@@ -197,6 +191,30 @@ export default class MyChart {
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("d", beforeLine);
+
+            let linedots = svg.append("g")
+                .classed('linedots', true)
+                .selectAll(styles.dot)
+                .data(data.lineBefore)
+                .enter().append("circle")
+                .classed(styles.dot, true)
+                .attr("r", 4)
+                .attr("cx", function (d) {
+                    return x(d[0]);
+                })
+                .attr("cy", function (d) {
+                    return beforeY(d[1]);
+                })
+                .style("opacity", 1)
+                .attr("fill", "red")
+                .attr("stroke-width", 2)
+                .attr("stroke", "red")
+                .on("mouseover", handleMouseoverLine);
+
+            function handleMouseoverLine(d, i){
+                // console.log(d, i)
+                console.log('date: ' + x(d[0]) +', ' + 'yVal: ' + (d[1]))
+            }
         }
 
         // if no earthquake
@@ -214,6 +232,30 @@ export default class MyChart {
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("d", noEqLine);
+
+            let linedots = svg.append("g")
+                .classed('linedots', true)
+                .selectAll(styles.dot)
+                .data(data.lineBefore)
+                .enter().append("circle")
+                .classed(styles.dot, true)
+                .attr("r", 4)
+                .attr("cx", function (d) {
+                    return x(d[0]);
+                })
+                .attr("cy", function (d) {
+                    return y(d[1]);
+                })
+                .style("opacity", 1)
+                .attr("fill", "red")
+                .attr("stroke-width", 2)
+                .attr("stroke", "red")
+                .on("mouseover", handleMouseoverLine);
+
+            function handleMouseoverLine(d, i){
+                // console.log(d, i)
+                console.log('date: ' + x(d[0]) +', ' + 'yVal: ' + (d[1]))
+            }
         }
 
 

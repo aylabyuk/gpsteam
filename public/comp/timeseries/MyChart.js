@@ -14,9 +14,6 @@ export default class MyChart {
 
     create(data){
 
-        
-        // data.lineBefore && console.log(data.lineBefore)
-
         let styles = this.props.styles
 
         let svg = d3.select(this.el).append('svg')
@@ -126,6 +123,8 @@ export default class MyChart {
             .x(function(d) { return x(d.date); })
             .y(function(d) { return y(d.yVal); })
 
+            
+
         let eq = svg.append("path")
             .datum([ { date: data.earthquake, yVal: -999999 }, { date: data.earthquake, yVal: 999999 } ])
             .classed("eq", true)
@@ -151,7 +150,7 @@ export default class MyChart {
             dataBefore.map((d) => {
                 focusData.push(d.yVal)
             })
-            mean = math.mean(focusData)
+            let b4mean = math.mean(focusData)
 
             let minY = y(d3.min(dataBefore, function (d) {
                     return d.yVal - mean;
@@ -163,9 +162,9 @@ export default class MyChart {
             let beforeY = d3.scaleLinear()
                 .domain([d3.max(dataBefore, function (d) {
                     return d.yVal;
-                }) - mean , d3.min(dataBefore, function (d) {
+                }) - b4mean , d3.min(dataBefore, function (d) {
                     return d.yVal;
-                }) - mean ])
+                }) - b4mean ])
                 .range([maxY, minY])
 
             let beforeLine = d3.line()

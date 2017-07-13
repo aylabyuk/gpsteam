@@ -125,8 +125,16 @@ class TimeseriesContainer extends Component {
         }
 
     }
-    
 
+    requestLineNoEq() {
+        let { data } = this.state
+
+        requestForLine(data)
+            .then((lines) => {
+                this.setState({ linesBefore_enu: lines })
+            })
+
+    }
 
     handleUpload({ target }) {
 
@@ -192,7 +200,7 @@ class TimeseriesContainer extends Component {
                             primary
                             label="Show Displacement"
                             style={styles.button}
-                            onTouchTap={() => this.requestLines()} />
+                            onTouchTap={() => earthquake ? this.requestLines() : this.requestLineNoEq()} />
 
 
                         <RaisedButton

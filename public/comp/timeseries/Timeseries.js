@@ -52,6 +52,19 @@ class Timeseries extends Component {
 
         }
 
+        if(!earthquake && before){
+            let i = 0
+
+            dd.lineBefore = []
+
+            before[name].map((d) => {
+                dd.lineBefore.push([data[i].date, d ])
+                i++
+            })
+
+
+        }
+
         
         dd.name = name
         dd.earthquake = earthquake

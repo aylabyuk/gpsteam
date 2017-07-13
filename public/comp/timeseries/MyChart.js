@@ -133,58 +133,61 @@ export default class MyChart {
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
 
-        // draw the line before earthquake
-        let dataBefore = []
-        data.map((d) => {
-            if(d.date < data.earthquake) {
-                dataBefore.push(d)
-            }
-        })
+        // draw the line before earthquake 
+        if(data.earthquake != '' && data.lineBefore) {
+            let dataBefore = []
+            data.map((d) => {
+                if(d.date < data.earthquake) {
+                    dataBefore.push(d)
+                }
+            })
 
-        let minX = x(d3.min(dataBefore, function (d) {
-                return d.date;
-            }))
-        let maxX = x(d3.max(dataBefore, function (d) {
-                return d.date;
-            }))
+            let minX = x(d3.min(dataBefore, function (d) {
+                    return d.date;
+                }))
+            let maxX = x(d3.max(dataBefore, function (d) {
+                    return d.date;
+                }))
 
-        let minY = y(d3.min(dataBefore, function (d) {
-                return d.yVal;
-            }) - mean ) 
-        let maxY = y(d3.max(dataBefore, function (d) {
-                return d.yVal; 
-            }) - mean ) 
-         
-         console.log(minX, maxX)
+            let minY = y(d3.min(dataBefore, function (d) {
+                    return d.yVal;
+                }) - mean ) 
+            let maxY = y(d3.max(dataBefore, function (d) {
+                    return d.yVal; 
+                }) - mean ) 
+            
+            console.log(minX, maxX)
 
-        let beforeX = d3.scaleLinear()
-            .domain([d3.min(dataBefore, function (d) {
-                return d.date;
-            }), d3.max(dataBefore, function (d) {
-                return d.date;
-            })])
-            .range([ minX, maxX ]).nice();
+            let beforeX = d3.scaleLinear()
+                .domain([d3.min(dataBefore, function (d) {
+                    return d.date;
+                }), d3.max(dataBefore, function (d) {
+                    return d.date;
+                })])
+                .range([ minX, maxX ]).nice();
 
-        // focusData = []
-        // dataBefore.map((d) => {
-        //     focusData.push(d.yVal)
-        // })
-        // mean = math.mean(focusData)
-        
-        let beforeY = d3.scaleLinear()
-            .domain([d3.max(dataBefore, function (d) {
-                return d.yVal - mean;
-            }), d3.min(dataBefore, function (d) {
-                return d.yVal - mean;
-            })])
-            .range([ maxY , minY ]).nice();
+            // get the mean
+            focusData = [], mean
+            dataBefore.map((d) => {
+                focusData.push(d.yVal)
+            })
+            mean = math.mean(focusData)
 
-        let beforeLine = d3.line()
-            .x(function(d) { return beforeX(d[0]); })
-            .y(function(d) { return beforeY(d[1]); })
+            ypercent = (d3.max(dataBefore, function (d) { return d.yVal; }) - mean) * 0.05
 
-        
-        if(data.lineBefore) {
+            let beforeY = d3.scaleLinear()
+                .domain([d3.max(data, function (d) {
+                    return d.yVal;
+                }) - mean , d3.min(data, function (d) {
+                    return d.yVal;
+                }) - mean ])
+                .range([margin.top, height - margin.bottom]).nice();
+
+
+            let beforeLine = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return beforeY(d[1]); })
+
             svg.append("path")
                 .datum(data.lineBefore)
                 .classed("lr1", true)
@@ -196,6 +199,24 @@ export default class MyChart {
                 .attr("d", beforeLine);
         }
 
+        // if no earthquake
+        if(data.earthquake == '' && data.lineBefore){
+            let noEqLine = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return y(d[1]); })
+
+            svg.append("path")
+                .datum(data.lineBefore)
+                .classed("lr1", true)
+                .attr("fill", "none")
+                .attr("stroke", "lightgreen" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", noEqLine);
+        }
+
+
         function zoomed() {
             view.attr("transform", d3.event.transform);
             svg.select(".dots")
@@ -205,6 +226,15 @@ export default class MyChart {
             }).attr("stroke-width", function () {
                 return (2 / d3.event.transform.k);
             });
+
+            svg.select(".linedots")
+                .attr("transform", d3.event.transform);
+            svg.selectAll(".linedots circle").attr("r", function () {
+                return (4 / d3.event.transform.k);
+            }).attr("stroke-width", function () {
+                return (2 / d3.event.transform.k);
+            });
+
             svg.select(".eq")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);

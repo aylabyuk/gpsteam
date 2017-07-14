@@ -239,8 +239,7 @@ export default class MyChart {
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("d", afterLine([ p0, p1 ]));
-            
-            
+
 
             // draw the line that meets
             p0[1] = afterY(p0[1])
@@ -250,6 +249,15 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return d[1]; })
 
+            // svg.append("path")
+            //     .classed("lr3", true)
+            //     .attr("fill", "none")
+            //     .attr("stroke", "green" )
+            //     .attr("stroke-linejoin", "round")
+            //     .attr("stroke-linecap", "round")
+            //     .attr("stroke-width", 1.5)
+            //     .attr("d", lineMiddle([ pre, post ]));
+            
             svg.append("path")
                 .classed("lr3", true)
                 .attr("fill", "none")
@@ -257,11 +265,11 @@ export default class MyChart {
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
-                .attr("d", lineMiddle([ pre, post ]));
+                .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
 
-            let distance = x(pre[1]) - x(post[1])
-
-            console.log(data.name + ' displacement = ' + distance )
+            let distance = afterY(dataAfter[0].yVal - afmean) - pre[1]
+            
+            console.log('distance ' + data.name  + ': ' + y(distance))
 
         }
 

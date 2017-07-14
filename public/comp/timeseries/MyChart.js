@@ -270,6 +270,14 @@ export default class MyChart {
             let distance = afterY(dataAfter[0].yVal - afmean) - pre[1]
             
             console.log('distance ' + data.name  + ': ' + y(distance))
+            
+            let distancelabel = svg.append('text')
+                .attr('x', 1000)
+                .attr('y', 25)
+                .attr('fill', '#000')
+                .classed('distanceLabel', true)
+                .text('distance: ' + y(distance))
+
 
         }
 

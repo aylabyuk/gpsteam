@@ -180,6 +180,7 @@ class TimeseriesContainer extends Component {
 
     render() {
         let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height } = this.state
+        let { enu_distance } = this.props
 
         return (
             <Paper style={{ width: width, height: height }}>
@@ -194,6 +195,7 @@ class TimeseriesContainer extends Component {
                     </Paper>
 
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+
                         <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.111' defaultValue='2017.111' onChange={(e, val) => this.setState({ earthquake: val })} />
 
                         <RaisedButton

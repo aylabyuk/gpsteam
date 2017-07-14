@@ -8,7 +8,6 @@ import MyChart from './MyChart'
 import Paper from 'material-ui/Paper';
 import styles from '../../css/chart.css'
 
-
 const style = {
   margin: 2,
   padding: 2,
@@ -16,7 +15,8 @@ const style = {
   height: 310,
 };
 
-class Timeseries extends Component {    
+class Timeseries extends Component {   
+    
     render() {
 
         let { name, data, earthquake, before, after } = this.props
@@ -63,7 +63,6 @@ class Timeseries extends Component {
             })
         }
 
-        
         dd.name = name
         dd.earthquake = earthquake
 

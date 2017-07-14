@@ -73,7 +73,7 @@ class TimeseriesContainer extends Component {
                 { date: 2016.6626, east: 650063.8489, north: -1533424.3658, up: -222335.8102 },
             ],
             sitename: 'SITE',
-            earthquake: 2017.111,
+            earthquake: 2017.1123,
             linesBefore_enu: null,
             linesAfter_enu: null,
             width: window.innerWidth,
@@ -188,15 +188,15 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{ margin: 0 }}>{sitename}</h2>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
                             <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
                             <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
                         </div>
                     </Paper>
 
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
 
-                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.111' defaultValue='2017.111' onChange={(e, val) => this.setState({ earthquake: val })} />
+                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.1123' defaultValue='2017.1123' onChange={(e, val) => this.setState({ earthquake: val })} />
 
                         <RaisedButton
                             primary

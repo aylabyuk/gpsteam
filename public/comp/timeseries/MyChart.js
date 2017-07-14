@@ -195,7 +195,7 @@ export default class MyChart {
         if(data.earthquake != '' && data.lineAfter) {
             let dataAfter = []
             data.map((d) => {
-                if(d.date >= data.earthquake) {
+                if(d.date > data.earthquake) {
                     dataAfter.push(d)
                 }
             })
@@ -231,15 +231,14 @@ export default class MyChart {
                 p0 = pointAtX(A, B, data.earthquake),
                 p1 = pointAtX(A, B, B[0])
 
-            svg.append("path")
-                .classed("lr2", true)
-                .attr("fill", "none")
-                .attr("stroke", "green" )
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("stroke-width", 1.5)
-                .attr("d", afterLine([ p0, p1 ]));
-
+            // svg.append("path")
+            //     .classed("lr2", true)
+            //     .attr("fill", "none")
+            //     .attr("stroke", "green" )
+            //     .attr("stroke-linejoin", "round")
+            //     .attr("stroke-linecap", "round")
+            //     .attr("stroke-width", 1.5)
+            //     .attr("d", afterLine([ p0, p1 ]));
 
             // draw the line that meets
             p0[1] = afterY(p0[1])
@@ -249,6 +248,7 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return d[1]; })
 
+            // SET 0
             // svg.append("path")
             //     .classed("lr3", true)
             //     .attr("fill", "none")
@@ -258,7 +258,20 @@ export default class MyChart {
             //     .attr("stroke-width", 1.5)
             //     .attr("d", lineMiddle([ pre, post ]));
             
-            svg.append("path")
+            // SET 1
+            // svg.append("path")
+            //     .classed("lr3", true)
+            //     .attr("fill", "none")
+            //     .attr("stroke", "green" )
+            //     .attr("stroke-linejoin", "round")
+            //     .attr("stroke-linecap", "round")
+            //     .attr("stroke-width", 1.5)
+            //     .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
+
+            // // SET 2
+            let distance = afterY(dataAfter[0].yVal - afmean) - pre[1]
+
+            let lr3 = svg.append("path")
                 .classed("lr3", true)
                 .attr("fill", "none")
                 .attr("stroke", "green" )
@@ -266,20 +279,29 @@ export default class MyChart {
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
-
-            let distance = afterY(dataAfter[0].yVal - afmean) - pre[1]
             
-            console.log('distance ' + data.name  + ': ' + y(distance))
-            
-            let distancelabel = svg.append('text')
-                .attr('x', 1000)
-                .attr('y', 25)
-                .attr('fill', '#000')
-                .classed('distanceLabel', true)
-                .text('distance: ' + y(distance))
+            console.log(lr3)
 
+            // append distance label
+            // if(distance) { console.log('displacement ' + data.name  + ': ' + distance)
+            
+            //     let distancelabel = svg.append('text')
+            //         .attr('x', 1000)
+            //         .attr('y', 25)
+            //         .attr('fill', '#000')
+            //         .classed('distanceLabel', true)
+            //         .text('distance: ' + y(distance))
+            // }
 
         }
+
+        //append label
+        let namelabel = svg.append('text')
+            .attr('x', 35)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .classed('namelabel', true)
+            .text(data.name.toUpperCase())
 
         function pointAtX(a, b, x) {
             var slope = (b[1] - a[1]) / (b[0] - a[0])

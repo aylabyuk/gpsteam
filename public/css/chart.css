@@ -38,6 +38,11 @@
     opacity: .6;
 }
 
+.namelabel {
+  font-weight: bold;
+  font-size: 20px;
+}
+
 :local(.timeSeriesContainer) {
   background-color: slategray;
   overflow-x: hidden;

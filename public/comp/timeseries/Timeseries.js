@@ -69,7 +69,7 @@ class Timeseries extends Component {
         return (
             <Paper style={style}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 0 }}>
-                    <p style={{ verticalAlign: 'text-top', transform: 'rotate(-90deg)', height: 20 }}>{name}(cm)</p>
+                    <p style={{ verticalAlign: 'text-top', transform: 'rotate(-90deg)', height: 20 }}>disp(mm)</p>
                      <Chart
                         id='chart'
                         type={"custom"}

@@ -59,18 +59,7 @@ class TimeseriesContainer extends Component {
         super(props);
         this.state = {
             data: [
-                { date: 2011.1862, east: 650064.1380, north: -1533424.5433, up: -222335.9382 },
-                { date: 2011.1889, east: 650064.1159, north: -1533424.5440, up: -222335.9432 },
-                { date: 2011.1916, east: 650064.1135, north: -1533424.5387, up: -222335.9439 },
-                { date: 2011.1944, east: 650064.1207, north: -1533424.5430, up: -222335.9391 },
-                { date: 2011.1971, east: 650064.1161, north: -1533424.5250, up: -222335.9664 },
-                { date: 2015.5640, east: 650063.9089, north: -1533424.3976, up: -222335.8077 },
-                { date: 2015.5667, east: 650063.8879, north: -1533424.4018, up: -222335.8002 },
-                { date: 2015.5695, east: 650063.8879, north: -1533424.3893, up: -222335.8798 },
-                { date: 2016.6543, east: 650063.8366, north: -1533424.3673, up: -222335.8386 },
-                { date: 2016.6571, east: 650063.8405, north: -1533424.3651, up: -222335.8365 },
-                { date: 2016.6598, east: 650063.8419, north: -1533424.3688, up: -222335.8192 },
-                { date: 2016.6626, east: 650063.8489, north: -1533424.3658, up: -222335.8102 },
+                { date: 0, east: 0, north: 0, up: 0 },
             ],
             sitename: 'SITE',
             earthquake: 2017.1123,
@@ -174,7 +163,11 @@ class TimeseriesContainer extends Component {
         };
 
         reader.readAsText(file);
-        this.setState({ sitename: file.name })
+        this.setState({ 
+            sitename: file.name,
+            linesBefore_enu: null,
+            linesAfter_enu: null,
+         })
 
     }
 

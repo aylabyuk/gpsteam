@@ -289,14 +289,14 @@ export default class MyChart {
                     .attr('y', 25)
                     .attr('fill', '#000')
                     .classed('distanceLabel', true)
-                    .text('distance: ' + distance)
+                    .text('displacement: ' + distance.toFixed(4))
             }
 
         }
 
         //append label
         let namelabel = svg.append('text')
-            .attr('x', 35)
+            .attr('x', 28)
             .attr('y', 25)
             .attr('fill', '#000')
             .classed('namelabel', true)

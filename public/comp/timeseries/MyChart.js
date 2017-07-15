@@ -269,7 +269,7 @@ export default class MyChart {
             //     .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
 
             // // SET 2
-            let distance = afterY(dataAfter[0].yVal - afmean) - pre[1]
+            let distance = y.invert(afterY(dataAfter[0].yVal - afmean)) - y.invert(pre[1])
 
             let lr3 = svg.append("path")
                 .classed("lr3", true)
@@ -280,18 +280,17 @@ export default class MyChart {
                 .attr("stroke-width", 1.5)
                 .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
             
-            console.log(lr3)
 
             // append distance label
-            // if(distance) { console.log('displacement ' + data.name  + ': ' + distance)
+            if(distance) { console.log('displacement ' + data.name  + ': ' + distance)
             
-            //     let distancelabel = svg.append('text')
-            //         .attr('x', 1000)
-            //         .attr('y', 25)
-            //         .attr('fill', '#000')
-            //         .classed('distanceLabel', true)
-            //         .text('distance: ' + y(distance))
-            // }
+                let distancelabel = svg.append('text')
+                    .attr('x', 1000)
+                    .attr('y', 25)
+                    .attr('fill', '#000')
+                    .classed('distanceLabel', true)
+                    .text('distance: ' + distance)
+            }
 
         }
 
@@ -302,6 +301,9 @@ export default class MyChart {
             .attr('fill', '#000')
             .classed('namelabel', true)
             .text(data.name.toUpperCase())
+        
+    
+
 
         function pointAtX(a, b, x) {
             var slope = (b[1] - a[1]) / (b[0] - a[0])

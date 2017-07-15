@@ -5,7 +5,7 @@ import regression from 'regression'
 import Timeseries from './Timeseries'
 
 // ui
-import { AppBar, Paper, Drawer, RaisedButton, TextField } from 'material-ui'
+import { AppBar, Paper, Drawer, RaisedButton, TextField, Slider } from 'material-ui'
 import { AutoSizer } from 'react-virtualized'
 
 const styles = {
@@ -65,6 +65,7 @@ class TimeseriesContainer extends Component {
             earthquake: 2017.1123,
             linesBefore_enu: null,
             linesAfter_enu: null,
+            dotsOpacity: 1,
             width: window.innerWidth,
             height: window.innerHeight,
         };
@@ -171,8 +172,12 @@ class TimeseriesContainer extends Component {
 
     }
 
+     handleDotsOpacity = (event, value) => {
+        this.setState({dotsOpacity: value});
+    };
+
     render() {
-        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height } = this.state
+        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height, dotsOpacity } = this.state
         let { enu_distance } = this.props
 
         return (
@@ -181,23 +186,22 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{ margin: 0 }}>{sitename}</h2>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='north'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='east'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='up'/>
                         </div>
                     </Paper>
-
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-
+                        <div>
+                            <p>dots opacity: {this.state.dotsOpacity}</p>
+                            <Slider value={this.state.dotsOpacity} onChange={this.handleDotsOpacity} />
+                        </div>
                         <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.1123' defaultValue='2017.1123' onChange={(e, val) => this.setState({ earthquake: val })} />
-
                         <RaisedButton
                             primary
                             label="Show Displacement"
                             style={styles.button}
                             onTouchTap={() => earthquake ? this.requestLines() : this.requestLineNoEq()} />
-
-
                         <RaisedButton
                             primary
                             label="Change Data"

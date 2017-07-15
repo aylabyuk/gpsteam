@@ -77,7 +77,7 @@ export default class MyChart {
             .tickFormat(d3.format(" "));
 
         let yAxis = d3.axisRight(y)
-            .ticks(4)
+            .ticks(6)
             .tickSize(width)
             .tickPadding(8 - width);
         
@@ -112,7 +112,7 @@ export default class MyChart {
             .attr("cy", function (d) {
                 return y(d.yVal - mean);
             })
-            .style("opacity", 1)
+            .style("opacity", data.dotsOpacity)
             .attr("fill", "white")
             .attr("stroke-width", 2)
             .attr("stroke", "blue");
@@ -231,16 +231,8 @@ export default class MyChart {
                 p0 = pointAtX(A, B, data.earthquake),
                 p1 = pointAtX(A, B, B[0])
 
-            // svg.append("path")
-            //     .classed("lr2", true)
-            //     .attr("fill", "none")
-            //     .attr("stroke", "green" )
-            //     .attr("stroke-linejoin", "round")
-            //     .attr("stroke-linecap", "round")
-            //     .attr("stroke-width", 1.5)
-            //     .attr("d", afterLine([ p0, p1 ]));
-
-            // draw the line that meets
+            
+            
             p0[1] = afterY(p0[1])
             post = p0
 
@@ -248,29 +240,11 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return d[1]; })
 
-            // SET 0
-            // svg.append("path")
-            //     .classed("lr3", true)
-            //     .attr("fill", "none")
-            //     .attr("stroke", "green" )
-            //     .attr("stroke-linejoin", "round")
-            //     .attr("stroke-linecap", "round")
-            //     .attr("stroke-width", 1.5)
-            //     .attr("d", lineMiddle([ pre, post ]));
             
-            // SET 1
-            // svg.append("path")
-            //     .classed("lr3", true)
-            //     .attr("fill", "none")
-            //     .attr("stroke", "green" )
-            //     .attr("stroke-linejoin", "round")
-            //     .attr("stroke-linecap", "round")
-            //     .attr("stroke-width", 1.5)
-            //     .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
-
-            // // SET 2
+            // get the distance ( final - initial )
             let distance = y.invert(afterY(dataAfter[0].yVal - afmean)) - y.invert(pre[1])
-
+            
+            // draw the distance line
             let lr3 = svg.append("path")
                 .classed("lr3", true)
                 .attr("fill", "none")
@@ -290,7 +264,27 @@ export default class MyChart {
                     .attr('fill', '#000')
                     .classed('distanceLabel', true)
                     .text('displacement: ' + (distance / 10).toFixed(4) + ' cm')
-            }
+                
+                let bbox = distancelabel.node().getBBox();
+
+                let rect = svg.append("rect")
+                    .attr("x", bbox.x)
+                    .attr("y", bbox.y)
+                    .attr("width", bbox.width + 10)
+                    .attr("height", bbox.height)
+                    .style("fill", "#fff")
+                    .style("fill-opacity", "1")
+                    .style("stroke", "#000")
+                    .style("stroke-width", "1px");
+                
+                svg.append('text')
+                    .attr('x', 1005)
+                    .attr('y', 25)
+                    .attr('fill', '#000')
+                    .classed('distanceLabel', true)
+                    .text('displacement: ' + (distance / 10).toFixed(4) + ' cm')
+                }
+
 
         }
 
@@ -299,11 +293,29 @@ export default class MyChart {
             .attr('x', 28)
             .attr('y', 25)
             .attr('fill', '#000')
+            .attr("class", "shadow") 
             .classed('namelabel', true)
             .text(data.name.toUpperCase())
-        
-    
 
+        let bbox = namelabel.node().getBBox();
+
+        let rect = svg.append("rect")
+            .attr("x", bbox.x)
+            .attr("y", bbox.y)
+            .attr("width", bbox.width + 10)
+            .attr("height", bbox.height)
+            .style("fill", "#fff")
+            .style("fill-opacity", "1")
+            .style("stroke", "#000")
+            .style("stroke-width", "1px");
+
+        svg.append('text')
+            .attr('x', 33)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .attr("class", "shadow") 
+            .classed('namelabel', true)
+            .text(data.name.toUpperCase())
 
         function pointAtX(a, b, x) {
             var slope = (b[1] - a[1]) / (b[0] - a[0])

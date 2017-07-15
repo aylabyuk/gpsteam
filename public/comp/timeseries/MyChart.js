@@ -289,7 +289,7 @@ export default class MyChart {
                     .attr('y', 25)
                     .attr('fill', '#000')
                     .classed('distanceLabel', true)
-                    .text('displacement: ' + distance.toFixed(4))
+                    .text('displacement: ' + (distance / 10).toFixed(4) + ' cm')
             }
 
         }

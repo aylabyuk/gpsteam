@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios'
-import regression from 'regression'
+import * as d3 from "d3";
 
 import Timeseries from './Timeseries'
 
@@ -65,7 +65,6 @@ class TimeseriesContainer extends Component {
             earthquake: 2017.1123,
             linesBefore_enu: null,
             linesAfter_enu: null,
-            dotsOpacity: 1,
             width: window.innerWidth,
             height: window.innerHeight,
         };
@@ -172,8 +171,8 @@ class TimeseriesContainer extends Component {
 
     }
 
-     handleDotsOpacity = (event, value) => {
-        this.setState({dotsOpacity: value});
+    handleDotsOpacity = (event, value) => {
+        let dots = d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", value)            
     };
 
     render() {
@@ -186,9 +185,9 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{ margin: 0 }}>{sitename}</h2>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='north'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='east'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} dotsOpacity={dotsOpacity} name='up'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
+                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
                         </div>
                     </Paper>
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>

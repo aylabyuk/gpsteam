@@ -112,7 +112,7 @@ export default class MyChart {
             .attr("cy", function (d) {
                 return y(d.yVal - mean);
             })
-            .style("opacity", data.dotsOpacity)
+            .style("opacity", 1)
             .attr("fill", "white")
             .attr("stroke-width", 2)
             .attr("stroke", "blue");

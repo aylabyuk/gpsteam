@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from "d3";
-import  Chart  from 'd3act'
+import Chart  from 'd3act'
 
 import MyChart from './MyChart'
 
@@ -19,7 +19,7 @@ class Timeseries extends Component {
     
     render() {
 
-        let { name, data, earthquake, before, after, dotsOpacity } = this.props
+        let { name, data, earthquake, before, after } = this.props
         let dd = [], date, yVal
         
         data.map((d) => {
@@ -65,7 +65,6 @@ class Timeseries extends Component {
 
         dd.name = name
         dd.earthquake = earthquake
-        dd.dotsOpacity = dotsOpacity
 
         return (
             <Paper style={style}>

@@ -24,12 +24,6 @@ export default class MyChart {
             width = +svg.attr("width"),
             height = +svg.attr("height");
 
-        let margin = {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-        }
 
         let zoom = d3.zoom()
             .scaleExtent([-1, Infinity])
@@ -59,16 +53,12 @@ export default class MyChart {
         })
         mean = math.mean(focusData)
 
-        let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * 0.05
-        
-        ypercent = 0
-
         let y = d3.scaleLinear()
             .domain([d3.max(data, function (d) {
                 return d.yVal;
-            }) - mean + ypercent, d3.min(data, function (d) {
+            }) - mean, d3.min(data, function (d) {
                 return d.yVal;
-            }) - mean - ypercent])
+            }) - mean])
             .range([0, height]).nice();
 
         let xAxis = d3.axisBottom(x)

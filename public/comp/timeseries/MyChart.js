@@ -14,13 +14,14 @@ export default class MyChart {
 
     create(data){
 
-        let styles = this.props.styles
+        let { styles  } = this.props
+        let { name, earthquake, maxXval, minXval, margin } = data
 
         let svg = d3.select(this.el).append('svg')
             .classed(styles.chartSvg, true)
             .attr("width", 1250)
             .attr("height", 267)
-            .attr("id", data.name ),
+            .attr("id", name ),
             width = +svg.attr("width"),
             height = +svg.attr("height");
 
@@ -36,13 +37,13 @@ export default class MyChart {
         data.map((d) => {
             d.yVal = d.yVal * 1000
         }) 
+
+        // if maxX and minX is not set prefer the min and max dates
+        let x1 = minXval ? minXval : d3.min(data, function (d) { return d.date; })
+        let x2 = maxXval ? maxXval : d3.max(data, function (d) { return d.date; })
         
         let x = d3.scaleLinear()
-            .domain([d3.min(data, function (d) {
-                return d.date;
-            }), d3.max(data, function (d) {
-                return d.date;
-            })])
+            .domain([x1, x2])
             .range([0, width])
 
         // get the mean
@@ -52,12 +53,14 @@ export default class MyChart {
         })
         mean = math.mean(focusData)
 
+        let ypercent = (d3.max(data, function (d) { return d.yVal; }) - mean) * margin
+
         let y = d3.scaleLinear()
             .domain([d3.max(data, function (d) {
                 return d.yVal;
-            }) - mean, d3.min(data, function (d) {
+            }) - mean + ypercent, d3.min(data, function (d) {
                 return d.yVal;
-            }) - mean])
+            }) - mean - ypercent])
             .range([0, height]).nice();
 
         let xAxis = d3.axisBottom(x)
@@ -114,7 +117,7 @@ export default class MyChart {
             
 
         let eq = svg.append("path")
-            .datum([ { date: data.earthquake, yVal: -999999 }, { date: data.earthquake, yVal: 999999 } ])
+            .datum([ { date: earthquake, yVal: -999999 }, { date: earthquake, yVal: 999999 } ])
             .classed("eq", true)
             .attr("fill", "none")
             .attr("stroke", "red" )
@@ -127,10 +130,10 @@ export default class MyChart {
         let pre, post
 
         // draw the line before earthquake 
-        if(data.earthquake != '' && data.lineBefore) {
+        if(earthquake != '' && data.lineBefore) {
             let dataBefore = []
             data.map((d) => {
-                if(d.date < data.earthquake) {
+                if(d.date < earthquake) {
                     dataBefore.push(d)
                 }
             })
@@ -164,7 +167,7 @@ export default class MyChart {
             let A = [ data.lineBefore[0][0], data.lineBefore[0][1] ],
                 B = [ data.lineBefore[data.lineBefore.length-1][0], data.lineBefore[data.lineBefore.length-1][1] ],
                 p0 = pointAtX(A, B, A[0]),
-                p1 = pointAtX(A, B, data.earthquake)
+                p1 = pointAtX(A, B, earthquake)
 
             svg.append("path")
                 .classed("lr1", true)
@@ -181,10 +184,10 @@ export default class MyChart {
         }
 
         // draw the line after earthquake 
-        if(data.earthquake != '' && data.lineAfter) {
+        if(earthquake != '' && data.lineAfter) {
             let dataAfter = []
             data.map((d) => {
-                if(d.date > data.earthquake) {
+                if(d.date > earthquake) {
                     dataAfter.push(d)
                 }
             })
@@ -217,7 +220,7 @@ export default class MyChart {
 
             let A = [ data.lineAfter[0][0], data.lineAfter[0][1] ],
                 B = [ data.lineAfter[data.lineAfter.length-1][0], data.lineAfter[data.lineAfter.length-1][1] ],
-                p0 = pointAtX(A, B, data.earthquake),
+                p0 = pointAtX(A, B, earthquake),
                 p1 = pointAtX(A, B, B[0])
 
             
@@ -241,11 +244,11 @@ export default class MyChart {
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
-                .attr("d", lineMiddle([ pre, [ data.earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
+                .attr("d", lineMiddle([ pre, [ earthquake, afterY(dataAfter[0].yVal - afmean) ] ]));
             
 
             // append distance label
-            if(distance) { console.log('displacement ' + data.name  + ': ' + distance)
+            if(distance) { console.log('displacement ' + name  + ': ' + distance)
             
                 let distancelabel = svg.append('text')
                     .attr('x', 1000)
@@ -284,7 +287,7 @@ export default class MyChart {
             .attr('fill', '#000')
             .attr("class", "shadow") 
             .classed('namelabel', true)
-            .text(data.name.toUpperCase())
+            .text(name.toUpperCase())
 
         let bbox = namelabel.node().getBBox();
 
@@ -304,7 +307,7 @@ export default class MyChart {
             .attr('fill', '#000')
             .attr("class", "shadow") 
             .classed('namelabel', true)
-            .text(data.name.toUpperCase())
+            .text(name.toUpperCase())
 
         function pointAtX(a, b, x) {
             var slope = (b[1] - a[1]) / (b[0] - a[0])
@@ -313,7 +316,7 @@ export default class MyChart {
         }
 
         // if no earthquake
-        if(data.earthquake == '' && data.lineBefore){
+        if(earthquake == '' && data.lineBefore){
             let noEqLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return y(d[1]); })

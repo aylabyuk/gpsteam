@@ -62,7 +62,10 @@ class TimeseriesContainer extends Component {
                 { date: 0, east: 0, north: 0, up: 0 },
             ],
             sitename: 'SITE',
+            minXval: 2004,
+            maxXval: 2018,
             earthquake: 2017.1123,
+            ymarginal: 0.8,
             linesBefore_enu: null,
             linesAfter_enu: null,
             width: window.innerWidth,
@@ -175,8 +178,12 @@ class TimeseriesContainer extends Component {
         let dots = d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", value)            
     };
 
+    handleYmarginal = (event, value) => {
+        this.setState({ ymarginal: value })
+    }
+
     render() {
-        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height, dotsOpacity } = this.state
+        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height, dotsOpacity, maxXval, minXval, ymarginal } = this.state
         let { enu_distance } = this.props
 
         return (
@@ -185,16 +192,24 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{ margin: 0 }}>{sitename}</h2>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
-                            <Timeseries data={data} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
                         </div>
                     </Paper>
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                         <div>
-                            <p>dots opacity: {this.state.dotsOpacity}</p>
+                            <p>dots opacity</p>
                             <Slider value={this.state.dotsOpacity} onChange={this.handleDotsOpacity} />
                         </div>
+
+                        <div>
+                            <p>Y marginal value</p>
+                            <Slider value={this.state.ymarginal} onChange={this.handleYmarginal} max={2} min={0}/>
+                        </div>
+                        
+                        <TextField fullWidth floatingLabelText='Minimum Xaxis value' hintText='2004' defaultValue='2004' onChange={(e, val) => this.setState({ minXval: val })} />
+                        <TextField fullWidth floatingLabelText='Maximum Xaxis value' hintText='2018' defaultValue='2018' onChange={(e, val) => this.setState({ maxXval: val })} />
                         <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.1123' defaultValue='2017.1123' onChange={(e, val) => this.setState({ earthquake: val })} />
                         <RaisedButton
                             primary

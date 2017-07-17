@@ -24,7 +24,6 @@ export default class MyChart {
             width = +svg.attr("width"),
             height = +svg.attr("height");
 
-
         let zoom = d3.zoom()
             .scaleExtent([-1, Infinity])
             .translateExtent([
@@ -69,7 +68,7 @@ export default class MyChart {
         let yAxis = d3.axisRight(y)
             .ticks(6)
             .tickSize(width)
-            .tickPadding(8 - width);
+            .tickPadding(2 - width);
         
         let view = svg.append("rect")
             .attr("class", styles.view)
@@ -280,7 +279,7 @@ export default class MyChart {
 
         //append label
         let namelabel = svg.append('text')
-            .attr('x', 28)
+            .attr('x', 50)
             .attr('y', 25)
             .attr('fill', '#000')
             .attr("class", "shadow") 
@@ -300,7 +299,7 @@ export default class MyChart {
             .style("stroke-width", "1px");
 
         svg.append('text')
-            .attr('x', 33)
+            .attr('x', 55)
             .attr('y', 25)
             .attr('fill', '#000')
             .attr("class", "shadow") 

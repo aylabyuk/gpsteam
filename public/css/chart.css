@@ -7,6 +7,11 @@
   shape-rendering: crispEdges;
 }
 
+.axis--x, .axis--y {
+  font-weight: bold;
+  font: 20px sans-serif;
+}
+
  :local(.chartSvg) {
   border-style: solid;
   border-radius: 4px;
@@ -20,11 +25,11 @@
 }
 
 .tick {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 .tick text{
-  fill: darkslategray;
+  fill: black;
 }
 
 :local(.dot) {

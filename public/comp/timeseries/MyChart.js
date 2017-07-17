@@ -63,7 +63,7 @@ export default class MyChart {
 
         let xAxis = d3.axisBottom(x)
             .tickSize(height)
-            .tickPadding(-10)
+            .tickPadding(-15)
             .tickFormat(d3.format(" "));
 
         let yAxis = d3.axisRight(y)

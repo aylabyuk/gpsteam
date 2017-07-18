@@ -5,6 +5,7 @@ export default class MyChart {
     constructor(el, props) {
         this.el = el;
         this.props = props;
+        this.displ = null;
 
     }
 
@@ -38,7 +39,7 @@ export default class MyChart {
             d.yVal = d.yVal * 1000
         }) 
 
-        // if maxX and minX is not set prefer the min and max dates
+        // if maxX and minX is not set the min and max dates
         let x1 = minXval ? minXval : d3.min(data, function (d) { return d.date; })
         let x2 = maxXval ? maxXval : d3.max(data, function (d) { return d.date; })
         
@@ -276,6 +277,8 @@ export default class MyChart {
                     .classed('distanceLabel', true)
                     .text('displacement: ' + (distance / 10).toFixed(4) + ' cm')
                 }
+
+                this.displ = distance
 
 
         }

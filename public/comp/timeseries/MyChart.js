@@ -122,9 +122,12 @@ export default class MyChart {
             .tickSize(this.width)
             .tickPadding(2 - this.width);
 
-        this.gX.call(xAxis);
+        let t = d3.transition()
+                    .duration(1000);
 
-        this.gY.call(yAxis);
+        this.gX.transition(t).call(xAxis);
+
+        this.gY.transition(t).call(yAxis);
 
         let zoom = d3.zoom()
             .scaleExtent([-1, Infinity])
@@ -133,9 +136,6 @@ export default class MyChart {
                 [this.width + 100, this.height + 100]
             ])
             .on("zoom", zoomed);
-
-        let t = d3.transition()
-                    .duration(1000);
                     
         let circles = d3.select('.svg'+name).selectAll('.dots').selectAll("circle").data(data)
         
@@ -167,8 +167,8 @@ export default class MyChart {
 
         circles.exit()
             .transition(t)
-            .attr("fill", "lightblue")
-            .attr("stroke", "orange")
+            .attr("fill", "white")
+            .attr("stroke", "lightblue")
             .remove();
 
 

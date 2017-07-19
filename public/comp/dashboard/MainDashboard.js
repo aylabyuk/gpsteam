@@ -96,8 +96,7 @@ class MainDashboard extends PureComponent {
         
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
-                <AppBar title="GPS Dashboard" iconClassNameRight="muidocs-icon-navigation-expand-more" 
-                    iconElementRight={<SearchBar hintText='Search Sites'/>}/>
+                <AppBar title="GPS Dashboard" iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> console.log(val)} onRequestSearch={()=> console.log('test')}/>}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.center}>
                         <AutoSizer>

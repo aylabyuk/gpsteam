@@ -129,7 +129,6 @@ class Phmap extends Component {
                     window.markerClusterGroup = markerClusterGroup.leafletElement 
                     this.setCluster()
                   }
-
                 }}
               />
                           

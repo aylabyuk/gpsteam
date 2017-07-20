@@ -86,6 +86,14 @@ export default class MyChart {
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
             .classed("lr1", true)
+        
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "green" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .classed("lr2", true)
 
         this.svg = svg
         this.view = view
@@ -211,7 +219,6 @@ export default class MyChart {
 
         if(data.length > 1 && earthquake) { showDisplacement(data) }
 
-        let pre, post
         function showDisplacement(data) {
 
             let dataBefore = [], toRegression = []
@@ -265,8 +272,31 @@ export default class MyChart {
                 .transition(t)
                 .attr("d", beforeLine([p0, p1]));
 
-            p1[1] = beforeY(p1[1])
-            pre = p1
+            let dataAfter = []
+            data.map((d) => {
+                if(d.date > earthquake) {
+                    dataAfter.push(d)
+                }
+            })
+
+            let line = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return d[1]; })
+
+            let final = y(dataAfter[0].yVal - mean),
+                initial = beforeY(p1[1])
+
+            d3.select('.svg'+name).select(".lr2")
+                .transition(t)
+                .attr("d", line([ [earthquake, initial ] , [earthquake, final ] ]));
+
+            let displacement = y.invert(final) - y.invert(initial)
+            console.log(name+': '+ displacement )
+
+        }
+
+        function showDisplacementResult() {
+
         }
 
         function pointAtX(a, b, x) {
@@ -293,6 +323,9 @@ export default class MyChart {
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".lr1")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr2")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
 

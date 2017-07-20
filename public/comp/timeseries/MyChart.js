@@ -6,6 +6,7 @@ export default class MyChart {
         this.el = el;
         this.props = props;
         this.drawEarthquake = null;
+        this.showDisplacement = null;
 
     }
 
@@ -190,7 +191,6 @@ export default class MyChart {
         this.svg.call(zoom);
 
         
-
         this.drawEarthquake = function drawEarthquake(earthquake) {
             let svg = d3.select('.svg'+name)
 
@@ -201,6 +201,75 @@ export default class MyChart {
                 .attr("y2", -99999);
         }
         this.drawEarthquake(earthquake)
+
+        let pre, post
+
+        this.showDisplacement = function showDisplacement(lines) {
+
+            let i = 0, lineBefore = []
+            lines[name].map((d) => {
+                lineBefore.push([data[i].date, d ])
+                i++
+            })
+
+            let dataBefore = []
+            data.map((d) => {
+                if(d.date < earthquake) {
+                    dataBefore.push(d)
+                }
+            })
+
+            // get the mean
+            focusData = [], mean
+            dataBefore.map((d) => {
+                focusData.push(d.yVal)
+            })
+            let b4mean = math.mean(focusData)
+
+            let minY = y(d3.min(dataBefore, function (d) {
+                    return d.yVal - mean;
+                })) 
+            let maxY = y(d3.max(dataBefore, function (d) {
+                    return d.yVal - mean; 
+                })) 
+
+            let beforeY = d3.scaleLinear()
+                .domain([d3.max(dataBefore, function (d) {
+                    return d.yVal;
+                }) - b4mean , d3.min(dataBefore, function (d) {
+                    return d.yVal;
+                }) - b4mean ])
+                .range([maxY, minY])
+
+            let beforeLine = d3.line()
+                .x(function(d) { return x(d[0]); })
+                .y(function(d) { return beforeY(d[1]); })
+            
+                console.log(lineBefore)
+
+            let A = [ lineBefore[0][0], lineBefore[0][1] ],
+                B = [ lineBefore[lineBefore.length-1][0], lineBefore[lineBefore.length-1][1] ],
+                p0 = pointAtX(A, B, A[0]),
+                p1 = pointAtX(A, B, earthquake)
+
+            this.svg.append("path")
+                .classed("lr1", true)
+                .attr("fill", "none")
+                .attr("stroke", "green" )
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", beforeLine([p0, p1]));
+
+            p1[1] = beforeY(p1[1])
+            pre = p1
+        }
+
+        function pointAtX(a, b, x) {
+            var slope = (b[1] - a[1]) / (b[0] - a[0])
+            var y = a[1] + (x - a[0]) * slope
+            return [x, y]
+        }
         
         function zoomed() {
 
@@ -217,6 +286,9 @@ export default class MyChart {
             });
 
             svg.select(".eq")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
+            svg.select(".lr1")
                 .attr("transform", d3.event.transform)
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
 

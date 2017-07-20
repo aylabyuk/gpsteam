@@ -23,9 +23,14 @@ class Timeseries extends Component {
             window.timeseriesUiState.earthquake = nextProps.earthquake
         }
     }
-    
-    
 
+    componentDidUpdate(prevProps, prevState) {
+        if(this.props.before != prevProps.before) {
+            window['chart'+this.props.name].showDisplacement(this.props.before)
+        }
+    }
+    
+    
     render() {
 
         let { name, earthquake, data, before, after, maxXval, minXval, margin } = this.props
@@ -40,25 +45,6 @@ class Timeseries extends Component {
             }
             dd.push({date, yVal})
         })
-
-        if(before && after){
-
-            let i = 0
-
-            dd.lineBefore = []
-            dd.lineAfter = []
-
-            before[name].map((d) => {
-                dd.lineBefore.push([data[i].date, d ])
-                i++
-            })
-
-            after[name].map((d) => {
-                dd.lineAfter.push([data[i].date, d ])
-                i++
-            })
-
-        }
 
         if(!earthquake && before){
             let i = 0

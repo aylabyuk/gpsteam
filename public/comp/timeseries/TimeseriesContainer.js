@@ -115,7 +115,6 @@ class TimeseriesContainer extends Component {
                     this.setState({ linesAfter_enu: lines })
                 })
         }
-
     }
 
     requestLineNoEq() {
@@ -209,9 +208,12 @@ class TimeseriesContainer extends Component {
                             <Slider value={this.state.ymarginal} onChange={this.handleYmarginal} max={2} min={0}/>
                         </div>
                         
-                        <TextField fullWidth floatingLabelText='Minimum Xaxis value' hintText='2004' defaultValue='2004' onChange={(e, val) => this.setState({ minXval: val })} />
-                        <TextField fullWidth floatingLabelText='Maximum Xaxis value' hintText='2018' defaultValue='2018' onChange={(e, val) => this.setState({ maxXval: val })} />
-                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='e.g. 2017.1123' defaultValue='' onChange={(e, val) => this.setState({ earthquake: val })} />
+                        <TextField fullWidth floatingLabelText='Minimum Xaxis value' hintText='2004' defaultValue='2004' onChange={(e, val) => this.setState({ minXval: val })} 
+                            disabled={ data.length == 1 ? true : false }/>
+                        <TextField fullWidth floatingLabelText='Maximum Xaxis value' hintText='2018' defaultValue='2018' onChange={(e, val) => this.setState({ maxXval: val })} 
+                            disabled={ data.length == 1 ? true : false }/>
+                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='e.g. 2017.1123' defaultValue='' onChange={(e, val) => this.setState({ earthquake: val })} 
+                            disabled={ data.length == 1 ? true : false }/>
                         <RaisedButton
                             primary
                             label="Show Displacement"

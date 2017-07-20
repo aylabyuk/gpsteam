@@ -278,6 +278,7 @@ export default class MyChart {
                     dataAfter.push(d)
                 }
             })
+            if(dataAfter.length == 0) { return 0 }
 
             let line = d3.line()
                 .x(function(d) { return x(d[0]); })

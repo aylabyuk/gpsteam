@@ -123,11 +123,11 @@ export default class MyChart {
             .tickPadding(2 - this.width);
 
         let t = d3.transition()
-                    .duration(1000);
+                    .duration(500);
 
-        this.gX.transition(t).call(xAxis);
+        this.gX.call(xAxis);
 
-        this.gY.transition(t).call(yAxis);
+        this.gY.call(yAxis);
 
         let zoom = d3.zoom()
             .scaleExtent([-1, Infinity])
@@ -145,7 +145,8 @@ export default class MyChart {
             })
             .attr("cy", function (d) {
                 return y(d.yVal - mean);
-            });
+            })
+            .call(resetted);
 
         circles.enter()
             .append("circle")
@@ -156,19 +157,19 @@ export default class MyChart {
             .attr("cy", function (d) {
                 return y(d.yVal - mean);
             })
-            .style("opacity", 1)
+            .style("opacity", 0)
             .attr("stroke-width", 2)
             .attr("r", 4)
-            .attr("fill", "lightblue")
-            .attr("stroke", "lightblue")
-            .transition(t)
             .attr("fill", "white")
             .attr("stroke", "blue")
+            .transition(t)
+            .style("opacity", 1)
+            .call(resetted)
 
         circles.exit()
             .transition(t)
-            .attr("fill", "white")
             .attr("stroke", "lightblue")
+            .style("opacity", 0)
             .remove();
 
 
@@ -190,7 +191,13 @@ export default class MyChart {
 
             svg.select(".axis--x" + name).call(xAxis.scale(d3.event.transform.rescaleX(x)));
             svg.select(".axis--y" + name).call(yAxis.scale(d3.event.transform.rescaleY(y)));
+        }
 
+        function resetted() {
+            let svg = d3.select('.svg'+name)
+
+            svg.transition(t)
+                .call(zoom.transform, d3.zoomIdentity);
         }
 
     }

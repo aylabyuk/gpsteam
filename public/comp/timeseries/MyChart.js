@@ -262,6 +262,7 @@ export default class MyChart {
                 p1 = pointAtX(A, B, earthquake)
 
             d3.select('.svg'+name).select(".lr1")
+                .transition(t)
                 .attr("d", beforeLine([p0, p1]));
 
             p1[1] = beforeY(p1[1])

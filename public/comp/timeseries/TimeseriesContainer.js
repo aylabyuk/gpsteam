@@ -37,23 +37,6 @@ const styles = {
     }
 };
 
-let requestForLine = (data) => {
-    return new Promise((resolve, reject) => {
-        axios.get(`http://localhost:4040/line/compute`, {
-            params: {
-                data: data
-            }
-        })
-            .then((response) => {
-                resolve(response.data.line)
-            })
-            .catch(function (error) {
-                reject(Error(error))
-            });
-
-    });
-}
-
 class TimeseriesContainer extends Component {
     constructor(props) {
         super(props);
@@ -66,8 +49,6 @@ class TimeseriesContainer extends Component {
             maxXval: 2018,
             earthquake: '',
             ymarginal: 0.8,
-            linesBefore_enu: null,
-            linesAfter_enu: null,
             width: window.innerWidth,
             height: window.innerHeight,
         };
@@ -88,43 +69,6 @@ class TimeseriesContainer extends Component {
 
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
-    }
-
-    requestLines() {
-        let { data, earthquake } = this.state
-
-        let dataBeforeEarthquake = [],
-            dataAfterEarthquake = []
-
-        data.map((d) => {
-            if(d.date < earthquake) {
-                dataBeforeEarthquake.push(d)
-            } else {
-                dataAfterEarthquake.push(d)
-            }
-        })
-
-        if(dataBeforeEarthquake.length != 0 && dataAfterEarthquake.length != 0) {
-            requestForLine(dataBeforeEarthquake)
-                .then((lines) => {
-                    this.setState({ linesBefore_enu: lines })
-                })
-
-            requestForLine(dataAfterEarthquake)
-                .then((lines) => {
-                    this.setState({ linesAfter_enu: lines })
-                })
-        }
-    }
-
-    requestLineNoEq() {
-        let { data } = this.state
-
-        requestForLine(data)
-            .then((lines) => {
-                this.setState({ linesBefore_enu: lines })
-            })
-
     }
 
     handleUpload({ target }) {
@@ -166,9 +110,7 @@ class TimeseriesContainer extends Component {
 
         reader.readAsText(file);
         this.setState({ 
-            sitename: file.name,
-            linesBefore_enu: null,
-            linesAfter_enu: null,
+            sitename: file.name
          })
 
     }
@@ -183,8 +125,7 @@ class TimeseriesContainer extends Component {
     }
 
     render() {
-        let { data, earthquake, linesAfter_enu, linesBefore_enu, sitename, width, height, dotsOpacity, maxXval, minXval, ymarginal } = this.state
-        let { enu_distance } = this.props
+        let { data, earthquake, sitename, width, height, dotsOpacity, maxXval, minXval, ymarginal } = this.state
 
         return (
             <Paper style={{ width: width, height: height }}>
@@ -192,9 +133,9 @@ class TimeseriesContainer extends Component {
                     <Paper>
                         <div style={styles.center}>
                             <h2 style={{ margin: 0 }}>{sitename}</h2>
-                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='north'/>
-                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='east'/>
-                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} before={linesBefore_enu} after={linesAfter_enu} name='up'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} name='north'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} name='east'/>
+                            <Timeseries data={data} margin={ymarginal} maxXval={maxXval} minXval={minXval} earthquake={earthquake} name='up'/>
                         </div>
                     </Paper>
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
@@ -214,11 +155,7 @@ class TimeseriesContainer extends Component {
                             disabled={ data.length == 1 ? true : false }/>
                         <TextField fullWidth floatingLabelText='Earthquake date' hintText='e.g. 2017.1123' defaultValue='' onChange={(e, val) => this.setState({ earthquake: val })} 
                             disabled={ data.length == 1 ? true : false }/>
-                        <RaisedButton
-                            primary
-                            label="Show Displacement"
-                            style={styles.button}
-                            onTouchTap={() => earthquake ? this.requestLines() : this.requestLineNoEq()} />
+                        
                         <RaisedButton
                             primary
                             label="Change Data"

@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 import math from 'mathjs';
+import regression from 'regression';
 
 export default class MyChart {
     constructor(el, props) {
         this.el = el;
         this.props = props;
         this.drawEarthquake = null;
-        this.showDisplacement = null;
 
     }
 
@@ -78,6 +78,14 @@ export default class MyChart {
             .attr("stroke-linejoin", "round")
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
+
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "green" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .classed("lr1", true)
 
         this.svg = svg
         this.view = view
@@ -190,7 +198,6 @@ export default class MyChart {
 
         this.svg.call(zoom);
 
-        
         this.drawEarthquake = function drawEarthquake(earthquake) {
             let svg = d3.select('.svg'+name)
 
@@ -202,22 +209,22 @@ export default class MyChart {
         }
         this.drawEarthquake(earthquake)
 
+        if(data.length > 1 && earthquake) { showDisplacement(data) }
+
         let pre, post
+        function showDisplacement(data) {
 
-        this.showDisplacement = function showDisplacement(lines) {
-
-            let i = 0, lineBefore = []
-            lines[name].map((d) => {
-                lineBefore.push([data[i].date, d ])
-                i++
-            })
-
-            let dataBefore = []
+            let dataBefore = [], toRegression = []
             data.map((d) => {
                 if(d.date < earthquake) {
                     dataBefore.push(d)
+                    toRegression.push([ d.date, d.yVal ])
                 }
             })
+            if(dataBefore.length == 0) { return 0 }
+
+            let result = regression.linear(toRegression)
+            let lineBefore = result.points
 
             // get the mean
             focusData = [], mean
@@ -244,21 +251,17 @@ export default class MyChart {
             let beforeLine = d3.line()
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
-            
-                console.log(lineBefore)
+
+            lineBefore.map((d) => {
+                d[1] = (d[1] - b4mean)
+            })
 
             let A = [ lineBefore[0][0], lineBefore[0][1] ],
                 B = [ lineBefore[lineBefore.length-1][0], lineBefore[lineBefore.length-1][1] ],
                 p0 = pointAtX(A, B, A[0]),
                 p1 = pointAtX(A, B, earthquake)
 
-            this.svg.append("path")
-                .classed("lr1", true)
-                .attr("fill", "none")
-                .attr("stroke", "green" )
-                .attr("stroke-linejoin", "round")
-                .attr("stroke-linecap", "round")
-                .attr("stroke-width", 1.5)
+            d3.select('.svg'+name).select(".lr1")
                 .attr("d", beforeLine([p0, p1]));
 
             p1[1] = beforeY(p1[1])

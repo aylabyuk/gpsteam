@@ -175,7 +175,8 @@ class TimeseriesContainer extends Component {
     }
 
     handleDotsOpacity = (event, value) => {
-        let dots = d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", value)            
+        let dots = d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", value)
+        window.timeseriesUiState.dotsOpacity = value
     };
 
     handleYmarginal = (event, value) => {
@@ -200,11 +201,11 @@ class TimeseriesContainer extends Component {
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                         <div>
                             <p>dots opacity</p>
-                            <Slider value={this.state.dotsOpacity} onChange={this.handleDotsOpacity} />
+                            <Slider defaultValue={1} onChange={this.handleDotsOpacity} />
                         </div>
 
                         <div>
-                            <p>Y marginal value</p>
+                            <p>Yaxis margin</p>
                             <Slider value={this.state.ymarginal} onChange={this.handleYmarginal} max={2} min={0}/>
                         </div>
                         

@@ -11,6 +11,9 @@ export default class MyChart {
 
     create(data){
 
+        window.timeseriesUiState = {}
+        window.timeseriesUiState.dotsOpacity = 1
+
         let { styles  } = this.props
         let { name } = data
 
@@ -81,6 +84,7 @@ export default class MyChart {
 
         let { styles  } = this.props
         let { name, earthquake, maxXval, minXval, margin } = data
+        let { dotsOpacity } = window.timeseriesUiState
 
          //convert yVal to cm
         data.map((d) => {
@@ -163,7 +167,7 @@ export default class MyChart {
             .attr("fill", "white")
             .attr("stroke", "blue")
             .transition(t)
-            .style("opacity", 1)
+            .style("opacity", dotsOpacity)
             .call(resetted)
 
         circles.exit()

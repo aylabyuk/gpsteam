@@ -68,7 +68,6 @@ class Timeseries extends Component {
         dd.maxXval = maxXval
         dd.minXval = minXval
         dd.margin = margin
-
         return (
             <Paper style={style}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 0 }}>

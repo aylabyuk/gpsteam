@@ -64,7 +64,7 @@ class TimeseriesContainer extends Component {
             sitename: 'SITE',
             minXval: 2004,
             maxXval: 2018,
-            earthquake: 2017.1123,
+            earthquake: '',
             ymarginal: 0.8,
             linesBefore_enu: null,
             linesAfter_enu: null,
@@ -211,7 +211,7 @@ class TimeseriesContainer extends Component {
                         
                         <TextField fullWidth floatingLabelText='Minimum Xaxis value' hintText='2004' defaultValue='2004' onChange={(e, val) => this.setState({ minXval: val })} />
                         <TextField fullWidth floatingLabelText='Maximum Xaxis value' hintText='2018' defaultValue='2018' onChange={(e, val) => this.setState({ maxXval: val })} />
-                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='2017.1123' defaultValue='2017.1123' onChange={(e, val) => this.setState({ earthquake: val })} />
+                        <TextField fullWidth floatingLabelText='Earthquake date' hintText='e.g. 2017.1123' defaultValue='' onChange={(e, val) => this.setState({ earthquake: val })} />
                         <RaisedButton
                             primary
                             label="Show Displacement"

@@ -16,10 +16,18 @@ const style = {
 };
 
 class Timeseries extends Component {   
+
+    componentWillUpdate(nextProps, nextState) {
+        if(this.props.earthquake != nextProps.earthquake) {
+            window['chart'+this.props.name].drawEarthquake(nextProps.earthquake)
+        }
+    }
     
+    
+
     render() {
 
-        let { name, data, earthquake, before, after, maxXval, minXval, margin } = this.props
+        let { name, earthquake, data, before, after, maxXval, minXval, margin } = this.props
         let dd = [], date, yVal
         
         data.map((d) => {
@@ -64,10 +72,10 @@ class Timeseries extends Component {
         }
 
         dd.name = name
-        dd.earthquake = earthquake
         dd.maxXval = maxXval
         dd.minXval = minXval
         dd.margin = margin
+
         return (
             <Paper style={style}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end', margin: 0 }}>

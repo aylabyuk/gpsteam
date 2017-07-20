@@ -5,7 +5,7 @@ export default class MyChart {
     constructor(el, props) {
         this.el = el;
         this.props = props;
-        this.displ = null;
+        this.drawEarthquake = null;
 
     }
 
@@ -70,6 +70,13 @@ export default class MyChart {
             .classed('namelabel', true)
             .text(name.toUpperCase())
 
+        svg.append("line")
+            .classed('eq', true)
+            .attr("stroke", "red" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+
         this.svg = svg
         this.view = view
         this.dots = dots
@@ -77,6 +84,8 @@ export default class MyChart {
         this.gY = gY
         this.width = width
         this.height = height
+
+        window['chart'+name] = this
 
     }
 
@@ -129,9 +138,9 @@ export default class MyChart {
         let t = d3.transition()
                     .duration(500);
 
-        this.gX.call(xAxis);
+        this.gX.transition(t).call(xAxis);
 
-        this.gY.call(yAxis);
+        this.gY.transition(t).call(yAxis);
 
         let zoom = d3.zoom()
             .scaleExtent([-1, Infinity])
@@ -178,6 +187,18 @@ export default class MyChart {
 
 
         this.svg.call(zoom);
+
+        this.drawEarthquake = function drawEarthquake(earthquake) {
+            let svg = d3.select('.svg'+name)
+
+            svg.select('.eq')
+                .transition(t)
+                .attr("x1", x(earthquake))
+                .attr("y1", 99999999)
+                .attr("x2", x(earthquake)) 
+                .attr("y2", -99999999);
+        }
+
         
         function zoomed() {
 
@@ -192,6 +213,10 @@ export default class MyChart {
             }).attr("stroke-width", function () {
                 return (2 / d3.event.transform.k);
             });
+
+            svg.select(".eq")
+                .attr("transform", d3.event.transform)
+                .attr("stroke-width", 1.5 / d3.event.transform.k);
 
             svg.select(".axis--x" + name).call(xAxis.scale(d3.event.transform.rescaleX(x)));
             svg.select(".axis--y" + name).call(yAxis.scale(d3.event.transform.rescaleY(y)));

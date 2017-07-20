@@ -13,6 +13,7 @@ export default class MyChart {
 
         window.timeseriesUiState = {}
         window.timeseriesUiState.dotsOpacity = 1
+        window.timeseriesUiState.earthquake = 0
 
         let { styles  } = this.props
         let { name } = data
@@ -92,8 +93,8 @@ export default class MyChart {
     update(data) {
 
         let { styles  } = this.props
-        let { name, earthquake, maxXval, minXval, margin } = data
-        let { dotsOpacity } = window.timeseriesUiState
+        let { name, maxXval, minXval, margin } = data
+        let { dotsOpacity, earthquake } = window.timeseriesUiState
 
          //convert yVal to cm
         data.map((d) => {
@@ -188,17 +189,18 @@ export default class MyChart {
 
         this.svg.call(zoom);
 
+        
+
         this.drawEarthquake = function drawEarthquake(earthquake) {
             let svg = d3.select('.svg'+name)
 
             svg.select('.eq')
-                .transition(t)
                 .attr("x1", x(earthquake))
-                .attr("y1", 99999999)
+                .attr("y1", 99999)
                 .attr("x2", x(earthquake)) 
-                .attr("y2", -99999999);
+                .attr("y2", -99999);
         }
-
+        this.drawEarthquake(earthquake)
         
         function zoomed() {
 

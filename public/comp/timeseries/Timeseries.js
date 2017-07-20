@@ -20,6 +20,7 @@ class Timeseries extends Component {
     componentWillUpdate(nextProps, nextState) {
         if(this.props.earthquake != nextProps.earthquake) {
             window['chart'+this.props.name].drawEarthquake(nextProps.earthquake)
+            window.timeseriesUiState.earthquake = nextProps.earthquake
         }
     }
     

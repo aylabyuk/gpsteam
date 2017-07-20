@@ -7,7 +7,7 @@
   shape-rendering: crispEdges;
 }
 
-.axis--x, .axis--y {
+:local(.axis) {
   font-weight: bold;
   font: 20px sans-serif;
 }

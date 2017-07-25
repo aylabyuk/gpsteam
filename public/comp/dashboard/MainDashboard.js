@@ -3,6 +3,7 @@ import { AutoSizer } from 'react-virtualized'
 
 import Phmap from '../map/Phmap'
 import RightPanel from './RightPanel'
+import SearchDrawer from './SearchDrawer'
 
 // ui
 import { AppBar, Paper, List, ListItem, Drawer} from 'material-ui'
@@ -53,7 +54,8 @@ class MainDashboard extends PureComponent {
             width: window.innerWidth,
             height: window.innerHeight,
             hoveredSite: '',
-            resultDrawer: false
+            resultDrawer: false,
+            searchSite: ''
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.changeHoveredSite = this.changeHoveredSite.bind(this);
@@ -92,9 +94,9 @@ class MainDashboard extends PureComponent {
 
     searchForSite(val) {
         if(val) {
-            this.setState({ resultDrawer: true })
+            this.setState({ resultDrawer: true, searchSite: val })
         } else {
-            this.setState({ resultDrawer: false })
+            this.setState({ resultDrawer: false, searchSite: '' })
         }
     }
 
@@ -123,7 +125,7 @@ class MainDashboard extends PureComponent {
                 </div>
 
                 <Drawer width={280} containerStyle={{ top: '65px' }} openSecondary open={this.state.resultDrawer} >
-                    
+                    <SearchDrawer sites={sites} filter={this.state.searchSite}/>
                 </Drawer>
 
             </div>

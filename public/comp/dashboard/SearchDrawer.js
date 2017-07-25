@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { List, ListItem } from 'material-ui'
+import L from 'leaflet'
 
 let Fuse = require('fuse.js')
 
@@ -17,6 +18,12 @@ const options = {
 };
 
 class SearchDrawer extends Component {
+
+    handleFocus(site) {
+        let coor = new L.latLng(site.lat, site.lng)
+        window.leafletmap.leafletElement.setView(coor, 11)
+    }
+
     render() {
         let { sites, filter } = this.props 
         let fuse = new Fuse(sites, options)
@@ -26,7 +33,7 @@ class SearchDrawer extends Component {
             <List>
                 {
                     result.map((s) => {
-                        return(<ListItem key={s.id}>{s.id}</ListItem>)
+                        return(<ListItem key={s.id} onTouchTap={ ()=> this.handleFocus(s) }>{s.id}</ListItem>)
                     })
                 }
             </List>

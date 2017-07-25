@@ -41,6 +41,9 @@ const SiteDetailsQuery = gql`query SiteDetailsQuery {
         long
         lat
     }
+    timeseriesJpgFiles {
+        name
+    }
 }`;
 
 class MainDashboard extends PureComponent {
@@ -49,7 +52,8 @@ class MainDashboard extends PureComponent {
         this.state = {
             width: window.innerWidth,
             height: window.innerHeight,
-            hoveredSite: ''
+            hoveredSite: '',
+            resultDrawer: false
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.changeHoveredSite = this.changeHoveredSite.bind(this);
@@ -86,20 +90,27 @@ class MainDashboard extends PureComponent {
         window.previewMarker = previewMarker
     }
 
+    searchForSite(val) {
+        if(val) {
+            this.setState({ resultDrawer: true })
+        } else {
+            this.setState({ resultDrawer: false })
+        }
+    }
+
     render() {
 
-        let { loading, allSite } = this.props.data
+        let { loading, allSite, timeseriesJpgFiles } = this.props.data
 
         let sites = []
 
         loading ? null : allSite.map((s) => {
-            s.lat && imageExists('http://'+ ip + PORT + '/timeseries/' + s.name + '.jpg') ?
-            sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long }) : null
+            s.lat && timeseriesJpgFiles.filter((f) => { return f.name === s.name }).length > 0 ? sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long }) : null
         })
         
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
-                <AppBar title="GPS Dashboard" iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> console.log(val)} onRequestSearch={()=> console.log('test')}/>}/>
+                <AppBar title="GPS Dashboard" iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.center}>
                         <AutoSizer>
@@ -111,22 +122,13 @@ class MainDashboard extends PureComponent {
 
                 </div>
 
-                <Drawer openSecondary open={false} >
+                <Drawer width={280} containerStyle={{ top: '65px' }} openSecondary open={this.state.resultDrawer} >
                     
                 </Drawer>
 
             </div>
         );
     }
-}
-
-function imageExists(image_url){
-    var http = new XMLHttpRequest();
-
-    http.open('HEAD', image_url, false);
-    http.send();
-
-    return http.status != 404;
 }
 
 export default graphql(SiteDetailsQuery)(MainDashboard);

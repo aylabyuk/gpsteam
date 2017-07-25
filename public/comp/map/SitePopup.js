@@ -29,7 +29,7 @@ class SitePopup extends Component {
             <MuiThemeProvider>
                 <div>
                     <Card style={{width: '500px'}}>
-                        <CardTitle title={this.props.popup.key} subtitle="48 Address Example, Test City" />
+                         <CardTitle title={this.props.popup.key} /> 
                         <CardText style={{textAlign: 'center'}}>
 
                             <img id='previewTimeseries' src={'http://'+ ip + PORT + '/timeseries/' + this.props.popup.key + '.jpg' } />

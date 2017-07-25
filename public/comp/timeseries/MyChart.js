@@ -233,6 +233,8 @@ export default class MyChart {
             let result = regression.linear(toRegression)
             let lineBefore = result.points
 
+            console.log(name+ ': ',result)
+
             // get the mean
             focusData = [], mean
             dataBefore.map((d) => {
@@ -292,7 +294,7 @@ export default class MyChart {
                 .attr("d", line([ [earthquake, initial ] , [earthquake, final ] ]));
 
             let displacement = y.invert(final) - y.invert(initial)
-            console.log(name+': '+ displacement )
+            // console.log(name+': '+ displacement )
 
         }
 

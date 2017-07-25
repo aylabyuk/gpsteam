@@ -16,6 +16,9 @@ import L from 'leaflet'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+// server
+import { ip, PORT } from '../../_primary'
+
 const styles = {
   center: {
     padding: 0,
@@ -90,7 +93,7 @@ class MainDashboard extends PureComponent {
         let sites = []
 
         loading ? null : allSite.map((s) => {
-            s.lat ?
+            s.lat && imageExists('http://'+ ip + PORT + '/timeseries/' + s.name + '.jpg') ?
             sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long }) : null
         })
         
@@ -115,6 +118,15 @@ class MainDashboard extends PureComponent {
             </div>
         );
     }
+}
+
+function imageExists(image_url){
+    var http = new XMLHttpRequest();
+
+    http.open('HEAD', image_url, false);
+    http.send();
+
+    return http.status != 404;
 }
 
 export default graphql(SiteDetailsQuery)(MainDashboard);

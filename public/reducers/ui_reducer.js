@@ -1,5 +1,5 @@
 import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING,
-	TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET, LOGSHEET_MODE } from '../actions/types'
+	TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET, LOGSHEET_MODE, SITE_DETAILS_DRAWER } from '../actions/types'
 
 const INITIAL_STATE = {selectedContact: null, selectedStaffs: [], clickedSite: null, hoveredSite: null, logsheetSubmitting: false, logsheetViewerDrawer: false, 
 	logsheetToReview: null, logsheetMode: 'new'}

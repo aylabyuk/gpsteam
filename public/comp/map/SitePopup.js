@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { viewSiteDetails } from '../../actions/index'
 
 // ui
 import { Card, CardHeader, CardTitle, CardActions, CardText, FlatButton, RaisedButton } from 'material-ui'
@@ -24,6 +25,9 @@ const styles = {
 };
 
 class SitePopup extends Component {
+
+
+
     render() {
         return (
             <MuiThemeProvider>
@@ -45,7 +49,7 @@ class SitePopup extends Component {
                             
                         </CardText>
                         <CardActions>
-                            <FlatButton primary label="View Details" onClick={() => console.log("test")}/>
+                            <FlatButton primary label="View Details" onClick={() => this.props.handleViewDetails() }/>
                             <FlatButton secondary label="Close" onClick={() => this.props.remove()}/>
                         </CardActions>
                     </Card>

@@ -55,10 +55,12 @@ class MainDashboard extends PureComponent {
             height: window.innerHeight,
             hoveredSite: '',
             resultDrawer: false,
-            searchSite: ''
+            searchSite: '',
+            detailsDrawer: false
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.changeHoveredSite = this.changeHoveredSite.bind(this);
+        this.handleViewDetails = this.handleViewDetails.bind(this);
     }
 
     updateDimensions() {
@@ -100,6 +102,12 @@ class MainDashboard extends PureComponent {
         }
     }
 
+    handleViewDetails() {
+        if(this.state.detailsDrawer == false) {
+            this.setState({ detailsDrawer: true })
+        }
+    }
+
     render() {
 
         let { loading, allSite, timeseriesJpgFiles } = this.props.data
@@ -117,15 +125,19 @@ class MainDashboard extends PureComponent {
                     <Paper style={styles.center}>
                         <AutoSizer>
                             {({width, height}) => (
-                                <Phmap width={width} height={height} markers={sites} loading={loading}/>
+                                <Phmap width={width} height={height} markers={sites} loading={loading} handleViewDetails={this.handleViewDetails}/>
                             )}
                         </AutoSizer>
                     </Paper>
 
                 </div>
 
-                <Drawer width={280} containerStyle={{ top: '65px' }} openSecondary open={this.state.resultDrawer} >
+                <Drawer width={280} containerStyle={{ top: '64px' }} openSecondary open={this.state.resultDrawer} >
                     <SearchDrawer sites={sites} filter={this.state.searchSite}/>
+                </Drawer>
+
+                <Drawer openSecondary width={280} open={this.state.detailsDrawer}>
+
                 </Drawer>
 
             </div>

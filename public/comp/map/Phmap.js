@@ -58,7 +58,7 @@ class Phmap extends Component {
       lat: 12.8797,
       lng: 121.7740,
       zoom: 6,
-      maxZoom: 20,
+      maxZoom: 19,
       minZoom: 6,
       clustering: true,
       clusterIsSet: false,
@@ -145,7 +145,7 @@ class Phmap extends Component {
                   key={`popup-${this.state.popup.key + Math.random()}`}
                   position={this.state.popup.position} 
                   children={
-                    <SitePopup popup={this.state.popup} previewUrl={this.state.previewUrl} remove={this.removePopup}
+                    <SitePopup popup={this.state.popup} previewUrl={this.state.previewUrl} remove={this.removePopup} handleViewDetails={this.props.handleViewDetails}
                       newPreview={this.handleNewPreview} requestPreview={this.requestForPreview} filename={this.state.filename}/> 
                     }/>
               }

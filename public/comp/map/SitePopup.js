@@ -49,7 +49,7 @@ class SitePopup extends Component {
                             
                         </CardText>
                         <CardActions>
-                            <FlatButton primary label="View Details" onClick={() => this.props.handleViewDetails() }/>
+                            <FlatButton primary label="View Details" onClick={() => this.props.handleViewDetails(this.props.popup.key) }/>
                             <FlatButton secondary label="Close" onClick={() => this.props.remove()}/>
                         </CardActions>
                     </Card>

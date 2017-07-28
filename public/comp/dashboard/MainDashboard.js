@@ -4,6 +4,7 @@ import { AutoSizer } from 'react-virtualized'
 import Phmap from '../map/Phmap'
 import RightPanel from './RightPanel'
 import SearchDrawer from './SearchDrawer'
+import SiteDetailsDrawer from './SiteDetailsDrawer'
 
 // ui
 import { AppBar, Paper, List, ListItem, Drawer} from 'material-ui'
@@ -56,11 +57,13 @@ class MainDashboard extends PureComponent {
             hoveredSite: '',
             resultDrawer: false,
             searchSite: '',
-            detailsDrawer: false
+            detailsDrawer: false,
+            siteToViewDetails: ''
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.changeHoveredSite = this.changeHoveredSite.bind(this);
         this.handleViewDetails = this.handleViewDetails.bind(this);
+        this.handleCloseDetails = this.handleCloseDetails.bind(this);
     }
 
     updateDimensions() {
@@ -102,10 +105,17 @@ class MainDashboard extends PureComponent {
         }
     }
 
-    handleViewDetails() {
+    handleViewDetails(sitename) {
         if(this.state.detailsDrawer == false) {
             this.setState({ detailsDrawer: true })
         }
+
+        this.setState({siteToViewDetails: sitename})
+    }
+
+    handleCloseDetails() {
+        this.setState({ detailsDrawer: false })
+        this.setState({siteToViewDetails: ''})
     }
 
     render() {
@@ -137,7 +147,7 @@ class MainDashboard extends PureComponent {
                 </Drawer>
 
                 <Drawer openSecondary width={280} open={this.state.detailsDrawer}>
-
+                    <SiteDetailsDrawer close={this.handleCloseDetails} site={this.state.siteToViewDetails}/>
                 </Drawer>
 
             </div>

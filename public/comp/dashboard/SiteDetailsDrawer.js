@@ -8,6 +8,8 @@ import LogsheetForm from '../logsheet/LogSheetForm'
 import { connect } from 'react-redux'
 
 import { setLogsheetMode, reviewLogsheet } from '../../actions/index'
+import { apolloClient } from '../../_primary'
+import { SingleLogsheetQuery } from '../../gqlFiles/logsheetgql'
 
 //graphql
 import gql from 'graphql-tag';
@@ -33,8 +35,13 @@ class SiteDetailsDrawer extends Component {
     }
 
     handleLogsheetDialog(id) {
-        this.setState({ logsheetDialog: true, currentLogsheetToView: id })
-        this.props.setLogsheetMode("readonly")
+        apolloClient.query({query: SingleLogsheetQuery, variables: { currentLogsheet: id }})
+            .then((d) => {
+                this.setState({ logsheetDialog: true, currentLogsheetToView: id })
+                this.props.setLogsheetMode("readonly")
+                this.props.reviewLogsheet(d.data.singleLogsheet)
+            }).catch((err) => console.log(err))
+
     }
 
     handleClose() {
@@ -109,7 +116,7 @@ class SiteDetailsDrawer extends Component {
                         </CardText>
                     </Card>
 
-                    <Dialog autoScrollBodyContent={true} contentStyle={{width: '100%'}} modal={false} open={this.state.logsheetDialog} onRequestClose={()=> this.handleClose()}>
+                    <Dialog repositionOnUpdate={true} autoScrollBodyContent={true} contentStyle={{width: '100%'}} modal={false} open={this.state.logsheetDialog} onRequestClose={()=> this.handleClose()}>
                             <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}>
                                 <LogsheetForm />
                             </Paper>

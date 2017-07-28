@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import moment from 'moment'
 
-import { AppBar, Card, CardHeader, CardText, List, ListItem } from 'material-ui'
+import { AppBar, Card, CardHeader, CardText, List, ListItem, Dialog, Paper } from 'material-ui'
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import LogsheetForm from '../logsheet/LogSheetForm'
+import { connect } from 'react-redux'
+
+import { setLogsheetMode, reviewLogsheet } from '../../actions/index'
 
 //graphql
 import gql from 'graphql-tag';
@@ -20,6 +24,23 @@ const SitesWithLogsheetsQuery = gql`query SitesWithLogsheetsQuery($name: [String
 }`;
  
 class SiteDetailsDrawer extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            logsheetDialog: false,
+            currentLogsheetToView: null
+        };
+    }
+
+    handleLogsheetDialog(id) {
+        this.setState({ logsheetDialog: true, currentLogsheetToView: id })
+        this.props.setLogsheetMode("readonly")
+    }
+
+    handleClose() {
+        this.setState({ logsheetDialog: false, currentLogsheetToView: null })
+    }
+
     render() {
         let { data, site } = this.props
 
@@ -48,9 +69,6 @@ class SiteDetailsDrawer extends Component {
             })
 
             return (
-
-                
-
                 <div>
                     <AppBar title={this.props.site} iconElementLeft={<IconButton onTouchTap={()=> this.props.close()}><NavigationClose /></IconButton>} />
                     <Card>
@@ -77,6 +95,7 @@ class SiteDetailsDrawer extends Component {
                                                                         <ListItem
                                                                             key={index}
                                                                             primaryText={moment(new Date(l.logsheet_date)).format('MMMM D - dddd')}
+                                                                            onTouchTap={()=> this.handleLogsheetDialog(l.id)}
                                                                         />
                                                                     )
                                                                 }
@@ -89,16 +108,23 @@ class SiteDetailsDrawer extends Component {
                             }
                         </CardText>
                     </Card>
+
+                    <Dialog autoScrollBodyContent={true} contentStyle={{width: '100%'}} modal={false} open={this.state.logsheetDialog} onRequestClose={()=> this.handleClose()}>
+                            <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}>
+                                <LogsheetForm />
+                            </Paper>
+                    </Dialog>
+
                 </div>
             );
         }
     }
 }
 
-export default graphql(SitesWithLogsheetsQuery, {
+export default connect(null , { setLogsheetMode, reviewLogsheet })(graphql(SitesWithLogsheetsQuery, {
     options: (ownProps) => ({
         variables: {
             name: [ownProps.site]
         }
     })
-})(SiteDetailsDrawer);
+})(SiteDetailsDrawer))

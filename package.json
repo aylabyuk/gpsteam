@@ -30,6 +30,7 @@
     "history": "^4.6.3",
     "inline-style-prefixer": "^3.0.6",
     "leaflet": "^1.1.0",
+    "leaflet-omnivore": "^0.3.4",
     "leaflet.markercluster": "^1.0.6",
     "lodash": "^4.17.4",
     "mapbox-gl": "^0.38.0",

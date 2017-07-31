@@ -16,6 +16,11 @@ import { apolloClient } from '../../_primary'
 
 import SitePopup from './SitePopup'
 
+import omnivore from 'leaflet-omnivore'
+
+// server
+import { ip, PORT } from '../../_primary'
+
 const uploadPreview = gql`
     mutation updateSiteTimeseriesPreview(
         $siteName: String!,
@@ -61,6 +66,7 @@ class Phmap extends Component {
       maxZoom: 19,
       minZoom: 6,
       clustering: true,
+      mapIsSet: false,
       clusterIsSet: false,
       popup: false,
       path: ''
@@ -95,7 +101,7 @@ class Phmap extends Component {
         console.log(err)
       })
   }
-  
+
   render() {
     const position = [this.state.lat, this.state.lng];
 
@@ -108,7 +114,12 @@ class Phmap extends Component {
         <div id='this' style={{width: this.props.width, height: this.props.height}}>
           <Map center={position} zoom={this.state.zoom} minZoom={this.state.minZoom} maxZoom={this.state.maxZoom} style={{height: this.props.height}} zoomSnap
             ref={(leafletmap) => {
-                window.leafletmap = leafletmap
+                if(!this.state.mapIsSet) {
+                  window.leafletmap = leafletmap
+                  // load the fault lines
+                  omnivore.kml('http://'+ ip + PORT + '/faultline/AF_2017.kml').addTo(leafletmap.leafletElement)
+                  this.setState({mapIsSet: true})
+                }
               }
             }>
 

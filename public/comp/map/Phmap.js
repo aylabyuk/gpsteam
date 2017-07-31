@@ -116,8 +116,12 @@ class Phmap extends Component {
             ref={(leafletmap) => {
                 if(!this.state.mapIsSet) {
                   window.leafletmap = leafletmap
+
                   // load the fault lines
-                  omnivore.kml('http://'+ ip + PORT + '/faultline/AF_2017.kml').addTo(leafletmap.leafletElement)
+                  let layer = L.geoJSON(null, { style: function(feature) {
+                        return { color: '#FF0000', weight: 0.8 };
+                    } })
+                  omnivore.kml('http://'+ ip + PORT + '/faultline/AF_2017.kml', null, layer).addTo(leafletmap.leafletElement)
                   this.setState({mapIsSet: true})
                 }
               }

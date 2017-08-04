@@ -20,4 +20,5 @@ app.get("*", function (req, res) {
 
 console.log('production app running on PORT: ', PORT)
 
+// make the application running on the desired Port number
 app.listen(PORT);

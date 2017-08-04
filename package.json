@@ -1,7 +1,7 @@
 {
   "name": "gps_project",
   "version": "1.0.0",
-  "description": "GPSteam web application",
+  "description": "GPSteam dashboard web application",
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server",

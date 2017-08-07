@@ -6,6 +6,8 @@ import { normalizeUpperCase } from '../formValidators/formValidators'
 //ui
 import { AutoComplete, MenuItem, TextField, FlatButton } from 'material-ui'
 
+
+// this is the autocomplete field with the array of sitenames as datasource
 const renderAutoCompleteField = ({ input, ref, label, dataSource, disabled, meta: { touched, error } }) => (
   <AutoComplete
       floatingLabelText="site name"
@@ -33,6 +35,7 @@ const renderTextField = ({fullWidth, input, label, disabled, meta: { touched, er
   />
 )
 
+// three fields are rendered in this component ( sitename, marker and location )
 class SiteFields extends PureComponent {
     render() {
         return (

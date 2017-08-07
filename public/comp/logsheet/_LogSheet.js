@@ -58,7 +58,7 @@ class _LogSheet extends Component {
 
                 { 
                     // Create a drawer that will hold the LogsheetViewer component
-                    // state is controlled by this.props.open supplied to open attribute of the <Drawer> tag
+                    // state is controlled by this.props.open supplied to the open attribute of the <Drawer> tag
                 }
                 <Drawer docked={false} containerStyle={{overflow: 'hidden'}} width={400} open={this.props.open} openSecondary={true}>
                     <_LogSheetViewer />

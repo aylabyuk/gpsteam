@@ -1,10 +1,11 @@
+// import nessesary packages
 import React, { PureComponent, PropTypes } from 'react';
 import { reduxForm, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-//components
+// import all logsheet components
 import DateFields from './DateFields'
 import ObserversFields from './ObserversFields'
 import SiteFields from './SiteFields'
@@ -17,16 +18,18 @@ import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
 import LogSheetButtons from './LogSheetButtons'
 
-// state
+// import methods to be use for the component state management
 import { changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting, reviewLogsheet } from '../../actions/index'
 
-//validation 
+// import form validation module 
 import { validateLogsheet as validate } from '../formValidators/formValidators'
 
-//ui
+// import ui components to use in the component
 import { Paper, Divider, LinearProgress } from 'material-ui';
 import styles from '../../css/home.css';
 
+
+// create a graphql query taht will get all the sites, receivers and antenna information 
 const LogSheetQuery = gql`query LogSheetQuery {
   allSite {
     id
@@ -40,15 +43,16 @@ const LogSheetQuery = gql`query LogSheetQuery {
   }
 }`;
 
-
+// this component will hold all the form related sub components such as textfields and datepickers for logsheets.. 
+// set this component as Purecomponent since we only want to render this when state and props changes.
 class LogSheetForm extends PureComponent {
 
+    // this function will run each time the component updates because of changes to the props.toReview
     reinitializeForm(data) {
         let  { initialize, changeSelectedStaffs, changeSelectedContact } = this.props
 
+        // loop through all observer data and provide a new variable array to store all observer information 
         let observerIds = []
-
-
         data.observers.map((o)=> {
             observerIds.push({ 
                 id: o.id,
@@ -60,6 +64,8 @@ class LogSheetForm extends PureComponent {
         initialize(data)
         changeSelectedStaffs(observerIds)
         
+        // if a contact data is present take action by calling a custom redux action changeSelectedContact 
+        // if not, then provide a null  value for the selected contact 
         if(data.contact) {
             changeSelectedContact({
                 id: data.contact.id,
@@ -72,6 +78,7 @@ class LogSheetForm extends PureComponent {
         }
     }
     
+    // if there is a change in the components props the reinitializeForm will be called to supply the component correct data when rendered
     componentWillUpdate(nextProps, nextState) {
         if(nextProps.toReview != null) {
             if(this.props.toReview == null) {
@@ -81,6 +88,7 @@ class LogSheetForm extends PureComponent {
             }
         }
 
+        // reset global redux stores if logsheet component is in 'new' mode
         if(nextProps.logsheetMode != this.props.logsheetMode ) {
             if(nextProps.logsheetMode == 'new') {
                 this.props.resetContactId()
@@ -88,6 +96,8 @@ class LogSheetForm extends PureComponent {
                 this.props.resetSelectedStaffs()
                 this.props.initialize(null)
                 
+                // provide a 5 seconds delay when changing the state of the component. This will greatly affect the behavior of the logsheet button
+                // since in 'read only' mode the button will be hidden and in 'new' mode the button will be visible.
                 setTimeout(function() { this.setState({submitSuccess: false}); }.bind(this), 5000);
             }
         }
@@ -97,6 +107,7 @@ class LogSheetForm extends PureComponent {
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
 
+        // if apollo client is still querying data to the server, render a linear progress component.
         if(loading) {
             return (
                 <div style={{width: '500px', paddingTop: '5px'}}>
@@ -105,13 +116,18 @@ class LogSheetForm extends PureComponent {
             );
         } else {
 
-            // ro = readonly
+            // ro means 'readonly' can be true or false
+            // this application ui state will be passed as props to the component to manage the behavior of every single fields depending on its value
+            // in readonly all the fields will be disabled
             let ro = this.props.logsheetMode == 'readonly' ? true : false
 
+            // if all the data has been successfully requested by the apollo client
+            // render every single component. Each of these component is equivalent to a field.
             return (
                 <div>
                     <DateFields ro={ro} />
                     <ObserversFields ro={ro}/>
+                    {/* Provide all sitenames to the SieFields component  */}
                     <SiteFields ro={ro} siteNames={allSite ? allSite : [{name: 'loading..'}]}/>
                     <HardwareFields ro={ro} receivers={allReceiver ? allReceiver : [{serial_number: 'loading..'}]} 
                             antennas={allAntenna ? allAntenna : [{serial_number: 'loading..'}]} />
@@ -120,9 +136,11 @@ class LogSheetForm extends PureComponent {
                     <StatusFields ro={ro}/>
                     <AntennaHeigtInfoFields ro={ro}/>
                     <PertinentInfoFields ro={ro}/>
+                    {/* provide the selectedContact as props and way to change it by passing the function change as a custom attribute to SiteContactPersonFields */}
                     <SiteContactPersonFields ro={ro} selectedContact={this.props.selectedContact} change={this.props.change}/>
                     <Divider />
                     <br />
+                    {/* pass the function handleSubmit as props to the LogSheetButtons component */}
                     <LogSheetButtons ro={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
                 </div>
             );
@@ -130,17 +148,21 @@ class LogSheetForm extends PureComponent {
     }
 }
 
+
+// this is the standard way of creating a Higher Order Component/Form in redux-form
+// name the form 'logsheet'
+// pass the validate variable which contains validation rules for logsheet component
 const form =  reduxForm({  
 	form: 'logsheet',
     validate
 })
 
+// map the ui state logsheetToReview object to a toReview variable before passing it as a props
 function mapStateToProps(state) {  
 
-    let { logsheetToReview } = state.ui
-    let l = logsheetToReview
-
-    const toReview = l ? {
+    // if logsheetToReview has data create a new variable toReview
+    // else provide a null value
+    const toReview = state.ui.logsheetToReview ? {
         id: l.id,
         logdate: new Date(l.logsheet_date),
         sitename: l.site.name,
@@ -174,6 +196,7 @@ function mapStateToProps(state) {
         contact: l.contact
     } : null
 
+    // return all these ui states
 	return {
 		selectedContact: state.ui.selectedContact,
         logsheetMode: state.ui.logsheetMode,
@@ -181,4 +204,7 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, reviewLogsheet })(graphql(LogSheetQuery)(form(LogSheetForm)))
+// export the LogsheetForm component together with the redux actions, ui states and LogsheetQuery
+// connect is a HOC by redux and graphql is a 
+export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, reviewLogsheet })
+                (graphql(LogSheetQuery)(form(LogSheetForm)))

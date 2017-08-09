@@ -274,7 +274,7 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
 
-            
+            // if line data is available, display it
             if(lineBefore != null) {
 
                 let A = [ lineBefore[0][0], lineBefore[0][1] ],
@@ -307,7 +307,7 @@ export default class MyChart {
 
                 let displacement = y.invert(final) - y.invert(initial)
                 console.log(name+': '+ displacement )
-            }
+            } 
 
 
         }

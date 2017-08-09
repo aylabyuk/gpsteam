@@ -138,6 +138,11 @@ class TimeseriesContainer extends Component {
                 }
             });
 
+            // sort data by date here
+            jsonFile.sort((a, b) => {
+                return a.date - b.date
+            })
+
             this.setState({ data: jsonFile })
 
         };

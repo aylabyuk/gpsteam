@@ -345,6 +345,9 @@ export default class MyChart {
 
             svg.transition(t)
                 .call(zoom.transform, d3.zoomIdentity);
+
+            // fix opacity issue on first data
+            d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", dotsOpacity)
         }
 
     }

@@ -165,7 +165,6 @@ class TimeseriesContainer extends Component {
                             <input type="file" id="file-upload" style={styles.exampleImageInput} accept={'*'} required onChange={this.handleUpload.bind(this)} />
                         </RaisedButton>
                     </div>
-
                 </div>
             </Paper>
         );

@@ -37,6 +37,23 @@ const styles = {
     }
 };
 
+let requestForLine = (data) => {
+    return new Promise((resolve, reject) => {
+        axios.get(`http://localhost:4040/line/compute`, {
+            params: {
+                data: data
+            }
+        })
+            .then((response) => {
+                resolve(response.data.line)
+            })
+            .catch(function (error) {
+                reject(Error(error))
+            });
+
+    });
+}
+
 class TimeseriesContainer extends Component {
     constructor(props) {
         super(props);

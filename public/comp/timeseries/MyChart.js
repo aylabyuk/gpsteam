@@ -109,6 +109,7 @@ export default class MyChart {
 
     update(data) {
 
+        // sort data by date
         data = data.sort((a,b) => {
             return a.date - b.date
         })

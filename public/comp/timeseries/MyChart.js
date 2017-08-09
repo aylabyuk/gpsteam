@@ -239,7 +239,12 @@ export default class MyChart {
             // let result = regression.linear(toRegression)
             // let lineBefore = result.points
 
-            let lineBefore = line != null ? line : [0,0]
+            let lineBefore = [], counter = 0
+
+            line != null ? line.map((pt) => {
+                lineBefore.push([ data[counter].date , pt])
+                counter++
+            }) : lineBefore = null
 
             // console.log(name+ ': ',result)
 
@@ -269,40 +274,41 @@ export default class MyChart {
                 .x(function(d) { return x(d[0]); })
                 .y(function(d) { return beforeY(d[1]); })
 
-            lineBefore.map((d) => {
-                d[1] = (d[1] - b4mean)
-            })
+            
+            if(lineBefore != null) {
 
-            let A = [ lineBefore[0][0], lineBefore[0][1] ],
-                B = [ lineBefore[lineBefore.length-1][0], lineBefore[lineBefore.length-1][1] ],
-                p0 = pointAtX(A, B, A[0]),
-                p1 = pointAtX(A, B, earthquake)
+                let A = [ lineBefore[0][0], lineBefore[0][1] ],
+                    B = [ lineBefore[lineBefore.length-1][0], lineBefore[lineBefore.length-1][1] ],
+                    p0 = pointAtX(A, B, A[0]),
+                    p1 = pointAtX(A, B, earthquake)
 
-            d3.select('.svg'+name).select(".lr1")
+                d3.select('.svg'+name).select(".lr1")
                 .transition(t)
                 .attr("d", beforeLine([p0, p1]));
 
-            let dataAfter = []
-            data.map((d) => {
-                if(d.date > earthquake) {
-                    dataAfter.push(d)
-                }
-            })
-            if(dataAfter.length == 0) { return 0 }
+                let dataAfter = []
+                data.map((d) => {
+                    if(d.date > earthquake) {
+                        dataAfter.push(d)
+                    }
+                })
+                if(dataAfter.length == 0) { return 0 }
 
-            let line = d3.line()
-                .x(function(d) { return x(d[0]); })
-                .y(function(d) { return d[1]; })
+                let line = d3.line()
+                    .x(function(d) { return x(d[0]); })
+                    .y(function(d) { return d[1]; })
 
-            let final = y(dataAfter[0].yVal - mean),
-                initial = beforeY(p1[1])
+                let final = y(dataAfter[0].yVal - mean),
+                    initial = beforeY(p1[1])
 
-            d3.select('.svg'+name).select(".lr2")
-                .transition(t)
-                .attr("d", line([ [earthquake, initial ] , [earthquake, final ] ]));
+                d3.select('.svg'+name).select(".lr2")
+                    .transition(t)
+                    .attr("d", line([ [earthquake, initial ] , [earthquake, final ] ]));
 
-            let displacement = y.invert(final) - y.invert(initial)
-            console.log(name+': '+ displacement )
+                let displacement = y.invert(final) - y.invert(initial)
+                console.log(name+': '+ displacement )
+            }
+
 
         }
 

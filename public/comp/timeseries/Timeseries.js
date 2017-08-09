@@ -26,7 +26,7 @@ class Timeseries extends Component {
     
     render() {
 
-        let { name, earthquake, data, maxXval, minXval, margin } = this.props
+        let { name, earthquake, data, maxXval, minXval, margin, line } = this.props
         let dd = [], date, yVal
         
         data.map((d) => {
@@ -43,6 +43,7 @@ class Timeseries extends Component {
         dd.maxXval = maxXval
         dd.minXval = minXval
         dd.margin = margin
+        dd.line = line
 
         return (
             <Paper style={style}>

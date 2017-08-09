@@ -115,7 +115,7 @@ export default class MyChart {
         })
 
         let { styles  } = this.props
-        let { name, maxXval, minXval, margin } = data
+        let { name, maxXval, minXval, margin, line } = data
         let { dotsOpacity, earthquake } = window.timeseriesUiState
 
          //convert yVal to cm
@@ -226,17 +226,20 @@ export default class MyChart {
 
         function showDisplacement(data) {
 
-            let dataBefore = [], toRegression = []
+            let dataBefore = []
+            // let toRegression = []
             data.map((d) => {
                 if(d.date < earthquake) {
                     dataBefore.push(d)
-                    toRegression.push([ d.date, d.yVal ])
+                    // toRegression.push([ d.date, d.yVal ])
                 }
             })
             if(dataBefore.length == 0) { return 0 }
 
-            let result = regression.linear(toRegression)
-            let lineBefore = result.points
+            // let result = regression.linear(toRegression)
+            // let lineBefore = result.points
+
+            let lineBefore = line != null ? line : [0,0]
 
             // console.log(name+ ': ',result)
 

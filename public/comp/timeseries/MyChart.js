@@ -109,6 +109,10 @@ export default class MyChart {
 
     update(data) {
 
+        data = data.sort((a,b) => {
+            return a.date - b.date
+        })
+
         let { styles  } = this.props
         let { name, maxXval, minXval, margin } = data
         let { dotsOpacity, earthquake } = window.timeseriesUiState

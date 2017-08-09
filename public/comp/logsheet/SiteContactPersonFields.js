@@ -19,7 +19,7 @@ import SearchBar from 'material-ui-search-bar'
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-
+ 
 import { cloneDeep, sortBy } from 'lodash'
 
 const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error }, ...custom }) => (
@@ -40,7 +40,9 @@ const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error
     </div>
 )
 
-
+// query all contact person ordered by lastname
+// this query will accept last_name as parameter
+// it will return the id, first name and contact number
 const ContactsQuery = gql`
     query ContactsQuery {
     allContact(order: "last_name") {
@@ -51,6 +53,7 @@ const ContactsQuery = gql`
     }
 }`;
 
+// subscription query that will be executed each time a new contact is created
 const contactCreated = gql`
   subscription contactCreated {
     contactCreated {
@@ -62,7 +65,10 @@ const contactCreated = gql`
   }
 `;
 
+
 class SiteContactPersonFields extends PureComponent {
+    
+    
     constructor(props) {
         super(props)
         this.state = {

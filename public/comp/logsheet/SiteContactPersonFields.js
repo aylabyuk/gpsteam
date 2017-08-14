@@ -68,7 +68,6 @@ const contactCreated = gql`
   }
 `;
 
-
 class SiteContactPersonFields extends PureComponent {
     constructor(props) {
         super(props)
@@ -103,19 +102,25 @@ class SiteContactPersonFields extends PureComponent {
         this.props.change('contactNumber', '')
     }
 
+    // subscription for newly created data takes place here
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
             let { subscribeToMore } = this.props.data
+
             this.subscription = [
                 subscribeToMore({
                     document: contactCreated,
                     updateQuery: (previousResult, { subscriptionData }) => {
 
+                        // create a clone of the already saved data before pushing another data to the list
                         const newContact = subscriptionData.data.contactCreated
                         const newResult = cloneDeep(previousResult)
 
+                        // set the redux store selected contact with the new one created when the data arrives
                         this.props.changeSelectedContact(newContact)
                         
+                        // add the new contact to the data result/list of all contacts
+                        // this will become the return value for the subscription
                         newResult.allContact.push(subscriptionData.data.contactCreated)
                         return newResult
                     },
@@ -124,7 +129,9 @@ class SiteContactPersonFields extends PureComponent {
         }
     }
 
+    // in the event of user changing the selected contact id the redux-form fields will also change
     componentWillUpdate(nextProps, nextState) {
+        // test if the selected contact props is changed (using this.props and nextprops)
         if(this.props.selectedContact != nextProps.selectedContact && nextProps.selectedContact) {
             this.props.change('contactFirstName', nextProps.selectedContact.first_name)
             this.props.change('contactLastName', nextProps.selectedContact.last_name)
@@ -134,6 +141,8 @@ class SiteContactPersonFields extends PureComponent {
     
 
     render() {
+
+        // rendering the action buttons for the component
         const actions = [
         <FlatButton
             label="New Contact"

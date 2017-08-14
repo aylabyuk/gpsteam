@@ -20,8 +20,12 @@ import SearchBar from 'material-ui-search-bar'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+// use these library to work with the result from the graphql queries
 import { cloneDeep, sortBy } from 'lodash'
 
+// render a textfield that contains a clear iconbutton 
+// only display the button when the clearIcon props is true
+// position the button on the rightmost side of the textfield 
 const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error }, ...custom }) => (
     <div style={{position: 'relative', display: 'inline-block'}}>
         <div style={{position: 'absolute', right: 12, top: 25, width: 20, height: 20}}>
@@ -40,7 +44,7 @@ const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error
     </div>
 )
 
-
+// just query the information needed to display to user
 const ContactsQuery = gql`
     query ContactsQuery {
     allContact(order: "last_name") {
@@ -51,6 +55,8 @@ const ContactsQuery = gql`
     }
 }`;
 
+// subscribe when new contact was created
+// again query only information we need to display to the user
 const contactCreated = gql`
   subscription contactCreated {
     contactCreated {
@@ -61,6 +67,7 @@ const contactCreated = gql`
     }
   }
 `;
+
 
 class SiteContactPersonFields extends PureComponent {
     constructor(props) {

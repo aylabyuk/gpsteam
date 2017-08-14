@@ -45,7 +45,8 @@ let requestForLine = (data) => {
             }
         })
             .then((response) => {
-                resolve(response.data.line)
+                console.log(response.data.std_error)
+                resolve(response.data)
             })
             .catch(function (error) {
                 reject(Error(error))
@@ -103,8 +104,8 @@ class TimeseriesContainer extends Component {
 
         if(dataBeforeEarthquake.length != 0) {
             requestForLine(dataBeforeEarthquake)
-                .then((l) => {
-                    this.setState({ line: l })
+                .then((d) => {
+                    this.setState({ line: d.line })
                 })
         }
     }

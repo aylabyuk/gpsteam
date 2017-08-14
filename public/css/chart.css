@@ -33,7 +33,7 @@
 }
 
 :local(.dot) {
-  color: orangered
+  color: orangered;
 }
 
 #resetBtn {

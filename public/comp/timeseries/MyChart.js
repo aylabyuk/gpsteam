@@ -94,6 +94,30 @@ export default class MyChart {
             .attr("stroke-linecap", "round")
             .attr("stroke-width", 1.5)
             .classed("lr2", true)
+        
+
+        /// distance label
+        svg.append('text')
+            .attr('x', 1000)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .attr("class", "shadow") 
+            .classed('distanceLabel', true)
+        
+        svg.append("rect")
+            .classed('distanceRect', true)
+            .style("fill", "#fff")
+            .style("fill-opacity", "1")
+            .style("stroke", "#000")
+            .style("stroke-width", "1px");
+
+        svg.append('text')
+            .attr('x', 1005)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .attr("class", "shadow") 
+            .classed('distanceLabel', true)
+        ////////////////
 
         this.svg = svg
         this.view = view
@@ -307,13 +331,28 @@ export default class MyChart {
 
                 let displacement = y.invert(final) - y.invert(initial)
                 console.log(name+': '+ displacement )
+
+                showDisplacementResult(displacement)
+
             } 
 
 
         }
 
-        function showDisplacementResult() {
+        function showDisplacementResult(distance) {
+            let svg = d3.select('.svg'+name)
 
+            let distanceLabel = svg.selectAll('.distanceLabel')
+                .text('displacement: '+ distance.toFixed(2) + ' mm' )
+
+            let distancebbox = distanceLabel.node().getBBox()
+
+            svg.select(".distanceRect")
+                .attr("x", distancebbox.x)
+                .attr("y", distancebbox.y)
+                .attr("width", distancebbox.width + 10)
+                .attr("height", distancebbox.height)
+            
         }
 
         function pointAtX(a, b, x) {

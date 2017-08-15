@@ -9,6 +9,7 @@ import { graphql, withApollo } from 'react-apollo';
 //ui
 import { Dialog, FlatButton, TextField } from 'material-ui'
 
+// this is the rendered textfield to be provided for each field in the NewContactDialog component
 const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
   <TextField 
     floatingLabelText={label}
@@ -19,6 +20,11 @@ const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ..
   />
 )
 
+// the addNewContactPerson as the name suggest adds a new contact person to the system
+// this mutation script is called whenever the submit button is pressed
+// the first part of the code contains all the important variables and their data types
+// the second part is the actual mutation 
+// the third part is the returning values whenever the mutation becomes successful
 const addNewContactPerson = gql`
   mutation addNewContactPerson(
         $first_name: String!
@@ -52,6 +58,9 @@ const addNewContactPerson = gql`
 `;
 
 class NewContactDialog extends PureComponent {
+    // once the handleAdd method is called it will execute the mutate function provided through props for this component
+    // the data is provided through the d variable. when the mutation succeed a newContact action will be dispatched to change the global state
+    // if the mutation fails the error will be printed out to the console.
     handleAdd(d) {
         this.props.mutate({ variables: {
             first_name: d.first_name,
@@ -89,7 +98,7 @@ class NewContactDialog extends PureComponent {
         ];
 
         return (
-
+            
             <Dialog 
                 title='New Contact'
                 actions={actions}
@@ -97,6 +106,8 @@ class NewContactDialog extends PureComponent {
                 repositionOnUpdate={false}
                 autoScrollBodyContent={true}
             >
+
+            {/* all Fields are rendered using the renderTextField component */}
             <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Field style={{flexGrow: 2, marginLeft: 2, marginRight: 2 }} name='first_name' label="firstname(required)" component={renderTextField}  />
                 <Field style={{flexGrow: 2, marginLeft: 2, marginRight: 2 }} name='last_name' label="lastname(required)" component={renderTextField}  />
@@ -115,6 +126,7 @@ class NewContactDialog extends PureComponent {
     }
 }
 
+// a file with the validation methods is passed as parameter to the reduxForm helper
 const form =  reduxForm({  
 	form: 'newContact',
     validate

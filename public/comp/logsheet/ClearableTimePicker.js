@@ -8,7 +8,7 @@ const Clearable = ComposedComponent => class extends React.Component {
 
     clearDate (event) {
         event.preventDefault();
-        // We manually reach into the composed component and set it's date to null.
+        // We manually reach into the composed component using ref (reference name) and set it's date to null.
         let newDate = '';
         this.refs.timePicker.setState({
             date: newDate

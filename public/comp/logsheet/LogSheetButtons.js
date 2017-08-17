@@ -20,15 +20,15 @@ import { addNewLogSheet, updateLogSheet, checkDuplicate } from '../../gqlFiles/l
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-
+// code for getting the daty of year using the date value.
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
     i=3-j.length;
     while(i-->0)j=0+j;
     return j
-};
+}
 
-
+// this is the styling object for the floating action button (FAB)
 const fabStyle = {
     margin: 0,
     top: 'auto',
@@ -36,8 +36,9 @@ const fabStyle = {
     bottom: 20,
     left: 'auto',
     position: 'fixed',
-};
+}
 
+// styling for the circular progress behind the FAB
 const circStyle = {
     margin: 0,
     top: 'auto',
@@ -48,27 +49,32 @@ const circStyle = {
     zIndex: 9999
 }
 
+// this component handles all submission related functionality of the logsheet form
 class LogSheetButtons extends Component {
     constructor(props) {
     super(props);
         this.state = {
             open: false,
             message: '',
-            submitSuccess: false,
-            progressValue: 1
+            submitSuccess: false
         };
     }
 
+    // everytime there is an message available to display and the the open state is true..
+    // show the snackbar
     toggleSnackbar(open, message) {
         this.setState({open, message})
     } 
 
+    // at the specified period of time after the snackbar is displayed the open state of the component will be changed to false
     handleRequestClose = () => {
         this.setState({
         open: false,
         });
     };
 
+    // ressetting the logsheet requires calling all the methods that will trigger the actions to the redux store
+    // these methods are accessible via props
     handleReset() {
         this.props.dispatch(reset('logsheet'));
         this.props.resetContactId()

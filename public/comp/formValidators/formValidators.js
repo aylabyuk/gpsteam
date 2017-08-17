@@ -1,5 +1,12 @@
 import moment from 'moment'
 
+
+// methods from this module are used to validate redux-form values or to normalize the format of certain fields such as 'years' and 'months'
+// normalization example: http://redux-form.com/6.0.0-rc.1/examples/normalizing/
+// validation example: http://redux-form.com/6.0.0-rc.1/examples/syncValidation/
+
+// to normalize year values
+// extract the full year from the date value 
 export const years = () => {
     let arr = Array();
     let now = new Date().getFullYear();
@@ -9,10 +16,14 @@ export const years = () => {
     return arr.reverse()
 }
 
+// to normalize months values
 export const months = () => {
     return moment.months()
 }
 
+// validation of the fields fires when the user click submit or there is a blur event happened in the field component
+// if the values for each field is blank an error will be issued to the component 
+// which will be store in the object 'error'.
 export const validateStaffInfo = values => {
   const errors = {}
   if (!values.firstName) {
@@ -39,6 +50,7 @@ export const validateStaffInfo = values => {
   if (!values.officeLocation) {
     errors.officeLocation = 'Required'
   }
+  // the next lines will check using regular expression if the emails provided are valid
   if (!values.email1) {
     errors.email1 = ''
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email1)) {
@@ -57,6 +69,7 @@ export const validateStaffInfo = values => {
   return errors
 }
 
+// validation for the contactDetails 
 export const validateContactDetails = values => {
   const errors = {}
   if (!values.first_name) {

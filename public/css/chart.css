@@ -15,7 +15,7 @@
  :local(.chartSvg) {
   border-style: solid;
   border-radius: 4px;
-  border-width: 1px 10px 1px 10px;
+  border-width: 1px 1px 1px 1px;
   border-color: rgb(0, 188, 212);
   background-color: white;
 } 
@@ -45,10 +45,10 @@
 
 .namelabel {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
 }
 
 .distanceLabel {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 30px;
 }

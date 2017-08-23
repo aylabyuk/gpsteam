@@ -40,7 +40,57 @@ export default class MyChart {
         let gY = svg.append("g")
             .attr("class", styles.axis + " axis--y" + name)
 
-        //append label
+        let dots = svg.append("g")
+            .classed('dots', true)
+
+        svg.append("line")
+            .classed('eq', true)
+            .attr("stroke", "red" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "green" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 5)
+            .classed("lr1", true)
+        
+        svg.append("path")
+            .attr("fill", "none")
+            .attr("stroke", "green" )
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 5)
+            .classed("lr2", true)
+        
+
+        /// distance label
+        svg.append('text')
+            .attr('x', 800)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .attr("class", "shadow") 
+            .classed('distanceLabel', true)
+        
+        svg.append("rect")
+            .classed('distanceRect', true)
+            .style("fill", "#fff")
+            .style("fill-opacity", "1")
+            .style("stroke", "#000")
+            .style("stroke-width", "1px");
+
+        svg.append('text')
+            .attr('x', 805)
+            .attr('y', 25)
+            .attr('fill', '#000')
+            .attr("class", "shadow") 
+            .classed('distanceLabel', true)
+        ////////////////
+
+        /// append label (north, east, up)
         let namelabel = svg.append('text')
             .attr('x', 50)
             .attr('y', 25)
@@ -61,9 +111,6 @@ export default class MyChart {
             .style("stroke", "#000")
             .style("stroke-width", "1px");
 
-        let dots = svg.append("g")
-            .classed('dots', true)
-
         svg.append('text')
             .attr('x', 55)
             .attr('y', 25)
@@ -71,53 +118,7 @@ export default class MyChart {
             .attr("class", "shadow") 
             .classed('namelabel', true)
             .text(name.toUpperCase())
-
-        svg.append("line")
-            .classed('eq', true)
-            .attr("stroke", "red" )
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-
-        svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "green" )
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .classed("lr1", true)
-        
-        svg.append("path")
-            .attr("fill", "none")
-            .attr("stroke", "green" )
-            .attr("stroke-linejoin", "round")
-            .attr("stroke-linecap", "round")
-            .attr("stroke-width", 1.5)
-            .classed("lr2", true)
-        
-
-        /// distance label
-        svg.append('text')
-            .attr('x', 1000)
-            .attr('y', 25)
-            .attr('fill', '#000')
-            .attr("class", "shadow") 
-            .classed('distanceLabel', true)
-        
-        svg.append("rect")
-            .classed('distanceRect', true)
-            .style("fill", "#fff")
-            .style("fill-opacity", "1")
-            .style("stroke", "#000")
-            .style("stroke-width", "1px");
-
-        svg.append('text')
-            .attr('x', 1005)
-            .attr('y', 25)
-            .attr('fill', '#000')
-            .attr("class", "shadow") 
-            .classed('distanceLabel', true)
-        ////////////////
+        /////////////////////
 
         this.svg = svg
         this.view = view
@@ -380,10 +381,10 @@ export default class MyChart {
                 .attr("stroke-width", 1.5 / d3.event.transform.k);
             svg.select(".lr1")
                 .attr("transform", d3.event.transform)
-                .attr("stroke-width", 1.5 / d3.event.transform.k);
+                .attr("stroke-width", 5 / d3.event.transform.k);
             svg.select(".lr2")
                 .attr("transform", d3.event.transform)
-                .attr("stroke-width", 1.5 / d3.event.transform.k);
+                .attr("stroke-width", 5 / d3.event.transform.k);
 
             svg.select(".axis--x" + name).call(xAxis.scale(d3.event.transform.rescaleX(x)));
             svg.select(".axis--y" + name).call(yAxis.scale(d3.event.transform.rescaleY(y)));

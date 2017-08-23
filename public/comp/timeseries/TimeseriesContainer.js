@@ -45,7 +45,7 @@ let requestForLine = (data) => {
             }
         })
             .then((response) => {
-                console.log(response.data.std_error)
+                console.log(response.data)
                 resolve(response.data)
             })
             .catch(function (error) {

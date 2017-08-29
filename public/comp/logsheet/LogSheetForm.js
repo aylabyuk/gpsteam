@@ -160,6 +160,9 @@ const form =  reduxForm({
 // map the ui state logsheetToReview object to a toReview variable before passing it as a props
 function mapStateToProps(state) {  
 
+    let { logsheetToReview } = state.ui
+    let l = logsheetToReview
+
     // if logsheetToReview has data create a new variable toReview
     // else provide a null value
     const toReview = state.ui.logsheetToReview ? {

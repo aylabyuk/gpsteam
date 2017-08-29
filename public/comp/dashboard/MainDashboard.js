@@ -21,6 +21,7 @@ import { graphql } from 'react-apollo';
 // server
 import { ip, PORT } from '../../_primary'
 
+// styling for the layout of the main dashboard
 const styles = {
   center: {
     padding: 0,
@@ -36,6 +37,7 @@ const styles = {
   }
 };
 
+// using the SiteDetails query object we can get all the needed site information and timeseries files
 const SiteDetailsQuery = gql`query SiteDetailsQuery {
     allSite
     {
@@ -48,6 +50,7 @@ const SiteDetailsQuery = gql`query SiteDetailsQuery {
     }
 }`;
 
+// The MainDashboard component will act as container for the map component and the sitelist component for this application
 class MainDashboard extends PureComponent {
     constructor(props) {
         super(props);
@@ -61,42 +64,33 @@ class MainDashboard extends PureComponent {
             siteToViewDetails: ''
         };
         this.updateDimensions = this.updateDimensions.bind(this);
-        this.changeHoveredSite = this.changeHoveredSite.bind(this);
         this.handleViewDetails = this.handleViewDetails.bind(this);
         this.handleCloseDetails = this.handleCloseDetails.bind(this);
     }
 
+    // setting the width and the height of the component depending on the dimension of the browser
     updateDimensions() {
         this.setState({width: window.innerWidth, height: window.innerHeight});
     }
 
+    // update the component width and height before mounting
     componentWillMount() {
         this.updateDimensions();
     }
 
+    // add an event listener to the component when user resizes the browser window
+    // attach updateDimension to the resize event
     componentDidMount() {
         window.addEventListener("resize", this.updateDimensions);
     }
     
+    // remove the listener
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
     }
 
-    changeHoveredSite(sitename) {
-        let hoveredSite = this.props.data.allSite.filter((site) => {
-            return site.name === sitename
-        })
-        let leafletmap = window.leafletmap
-
-        let icon = new L.icon({})
-
-        let previewMarker = new L.marker({ lat: hoveredSite[0].lat, lng: hoveredSite[0].long }, { opacity: 0.5,  })
-
-        previewMarker.addTo(leafletmap.leafletElement)
-
-        window.previewMarker = previewMarker
-    }
-
+    // use this method for setting the searchSite value
+    // when val is not null or undefined open the resultDrawer 
     searchForSite(val) {
         if(val) {
             this.setState({ resultDrawer: true, searchSite: val })
@@ -105,6 +99,8 @@ class MainDashboard extends PureComponent {
         }
     }
 
+    // setting the state of the detailsDrawer to true
+    // setting the selected sitename as the siteToViewDetails state
     handleViewDetails(sitename) {
         if(this.state.detailsDrawer == false) {
             this.setState({ detailsDrawer: true })
@@ -113,21 +109,26 @@ class MainDashboard extends PureComponent {
         this.setState({siteToViewDetails: sitename})
     }
 
+    // this method is called to reset the drawer states 
     handleCloseDetails() {
         this.setState({ detailsDrawer: false })
         this.setState({siteToViewDetails: ''})
     }
 
     render() {
-
+        // get all nessesary props from the data object
+        // these are available from the return values of the graphql request
         let { loading, allSite, timeseriesJpgFiles } = this.props.data
 
+        // create the sites array and push all site objects that has a latitude value and a timeseries jpg file 
+        // store the id name and coordinates of the sites to the sites array
         let sites = []
-
         loading ? null : allSite.map((s) => {
             s.lat && timeseriesJpgFiles.filter((f) => { return f.name === s.name }).length > 0 ? sites.push({ id: s.name, tooltip: s.name, lat: s.lat, lng: s.long }) : null
         })
         
+        // the maindashboard component contains 2 drawers ( SearchDrawer and SiteDetailsDrawer ) and the map (Phmap-Philippine Map) component as its children
+        // using Autosizer we can identify of compute for the available width and height
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
                 <AppBar title="GPS Dashboard" iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}/>
@@ -139,7 +140,6 @@ class MainDashboard extends PureComponent {
                             )}
                         </AutoSizer>
                     </Paper>
-
                 </div>
 
                 <Drawer width={280} containerStyle={{ top: '64px' }} openSecondary open={this.state.resultDrawer} >
@@ -155,4 +155,6 @@ class MainDashboard extends PureComponent {
     }
 }
 
+// using the graphql higher order component with the SiteDetailsQuery variable we can get all the needed site information from the server
+// it will attach the data to the MainDashboard component as props
 export default graphql(SiteDetailsQuery)(MainDashboard);

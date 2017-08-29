@@ -28,7 +28,7 @@ class TimeFields extends PureComponent {
     }
 }
 
-// In the case that the state of the app is in readonly mode. Get the state of the redux-form named 'logsheet'
+// In the case that the state of the app is in readonly. Get the state of the redux-form named 'logsheet'
 // specifically extract the endTime and failureTime values from the logsheet form and then map it as props to the TimeFields component
 const selector = formValueSelector('logsheet') 
 TimeFields = connect(

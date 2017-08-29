@@ -25,9 +25,6 @@ const styles = {
 };
 
 class SitePopup extends Component {
-
-
-
     render() {
         return (
             <MuiThemeProvider>

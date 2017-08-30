@@ -2,6 +2,7 @@ import React, {PureComponent} from 'react'
 
 import { Paper } from 'material-ui'
 
+// set the styling for this component
 const style = {
     position: 'absolute',
     top: '20%',
@@ -16,6 +17,7 @@ const style = {
     backgroundSize: 'cover'
 }
 
+// NotFoundPage is rendered whenever a url returns 404 
 class NotFoundPage extends PureComponent {
 	render() {
 		return (

@@ -36,7 +36,7 @@ const uploadPreview = gql`
         }
     }
 `
-
+// get the timeseries jpg file
 const getPreview = gql`
     query siteTimeseriesPreview(
         $name: String!
@@ -50,12 +50,14 @@ const getPreview = gql`
     }
 `
  
+// siteIcon object is of type divIcon used by leaflet to set the appearance of the markers 
 let siteIcon = L.divIcon({
           className: '',
           iconSize: [24, 24],
           html: `<div id="icn" />`,
         });
 
+// Phmap is the map container managed by React but still using the leaflet library to display the map component
 class Phmap extends Component {
   constructor() {
     super();
@@ -73,16 +75,20 @@ class Phmap extends Component {
     };
   }
 
+  // run this function to change the cluster state of the map
+  // this will stop markers from clustering
   setCluster() {
     this.setState({clusterIsSet: true})
   }
 
+  // remove the popup when clicked outside the marker
   removePopup = () => {
     this.setState({
       popup: false
     })
   }
 
+  // add the popup on the screen when user clicked the marker
   addPopup = (marker) => {
     this.setState({
       popup: { 
@@ -103,10 +109,11 @@ class Phmap extends Component {
   }
 
   render() {
+    // get the position of the maps center
     const position = [this.state.lat, this.state.lng];
 
+    // when data is loaded display the map
     let { loading, markers } = this.props
-
     if(loading) {
       return(<h1>Loading map...</h1>)
     } else {
@@ -121,17 +128,24 @@ class Phmap extends Component {
                   let layer = L.geoJSON(null, { style: function(feature) {
                         return { color: '#FF0000', weight: 0.8 };
                     } })
+
+                  // use omnivore library to parse kml file to geoJson
+                  // then add the geoJson file to the leaflet element/map
                   omnivore.kml('http://'+ ip + PORT + '/faultline/AF_2017.kml', null, layer).addTo(leafletmap.leafletElement)
+                  // set the state
                   this.setState({mapIsSet: true})
                 }
               }
             }>
 
+            {/*  add proper attribution and url to the TileLayer  */}
             <TileLayer
               attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
               url='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
             />
 
+            {/*  if clustering is false.. show all markers
+            if true show the MarkerClusterGroup component  */}
             { this.state.clustering ? 
               <MarkerClusterGroup
                 markers={markers}
@@ -139,14 +153,15 @@ class Phmap extends Component {
                 onMarkerClick={(marker) => this.addPopup(marker) }
                 ref={(markerClusterGroup) => {
 
+                  {/*  set the reference for this component to the window object of the browser to make it accessible anywhere  */}
                   if(!this.state.clusterIsSet) {
                     //console.log(this.state.clusterIsSet)
                     window.markerClusterGroup = markerClusterGroup.leafletElement 
+                    {/* call the setCluster function to tell the app that the markers are set */}
                     this.setCluster()
                   }
                 }}
               />
-                          
               : markers.map((s)=> {
                 return (<Marker position={[s.lat, s.lng]}  key={s.tooltip} riseOnHover icon={siteIcon}>
                   <Tooltip>
@@ -155,6 +170,10 @@ class Phmap extends Component {
                 </Marker>)
               }) }
 
+              {/*  if the popup state is true
+              then show the popup component for the clicked site/marker
+              use the sitename as the popup key
+                */}
               {this.state.popup && 
                 <Popup
                   key={`popup-${this.state.popup.key + Math.random()}`}
@@ -173,11 +192,12 @@ class Phmap extends Component {
   }
 }
 
-
+// get the global state value of the clickedSite and map it as props for the Phmap component
 function mapStateToProps(state) {  
 	return {
 		clickedSite: state.ui.clickedSite
 	}
 }
 
+// export the componnent with the HOC connecting mapStateToProps and the action changeClickedSite
 export default connect(mapStateToProps, { changeClickedSite })(Phmap);

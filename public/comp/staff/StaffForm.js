@@ -239,7 +239,7 @@ class StaffForm extends Component {
             console.log('got new staff data', d);
             let msg = 'New Staff Created: ' + d.first_name + ' ' + d.last_name
 
-            // when successfully save go to new staff 
+            // when successfully saved, go to new staff 
             this.handleChange(0)
             
 

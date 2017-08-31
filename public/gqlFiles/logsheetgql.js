@@ -1,5 +1,11 @@
 import gql from 'graphql-tag';
 
+// For more information about graphql or apollo visit
+// http://graphql.org/learn/ and http://dev.apollodata.com/react/
+
+// Large queries are placed here
+
+// querying a single logsheet using the id as parameter
 export const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: ID) {
         singleLogsheet(id: $currentLogsheet) {
             id
@@ -60,6 +66,8 @@ export const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: I
         }
     } 
 `
+
+// the mutation for creating new logsheet entry
 export const addNewLogSheet = gql`
     mutation createLogsheet(
         $survey_type: String!
@@ -175,6 +183,8 @@ export const addNewLogSheet = gql`
         }
     }
 `
+
+// mutation for updating logsheet info
 export const updateLogSheet = gql`
     mutation updateLogsheet(
         $id: Int!
@@ -293,6 +303,8 @@ export const updateLogSheet = gql`
         }
     }
 `
+
+// use this to check for duplicate logsheet
 export const checkDuplicate = gql`
     query checkDuplicateLogsheetEntry( $name: String!, $date: Date!)
     {

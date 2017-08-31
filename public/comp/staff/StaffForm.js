@@ -338,8 +338,7 @@ class StaffForm extends Component {
                             <GridList
                                 cellHeight={window.innerHeight * 0.6}
                                 cols={1}
-                                style={styles.gridList} 
-                                id="style-5" >
+                                style={styles.gridList} >
                                 <div style={{padding: '5px'}}>
                                     <Field name='firstName' label="first name" component={renderTextField}  />
                                     <Field name='lastName' label="last name" component={renderTextField}  />

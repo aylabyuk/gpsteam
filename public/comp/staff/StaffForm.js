@@ -82,6 +82,7 @@ const style = {
   padding: 0
 };
 
+// created staff information subscription
 const staffCreated = gql`
   subscription staffCreated {
     staffCreated {
@@ -111,6 +112,7 @@ const staffCreated = gql`
   }
 `;
 
+// mutation for adding new staff
 const addNewStaff = gql`
     mutation addNewStaff(
         $first_name: String!
@@ -140,7 +142,7 @@ const addNewStaff = gql`
         }
     }
 `
-
+// querying all staff/position/division
 const StaffQuery = gql`query StaffQuery {
   allPosition {
     id
@@ -176,9 +178,12 @@ const StaffQuery = gql`query StaffQuery {
   }
 }`;
 
+// This is the parent component for the staff list and the create new staff form
 class StaffForm extends Component {
     constructor(props) {
         super(props);
+        // since a swipeable container is used in this component we will create a slideIndex state and initialize it to 0
+        // the swipeable container will keep track of the slideIndex value.  
         this.state = {
             slideIndex: 0, 
             openSnackBar: false,
@@ -186,12 +191,14 @@ class StaffForm extends Component {
         };
     }
 
+    // sets the value for the slideIndex state
     handleChange = (value) => {
         this.setState({
             slideIndex: value,
         });
     };
 
+    // opens the snackbar with proper notification or error messages
     handleToggleSnackBar(msg) {
         this.setState({
             snackBarMsg: msg,
@@ -199,6 +206,7 @@ class StaffForm extends Component {
         });
     }
 
+    // this will request the snackbar be out of the view
     handleRequestClose = () => {
         this.setState({
             openSnackBar: false,
@@ -206,24 +214,27 @@ class StaffForm extends Component {
         });
     };
 
+    // reset the form. remove all values from the fields
     handleReset() {
         this.props.dispatch(reset('newStaff'));
     }
 
     handleSubmitStaff(d) {
+        // get the position and division id
         let pos = this.props.data.allPosition.find((x) => x.position_name == d.positionName)
         let div = this.props.data.allDivision.find((x) => x.division_name == d.divisionName)
 
+        // Before submitting all emails and contacts will be stored into an array
+        // if data is not available, do nothing (null)
         let emails = [], contacts = []
-
         d.email1 ? emails.push({address: d.email1}) : null
         d.email2 ? emails.push({address: d.email2}) : null
         d.email3 ? emails.push({address: d.email3}) : null
-
         d.contactnumber1 ? contacts.push({number: d.contactnumber1}) : null
         d.contactnumber2 ? contacts.push({number: d.contactnumber2}) : null
         d.contactnumber3 ? contacts.push({number: d.contactnumber3}) : null
 
+        // perform mutation using the variables from the fields
         this.props.mutate({ variables: {
             first_name: d.firstName,
             last_name: d.lastName,
@@ -242,10 +253,11 @@ class StaffForm extends Component {
             // when successfully saved, go to new staff 
             this.handleChange(0)
             
-
+            //toggle snackbar and reset the fields
             this.handleToggleSnackBar(msg)
             this.handleReset()
         }).catch((error) => {
+            // issue an error message to the snackbar on the error event
             console.log('there was an error sending the query: ', error);
             let msg = 'an error has occured'
             this.handleToggleSnackBar(msg)
@@ -253,6 +265,10 @@ class StaffForm extends Component {
 
     }
 
+    // this will handle the subscription of staff data
+    // when new data comes we will make a clone of the previous data using cloneDeep from lodash and then push the new data to the result.
+    // the newResult is an array of objects that will be returned and replace the data prop of the StaffForm component
+    // for more info about subscription see: http://dev.apollodata.com/react/subscriptions.html
     componentWillReceiveProps(nextProps) {
         if (!this.subscription && !nextProps.data.loading) {
             let { subscribeToMore } = this.props.data
@@ -274,22 +290,31 @@ class StaffForm extends Component {
         }
     }
 
+    // when props or state updates such as new staff data comes in
+    // issue a resize event to the ui just to refresh the view layer
     componentDidUpdate(prevProps, prevState) {
         window.dispatchEvent(new Event('resize'));
     }
     
     render() {
+        // get the nessesary data props
+        // values for these are only available after successful queries
         let { loading, allPosition, allDivision, allStaff } = this.props.data
 
+        // when loading is still true render a progress bar
+        // if false render the component
         if(loading) {
             return <LinearProgress mode="indeterminate" />
         } else {
+            // Swipeable patterns is copied from the material-ui docs about "tabs"
+            // http://www.material-ui.com/#/components/tabs see example for Tabs with slide effect (react-swipeable-views)
             return (
                 <div>
                     <Paper style={style} zDepth={1}>
 
                          <AppBar title="Manage Staffs" />
                          
+                         {/*  */}
                          <Tabs
                             onChange={this.handleChange}
                             value={this.state.slideIndex} >
@@ -306,6 +331,7 @@ class StaffForm extends Component {
                                 cols={1}
                                 style={styles.gridList} 
                                 id="style-5" >
+                                {/* render the list here and supply all the staff data to the StaffList component*/}
                                 <StaffList data={this.props.data} id='stafflist'/>
                             </GridList>
 
@@ -330,6 +356,7 @@ class StaffForm extends Component {
 
                         </SwipeableViews>
 
+                        {/* This snackbar is hidden, only becomes visible when openSnackBar state is set to true */}
                         <Snackbar
                             open={this.state.openSnackBar}
                             message={this.state.snackBarMsg}
@@ -343,9 +370,12 @@ class StaffForm extends Component {
     }
 }
 
-const form =  reduxForm({  
+// set the name of the redux form to 'newStaff and
+// set the validation module for field validation
+const form =  reduxForm({
 	form: 'newStaff',
     validate
 })
 
+// exporting the component with graphql HOC
 export default graphql(addNewStaff)(graphql(StaffQuery)(form(StaffForm)));

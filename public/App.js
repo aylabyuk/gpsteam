@@ -7,6 +7,7 @@ import MainComponent from './MainComponent'
 // https://github.com/zilverline/react-tap-event-plugin
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
+
 function mapStateToProps(state) {
 	return state
 }

@@ -22,8 +22,12 @@ import App from './App'
 export let PORT
 export let ip
 
+// Perf is used for performance checking addon
+// https://facebook.github.io/react/docs/perf.html
 window.Perf = Perf
 
+// if project is in dev mode or the port is 8080 point "ip" to localhost:4040
+// else point to the hosts ip address with port 4000 so it will become accessible from other computer
 if(window.location.port == '8080'){
   PORT=4040
   ip="localhost:"
@@ -33,6 +37,7 @@ if(window.location.port == '8080'){
 }
 
 // Create regular NetworkInterface by using apollo-client's API: 
+// Apollo's network layer can be configured on how queries will be sent over http
 const networkInterface = createBatchingNetworkInterface({
   opts: {
     credentials: "same-origin",
@@ -49,6 +54,7 @@ const wsClient = new SubscriptionClient("ws://" + ip + PORT + "/", {
     }
 });
 
+// NetworkInterface combined with wsClient for subscription
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
     networkInterface,
     wsClient
@@ -62,12 +68,17 @@ export const apolloClient = new ApolloClient({
   addTypename: false
 });
 
-
+// create a centralize redux store. Global application states will be kept here.
+// Add devtools so that redux related stuff will become accessible in the browser
+// reduxThunk: https://github.com/gaearon/redux-thunk
+// redux-devtools: https://github.com/gaearon/redux-devtools
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
+// App is a child of ApolloProvider 
+// ApolloProvider is a higher order component that will provide data to all the parts of the application
 class primary extends Component {
   render() {
     return (

@@ -28,7 +28,7 @@ class SelectedStaffs extends Component {
     handleRequestDelete(id) {
         if (this.props.ro) {
             alert('cannot remove on read only mode')
-        } else {
+        } else {  
             this.props.removeSelectedStaff(id)
         }
     }

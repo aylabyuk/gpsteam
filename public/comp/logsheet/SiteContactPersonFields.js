@@ -19,12 +19,8 @@ import SearchBar from 'material-ui-search-bar'
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-<<<<<<< HEAD
- 
-=======
 
 // use these library to work with the result from the graphql queries
->>>>>>> docu
 import { cloneDeep, sortBy } from 'lodash'
 
 // render a textfield that contains a clear iconbutton 
@@ -48,13 +44,9 @@ const renderTextField = ({clear, clearIcon, input, label, meta: { touched, error
     </div>
 )
 
-<<<<<<< HEAD
 // query all contact person ordered by lastname
 // this query will accept last_name as parameter
 // it will return the id, first name and contact number
-=======
-// just query the information needed to display to user
->>>>>>> docu
 const ContactsQuery = gql`
     query ContactsQuery {
     allContact(order: "last_name") {
@@ -65,12 +57,8 @@ const ContactsQuery = gql`
     }
 }`;
 
-<<<<<<< HEAD
-// subscription query that will be executed each time a new contact is created
-=======
 // subscribe when new contact was created
-// again query only information we need to display to the user
->>>>>>> docu
+// query only information we need to display to the user
 const contactCreated = gql`
   subscription contactCreated {
     contactCreated {

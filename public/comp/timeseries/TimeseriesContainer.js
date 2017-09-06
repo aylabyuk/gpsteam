@@ -8,6 +8,7 @@ import Timeseries from './Timeseries'
 import { AppBar, Paper, Drawer, RaisedButton, TextField, Slider } from 'material-ui'
 import { AutoSizer } from 'react-virtualized'
 
+// timeseries container styling
 const styles = {
     button: {
         margin: 5,
@@ -37,6 +38,7 @@ const styles = {
     }
 };
 
+<<<<<<< HEAD
 let requestForLine = (data) => {
     return new Promise((resolve, reject) => {
         axios.get(`http://localhost:4040/line/compute`, {
@@ -55,6 +57,10 @@ let requestForLine = (data) => {
     });
 }
 
+=======
+// This component is the parent component for all the timeseries.. east, north and up
+// data is provided by graphql and then processed to "/compute" endpoint to get the linear regression of the scatterplot
+>>>>>>> docu
 class TimeseriesContainer extends Component {
     constructor(props) {
         super(props);

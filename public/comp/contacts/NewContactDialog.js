@@ -9,6 +9,7 @@ import { graphql, withApollo } from 'react-apollo';
 //ui
 import { Dialog, FlatButton, TextField } from 'material-ui'
 
+// this is the rendered textfield to be provided for each field in the NewContactDialog component
 const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
   <TextField 
     floatingLabelText={label}
@@ -19,6 +20,12 @@ const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ..
   />
 )
 
+// the addNewContactPerson as the name suggest adds a new contact person to the system
+// this mutation script is called whenever the submit button is pressed
+// the first part of the code contains all the important variables and their data types
+// ! sign means required
+// the second part is the actual mutation 
+// the third part is the returning values whenever the mutation becomes successful
 const addNewContactPerson = gql`
   mutation addNewContactPerson(
         $first_name: String!
@@ -52,6 +59,9 @@ const addNewContactPerson = gql`
 `;
 
 class NewContactDialog extends PureComponent {
+    // once the handleAdd method is called it will execute the mutate function provided through props for this component
+    // the data is provided through the d variable. when the mutation succeed a newContact action will be dispatched to change the global state
+    // if the mutation fails the error will be printed out to the console.
     handleAdd(d) {
         this.props.mutate({ variables: {
             first_name: d.first_name,
@@ -75,21 +85,24 @@ class NewContactDialog extends PureComponent {
 
     render() {
         const actions = [
-        <FlatButton
-            label="Add New Contact"
-            primary={true}
-            onTouchTap={this.props.handleSubmit(this.handleAdd.bind(this))}
-        />,
-        <FlatButton
-            label="Cancel"
-            primary={true}
-            disabled={false}
-            onTouchTap={this.props.close}
-        />,
+            // the add new contact button when clicked will trigger the handlesubmit function from redux-form.
+            // it will take all the values from all the fields and store it to the variable d. HandleAdd function will handle the assignments of these values to the 
+            // appropriate variables before submitting the data to the server through graphql mutation calls.
+            <FlatButton
+                label="Add New Contact"
+                primary={true}
+                onTouchTap={this.props.handleSubmit(this.handleAdd.bind(this))}
+            />,
+            <FlatButton
+                label="Cancel"
+                primary={true}
+                disabled={false}
+                onTouchTap={this.props.close}
+            />,
         ];
 
         return (
-
+            
             <Dialog 
                 title='New Contact'
                 actions={actions}
@@ -97,6 +110,9 @@ class NewContactDialog extends PureComponent {
                 repositionOnUpdate={false}
                 autoScrollBodyContent={true}
             >
+
+            {/* all Fields are rendered using the renderTextField component 
+                using the Field tag will register a field to the redux-form under the newContact form */}
             <div style={{ display: 'flex', flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'space-between'}} >
                 <Field style={{flexGrow: 2, marginLeft: 2, marginRight: 2 }} name='first_name' label="firstname(required)" component={renderTextField}  />
                 <Field style={{flexGrow: 2, marginLeft: 2, marginRight: 2 }} name='last_name' label="lastname(required)" component={renderTextField}  />
@@ -115,6 +131,8 @@ class NewContactDialog extends PureComponent {
     }
 }
 
+// a file with the validation methods is passed as parameter to the reduxForm helper
+// the form is named 'newContact'. Using the name of the form we can now reference this everywhere.
 const form =  reduxForm({  
 	form: 'newContact',
     validate

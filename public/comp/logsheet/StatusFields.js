@@ -17,6 +17,7 @@ const renderTextField = ({ input, label, disabled, meta: { touched, error }, ...
   />
 )
 
+// This component contains two fields receiverStatus and antennaStatus
 class StatusFields extends PureComponent {
     render() {
         return (

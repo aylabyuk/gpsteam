@@ -20,15 +20,15 @@ import { addNewLogSheet, updateLogSheet, checkDuplicate } from '../../gqlFiles/l
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-
+// code for getting the daty of year using the date value.
 Date.prototype.julianDate = function(){
     var j=parseInt((this.getTime()-new Date('Dec 30,'+(this.getFullYear()-1)+' 23:00:00').getTime())/86400000).toString(),
     i=3-j.length;
     while(i-->0)j=0+j;
     return j
-};
+}
 
-
+// this is the styling object for the floating action button (FAB)
 const fabStyle = {
     margin: 0,
     top: 'auto',
@@ -36,8 +36,9 @@ const fabStyle = {
     bottom: 20,
     left: 'auto',
     position: 'fixed',
-};
+}
 
+// styling for the circular progress behind the FAB
 const circStyle = {
     margin: 0,
     top: 'auto',
@@ -48,27 +49,32 @@ const circStyle = {
     zIndex: 9999
 }
 
+// this component handles all submission related functionality of the logsheet form
 class LogSheetButtons extends Component {
     constructor(props) {
     super(props);
         this.state = {
             open: false,
             message: '',
-            submitSuccess: false,
-            progressValue: 1
+            submitSuccess: false
         };
     }
 
+    // everytime there is an message available to display and the the open state is true..
+    // show the snackbar
     toggleSnackbar(open, message) {
         this.setState({open, message})
     } 
 
+    // at the specified period of time after the snackbar is displayed the open state of the component will be changed to false
     handleRequestClose = () => {
         this.setState({
         open: false,
         });
     };
 
+    // ressetting the logsheet requires calling all the methods that will trigger the actions to the redux store
+    // these methods are accessible via props
     handleReset() {
         this.props.dispatch(reset('logsheet'));
         this.props.resetContactId()
@@ -76,37 +82,46 @@ class LogSheetButtons extends Component {
 
         this.props.setLogsheetMode('new')
 
+        // wait for about 5 seconds before setting the submitSuccess state to false
+        // this submit button or FAB will listen to this state which will control its visibility
         setTimeout(function() { this.setState({submitSuccess: false}); }.bind(this), 5000);
 
     }
 
+    // method for updating the logsheet information
     handleUpdateLog(d) {
-
         console.log('submitting data', d)
         this.props.toggleLogsheetSubmitting()
 
         let observers = [], selectedSite, aveSlantHeight, contact
 
+        // add all selected staff to the observers array
         this.props.selectedStaffs.map((x)=> {
             observers.push({ id: x.id })
         })
 
-        // test if sitename is one of the list
+        // find the sitename in the siteNames array
         selectedSite = this.props.siteNames.find((site)=> {
             return site.name == d.sitename
         })
+
+        // if not found then issue an error to the snackbar
         if(selectedSite == undefined) {
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(true, 'FAILED: ' + d.sitename + ' is not a valid site')
             return 0
         }
 
+        // average slant antenna height will be computed using the measurement fields
         aveSlantHeight = (parseFloat(d.north) + parseFloat(d.east) + parseFloat(d.south) + parseFloat(d.west)) / 4
 
+
+        // If all validation and verification is ok.. call the snackbar component and issue a message that is currently submitting
         this.toggleSnackbar(this.props.logsheetSubmitting, 'submitting logsheet information, please wait')
 
+        // map everything to a variable accordingly
+        // then call the updateLogsheet mutation
         this.props.updateLogsheet({variables: {
-
             id: d.id,
             survey_type: 'CAMPAIGN',
             logsheet_date: new Date(d.logdate),
@@ -141,20 +156,24 @@ class LogSheetButtons extends Component {
             antennaId: d.antennaSN,
             receiverId: d.receiverSN,
             contactPersonId: this.props.selectedContact ? this.props.selectedContact.id : null
-
         } }).then((data) => {
+            // log the returned data after mutation
             console.log('got data', data);
             this.setState({ submitSuccess: 'true' })
+            // change the logsheetSubmitting state and then call the snackbar component again and issue a message
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(!this.props.logsheetSubmitting, 'logsheet information successfully updated')
+            // reset the form after submission
             this.handleReset()
         }).catch((err) => {
+            // issue a message to the snackbar that will say that the update has failed in case of an error
             console.log('there was an error sending the query: ', err);
             this.props.toggleLogsheetSubmitting()
             this.toggleSnackbar(true, 'logsheet information update failed, try again')
         })
     }
 
+    // this method is almost similar to the handleUpdateLog but uses a different mutation called addNewLogsheet
     handleSubmitLog(d) {
       
         // check if logsheet has possible duplicate

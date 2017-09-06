@@ -4,6 +4,7 @@ import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
 
+// These are the redux action creators
 
 export function changeSelectedContact(id) {
 	return function(dispatch) {

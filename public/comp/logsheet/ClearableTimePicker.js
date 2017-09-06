@@ -8,7 +8,7 @@ const Clearable = ComposedComponent => class extends React.Component {
 
     clearDate (event) {
         event.preventDefault();
-        // We manually reach into the composed component and set it's date to null.
+        // We manually reach into the composed component using ref (reference name) and set it's date to blank.
         let newDate = '';
         this.refs.timePicker.setState({
             date: newDate
@@ -17,6 +17,7 @@ const Clearable = ComposedComponent => class extends React.Component {
         });
     }
     
+    // we are using a composed component simply because we need to add an IconButton that will function as a clear button for the timePicker
     render () {
         let { meta } = this.props
         return (
@@ -43,4 +44,5 @@ const Clearable = ComposedComponent => class extends React.Component {
     }
 };
 
+// exporting the clearable component as Higer order Component of a TimePicker
 export default Clearable(TimePicker);

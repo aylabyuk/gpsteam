@@ -2,12 +2,17 @@ import React, { PureComponent } from 'react'
 import { Field, formValueSelector } from 'redux-form'
 import { connect } from 'react-redux'
 
+// This is a custom component responsible in rendering the TimePicker component
 import ClearableTimePicker from './ClearableTimePicker';
 
 //ui
 import { TimePicker, Checkbox, IconButton} from 'material-ui'
 import ContentClear from 'material-ui/svg-icons/content/clear';
 
+// this component will be used to render a custom time selection/picker 
+// in recording the startTime endTime and failureTime
+// each of the fields uses the ClearableTimePicker as the rendered component
+// if the state is in read only mode (this.props.ro) the fields are all disabled
 class TimeFields extends PureComponent {
     render() {
         return (
@@ -23,6 +28,8 @@ class TimeFields extends PureComponent {
     }
 }
 
+// In the case that the state of the app is in readonly. Get the state of the redux-form named 'logsheet'
+// specifically extract the endTime and failureTime values from the logsheet form and then map it as props to the TimeFields component
 const selector = formValueSelector('logsheet') 
 TimeFields = connect(
   state => {

@@ -15,6 +15,8 @@ import { SingleLogsheetQuery } from '../../gqlFiles/logsheetgql'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+// query all sites with logsheet
+// get the logsheets date and id
 const SitesWithLogsheetsQuery = gql`query SitesWithLogsheetsQuery($name: [String!]) {
     sitesWithLogsheet(name: $name) {
         name

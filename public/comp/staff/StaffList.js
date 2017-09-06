@@ -11,6 +11,7 @@ import {fullWhite, transparent, grey500, indigo400} from 'material-ui/styles/col
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+// using the props passed from StaffForm component we can render all staff information using StaffList component
 class StaffList extends Component {
     constructor(props) {
         super(props);

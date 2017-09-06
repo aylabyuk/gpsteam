@@ -19,6 +19,7 @@ function mapDispatchToProps(dispatch) {
 // materia-ui requires the injectTapEventPlugin function to run before the rendering og its components
 injectTapEventPlugin()
 
+// make state and redux action creators (functions) become available through props
 const App = connect(mapStateToProps, mapDispatchToProps)(MainComponent)
 
 export default App

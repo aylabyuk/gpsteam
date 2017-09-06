@@ -8,6 +8,7 @@ import Timeseries from './Timeseries'
 import { AppBar, Paper, Drawer, RaisedButton, TextField, Slider } from 'material-ui'
 import { AutoSizer } from 'react-virtualized'
 
+// timeseries container styling
 const styles = {
     button: {
         margin: 5,
@@ -37,6 +38,8 @@ const styles = {
     }
 };
 
+// This component is the parent component for all the timeseries.. east, north and up
+// data is provided by graphql and then processed to "/compute" endpoint to get the linear regression of the scatterplot
 class TimeseriesContainer extends Component {
     constructor(props) {
         super(props);

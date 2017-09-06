@@ -1,4 +1,4 @@
-import * as d3 from "d3";
+import * as d3 from "d3"; // https://d3js.org/
 import math from 'mathjs';
 import regression from 'regression';
 

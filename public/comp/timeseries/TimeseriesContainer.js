@@ -38,6 +38,8 @@ const styles = {
     }
 };
 
+// Use the axios library to request data to the server with the "position data" as the parameter
+// The response will be a json file of regression line, errors and velocity for north, east and up components
 let requestForLine = (data) => {
     return new Promise((resolve, reject) => {
         axios.get(`http://localhost:4040/line/compute`, {
@@ -61,6 +63,8 @@ let requestForLine = (data) => {
 class TimeseriesContainer extends Component {
     constructor(props) {
         super(props);
+        // initialize data before rendering
+        // you can change minXval and maxXval to other year values
         this.state = {
             data: [
                 { date: 0, east: 0, north: 0, up: 0 },
@@ -77,34 +81,44 @@ class TimeseriesContainer extends Component {
         this.updateDimensions = this.updateDimensions.bind(this);
     }
 
+    // when the browser resizes call setState to update the width and the height of the component
     updateDimensions() {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     }
 
+    // before rendering the component get first the initial dimension
     componentWillMount() {
         this.updateDimensions()
     }
 
+    // add the "resize" event listener to the component after mounting
     componentDidMount() {
         window.addEventListener("resize", this.updateDimensions);
     }
 
+    // remove the listener from the component when unmounted
     componentWillUnmount() {
         window.removeEventListener("resize", this.updateDimensions);
     }
 
+    // Use this method to request the linear regression data plots
     requestLines() {
         let { data, earthquake } = this.state
+
+        // If there is no earthquake date provided disregard the remaining processes (return 0)
         if(earthquake === '') { return 0 }
 
         let dataBeforeEarthquake = []
 
+        // get all the data with dates before the earthquake and the push it to the dataBeforeEarthquake array
         data.map((d) => {
             if(d.date < earthquake) {
                 dataBeforeEarthquake.push(d)
             }
         })
 
+        // If dataBeforeEarthquake contains values we must call the requestForLine function
+        // the response of this request is the new value for the "line" state
         if(dataBeforeEarthquake.length != 0) {
             requestForLine(dataBeforeEarthquake)
                 .then((d) => {
@@ -113,11 +127,16 @@ class TimeseriesContainer extends Component {
         }
     }
 
+    // this function will run when the user clicks the upload button
     handleUpload({ target }) {
 
+        // Target is the input file element (html5 element) that triggered the event.
+        // When the user clicked the desired position file, the file will become available on the first element in the target.files array
         let file = target.files[0];
         let reader = new FileReader();
 
+        // We must convert the text file uploaded to a js readable format/json (javascript object notation)
+        // All the returned data will be stored in jsonFile array
         let jsonFile = []
 
         reader.onload = (event) => {
@@ -142,20 +161,25 @@ class TimeseriesContainer extends Component {
                 }
             });
 
-            // sort data by date here
+            // sort data according to date values 
             jsonFile.sort((a, b) => {
                 return a.date - b.date
             })
 
+            // set the jsonFile as the data state for this component
             this.setState({ data: jsonFile })
 
         };
 
+        // error handling
         reader.onerror = (evt) => {
             alert(evt.target.error.name);
         };
 
+        // Read the content of the file as a text or a series of strings
         reader.readAsText(file);
+
+        // reinitialize the state
         this.setState({ 
             sitename: file.name,
             line: null

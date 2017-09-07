@@ -203,14 +203,15 @@ class TimeseriesContainer extends Component {
     // each child component will receive props from the state of the parent component
     /*
     Timeseries props
-    line = linear regression line (y values) resulted by calling the requestForLine function
-    data = json object converted from the uploaded position file
-    margin = value of the y margin (top and bottom) of the timeseries scatterplot
-    maxXval = maximum x value defined by user or the ending date of the scatterplot
-    minXval = minimum x value defined by user of the starting date of the scatterplot
-    earthquake = date defined by user. Assigned as the earthquake actual date and time
-        required to compute the displacement of the timeseries
-    name = required field, either east, north or up
+
+        line = linear regression line (y values) resulted by calling the requestForLine function
+        data = json object converted from the uploaded position file
+        margin = value of the y margin (top and bottom) of the timeseries scatterplot
+        maxXval = maximum x value defined by user or the ending date of the scatterplot
+        minXval = minimum x value defined by user of the starting date of the scatterplot
+        earthquake = date defined by user. Assigned as the earthquake actual date and time
+            required to compute the displacement of the timeseries
+        name = required field, either east, north or up
 
     */
     render() {
@@ -229,15 +230,18 @@ class TimeseriesContainer extends Component {
                     </Paper>
                     <div style={{ ...styles.right, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                         <div>
+                            {/* slider control for dots opacity */}
                             <p>dots opacity</p>
                             <Slider defaultValue={1} onChange={this.handleDotsOpacity} />
                         </div>
 
                         <div>
+                            {/* slider control for yaxis margin */}
                             <p>Yaxis margin</p>
                             <Slider value={this.state.ymarginal} onChange={this.handleYmarginal} max={2} min={0}/>
                         </div>
                         
+                        {/* user can define the minXval, maxXval and earthquake date */}
                         <TextField fullWidth floatingLabelText='Minimum Xaxis value' hintText='2004' defaultValue='2004' onChange={(e, val) => this.setState({ minXval: val })} 
                             disabled={ data.length == 1 ? true : false }/>
                         <TextField fullWidth floatingLabelText='Maximum Xaxis value' hintText='2018' defaultValue='2018' onChange={(e, val) => this.setState({ maxXval: val })} 
@@ -245,12 +249,18 @@ class TimeseriesContainer extends Component {
                         <TextField fullWidth floatingLabelText='Earthquake date' hintText='e.g. 2017.1123' defaultValue='' onChange={(e, val) => this.setState({ earthquake: val })} 
                             disabled={ data.length == 1 ? true : false }/>
                         
+                        {/* 
+                            when user clicks this button requestLine() will be triggered which also triggers requestForLines().
+                            if line data is available the line state will change and the timeseries components will render the line
+
+                         */}
                         <RaisedButton
                             primary
                             label="Show Displacement"
                             style={styles.button}
                             onTouchTap={() => this.requestLines()} />
 
+                        {/* New data results will rerender the whole component to display a new set of data. */}
                         <RaisedButton
                             primary
                             label="Change Data"

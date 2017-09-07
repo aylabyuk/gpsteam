@@ -187,15 +187,32 @@ class TimeseriesContainer extends Component {
 
     }
 
+    // This function will use "d3" object to control the opacity of the scatterplot by selecting all svg elements that has the ".dots" classname
+    // the value will also be stored to the "window" global object
     handleDotsOpacity = (event, value) => {
         let dots = d3.selectAll('svg').selectAll('.dots').selectAll('circle').style("opacity", value)
         window.timeseriesUiState.dotsOpacity = value
     };
 
+    // change the ymarginal state's value to adjust the y range of a timeseries graph
     handleYmarginal = (event, value) => {
         this.setState({ ymarginal: value })
     }
 
+    // The TimeseriesContainer will render 3 important child components. A timeseries for north, east and up
+    // each child component will receive props from the state of the parent component
+    /*
+    Timeseries props
+    line = linear regression line (y values) resulted by calling the requestForLine function
+    data = json object converted from the uploaded position file
+    margin = value of the y margin (top and bottom) of the timeseries scatterplot
+    maxXval = maximum x value defined by user or the ending date of the scatterplot
+    minXval = minimum x value defined by user of the starting date of the scatterplot
+    earthquake = date defined by user. Assigned as the earthquake actual date and time
+        required to compute the displacement of the timeseries
+    name = required field, either east, north or up
+
+    */
     render() {
         let { data, earthquake, sitename, line, width, height, dotsOpacity, maxXval, minXval, ymarginal } = this.state
 

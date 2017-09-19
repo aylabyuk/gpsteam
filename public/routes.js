@@ -11,6 +11,7 @@ import MainDashboard from './comp/dashboard/MainDashboard'
 import NotFoundPage from './comp/NotFoundPage'
 import _Logsheet from './comp/logsheet/_LogSheet'
 import TimeseriesContainer from './comp/timeseries/TimeseriesContainer'
+import AccountsForm from './comp/accounts/AccountsForm'
 
 const routes = () => {
     return(
@@ -18,6 +19,7 @@ const routes = () => {
             <Switch>
             {/* the default path displays the MainDashboard component */}
             <Route exact path='/' component={MainDashboard} />
+            <Route path='/login' component={AccountsForm} />
             <Route path='/logsheet' component={_Logsheet} />
             <Route path='/timeseries' component={TimeseriesContainer} />
 

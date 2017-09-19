@@ -1,0 +1,24 @@
+.mybg {
+    background: linear-gradient(139deg, rgb(0,188,212), rgb(26, 219, 193), #B00970, #BF7622);
+    background-size: 800% 800%;
+
+    -webkit-animation: AnimationName 17s ease infinite;
+    -moz-animation: AnimationName 17s ease infinite;
+    animation: AnimationName 17s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}

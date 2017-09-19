@@ -46,6 +46,17 @@ const networkInterface = createBatchingNetworkInterface({
   uri: "http://" + ip + PORT + "/graphql",
 });
 
+// implement token in header requests for authorization/authentication
+// networkInterface.use([{
+//   applyMiddleware(req, next) {
+//     if(req.options.headers) {
+//       req.options.headers = {};
+//     }
+
+//     const token = 
+//   }
+// }]);
+
 // connect to web-socket for subscription
 const wsClient = new SubscriptionClient("ws://" + ip + PORT + "/", {
     reconnect: true,

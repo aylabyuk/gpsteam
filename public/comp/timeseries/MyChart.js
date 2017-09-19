@@ -11,7 +11,6 @@ export default class MyChart {
     }
 
     create(data){
-
         window.timeseriesUiState = {}
         window.timeseriesUiState.dotsOpacity = 1
         window.timeseriesUiState.earthquake = 0

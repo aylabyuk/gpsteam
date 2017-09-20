@@ -96,6 +96,22 @@ export const validateRegistration = values => {
   return errors
 }
 
+// validation for login
+export const validateLogin = values => {
+  const errors = {}
+  if (!values.email) {
+    errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'This is not a valid email address'
+  }
+
+  if (!values.password) {
+    errors.password = 'Required'
+  }
+
+  return errors
+}
+
 // validation for the contactDetails 
 export const validateContactDetails = values => {
   const errors = {}

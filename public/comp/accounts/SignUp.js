@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { reduxForm, Field, formValueSelector } from 'redux-form'
 import { validateRegistration as validate } from '../formValidators/formValidators'
 
-const formStyle = {
+export const formStyle = {
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -19,7 +19,7 @@ const formStyle = {
     }
 }
 
-const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
+export const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
     <TextField 
       style={formStyle.field}
       floatingLabelText={label}

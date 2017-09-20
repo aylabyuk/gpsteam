@@ -4,6 +4,7 @@ import { reduxForm, reset } from 'redux-form'
 import { connect } from 'react-redux'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { Redirect } from 'react-router-dom'
 
 // import all logsheet components
 import DateFields from './DateFields'
@@ -31,6 +32,7 @@ import styles from '../../css/home.css';
 
 // create a graphql query taht will get all the sites, receivers and antenna information 
 const LogSheetQuery = gql`query LogSheetQuery {
+  me
   allSite {
     id
     name
@@ -105,7 +107,12 @@ class LogSheetForm extends PureComponent {
     
 
     render() {
-        let { loading, allSite, allReceiver, allAntenna } = this.props.data
+        let { loading, allSite, allReceiver, allAntenna, me } = this.props.data
+
+        // redirect if not logged in
+        if(!me) {
+            return(<Redirect to='/login' />)
+        }
 
         // if apollo client is still querying data to the server, render a linear progress component.
         if(loading) {

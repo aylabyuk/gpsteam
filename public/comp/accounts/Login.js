@@ -1,35 +1,32 @@
 import React, { Component } from 'react';
 import { TextField, RaisedButton, Paper } from 'material-ui'
-
-const formStyle = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    field: {
-        width: '350px'
-    },
-    clickable: {
-        cursor: 'pointer',
-        color: 'rgb(255, 64, 129)'
-    }
-}
+import { connect } from 'react-redux'
+import { reduxForm, Field, formValueSelector } from 'redux-form'
+import { renderTextField, formStyle } from './SignUp'
+import { validateLogin as validate } from '../formValidators/formValidators'
 
 class Login extends Component {
+
+    handleSubmitValues = () => {
+        let { email, password } = this.props.loginValues
+        this.props.login(email, password)
+    }
+
     render() {
+        let { handleSubmit, handleChange } = this.props
+
         return (
             <div style={formStyle.container} >
                 <div className='regttext'>Login</div>
-                <TextField style={formStyle.field} floatingLabelText='Email' fullWidth type='email'/>
-                <TextField style={formStyle.field} floatingLabelText='Password' fullWidth type='password'/>
+                <Field component={renderTextField} name='email' floatingLabelText='Email' fullWidth type='email'/>
+                <Field component={renderTextField} name='password' floatingLabelText='Password' fullWidth type='password'/>
                 <br/>
                 <br/>
-                <RaisedButton style={{...formStyle.field, alignContent: 'flex-end' }} primary label='Submit'/>
+                <RaisedButton style={{...formStyle.field, alignContent: 'flex-end' }} primary label='Submit' onTouchTap={handleSubmit(this.handleSubmitValues.bind(this))}/>
                 <div style={formStyle.field}>
                     <h5 style={{ textAlign: 'right' }}>
                         No account yet?
-                        <span style={formStyle.clickable} onClick={()=> this.props.handleChange(1)}> Create one </span>
+                        <span style={formStyle.clickable} onClick={()=> handleChange(1)}> Create one </span>
                     </h5>
                 </div>
             </div>
@@ -37,4 +34,16 @@ class Login extends Component {
     }
 }
 
-export default Login;
+const form =  reduxForm({  
+    form: 'login',
+    validate
+});
+
+const selector = formValueSelector('login') 
+Login = connect(
+  state => ({
+    loginValues: selector(state, 'email', 'password')
+  })
+)(Login)
+
+export default form(Login);

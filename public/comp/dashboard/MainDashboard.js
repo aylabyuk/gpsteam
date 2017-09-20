@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { AutoSizer } from 'react-virtualized'
+import { Redirect } from 'react-router-dom'
 
 import Phmap from '../map/Phmap'
 import RightPanel from './RightPanel'
@@ -39,6 +40,7 @@ const styles = {
 
 // using the SiteDetails query object we can get all the needed site information and timeseries files
 const SiteDetailsQuery = gql`query SiteDetailsQuery {
+    me
     allSite
     {
         name
@@ -118,7 +120,12 @@ class MainDashboard extends PureComponent {
     render() {
         // get all nessesary props from the data object
         // these are available from the return values of the graphql request
-        let { loading, allSite, timeseriesJpgFiles } = this.props.data
+        let { loading, allSite, timeseriesJpgFiles, me } = this.props.data
+
+        // redirect if not logged in
+        if(!me) {
+            return(<Redirect to='/login' />)
+        }
 
         // create the sites array and push all site objects that has a latitude value and a timeseries jpg file 
         // store the id name and coordinates of the sites to the sites array

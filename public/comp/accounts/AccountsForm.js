@@ -21,7 +21,7 @@ const addNewUser = gql`
             username: $username
             email: $email
             password: $password
-        ) { id }
+        ) { id  }
     }
 `;
 
@@ -35,7 +35,7 @@ const loginUser = gql`
             password: $password
         ) { 
             token
-            refreshtoken
+            refreshToken
         }
     }
 `;
@@ -46,6 +46,15 @@ class AccountsForm extends Component {
         this.state = {
             slideIndex: 0,
         };
+    }
+
+    setLocalStorageTokens = (token, refreshToken) => {
+        if (typeof(Storage) !== "undefined") {
+            localStorage.setItem("x-token", token)
+            localStorage.setItem("x-refresh-token", refreshToken)
+        } else {
+            // Sorry! No Web Storage support..
+        }
     }
 
     handleChange = (value) => {
@@ -61,6 +70,7 @@ class AccountsForm extends Component {
             password: password,
         } }).then((data) => {
             console.log(data)
+            this.login(email, password)
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
         });
@@ -70,8 +80,9 @@ class AccountsForm extends Component {
         this.props.loginUser({ variables: {
             email: email,
             password: password,
-        } }).then((data) => {
-            console.log(data)
+        } }).then((d) => {
+            console.log(d)
+            this.setLocalStorageTokens(d.data.login.token, d.data.login.refreshToken)
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
         });

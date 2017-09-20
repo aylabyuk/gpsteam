@@ -75,15 +75,25 @@ export const validateRegistration = values => {
   if (!values.username) {
     errors.username = 'Required'
   }
+
   if (!values.email) {
     errors.email = 'Required'
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'This is not a valid email address'
   }
+
   if (!values.password) {
-    errors.email = 'Required'
+    errors.password = 'Required'
   }
+
   if (!values.confirmpassword) {
-    errors.email = 'Required'
+    errors.confirmpassword = 'Required'
   }
+
+  if(values.password != values.confirmpassword) {
+    errors.confirmpassword = 'passwords not matched'
+  }
+  return errors
 }
 
 // validation for the contactDetails 

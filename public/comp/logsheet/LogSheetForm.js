@@ -32,7 +32,6 @@ import styles from '../../css/home.css';
 
 // create a graphql query taht will get all the sites, receivers and antenna information 
 const LogSheetQuery = gql`query LogSheetQuery {
-  me
   allSite {
     id
     name
@@ -107,14 +106,10 @@ class LogSheetForm extends PureComponent {
     
 
     render() {
-        let { loading, allSite, allReceiver, allAntenna, me } = this.props.data
-
-        // redirect if not logged in
-        if(!me) {
-            return(<Redirect to='/login' />)
-        }
+        let { loading, allSite, allReceiver, allAntenna } = this.props.data
 
         // if apollo client is still querying data to the server, render a linear progress component.
+        
         if(loading) {
             return (
                 <div style={{width: '500px', paddingTop: '5px'}}>
@@ -122,7 +117,7 @@ class LogSheetForm extends PureComponent {
                 </div>
             );
         } else {
-
+            console.log('this should not run')
             // ro means 'readonly' can be true or false
             // this application ui state will be passed as props to the component to manage the behavior of every single fields depending on its value
             // in readonly all the fields will be disabled

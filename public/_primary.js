@@ -15,7 +15,8 @@ import { ApolloProvider } from 'react-apollo'
 
 
 //subscription client
-import {SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
+import {SubscriptionClient } from 'subscriptions-transport-ws';
+import { addGraphQLSubscriptions } from 'add-graphql-subscriptions'
 
 import App from './App'
 
@@ -40,22 +41,27 @@ if(window.location.port == '8080'){
 // Apollo's network layer can be configured on how queries will be sent over http
 const networkInterface = createBatchingNetworkInterface({
   opts: {
-    credentials: "same-origin",
+    credentials: "include",
   },
   batchInterval: 20,
   uri: "http://" + ip + PORT + "/graphql",
 });
 
 // implement token in header requests for authorization/authentication
-// networkInterface.use([{
-//   applyMiddleware(req, next) {
-//     if(req.options.headers) {
-//       req.options.headers = {};
-//     }
+networkInterface.use([{
+  applyBatchMiddleware(req, next) {
+    if(!req.options.headers) {
+      req.options.headers = {};
+    }
 
-//     const token = 
-//   }
-// }]);
+    const token = localStorage.getItem('token')
+    const refreshToken = localStorage.getItem('refreshToken')
+
+    req.options.headers['x-token'] = token ? token : 'not defined'
+    req.options.headers['x-refresh-token'] = refreshToken ? refreshToken : 'not defined'
+    next();
+  }
+}]);
 
 // connect to web-socket for subscription
 const wsClient = new SubscriptionClient("ws://" + ip + PORT + "/", {
@@ -89,7 +95,7 @@ const store = createStoreWithMiddleware(rootReducer,
 
 
 // App is a child of ApolloProvider 
-// ApolloProvider is a higher order component that will provide data to all the parts of the application
+// ApolloProvider is a higher order component that will provide data to all parts of the application
 class primary extends Component {
   render() {
     return (

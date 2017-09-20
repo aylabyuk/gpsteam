@@ -13,6 +13,7 @@
   "author": "Oriel Absin",
   "license": "ISC",
   "dependencies": {
+    "add-graphql-subscriptions": "^1.0.1",
     "apollo-client": "^1.9.0-0",
     "apollo-upload-client": "^5.1.0",
     "autoprefixer": "^7.1.2",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Paper, Tab, Tabs } from 'material-ui'
 import SwipeableViews from 'react-swipeable-views'
+import { Redirect  } from 'react-router-dom'
 
 //apollo
 import gql from 'graphql-tag';
@@ -50,8 +51,8 @@ class AccountsForm extends Component {
 
     setLocalStorageTokens = (token, refreshToken) => {
         if (typeof(Storage) !== "undefined") {
-            localStorage.setItem("x-token", token)
-            localStorage.setItem("x-refresh-token", refreshToken)
+            localStorage.setItem("token", token)
+            localStorage.setItem("refreshToken", refreshToken)
         } else {
             // Sorry! No Web Storage support..
         }

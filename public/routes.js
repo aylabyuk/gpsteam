@@ -1,7 +1,7 @@
 import React from 'react'
 
 // routing
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, Redirect } from 'react-router-dom'
 
 // This module will handle the routing of the application
 // Each routes are supplied with a component to render
@@ -22,6 +22,7 @@ const routes = () => {
             <Route path='/login' component={AccountsForm} />
             <Route path='/logsheet' component={_Logsheet} />
             <Route path='/timeseries' component={TimeseriesContainer} />
+
 
             {/* when the path is not found or (404) display the notfoundpage */}
             <Route component={NotFoundPage} />

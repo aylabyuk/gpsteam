@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { TextField, RaisedButton, Paper } from 'material-ui'
+import { connect } from 'react-redux'
+import { reduxForm, Field } from 'redux-form'
+import { validateRegistration as validate } from '../formValidators/formValidators'
 
 const formStyle = {
     container: {
@@ -16,17 +19,29 @@ const formStyle = {
     }
 }
 
+const renderTextField = ({ input, label, fullWidth, meta: { touched, error }, ...custom }) => (
+    <TextField 
+      style={formStyle.field}
+      floatingLabelText={label}
+      errorText={touched && error}
+      {...input}
+      {...custom}
+      fullWidth={true}
+    />
+  )
+
 class SignUp extends Component {
     render() {
         return (
             <div style={formStyle.container} >
-                <TextField style={formStyle.field} floatingLabelText='Username' fullWidth type='text'/>
-                <TextField style={formStyle.field} floatingLabelText='Email' fullWidth type='email'/>
-                <TextField style={formStyle.field} floatingLabelText='Password' fullWidth type='password'/>
-                <TextField style={formStyle.field} floatingLabelText='Confirm Password' fullWidth type='password'/>
+                <div className='regttext'>Register</div>
+                <Field component={renderTextField}  name='username'  floatingLabelText='Username' type='text'/>
+                <Field component={renderTextField}  name='email'  floatingLabelText='Email' type='email'/>
+                <Field component={renderTextField}  name='password'  floatingLabelText='Password' type='password'/>
+                <Field component={renderTextField}  name='confirmpassword'  floatingLabelText='Confirm Password' type='password'/>
                 <br/>
                 <br/>
-                <RaisedButton style={{...formStyle.field, alignContent: 'flex-end' }} primary label='Submit'/>
+                <RaisedButton style={{...formStyle.field, alignContent: 'flex-end' }} primary label='Submit' />
                 <div style={formStyle.field}>
                     <h5 style={{ textAlign: 'right' }}>
                         Already registered?
@@ -38,4 +53,9 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+const form =  reduxForm({  
+    form: 'registration',
+    validate
+});
+
+export default form(SignUp);

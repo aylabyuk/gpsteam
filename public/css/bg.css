@@ -22,3 +22,18 @@
     50%{background-position:100% 70%}
     100%{background-position:0% 31%}
 }
+
+.gpsbanner {
+    font-family: 'Fugaz One', cursive;
+    font-size: -webkit-xxx-large;
+    text-align: center;
+    color: #B00970;
+    margin: 100px 0px 20px 0px;
+    text-shadow: 2px 1px 1px #9a5a14;
+}
+
+.regttext {
+    color: rgb(0,188,212);
+    font-size: 25px;
+    font-family: 'Fugaz One', cursive;
+}

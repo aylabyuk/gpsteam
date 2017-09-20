@@ -69,6 +69,23 @@ export const validateStaffInfo = values => {
   return errors
 }
 
+// validation for registration
+export const validateRegistration = values => {
+  const errors = {}
+  if (!values.username) {
+    errors.username = 'Required'
+  }
+  if (!values.email) {
+    errors.email = 'Required'
+  }
+  if (!values.password) {
+    errors.email = 'Required'
+  }
+  if (!values.confirmpassword) {
+    errors.email = 'Required'
+  }
+}
+
 // validation for the contactDetails 
 export const validateContactDetails = values => {
   const errors = {}

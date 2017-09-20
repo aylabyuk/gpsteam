@@ -20,6 +20,7 @@ class Login extends Component {
     render() {
         return (
             <div style={formStyle.container} >
+                <div className='regttext'>Login</div>
                 <TextField style={formStyle.field} floatingLabelText='Email' fullWidth type='email'/>
                 <TextField style={formStyle.field} floatingLabelText='Password' fullWidth type='password'/>
                 <br/>

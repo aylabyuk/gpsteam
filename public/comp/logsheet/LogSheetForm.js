@@ -141,7 +141,7 @@ class LogSheetForm extends PureComponent {
                     <Divider />
                     <br />
                     {/* pass the function handleSubmit as props to the LogSheetButtons component */}
-                    <LogSheetButtons ro={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/>
+                    { !this.props.noSendButton ? <LogSheetButtons ro={ro} siteNames={allSite} selectedContact={this.props.selectedContact} handleSubmit={this.props.handleSubmit}/> : null }
                 </div>
             );
         }

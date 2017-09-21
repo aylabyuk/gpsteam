@@ -187,7 +187,7 @@ class MainDashboard extends PureComponent {
                         onClick={()=> this.handleClose()}
                     />}>
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                        <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}><LogsheetForm /></Paper>
+                        <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}><LogsheetForm noSendButton/></Paper>
                     </div>
                 </FullscreenDialog>
 

@@ -25,7 +25,7 @@ const routes = () => {
             <Route exact path='/' component={auth(MainDashboard)} />
             <Route path='/login' component={AccountsForm} />
             <Route path='/logsheet' component={auth(staff(_Logsheet))} />
-            <Route path='/timeseries' component={auth(TimeseriesContainer)} />
+            <Route path='/timeseries' component={auth(staff(TimeseriesContainer))} />
 
 
             {/* when the path is not found or (404) display the notfoundpage */}

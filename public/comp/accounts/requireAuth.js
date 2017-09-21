@@ -43,10 +43,10 @@ export function requireAuthentication(Component) {
         apolloClient.query({query: meQuery}).then((res) => {
             console.log(res)
             if(!res.data.me) {
-                console.info('not logged in. redirecting to login page...')
+                console.debug('not logged in. redirecting to login page...')
                 this.setState({ redirectToLogin: true })
             } else {
-                console.info('logged in as ' + res.data.me.username  + '. redirecting...')
+                console.debug('logged in as ' + res.data.me.username  + '. redirecting...')
                 this.setState({ isAuthenticated: true, me: res.data.me })
             }
         })

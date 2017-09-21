@@ -178,6 +178,7 @@ class MainDashboard extends PureComponent {
                 </Drawer>
 
                 <FullscreenDialog
+                    immersive={true}
                     open={this.state.logsheetDialog}
                     onRequestClose={()=> this.handleClose()}
                     title={'Logsheet'}
@@ -185,7 +186,9 @@ class MainDashboard extends PureComponent {
                         label='Done'
                         onClick={()=> this.handleClose()}
                     />}>
-                        <LogsheetForm />
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
+                        <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}><LogsheetForm /></Paper>
+                    </div>
                 </FullscreenDialog>
 
             </div>

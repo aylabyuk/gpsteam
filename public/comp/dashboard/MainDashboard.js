@@ -158,7 +158,7 @@ class MainDashboard extends PureComponent {
         // using Autosizer we can identify of compute for the available width and height
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
-                <AppBar title="GPS Dashboard" iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}/>
+                <AppBar title={<div className='titletext'>GPS Dashboard</div>} iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.center}>
                         <AutoSizer>

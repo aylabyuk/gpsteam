@@ -6,11 +6,16 @@ import Phmap from '../map/Phmap'
 import RightPanel from './RightPanel'
 import SearchDrawer from './SearchDrawer'
 import SiteDetailsDrawer from './SiteDetailsDrawer'
+import FullscreenDialog from 'material-ui-fullscreen-dialog'
+import { setLogsheetMode, reviewLogsheet } from '../../actions/index'
+import { connect } from 'react-redux'
+import { apolloClient } from '../../_primary'
 
 // ui
-import { AppBar, Paper, List, ListItem, Drawer} from 'material-ui'
+import { AppBar, Paper, List, ListItem, Drawer, FlatButton} from 'material-ui'
 import { Motion, spring } from 'react-motion'
 import SearchBar from 'material-ui-search-bar'
+import LogsheetForm from '../logsheet/LogSheetForm'
 
 // leaflet map
 import L from 'leaflet'
@@ -18,6 +23,7 @@ import L from 'leaflet'
 //graphql
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { SingleLogsheetQuery } from '../../gqlFiles/logsheetgql'
 
 // server
 import { ip, PORT } from '../../_primary'
@@ -62,11 +68,14 @@ class MainDashboard extends PureComponent {
             resultDrawer: false,
             searchSite: '',
             detailsDrawer: false,
-            siteToViewDetails: ''
+            siteToViewDetails: '',
+            logsheetDialog: false,
+            currentLogsheetToView: null
         };
         this.updateDimensions = this.updateDimensions.bind(this);
         this.handleViewDetails = this.handleViewDetails.bind(this);
         this.handleCloseDetails = this.handleCloseDetails.bind(this);
+        this.handleLogsheetDialog = this.handleLogsheetDialog.bind(this);
     }
 
     // setting the width and the height of the component depending on the dimension of the browser
@@ -116,6 +125,23 @@ class MainDashboard extends PureComponent {
         this.setState({siteToViewDetails: ''})
     }
 
+    // close the logsheet dialog 
+    handleClose() {
+        this.setState({ logsheetDialog: false, currentLogsheetToView: null })
+    }
+
+    // 
+    handleLogsheetDialog(id) {
+        this.setState({ logsheetDialog: true, currentLogsheetToView: id })
+        apolloClient.query({query: SingleLogsheetQuery, variables: { currentLogsheet: id }})
+            .then((d) => {
+                console.log(d)
+                this.props.setLogsheetMode("readonly")
+                this.props.reviewLogsheet(d.data.singleLogsheet)
+            }).catch((err) => console.log(err))
+
+    }
+
     render() {
         // get all nessesary props from the data object
         // these are available from the return values of the graphql request
@@ -148,8 +174,19 @@ class MainDashboard extends PureComponent {
                 </Drawer>
 
                 <Drawer openSecondary width={280} open={this.state.detailsDrawer}>
-                    <SiteDetailsDrawer close={this.handleCloseDetails} site={this.state.siteToViewDetails}/>
+                    <SiteDetailsDrawer close={this.handleCloseDetails} site={this.state.siteToViewDetails} showLogsheet={this.handleLogsheetDialog}/>
                 </Drawer>
+
+                <FullscreenDialog
+                    open={this.state.logsheetDialog}
+                    onRequestClose={()=> this.handleClose()}
+                    title={'Logsheet'}
+                    actionButton={<FlatButton
+                        label='Done'
+                        onClick={()=> this.handleClose()}
+                    />}>
+                        <LogsheetForm />
+                </FullscreenDialog>
 
             </div>
         );
@@ -158,4 +195,4 @@ class MainDashboard extends PureComponent {
 
 // using the graphql higher order component with the SiteDetailsQuery variable we can get all the needed site information from the server
 // it will attach the data to the MainDashboard component as props
-export default graphql(SiteDetailsQuery)(MainDashboard);
+export default connect(null , { setLogsheetMode, reviewLogsheet })(graphql(SiteDetailsQuery)(MainDashboard));

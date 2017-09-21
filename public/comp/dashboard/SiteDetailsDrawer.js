@@ -37,9 +37,10 @@ class SiteDetailsDrawer extends Component {
     }
 
     handleLogsheetDialog(id) {
+        this.setState({ logsheetDialog: true, currentLogsheetToView: id })
         apolloClient.query({query: SingleLogsheetQuery, variables: { currentLogsheet: id }})
             .then((d) => {
-                this.setState({ logsheetDialog: true, currentLogsheetToView: id })
+                console.log(d)
                 this.props.setLogsheetMode("readonly")
                 this.props.reviewLogsheet(d.data.singleLogsheet)
             }).catch((err) => console.log(err))
@@ -118,9 +119,9 @@ class SiteDetailsDrawer extends Component {
                         </CardText>
                     </Card>
 
-                    <Dialog repositionOnUpdate={true} autoScrollBodyContent={true} contentStyle={{width: '100%'}} modal={false} open={this.state.logsheetDialog} onRequestClose={()=> this.handleClose()}>
-                            <Paper style={{ maxWidth: '850px', padding: '0px 25px 0px 25px', overflow: 'auto'}}>
-                                <LogsheetForm />
+                    <Dialog repositionOnUpdate={true} autoScrollBodyContent={true} contentStyle={{width: '125%'}} modal={false} open={this.state.logsheetDialog} onRequestClose={()=> this.handleClose()}>
+                            <Paper style={{ maxWidth: '1000px', padding: '0px 25px 0px 25px', overflow: 'auto'}}>
+                                { this.state.currentLogsheetToView ? <LogsheetForm /> : null }
                             </Paper>
                     </Dialog>
 

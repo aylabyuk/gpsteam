@@ -13,7 +13,7 @@ import _Logsheet from './comp/logsheet/_LogSheet'
 import TimeseriesContainer from './comp/timeseries/TimeseriesContainer'
 import AccountsForm from './comp/accounts/AccountsForm'
 
-// redirect module
+// redirect modules
 import { requireAuthentication as auth }  from './comp/accounts/requireAuth'
 
 const routes = () => {

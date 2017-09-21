@@ -7,7 +7,7 @@ import { graphql } from 'react-apollo';
 import { apolloClient  } from '../../_primary'
 
 // query for the logged in user
-let meQuery = gql`query {
+export let meQuery = gql`query {
     me {
         id 
         username
@@ -42,15 +42,16 @@ export function requireAuthentication(Component) {
         apolloClient.query({query: meQuery}).then((res) => {
             console.log(res)
             if(!res.data.me) {
+                console.info('not logged in. redirecting to login page...')
                 this.setState({ redirectToLogin: true })
             } else {
+                console.info('logged in as ' + res.data.me.username  + '. redirecting...')
                 this.setState({ isAuthenticated: true })
             }
         })
     }
 
     render() {
-
         if(this.state.redirectToLogin) {
             return(<Redirect to='/login' />)
         }

@@ -9,6 +9,8 @@ import { graphql, withApollo, compose } from 'react-apollo';
 
 import Login from './Login'
 import SignUp from './SignUp'
+import { meQuery } from './requireAuth'
+import { apolloClient } from '../../_primary'
 
 import styles from '../../css/bg.css'
 
@@ -46,6 +48,7 @@ class AccountsForm extends Component {
     super(props);
         this.state = {
             slideIndex: 0,
+            loggedIn: false
         };
     }
 
@@ -84,12 +87,32 @@ class AccountsForm extends Component {
         } }).then((d) => {
             console.log(d)
             this.setLocalStorageTokens(d.data.login.token, d.data.login.refreshToken)
+            location.reload();
+
         }).catch((error) => {
             console.log('there was an error sending the query: ', error);
         });
-    }
+    }  
 
+    componentWillMount() {
+        apolloClient.query({query: meQuery}).then((res) => {
+            console.log(res)
+            if(res.data.me) {
+                console.info('already logged in as ' + res.data.me.username + ' redirecting to main page...')
+                this.setState({ loggedIn: true })
+
+            } else {
+                this.setState({ loggedIn: false })
+            }
+        })
+    }    
+    
     render() {
+
+        if(this.state.loggedIn) {
+            return(<Redirect to='/' />)
+        }
+
         return (
             <Paper className='mybg'  style={{ padding: 0, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
                 <Paper zDepth={3} style={{ width: '500px' }}>

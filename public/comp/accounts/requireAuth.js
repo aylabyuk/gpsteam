@@ -1,0 +1,71 @@
+import React from 'react';  
+import { Redirect } from 'react-router-dom'
+
+//graphql
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { apolloClient  } from '../../_primary'
+
+// query for the logged in user
+let meQuery = gql`query {
+    me {
+        id 
+        username
+        email
+        isAdmin
+        isStaff
+    }
+}`;
+
+export function requireAuthentication(Component) {
+
+  class AuthenticatedComponent extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isAuthenticated: false,
+            redirectToLogin: false
+        };
+    }
+
+    componentWillMount() {
+        this.checkAuth()
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.checkAuth()
+    }
+
+    checkAuth() {
+        // check if authenticated
+        // if not redirect to Login page
+        apolloClient.query({query: meQuery}).then((res) => {
+            console.log(res)
+            if(!res.data.me) {
+                this.setState({ redirectToLogin: true })
+            } else {
+                this.setState({ isAuthenticated: true })
+            }
+        })
+    }
+
+    render() {
+
+        if(this.state.redirectToLogin) {
+            return(<Redirect to='/login' />)
+        }
+
+        return (
+            <div>
+            {this.state.isAuthenticated === true
+                ? <Component {...this.props}/>
+                : null
+            }
+            </div>
+        )
+
+    }
+  }
+
+  return AuthenticatedComponent
+}

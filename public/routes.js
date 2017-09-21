@@ -1,7 +1,7 @@
 import React from 'react'
 
 // routing
-import { Route, Switch, Redirect } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 // This module will handle the routing of the application
 // Each routes are supplied with a component to render
@@ -13,15 +13,18 @@ import _Logsheet from './comp/logsheet/_LogSheet'
 import TimeseriesContainer from './comp/timeseries/TimeseriesContainer'
 import AccountsForm from './comp/accounts/AccountsForm'
 
+// redirect module
+import { requireAuthentication as auth }  from './comp/accounts/requireAuth'
+
 const routes = () => {
     return(
         <div>
             <Switch>
             {/* the default path displays the MainDashboard component */}
-            <Route exact path='/' component={MainDashboard} />
+            <Route exact path='/' component={auth(MainDashboard)} />
             <Route path='/login' component={AccountsForm} />
-            <Route path='/logsheet' component={_Logsheet} />
-            <Route path='/timeseries' component={TimeseriesContainer} />
+            <Route path='/logsheet' component={auth(_Logsheet)} />
+            <Route path='/timeseries' component={auth(TimeseriesContainer)} />
 
 
             {/* when the path is not found or (404) display the notfoundpage */}

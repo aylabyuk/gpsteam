@@ -40,7 +40,6 @@ const styles = {
 
 // using the SiteDetails query object we can get all the needed site information and timeseries files
 const SiteDetailsQuery = gql`query SiteDetailsQuery {
-    me { id username email isAdmin isStaff }
     allSite
     {
         name

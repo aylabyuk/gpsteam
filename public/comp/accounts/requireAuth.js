@@ -24,7 +24,8 @@ export function requireAuthentication(Component) {
         super(props);
         this.state = {
             isAuthenticated: false,
-            redirectToLogin: false
+            redirectToLogin: false,
+            me: null
         };
     }
 
@@ -46,7 +47,7 @@ export function requireAuthentication(Component) {
                 this.setState({ redirectToLogin: true })
             } else {
                 console.info('logged in as ' + res.data.me.username  + '. redirecting...')
-                this.setState({ isAuthenticated: true })
+                this.setState({ isAuthenticated: true, me: res.data.me })
             }
         })
     }
@@ -59,7 +60,7 @@ export function requireAuthentication(Component) {
         return (
             <div>
             {this.state.isAuthenticated === true
-                ? <Component {...this.props}/>
+                ? <Component {...this.props} me={this.state.me} />
                 : null
             }
             </div>

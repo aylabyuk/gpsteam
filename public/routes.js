@@ -15,6 +15,7 @@ import AccountsForm from './comp/accounts/AccountsForm'
 
 // redirect modules
 import { requireAuthentication as auth }  from './comp/accounts/requireAuth'
+import { requireStaff as staff }  from './comp/accounts/requireStaff'
 
 const routes = () => {
     return(
@@ -23,7 +24,7 @@ const routes = () => {
             {/* the default path displays the MainDashboard component */}
             <Route exact path='/' component={auth(MainDashboard)} />
             <Route path='/login' component={AccountsForm} />
-            <Route path='/logsheet' component={auth(_Logsheet)} />
+            <Route path='/logsheet' component={auth(staff(_Logsheet))} />
             <Route path='/timeseries' component={auth(TimeseriesContainer)} />
 
 

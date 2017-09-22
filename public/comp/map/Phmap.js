@@ -80,6 +80,16 @@ let siteMarkers = {
   icon: sIcon
 }
 
+// cluster coverage 
+let coverage = {
+  fillColor: 'rgb(179, 136, 255)',
+  color: 'rgb(179, 136, 255)',
+  weight: 0.5,
+  opacity: 1,
+  fillOpacity: 0.5
+}
+
+
 // Phmap is the map container managed by React but still using the leaflet library to display the map component
 class Phmap extends Component {
   constructor() {
@@ -182,6 +192,7 @@ class Phmap extends Component {
                   window.markerClusterGroup = markerClusterGroup.leafletElement 
                   {/* call the setCluster function to tell the app that the markers are set */}
                   this.setCluster()
+
                 }
               }}
             />

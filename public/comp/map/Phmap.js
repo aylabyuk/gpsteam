@@ -50,6 +50,23 @@ const getPreview = gql`
         }
     }
 `
+
+// cluster styling
+// Define object with Leaflet.markercluster options
+const markerclusterOptions = {
+    showCoverageOnHover: false,
+    spiderfyDistanceMultiplier: 2,
+
+    // Setting custom icon for clustere group
+    // https://github.com/Leaflet/Leaflet.markercluster#customising-the-clustered-markers
+    iconCreateFunction: (cluster) => {
+      return L.divIcon({
+        html: `<span>${cluster.getChildCount()}</span>`,
+        className: 'marker-cluster-custom',
+        iconSize: L.point(40, 40, true)
+      });
+    },
+};
  
 // siteIcon object is of type divIcon used by leaflet to set the appearance of the markers 
 let sIcon = L.icon({
@@ -155,6 +172,7 @@ class Phmap extends Component {
               markers={markers}
               wrapperOptions={{enableDefaultStyle: true}} 
               markerOptions={siteMarkers}
+              options={markerclusterOptions}
               onMarkerClick={(marker) => this.addPopup(marker) }
               ref={(markerClusterGroup) => {
 

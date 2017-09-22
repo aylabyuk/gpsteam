@@ -26,7 +26,7 @@ import { changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelec
 import { validateLogsheet as validate } from '../formValidators/formValidators'
 
 // import ui components to use in the component
-import { Paper, Divider, LinearProgress } from 'material-ui';
+import { Paper, Divider, LinearProgress, CircularProgress } from 'material-ui';
 import styles from '../../css/home.css';
 
 
@@ -111,8 +111,8 @@ class LogSheetForm extends PureComponent {
         // if apollo client is still querying data to the server, render a linear progress component.
         if(loading) {
             return (
-                <div style={{width: '500px', paddingTop: '5px'}}>
-                    <LinearProgress mode="indeterminate" />
+                <div>
+                    <CircularProgress mode="indeterminate" />
                 </div>
             );
         } else {

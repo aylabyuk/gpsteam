@@ -1,6 +1,5 @@
 import React from 'react'
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import purple from './themes/purple'
 
 //ui
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -19,7 +18,7 @@ class MainComponent extends React.Component {
 	
 	render() {
 		return (
-			<MuiThemeProvider>
+			<MuiThemeProvider muiTheme={purple()}>
 				<BrowserRouter >
 					{this.props.routes}
 				</BrowserRouter>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import { changeClickedSite } from '../../actions/index'
 import { connect } from 'react-redux'
+import MapsPlace from 'material-ui/svg-icons/maps/place'
 
 // ui
 import { Map, Marker, Popup, TileLayer, Tooltip } from 'react-leaflet'
@@ -51,11 +52,16 @@ const getPreview = gql`
 `
  
 // siteIcon object is of type divIcon used by leaflet to set the appearance of the markers 
-let siteIcon = L.divIcon({
-          className: '',
-          iconSize: [24, 24],
-          html: `<div id="icn" />`,
-        });
+let sIcon = L.icon({
+  iconUrl: 'http://'+ ip + PORT + '/marker.png',
+  iconSize: [30, 41],
+  iconAnchor: [15, 41],
+  popupAnchor: [15, -21]
+})
+
+let siteMarkers = {
+  icon: sIcon
+}
 
 // Phmap is the map container managed by React but still using the leaflet library to display the map component
 class Phmap extends Component {
@@ -144,31 +150,24 @@ class Phmap extends Component {
               url='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
             />
 
-            {/*  if clustering is false.. show all markers
-            if true show the MarkerClusterGroup component  */}
-            { this.state.clustering ? 
-              <MarkerClusterGroup
-                markers={markers}
-                wrapperOptions={{enableDefaultStyle: true}} 
-                onMarkerClick={(marker) => this.addPopup(marker) }
-                ref={(markerClusterGroup) => {
+           
+            <MarkerClusterGroup
+              markers={markers}
+              wrapperOptions={{enableDefaultStyle: true}} 
+              markerOptions={siteMarkers}
+              onMarkerClick={(marker) => this.addPopup(marker) }
+              ref={(markerClusterGroup) => {
 
-                  {/*  set the reference for this component to the window object of the browser to make it accessible anywhere  */}
-                  if(!this.state.clusterIsSet) {
-                    //console.log(this.state.clusterIsSet)
-                    window.markerClusterGroup = markerClusterGroup.leafletElement 
-                    {/* call the setCluster function to tell the app that the markers are set */}
-                    this.setCluster()
-                  }
-                }}
-              />
-              : markers.map((s)=> {
-                return (<Marker position={[s.lat, s.lng]}  key={s.tooltip} riseOnHover icon={siteIcon}>
-                  <Tooltip>
-                    <span>{s.tooltip}</span>
-                  </Tooltip>
-                </Marker>)
-              }) }
+                {/*  set the reference for this component to the window object of the browser to make it accessible anywhere  */}
+                if(!this.state.clusterIsSet) {
+                  //console.log(this.state.clusterIsSet)
+                  window.markerClusterGroup = markerClusterGroup.leafletElement 
+                  {/* call the setCluster function to tell the app that the markers are set */}
+                  this.setCluster()
+                }
+              }}
+            />
+      
 
               {/*  if the popup state is true
               then show the popup component for the clicked site/marker

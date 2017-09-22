@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Paper, Tab, Tabs } from 'material-ui'
+import { Paper } from 'material-ui'
+import MapsPlace from 'material-ui/svg-icons/maps/place'
 import SwipeableViews from 'react-swipeable-views'
 import { Redirect  } from 'react-router-dom'
 
@@ -12,6 +13,7 @@ import SignUp from './SignUp'
 import { meQuery } from './requireAuth'
 import { apolloClient } from '../../_primary'
 
+import { selectedTheme  } from '../../MainComponent'
 import styles from '../../css/bg.css'
 
 const addNewUser = gql`
@@ -116,12 +118,9 @@ class AccountsForm extends Component {
         return (
             <Paper className='mybg'  style={{ padding: 0, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column'}}>
                 <Paper zDepth={3} style={{ width: '500px' }}>
-                    {/* <Tabs onChange={this.handleChange} value={this.state.slideIndex} >
-                        <Tab label="Login" value={0} />
-                        <Tab label="SignUp" value={1} />
-                    </Tabs> */}
+                    <center><MapsPlace className='logo' color={selectedTheme.appBar.color} style={{ width: '80px', height: '80px' }}/></center>
                     <div className='gpsbanner'>
-                        GPS dashboard
+                        GPS DASHBOARD
                     </div>
                     <SwipeableViews disabled  index={this.state.slideIndex} onChangeIndex={this.handleChange}>
                         <Login handleChange={this.handleChange} login={this.login}/>

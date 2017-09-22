@@ -57,10 +57,10 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:vertical:active {
-	background: rgb(0, 188, 212);
+	background: rgb(97, 95, 97);
 }
 ::-webkit-scrollbar-thumb:horizontal:active {
-	background: rgb(0, 188, 212);
+	background: rgb(97, 95, 97);
 }
 
 #icn {

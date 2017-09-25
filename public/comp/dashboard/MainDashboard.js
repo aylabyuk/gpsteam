@@ -68,6 +68,7 @@ class MainDashboard extends PureComponent {
             resultDrawer: false,
             searchSite: '',
             detailsDrawer: false,
+            leftDrawer: false,
             siteToViewDetails: '',
             logsheetDialog: false,
             currentLogsheetToView: null
@@ -158,7 +159,11 @@ class MainDashboard extends PureComponent {
         // using Autosizer we can identify of compute for the available width and height
         return (
             <div id='cont' style={{width: this.state.width, height: this.state.height}}>
-                <AppBar title={<div className='titletext'>GPS Dashboard</div>} iconElementRight={<SearchBar hintText='Search Sites' onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}/>
+                <AppBar
+                  title={<div className='titletext'>GPS Dashboard</div>} 
+                  iconElementRight={<SearchBar hintText='Search Sites' 
+                  onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}
+                  onLeftIconButtonTouchTap={()=> this.props.openSideNav() }/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.center}>
                         <AutoSizer>
@@ -176,6 +181,8 @@ class MainDashboard extends PureComponent {
                 <Drawer openSecondary width={280} open={this.state.detailsDrawer}>
                     <SiteDetailsDrawer close={this.handleCloseDetails} site={this.state.siteToViewDetails} showLogsheet={this.handleLogsheetDialog}/>
                 </Drawer>
+
+                
 
                 <FullscreenDialog
                     immersive={true}

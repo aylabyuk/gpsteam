@@ -8,6 +8,7 @@ import MyChart from './MyChart'
 import Paper from 'material-ui/Paper';
 import styles from '../../css/chart.css'
 
+
 const style = {
   margin: 2,
   padding: 2,

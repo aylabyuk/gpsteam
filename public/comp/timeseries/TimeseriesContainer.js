@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios'
 import * as d3 from "d3";
+import IconButton from 'material-ui/IconButton';
+import Menu from 'material-ui/svg-icons/navigation/menu';
 
 import Timeseries from './Timeseries'
 
@@ -218,7 +220,8 @@ class TimeseriesContainer extends Component {
         let { data, earthquake, sitename, line, width, height, dotsOpacity, maxXval, minXval, ymarginal } = this.state
 
         return (
-            <Paper style={{ width: width, height: height }}>
+            <Paper style={{ width: width, height: height, display: 'flex', flexDirection: 'column' }}>
+                <AppBar onLeftIconButtonTouchTap={()=> this.props.openSideNav() }/>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: height }}>
                     <Paper>
                         <div style={styles.center}>

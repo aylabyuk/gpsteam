@@ -42,7 +42,7 @@ class _LogSheet extends Component {
         // The main appbar of the component, assigning the AppBarMenu as an element on the right side of the Appbar
         return ( 
             <Paper style={{ padding: 0, height: '100vh'}}>
-                <AppBar title={<div className='titletext'>GPS Logsheets</div>} iconElementRight={<AppBarMenu />}/>
+                <AppBar title={<div className='titletext'>GPS Logsheets</div>} iconElementRight={<AppBarMenu />} onLeftIconButtonTouchTap={()=> this.props.openSideNav()}/>
 
                 {
                     // use autosizer module to identify the available width and height 

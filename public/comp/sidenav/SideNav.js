@@ -35,7 +35,8 @@ export function sideNav(Component) {
             return (
                 <div>
                     <Component openSideNav={this.handleOpenSideNav}  {...this.props} me={this.props.me} />
-                    <Drawer width={280} open={this.state.leftDrawer} docked={false} onRequestChange={()=> this.handleCloseSideNav()}>                    
+                    <Drawer overlayClassName='mybg' containerStyle={{zIndex: 1500}} overlayStyle={{zIndex: 1400}}  
+                        width={280} open={this.state.leftDrawer} docked={false} onRequestChange={()=> this.handleCloseSideNav()}>                    
                         <Paper>
                             <List style={{ paddingTop: '0px' }}>
                                 <ListItem className='mybg' leftAvatar={<Avatar color={blue700} backgroundColor={deepOrange300} >OA</Avatar>} 

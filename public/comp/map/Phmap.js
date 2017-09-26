@@ -139,7 +139,7 @@ class Phmap extends Component {
       }).catch((err) => {
         console.log(err)
       })
-  }
+  } 
 
   render() {
     // get the position of the maps center

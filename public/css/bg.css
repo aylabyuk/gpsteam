@@ -23,6 +23,34 @@
     100%{background-position:0% 31%}
 }
 
+.mybg2 {
+    background: linear-gradient(139deg, rgba(0, 191, 212, 0.80),
+         rgba(26, 219, 190, 0.99),
+         rgba(176, 9, 115, 0.70), 
+         rgba(191, 118, 34, 0.99));
+    background-size: 800% 800%;
+
+    -webkit-animation: AnimationName 17s ease infinite;
+    -moz-animation: AnimationName 17s ease infinite;
+    animation: AnimationName 17s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}
+@-moz-keyframes AnimationName {
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 31%}
+    50%{background-position:100% 70%}
+    100%{background-position:0% 31%}
+}
+
 .gpsbanner {
     font-family: 'Tahoma', regular;
     font-size: -webkit-xxx-large;

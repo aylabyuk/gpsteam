@@ -25,7 +25,7 @@ const routes = () => {
             {/* the default path displays the MainDashboard component */}
             <Route exact path='/' component={auth(sideNav(MainDashboard))} />
             <Route path='/login' component={AccountsForm} />
-            <Route path='/logsheet' component={auth(staff(sideNav(_Logsheet)))} />
+            <Route path='/logsheets' component={auth(staff(sideNav(_Logsheet)))} />
             <Route path='/timeseries' component={auth(staff(sideNav(TimeseriesContainer)))} />
 
 

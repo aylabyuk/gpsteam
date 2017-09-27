@@ -7,6 +7,7 @@ import ActionExitToApp from 'material-ui/svg-icons/action/exit-to-app';
 import MapsPlace from 'material-ui/svg-icons/maps/place'
 import MapsMap from 'material-ui/svg-icons/maps/map'
 import MapsSatellite from 'material-ui/svg-icons/maps/satellite'
+import SocialPerson from 'material-ui/svg-icons/social/person'
 
 import { deepOrange300, blue700 } from 'material-ui/styles/colors';
   
@@ -43,6 +44,11 @@ export function sideNav(Component) {
             }) 
         }
 
+        handleLogout() {
+            localStorage.clear()
+            location.reload()
+        }
+
         render() {
             let { pathname } =  this.props.location
 
@@ -53,7 +59,7 @@ export function sideNav(Component) {
                         width={280} open={this.state.leftDrawer} docked={false} onRequestChange={()=> this.handleCloseSideNav()}>                    
                         <Paper>
                             <List style={{ paddingTop: '0px' }}>
-                                <ListItem className='mybg' leftAvatar={<Avatar color={blue700} backgroundColor={deepOrange300} >OA</Avatar>} 
+                                <ListItem className='mybg' leftAvatar={<Avatar color={blue700} icon={<SocialPerson />} backgroundColor={deepOrange300} />} 
                                     primaryText={this.props.me.username} secondaryText={this.props.me.email}/>  
                                 <Divider/>
                                 <ListItem onTouchTap={()=> this.handleNav('/')} primaryText='Dashboard' style={{ color: pathname == '/' ? blue700 : null }} leftIcon={<MapsMap/>} />
@@ -61,7 +67,7 @@ export function sideNav(Component) {
                                 <ListItem onTouchTap={()=> this.handleNav('/logsheets')} primaryText='Logsheets' style={{ color: pathname == '/logsheets' ? blue700 : null }} leftIcon={<ActionDescription/>} />
                                 <ListItem onTouchTap={()=> this.handleNav('/timeseries')} primaryText='Timeseries' style={{ color: pathname == '/timeseries' ? blue700 : null }} leftIcon={<MapsSatellite/>} />
                                 <Divider/>
-                                <ListItem leftIcon={<ActionExitToApp/>}>Logout</ListItem>
+                                <ListItem onTouchTap={()=> this.handleLogout()} leftIcon={<ActionExitToApp/>}>Logout</ListItem>
                             </List>
                         </Paper>
                     </Drawer>

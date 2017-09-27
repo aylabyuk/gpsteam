@@ -150,6 +150,7 @@ class Phmap extends Component {
     // fix not centering issue
     if (window.leafletmap && this.state.mapIsSet && this.state.recenter) {
       window.leafletmap.leafletElement.zoomIn()
+      window.leafletmap.leafletElement._onResize()
       this.setState({ recenter: false })
     }
   }

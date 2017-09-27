@@ -103,6 +103,7 @@ class Phmap extends Component {
       clustering: true,
       mapIsSet: false,
       clusterIsSet: false,
+      recenter: true,
       popup: false,
       path: ''
     };
@@ -140,6 +141,19 @@ class Phmap extends Component {
         console.log(err)
       })
   } 
+
+  componentDidMount() {
+    
+  }
+  
+  componentWillUpdate(nextProps, nextState) {
+    // fix not centering issue
+    if (window.leafletmap && this.state.mapIsSet && this.state.recenter) {
+      window.leafletmap.leafletElement.zoomIn()
+      this.setState({ recenter: false })
+    }
+  }
+  
 
   render() {
     // get the position of the maps center

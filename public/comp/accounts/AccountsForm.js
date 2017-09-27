@@ -78,7 +78,9 @@ class AccountsForm extends Component {
             console.log(data)
             this.login(email, password)
         }).catch((error) => {
-            console.log('there was an error sending the query: ', error);
+            let msg = JSON.parse(JSON.stringify(error))
+            console.log('there was an error sending the query: ', msg.graphQLErrors[0].message)
+            window.alert(msg.graphQLErrors[0].message)
         });
     }
 
@@ -92,7 +94,9 @@ class AccountsForm extends Component {
             location.reload();
 
         }).catch((error) => {
-            console.log('there was an error sending the query: ', error);
+            let msg = JSON.parse(JSON.stringify(error))
+            console.log('there was an error sending the query: ', msg.graphQLErrors[0].message)
+            window.alert(msg.graphQLErrors[0].message)
         });
     }  
 

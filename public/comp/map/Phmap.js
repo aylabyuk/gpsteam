@@ -98,7 +98,7 @@ class Phmap extends Component {
       lat: 12.8797,
       lng: 121.7740,
       zoom: 6,
-      maxZoom: 19,
+      maxZoom: 18,
       minZoom: 6,
       clustering: true,
       mapIsSet: false,

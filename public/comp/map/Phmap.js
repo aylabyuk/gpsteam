@@ -179,6 +179,11 @@ class Phmap extends Component {
                   // use omnivore library to parse kml file to geoJson
                   // then add the geoJson file to the leaflet element/map
                   omnivore.kml('http://'+ ip + PORT + '/faultline/AF_2017.kml', null, layer).addTo(leafletmap.leafletElement)
+
+                  // set the maximum bounding region
+                  leafletmap.leafletElement.setMaxBounds(new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]))
+
+
                   // set the state
                   this.setState({mapIsSet: true})
                 }

@@ -24,13 +24,13 @@ const routes = () => {
             {/* the default path displays the MainDashboard component */}
             <Route path='/' component={auth(SideNav)} />
             <Route path='/dashboard' component={MainDashboard} />
-            {/* <Route path='/login' component={AccountsForm} />
-            <Route path='/logsheets' component={auth(staff(sideNav(_Logsheet)))} />
-            <Route path='/timeseries' component={auth(staff(sideNav(TimeseriesContainer)))} /> */} 
+            <Route path='/login' component={AccountsForm} />
+            <Route path='/logsheets' component={auth(staff(_Logsheet))} />
+            <Route path='/timeseries' component={auth(staff(TimeseriesContainer))} />
 
 
-            {/* when the path is not found or (404) display the notfoundpage */}
-            {/* <Route component={NotFoundPage} /> */}
+            {/* when the path is not found or (404) display the notfoundpage
+            <Route component={NotFoundPage} />  */}
         </div>
     )
 }

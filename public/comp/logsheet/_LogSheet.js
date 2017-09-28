@@ -12,8 +12,8 @@ import { AutoSizer } from 'react-virtualized';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import { white } from 'material-ui/styles/colors'
 
-// these are available redux actions to be use int the component
-import { toggleLogsheetViewerDrawer, setLogsheetMode } from '../../actions/index'
+// these are available redux actions to be use in the component
+import { toggleLogsheetViewerDrawer, setLogsheetMode, toggleSideNav } from '../../actions/index'
 
 
 // This _Logsheet component is a parent node that holds logsheet related views  
@@ -42,7 +42,7 @@ class _LogSheet extends Component {
         // The main appbar of the component, assigning the AppBarMenu as an element on the right side of the Appbar
         return ( 
             <Paper style={{ padding: 0, height: '100vh'}}>
-                <AppBar title={<div className='titletext'>GPS Logsheets</div>} iconElementRight={<AppBarMenu />} onLeftIconButtonTouchTap={()=> this.props.openSideNav()}/>
+                <AppBar title={<div className='titletext'>GPS Logsheets</div>} iconElementRight={<AppBarMenu />} onLeftIconButtonTouchTap={()=> this.props.toggleSideNav()}/>
 
                 {
                     // use autosizer module to identify the available width and height 
@@ -80,4 +80,4 @@ function mapStateToProps(state) {
 
 // create a redux Higher Order Component and attach using the connect method.. 
 // this means that mapStateToProps, toggleLogsheetViewerDrawer and setLogsheetMode will be available as props to the component
-export default connect(mapStateToProps, { toggleLogsheetViewerDrawer, setLogsheetMode })(_LogSheet);
+export default connect(mapStateToProps, { toggleLogsheetViewerDrawer, setLogsheetMode, toggleSideNav })(_LogSheet);

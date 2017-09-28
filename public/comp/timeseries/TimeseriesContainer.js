@@ -3,8 +3,11 @@ import axios from 'axios'
 import * as d3 from "d3";
 import IconButton from 'material-ui/IconButton';
 import Menu from 'material-ui/svg-icons/navigation/menu';
+import { connect } from 'react-redux'
 
 import Timeseries from './Timeseries'
+import {toggleSideNav } from '../../actions/index'
+
 
 // ui
 import { AppBar, Paper, Drawer, RaisedButton, TextField, Slider } from 'material-ui'
@@ -221,7 +224,7 @@ class TimeseriesContainer extends Component {
 
         return (
             <Paper style={{ width: width, height: height, display: 'flex', flexDirection: 'column' }}>
-                <AppBar onLeftIconButtonTouchTap={()=> this.props.openSideNav() }/>
+                <AppBar onLeftIconButtonTouchTap={()=> this.props.toggleSideNav() }/>
                 <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', height: height }}>
                     <Paper>
                         <div style={styles.center}>
@@ -279,4 +282,4 @@ class TimeseriesContainer extends Component {
     }
 }
 
-export default TimeseriesContainer;
+export default connect( null , { toggleSideNav })(TimeseriesContainer);

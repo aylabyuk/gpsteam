@@ -1,5 +1,5 @@
 import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING,
- TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET, LOGSHEET_MODE } from './types'
+ TOGGLE_LOGSHEET_VIEWER_DRAWER, REVIEW_LOGSHEET, LOGSHEET_MODE, TOGGLE_SIDENAV } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -88,6 +88,14 @@ export function setLogsheetMode(mode) {
 		dispatch({
 			type: LOGSHEET_MODE,
 			payload: mode
+		})
+	}
+}
+
+export function toggleSideNav(name) {
+	return function(dispatch) {
+		dispatch({
+			type: TOGGLE_SIDENAV,
 		})
 	}
 }

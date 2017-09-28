@@ -7,7 +7,7 @@ import RightPanel from './RightPanel'
 import SearchDrawer from './SearchDrawer'
 import SiteDetailsDrawer from './SiteDetailsDrawer'
 import FullscreenDialog from 'material-ui-fullscreen-dialog'
-import { setLogsheetMode, reviewLogsheet } from '../../actions/index'
+import { setLogsheetMode, reviewLogsheet, toggleSideNav } from '../../actions/index'
 import { connect } from 'react-redux'
 import { apolloClient } from '../../_primary'
 
@@ -163,7 +163,7 @@ class MainDashboard extends PureComponent {
                   title={<div className='titletext'>GPS Dashboard</div>} 
                   iconElementRight={<SearchBar hintText='Search Sites' 
                   onChange={(val)=> this.searchForSite(val)} onRequestSearch={(val)=> console.log('test')}/>}
-                  onLeftIconButtonTouchTap={()=> this.props.openSideNav() }/>
+                  onLeftIconButtonTouchTap={()=> this.props.toggleSideNav() }/>
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: this.state.height - 64 }}>
                     <Paper style={styles.center}>
                         <AutoSizer>
@@ -183,7 +183,6 @@ class MainDashboard extends PureComponent {
                 </Drawer>
 
                 
-
                 <FullscreenDialog
                     immersive={true}
                     open={this.state.logsheetDialog}
@@ -205,4 +204,4 @@ class MainDashboard extends PureComponent {
 
 // using the graphql higher order component with the SiteDetailsQuery variable we can get all the needed site information from the server
 // it will attach the data to the MainDashboard component as props
-export default connect(null , { setLogsheetMode, reviewLogsheet })(graphql(SiteDetailsQuery)(MainDashboard));
+export default connect(null , { setLogsheetMode, reviewLogsheet, toggleSideNav })(graphql(SiteDetailsQuery)(MainDashboard));

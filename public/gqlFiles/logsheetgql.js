@@ -63,6 +63,12 @@ export const SingleLogsheetQuery = gql` query SingleLogsheet($currentLogsheet: I
                 email_add
                 contact_number
             }
+            author {
+                username
+                email
+            }
+            createdAt
+            updatedAt
         }
     } 
 `

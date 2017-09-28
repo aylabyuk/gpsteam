@@ -18,9 +18,10 @@ import AntennaHeigtInfoFields from './AntennaHeightInfoFields'
 import PertinentInfoFields from './PertinentInfoFields'
 import SiteContactPersonFields from './SiteContactPersonFields'
 import LogSheetButtons from './LogSheetButtons'
+import Meta from './Meta'
 
 // import methods to be use for the component state management
-import { changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting, reviewLogsheet } from '../../actions/index'
+import { changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, toggleLogsheetSubmitting, reviewLogsheet, setLogsheetMode } from '../../actions/index'
 
 // import form validation module 
 import { validateLogsheet as validate } from '../formValidators/formValidators'
@@ -104,6 +105,17 @@ class LogSheetForm extends PureComponent {
         }
     }
     
+    componentWillUnmount() {
+        // reset everything on unmount
+        let { resetContactId, resetSelectedStaffs, reviewLogsheet, setLogsheetMode  } =  this.props
+
+        setLogsheetMode('new')
+        resetContactId()
+        resetSelectedStaffs()
+        reviewLogsheet(null)
+
+    }
+    
 
     render() {
         let { loading, allSite, allReceiver, allAntenna } = this.props.data
@@ -125,6 +137,7 @@ class LogSheetForm extends PureComponent {
             // render every single component. Each of these component is equivalent to a field.
             return (
                 <div>
+                    { ro && this.props.toReview.author ? <Meta data={this.props.toReview}/> : null  }
                     <DateFields ro={ro} />
                     <ObserversFields ro={ro}/>
                     {/* Provide all sitenames to the SieFields component  */}
@@ -196,7 +209,10 @@ function mapStateToProps(state) {
         lodgingOrRoadInfo: l.lodging_road_information,
         pertinentInfo: l.others,
         observers: l.observers,
-        contact: l.contact
+        contact: l.contact,
+        author: l.author,
+        createdAt: l.createdAt,
+        updatedAt: l.updatedAt
     } : null
 
     // return all these ui states
@@ -209,5 +225,5 @@ function mapStateToProps(state) {
 
 // export the LogsheetForm component together with the redux actions, ui states and LogsheetQuery
 // connect is a HOC by redux and graphql is a 
-export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, reviewLogsheet })
+export default connect(mapStateToProps, {changeSelectedStaffs, changeSelectedContact, resetContactId, resetSelectedStaffs, reviewLogsheet, setLogsheetMode })
                 (graphql(LogSheetQuery)(form(LogSheetForm)))

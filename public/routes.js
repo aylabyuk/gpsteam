@@ -19,18 +19,19 @@ import { requireAuthentication as auth }  from './comp/accounts/requireAuth'
 import { requireStaff as staff }  from './comp/accounts/requireStaff'
 
 const routes = () => {
+
     return(
         <div>
-            {/* the default path displays the MainDashboard component */}
-            <Route path='/' component={auth(SideNav)} />
-            <Route path='/dashboard' component={MainDashboard} />
-            <Route path='/login' component={AccountsForm} />
-            <Route path='/logsheets' component={auth(staff(_Logsheet))} />
-            <Route path='/timeseries' component={auth(staff(TimeseriesContainer))} />
+            <SideNav />
+            <Switch>
+                {/* the default path displays the MainDashboard component */}
+                <Route exact path='/' component={auth(MainDashboard)} />
+                <Route path='/login' component={AccountsForm} />
+                <Route path='/logsheets' component={auth(staff(_Logsheet))} />
+                <Route path='/timeseries' component={auth(staff(TimeseriesContainer))} />
 
-
-            {/* when the path is not found or (404) display the notfoundpage
-            <Route component={NotFoundPage} />  */}
+                <Route component={NotFoundPage} />
+            </Switch>
         </div>
     )
 }

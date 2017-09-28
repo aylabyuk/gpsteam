@@ -10,8 +10,8 @@ import MapsSatellite from 'material-ui/svg-icons/maps/satellite'
 import SocialPerson from 'material-ui/svg-icons/social/person'
 
 import { connect } from 'react-redux'
-
 import { toggleSideNav } from '../../actions/index'
+import { requireAuthentication as auth }  from '../accounts/requireAuth'
 
 import { deepOrange300, blue700 } from 'material-ui/styles/colors';
   
@@ -51,14 +51,8 @@ class SideNav extends React.Component {
         location.reload()
     }
 
-    
-
     render() {
         let { pathname } =  this.props.location
-
-        if(pathname == '/') {
-            return(<Redirect to='/dashboard' />)
-        }
 
         return (
             <div>
@@ -69,7 +63,7 @@ class SideNav extends React.Component {
                             <ListItem className='mybg' leftAvatar={<Avatar color={blue700} icon={<SocialPerson />} backgroundColor={deepOrange300} />} 
                                 primaryText={this.props.me.username} secondaryText={this.props.me.email}/>  
                             <Divider/>
-                            <ListItem onTouchTap={()=> this.handleNav('/dashboard')} primaryText='Dashboard' style={{ color: pathname == '/dashboard' ? blue700 : null }} leftIcon={<MapsMap/>} />
+                            <ListItem onTouchTap={()=> this.handleNav('/')} primaryText='Dashboard' style={{ color: pathname == '/' ? blue700 : null }} leftIcon={<MapsMap/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/sites')} primaryText='Sites' style={{ color: pathname == '/sites' ? blue700 : null }} leftIcon={<MapsPlace/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/logsheets')} primaryText='Logsheets' style={{ color: pathname == '/logsheets' ? blue700 : null }} leftIcon={<ActionDescription/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/timeseries')} primaryText='Timeseries' style={{ color: pathname == '/timeseries' ? blue700 : null }} leftIcon={<MapsSatellite/>} />
@@ -90,4 +84,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps, { toggleSideNav })(withRouter(SideNav));
+export default connect(mapStateToProps, { toggleSideNav })(withRouter(auth(SideNav)));

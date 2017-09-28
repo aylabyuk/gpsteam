@@ -5,6 +5,7 @@ import moment from 'moment'
 import { DateRange } from 'react-date-range'
 import { Paper, Drawer, FlatButton } from 'material-ui'
 import { darkBlack, blueGrey100, white } from 'material-ui/styles/colors'
+import { selectedTheme  } from '../../MainComponent'
 
 const theme = {
               DateRange      : {
@@ -35,14 +36,14 @@ const theme = {
                 transition   : 'transform .1s ease, box-shadow .1s ease, background .1s ease'
               },
               DaySelected    : {
-                background   : '#0097A7'
+                background   : selectedTheme.appBar.color
               },
               DayActive    : {
-                background   : '#0097A7',
+                background   : selectedTheme.appBar.color,
                 boxShadow    : 'none'
               },
               DayInRange     : {
-                background   : '#26C6DA',
+                background   : selectedTheme.badge.primaryColor,
                 color        : '#fff'
               },
               DayHover       : {

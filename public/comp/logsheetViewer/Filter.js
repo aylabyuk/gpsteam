@@ -7,7 +7,7 @@ import { normalizeUpperCase } from '../formValidators/formValidators'
 import { toggleLogsheetViewerDrawer } from '../../actions/index'
 
 // ui
-import { AppBar, Paper, Card, AutoComplete, LinearProgress, TextField, RaisedButton, IconButton, Popover } from 'material-ui' 
+import { AppBar, Paper, Card, LinearProgress, TextField, RaisedButton, IconButton, Popover } from 'material-ui' 
 import Clear from 'material-ui/svg-icons/content/clear';
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';
 import ChipInput from 'material-ui-chip-input'
@@ -19,29 +19,7 @@ const LogSheetQuery = gql`query LogSheetQuery {
     id
     name
   }
-  allReceiver {
-    serial_number
-  }
-  allAntenna {
-    serial_number
-  }
 }`;
-
-const renderAutoCompleteField = ({ input, fullWidth, label, dataSource, meta: { touched, error } }) => (
-  <AutoComplete
-      floatingLabelText="site name"
-      filter={AutoComplete.fuzzyFilter}
-      openOnFocus={true}
-      dataSource={dataSource}
-      listStyle={{ maxHeight: 200, overflow: 'auto' }}
-      onUpdateInput={input.onChange}
-      searchText={input.value}
-      openOnFocus={false}
-      maxSearchResults={20}
-      errorText={touched && error}
-      fullWidth={fullWidth}
-    />
-)
 
 const renderTextField = ({clear, fullWidth, clearIcon, input, label, meta: { touched, error }, ...custom }) => (
     <div style={{position: 'relative', display: 'inline-block', width: '100%'}}>
@@ -115,29 +93,29 @@ class Filter extends Component {
   }
 
   render() {
-    let { loading, allSite, allReceiver, allAntenna } = this.props.data
+    let { loading, allSite } = this.props.data
       if(loading) {
         return <LinearProgress mode="indeterminate" />
       } else {
         return (
-          <div>
-              <AppBar title='Search Logsheets' iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
+          <div style={{overflow: 'hidden' }}>
+              <AppBar showMenuIconButton={false} title='Search Logsheets' iconElementRight={ <IconButton onTouchTap={()=> this.props.toggleLogsheetViewerDrawer()}><NavigationClose /></IconButton> }/>
               <div style={{ margin: '10px' }}>
 
                   <ChipInput
-                    value={this.state.myChips}
-                    dataSource={allSite.map((s) => { return s.name })}
-                    onRequestAdd={(chip) => this.handleAddChip(chip)}
-                    onRequestDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-                    fullWidth
-                    maxSearchResults={20}
-                    listStyle={{ maxHeight: 200, overflow: 'auto' }}
-                    floatingLabelText='site/s'
+                      dataSource={allSite.map((s) => { return s.name })}
+                      onRequestAdd={(chip) => this.handleAddChip(chip)}
+                      onRequestDelete={(chip, index) => this.handleDeleteChip(chip, index)}
+                      fullWidth
+                      fullWidthInput
+                      maxSearchResults={20}
+                      listStyle={{ maxHeight: 200, overflow: 'auto' }}
+                      floatingLabelText='site/s'
                   />
-                  <Field name="location" onChange={null} fullWidth={true} component={renderTextField} label='location' />
-                  <Field onKeyPress={()=> {return false}} name='daterange' component={renderTextField} clear={this.handleClear.bind(this)} clearIcon={this.state.clearIcon} onFocus={this.handleTouchTap} fullWidth={true} label='date/s' />
+
+                  <Field onKeyPress={()=> {return false}} name='daterange' component={renderTextField} 
+                    clear={this.handleClear.bind(this)} clearIcon={this.state.clearIcon} onFocus={this.handleTouchTap} fullWidth={true} label='date/s' />
                   <Popover
-                    
                     open={this.state.open}
                     anchorEl={this.state.anchorEl}
                     anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}

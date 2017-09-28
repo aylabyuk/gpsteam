@@ -116,7 +116,7 @@ class AccountsForm extends Component {
     render() {
 
         if(this.state.loggedIn) {
-            return(<Redirect to='/' />)
+            return(<Redirect to='/dashboard' />)
         }
 
         return (

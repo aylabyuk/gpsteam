@@ -16,7 +16,7 @@ import { toggleSideNav } from '../../actions/index'
 import { deepOrange300, blue700 } from 'material-ui/styles/colors';
   
 
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 
 class SideNav extends React.Component {
     constructor(props) {
@@ -51,8 +51,14 @@ class SideNav extends React.Component {
         location.reload()
     }
 
+    
+
     render() {
         let { pathname } =  this.props.location
+
+        if(pathname == '/') {
+            return(<Redirect to='/dashboard' />)
+        }
 
         return (
             <div>
@@ -63,7 +69,7 @@ class SideNav extends React.Component {
                             <ListItem className='mybg' leftAvatar={<Avatar color={blue700} icon={<SocialPerson />} backgroundColor={deepOrange300} />} 
                                 primaryText={this.props.me.username} secondaryText={this.props.me.email}/>  
                             <Divider/>
-                            <ListItem onTouchTap={()=> this.handleNav('/dashboard')} primaryText='Dashboard' style={{ color: pathname == '/' ? blue700 : null }} leftIcon={<MapsMap/>} />
+                            <ListItem onTouchTap={()=> this.handleNav('/dashboard')} primaryText='Dashboard' style={{ color: pathname == '/dashboard' ? blue700 : null }} leftIcon={<MapsMap/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/sites')} primaryText='Sites' style={{ color: pathname == '/sites' ? blue700 : null }} leftIcon={<MapsPlace/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/logsheets')} primaryText='Logsheets' style={{ color: pathname == '/logsheets' ? blue700 : null }} leftIcon={<ActionDescription/>} />
                             <ListItem onTouchTap={()=> this.handleNav('/timeseries')} primaryText='Timeseries' style={{ color: pathname == '/timeseries' ? blue700 : null }} leftIcon={<MapsSatellite/>} />

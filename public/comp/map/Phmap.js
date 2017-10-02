@@ -193,8 +193,8 @@ class Phmap extends Component {
 
             {/*  add proper attribution and url to the TileLayer  */}
             <TileLayer
-              attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, Tiles courtesy of <a href="http://hot.openstreetmap.org/" target="_blank">Humanitarian OpenStreetMap Team</a>'
-              url='http://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png'
+              attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             />
 
            

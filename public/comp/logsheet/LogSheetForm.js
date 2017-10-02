@@ -123,9 +123,7 @@ class LogSheetForm extends PureComponent {
         // if apollo client is still querying data to the server, render a linear progress component.
         if(loading) {
             return (
-                <div>
-                    <CircularProgress mode="indeterminate" />
-                </div>
+                <CircularProgress mode="indeterminate" />
             );
         } else {
             // ro means 'readonly' can be true or false

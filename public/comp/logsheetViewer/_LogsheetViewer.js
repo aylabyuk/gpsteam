@@ -6,7 +6,7 @@ import Filter from './Filter'
 import SwipeableViews from 'react-swipeable-views';
 
 
-class _LogsheetVeiwer extends Component {
+class _LogsheetViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -31,4 +31,4 @@ class _LogsheetVeiwer extends Component {
     }
 }
 
-export default _LogsheetVeiwer;
+export default _LogsheetViewer;

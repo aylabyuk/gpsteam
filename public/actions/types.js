@@ -8,4 +8,5 @@ export const SELECTED_CONTACT = 'selected_contact',
 	TOGGLE_SEARCH_LOGSHEET = 'toggle_search_logsheet',
 	REVIEW_LOGSHEET = 'set_logsheet_review',
 	LOGSHEET_MODE = 'set_logsheet_mode',
-	TOGGLE_SIDENAV = 'toggle_sidenav'
+	TOGGLE_SIDENAV = 'toggle_sidenav',
+	SET_SEARCH_LOGSHEET = 'set_search_logsheet'

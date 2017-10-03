@@ -75,7 +75,7 @@ class Filter extends Component {
         return <LinearProgress mode="indeterminate" />
       } else {
         return (
-          <div style={{ margin: '10px', width: '800px',  maxWidth: '800px', height: '100vh' }}>
+          <div style={{ margin: '10px', width: '800px',  maxWidth: '800px', height: window.outerHeight - 64 }}>
 
               <ChipInput
                   dataSource={allSite.map((s) => { return s.name })}

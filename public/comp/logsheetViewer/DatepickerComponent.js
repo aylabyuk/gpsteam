@@ -41,6 +41,11 @@ class DatepickerComponent extends Component {
         this.setState({ startDate: null, endDate: null  })
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        let { startDate, endDate  } = this.state
+        this.props.setDateRangeValues({ startDate, endDate  })
+    }
+
     handleSelectRange(term){
         
         switch (term) {
@@ -54,8 +59,6 @@ class DatepickerComponent extends Component {
             case 7: this.setState({ startDate: moment().subtract(1, 'year').startOf('year'), endDate: moment().subtract(1, 'year').endOf('year') }); break;
         }
     }
-
-    
 
     render() {
         return (

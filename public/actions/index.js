@@ -1,5 +1,5 @@
 import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING,
-	TOGGLE_SEARCH_LOGSHEET, REVIEW_LOGSHEET, LOGSHEET_MODE, TOGGLE_SIDENAV } from './types'
+	TOGGLE_SEARCH_LOGSHEET, REVIEW_LOGSHEET, LOGSHEET_MODE, TOGGLE_SIDENAV, SET_DATERANGE_VALUES } from './types'
 
 const API_URL = 'http://192.168.1.206:3000'
 const CLIENT_ROOT_URL = 'http://localhost:8080'
@@ -96,6 +96,15 @@ export function toggleSideNav(name) {
 	return function(dispatch) {
 		dispatch({
 			type: TOGGLE_SIDENAV,
+		})
+	}
+}
+
+export function setDateRangeValues(data) {
+	return function(dispatch) {
+		dispatch({
+			type: SET_DATERANGE_VALUES,
+			payload: data
 		})
 	}
 }

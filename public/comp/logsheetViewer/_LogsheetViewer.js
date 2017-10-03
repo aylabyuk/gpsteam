@@ -25,34 +25,30 @@ class _LogsheetViewer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            result: null
+            results: null
         };
         this.handleSearch = this.handleSearch.bind(this)
     }
 
-    handleSearch (sites, dates){
+    handleSearch  (sites, dates){
         
         let query = {}
         query.query = Logsheets
         if(dates.startDate && dates.endDate) {
             query.variables = {
-                variables: {
-                    sitename: sites,
-                    startDate: new Date(dates.startDate),
-                    endDate: new Date(dates.endDate)
-                }
+                sitename: sites,
+                startDate: new Date(dates.startDate),
+                endDate: new Date(dates.endDate)
             }
         } else {
             query.variables = {
-                variables: {
-                    sitename: sites
-                }
+                sitename: sites
             }
         }
 
-        let result = this.props.client.query(query)
-
-        console.log(result)
+        this.props.client.query(query).then((res) => {
+            this.setState({ results: res  })
+        })
         
     }
 
@@ -60,7 +56,7 @@ class _LogsheetViewer extends Component {
         return (
             <div id='filter'  style={{ display: 'flex', flexDirection: 'column' }}>
                 <Filter handleSearch={this.handleSearch} />
-                <SearchResults />
+                <SearchResults results={this.state.results}/>
             </div>
         );
     }

@@ -2,30 +2,19 @@ import React, { Component } from 'react';
 
 // ui
 import Filter from './Filter'
-
-import SwipeableViews from 'react-swipeable-views';
-
+import SearchResults from './SearchResults'
 
 class _LogsheetViewer extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            slideIndex: 0,
-        };
+        this.state = { };
     }
-
-    handleChange = (value, id) => {
-        this.setState({
-            slideIndex: value,
-        });
-    };
 
     render() {
         return (
-            <div>
-            <SwipeableViews index={this.state.slideIndex} onChangeIndex={this.handleChange} disabled={true}>
-                <Filter handleChange={this.handleChange}/>
-            </SwipeableViews>
+            <div id='filter'  style={{ display: 'flex', flexDirection: 'column' }}>
+                <Filter />
+                <SearchResults />
             </div>
         );
     }

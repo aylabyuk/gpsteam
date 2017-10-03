@@ -1,8 +1,8 @@
 import { SELECTED_CONTACT, SELECTED_STAFFS, REMOVE_SELECTED_STAFF, RESET_CONTACT_ID, RESET_SELECTED_STAFFS, CLICKED_SITE, TOGGLE_LOGSHEET_SUBMITTING,
-	TOGGLE_SEARCH_LOGSHEET, REVIEW_LOGSHEET, LOGSHEET_MODE, SITE_DETAILS_DRAWER, TOGGLE_SIDENAV, SET_SEARCH_LOGSHEET } from '../actions/types'
+	TOGGLE_SEARCH_LOGSHEET, REVIEW_LOGSHEET, LOGSHEET_MODE, SITE_DETAILS_DRAWER, TOGGLE_SIDENAV} from '../actions/types'
 
 const INITIAL_STATE = {selectedContact: null, selectedStaffs: [], clickedSite: null, hoveredSite: null, logsheetSubmitting: false, logsheetSearch: false, 
-	logsheetToReview: null, logsheetMode: 'new', sidenav: false, searchLogsheets: { sites: [], dates: []  }}
+	logsheetToReview: null, logsheetMode: 'new', sidenav: false }
 
 function ui(state = INITIAL_STATE, action) {  
 	switch(action.type) {
@@ -29,8 +29,6 @@ function ui(state = INITIAL_STATE, action) {
 			return { ...state, logsheetMode: action.payload}
 		case TOGGLE_SIDENAV: 
 			return { ...state, sidenav: !state.sidenav }
-		case SET_SEARCH_LOGSHEET: 
-			return { ...state, searchLogsheets: action.payload }
 	}
 	
 	return state

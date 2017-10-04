@@ -18,6 +18,11 @@ const Logsheets = gql`query LogsheetsQuery($sitename: [String], $startDate: Date
         name
       }
       logsheet_date
+      author {
+          username
+      }
+      createdAt
+      updatedAt
     }
   }`;
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Paper, LinearProgress, FlatButton, Divider  } from 'material-ui'
+import { Paper, CircularProgress, FlatButton, Divider  } from 'material-ui'
 import TouchRipple  from 'material-ui/internal/TouchRipple'
 import moment from 'moment'
+import ActionDescription from 'material-ui/svg-icons/action/description';
+
 
 import SingleItem from './SingleItem'
 
@@ -45,10 +47,33 @@ class SearchResults extends Component {
 
     render() {
 
+        let emptyPaper = {
+             height: this.state.height - 135,  
+             display: 'flex', 
+             alignItems: 'center', 
+             flexDirection: 'column',
+             justifyContent: 'center',  
+             padding: '10px', 
+             width: '810px', 
+             marginTop: '10px',
+             color: 'rgba(219, 219, 219, 0.8)'
+        }
+
         if(this.props.results) {
             if(this.props.results.loading) {
-                return(<LinearProgress mode='indeterminate' />)
+                return(
+                    <Paper style={emptyPaper}>
+                        <CircularProgress size={150} thickness={15}  mode='indeterminate' />
+                    </Paper>
+                )
             }
+        } else {
+            return(
+                <Paper style={emptyPaper}>
+                    <ActionDescription style={{ width: '200px', height: '200px'  }}  color='rgba(219, 219, 219, 0.8)'/>
+                    <big>logsheet results are displayed here</big>
+                </Paper>
+            )
         }
 
         return (
@@ -56,10 +81,10 @@ class SearchResults extends Component {
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
                     {
                         this.props.results ? 
-                        <div>{this.props.results.data.searchLogsheet.length} logsheet/s found</div> : <div> </div>
+                        <div><div>{this.props.results.data.searchLogsheet.length} logsheet/s found</div> <Divider/></div> : null
                     }
                 </div>
-                <Divider/>
+                
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-start', alignContent: 'flex-start', height: this.state.height - 135, overflow: 'scroll' }} >
                     {
                         this.props.results ? this.props.results.data.searchLogsheet.map((r) => {
@@ -67,7 +92,9 @@ class SearchResults extends Component {
                                 <div key={r.id} style={{ transform: 'translate(0px, 0px)', margin: '10px' }}>
                                     <TouchRipple>
                                         <Paper onClick={()=> console.log(r.id)}  style={paperStyle} >
-                                            <SingleItem sitename={r.site.name} date={moment(new Date(r.logsheet_date)).format('LL')}/>
+                                            <SingleItem sitename={r.site.name} date={moment(new Date(r.logsheet_date)).format('LL')} 
+                                                createdAt={r.createdAt}
+                                                updatedAt={r.updatedAt}/>
                                         </Paper>
                                     </TouchRipple>
                                 </div>

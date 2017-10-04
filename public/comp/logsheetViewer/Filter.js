@@ -7,7 +7,7 @@ import { normalizeUpperCase } from '../formValidators/formValidators'
 import { toggleSearchLogsheet, setDateRangeValues } from '../../actions/index'
 
 // ui
-import { AppBar, Paper, Card, LinearProgress, TextField, FlatButton, IconButton } from 'material-ui' 
+import { AppBar, Paper, Card, LinearProgress, TextField, FlatButton, IconButton, FloatingActionButton } from 'material-ui' 
 import Clear from 'material-ui/svg-icons/content/clear';
 import ActionSearch from 'material-ui/svg-icons/action/search'
 import NavigationClose  from 'material-ui/svg-icons/navigation/close';
@@ -31,7 +31,7 @@ class Filter extends Component {
           <Paper style={{ margin: '10px 10px 0px 0px', padding: '0px 10px 0px 10px', width: '500px' }}>
                 <SitesChips allSite={allSite} />
                 <DatepickerComponent setDateRangeValues={this.props.setDateRangeValues}/>
-                <FlatButton onTouchTap={() => this.props.handleSearch(sites, { startDate, endDate })}  secondary icon={<ActionSearch />}  label='search' />
+                <FlatButton onTouchTap={() => this.props.handleSearch(sites, { startDate, endDate })} fullWidth  secondary icon={<ActionSearch />}  label='search' />
           </Paper>
               
         );

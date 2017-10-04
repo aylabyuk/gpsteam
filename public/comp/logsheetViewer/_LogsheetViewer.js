@@ -31,6 +31,19 @@ class _LogsheetViewer extends Component {
     }
 
     handleSearch  (sites, dates){
+
+        // prevent bugs on empty requests
+        if(sites == undefined && !dates.startDate) {
+            return null
+        } else {
+            if(Array.isArray(sites)) {
+                if(sites.length === 0) {
+                    sites = undefined
+                }
+            }
+        }
+
+        console.log(sites, dates)
         
         let query = {}
         query.query = Logsheets
@@ -40,6 +53,10 @@ class _LogsheetViewer extends Component {
                 startDate: new Date(dates.startDate),
                 endDate: new Date(dates.endDate)
             }
+        } else if(sites == undefined) {
+            query.variables = {
+                sitename: []
+            }
         } else {
             query.variables = {
                 sitename: sites
@@ -48,13 +65,15 @@ class _LogsheetViewer extends Component {
 
         this.props.client.query(query).then((res) => {
             this.setState({ results: res  })
+        }).catch((err) =>{
+            console.log(err)
         })
         
     }
 
     render() {
         return (
-            <div id='filter'  style={{ display: 'flex', flexDirection: 'column' }}>
+            <div id='filter'  style={{ display: 'flex', flexDirection: 'row' }}>
                 <Filter handleSearch={this.handleSearch} />
                 <SearchResults results={this.state.results}/>
             </div>

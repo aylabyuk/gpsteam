@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { IconButton } from 'material-ui'
+import moment from 'moment'
 
 class SingleItem extends Component {
     render() {
@@ -7,7 +8,7 @@ class SingleItem extends Component {
 
         return (
             <div>
-                {sitename} <br/> {date}
+                <strong>{sitename}</strong> <br/> {moment(new Date(date)).format('dddd - LL')}
             </div>
         );
     }

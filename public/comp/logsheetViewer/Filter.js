@@ -4,7 +4,7 @@ import { reduxForm, formValueSelector  } from 'redux-form'
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { normalizeUpperCase } from '../formValidators/formValidators'
-import { toggleSearchLogsheet, setDateRangeValues} from '../../actions/index'
+import { toggleSearchLogsheet, setDateRangeValues } from '../../actions/index'
 
 // ui
 import { AppBar, Paper, Card, LinearProgress, TextField, FlatButton, IconButton } from 'material-ui' 
@@ -28,12 +28,10 @@ class Filter extends Component {
         return <LinearProgress mode="indeterminate" />
       } else {
         return (
-          <Paper style={{ marginBottom: '10px', padding: '0px 10px 10px 10px', width: '800px',  maxWidth: '800px' }}>
+          <Paper style={{ margin: '10px 10px 0px 0px', padding: '0px 10px 0px 10px', width: '500px' }}>
                 <SitesChips allSite={allSite} />
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'  }}>
                 <DatepickerComponent setDateRangeValues={this.props.setDateRangeValues}/>
                 <FlatButton onTouchTap={() => this.props.handleSearch(sites, { startDate, endDate })}  secondary icon={<ActionSearch />}  label='search' />
-              </div>
           </Paper>
               
         );

@@ -1,27 +1,16 @@
 import React, { Component } from 'react';
 import { Paper, LinearProgress, FlatButton  } from 'material-ui'
+import TouchRipple  from 'material-ui/internal/TouchRipple'
 import moment from 'moment'
-import PaperMaterial from 'material-paper'
-
-import { selectedTheme  } from '../../MainComponent'
 
 import SingleItem from './SingleItem'
 
-var paperSettings = {
-    background: '#fff',
-    style: {
-      margin: '10px',
-      height: '200px',
-      width: '240px'
-    },
-    overlayColor: selectedTheme.paper.zDepthShadows,
-    burstSpeed: 2000,
-    burstColor: undefined,
-    clickable: true,
-    liftOnHover: true,
-    liftOnClick: true,
-    zDepth: 1
-  }
+const paperStyle = {
+ width: '240px',
+ height: '200px',
+ padding: '10px',
+ cursor: 'pointer'
+}
 
 class SearchResults extends Component {
     render() {
@@ -37,9 +26,13 @@ class SearchResults extends Component {
                 {
                     this.props.results ? this.props.results.data.searchLogsheet.map((r) => {
                         return (
-                            <PaperMaterial key={r.id} settings={paperSettings}>
-                                <SingleItem sitename={r.site.name} date={moment(new Date(r.logsheet_date)).format('LL')}/>
-                            </PaperMaterial>
+                            <div style={{ transform: 'translate(0px, 0px)', margin: '10px' }}>
+                                <TouchRipple>
+                                    <Paper key={r.id} style={paperStyle}>
+                                        <SingleItem sitename={r.site.name} date={moment(new Date(r.logsheet_date)).format('LL')}/>
+                                    </Paper>
+                                </TouchRipple>
+                            </div>
                         )
                     }) : null
                 }

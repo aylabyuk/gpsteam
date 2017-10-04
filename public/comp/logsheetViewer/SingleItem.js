@@ -6,7 +6,7 @@ class SingleItem extends Component {
         let { sitename, date } = this.props
 
         return (
-            <div style={{ padding: '10px' }}>
+            <div>
                 {sitename} <br/> {date}
             </div>
         );

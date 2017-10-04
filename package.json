@@ -36,6 +36,7 @@
     "leaflet.markercluster": "^1.0.6",
     "lodash": "^4.17.4",
     "mapbox-gl": "^0.38.0",
+    "material-paper": "0.0.8",
     "material-ui": "^0.19.3",
     "material-ui-chip-input": "^0.17.2",
     "material-ui-fullscreen-dialog": "^0.7.1",

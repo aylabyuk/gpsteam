@@ -65,7 +65,7 @@ class DatepickerComponent extends Component {
             <div style={{display: 'flex', flexDirection: 'column' }} >
                 <div style={{display: 'flex' }}>
                     <DatePicker
-                        customInput={<TextField floatingLabelText='start date' style={{ width: '100px' }}/>}
+                        customInput={<TextField floatingLabelText='start date' style={{ width: '150px' }}/>}
                         showYearDropdown
                         showMonthDropdown
                         maxDate={moment()}
@@ -74,12 +74,13 @@ class DatepickerComponent extends Component {
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
                         onChange={this.handleChangeStart}
+                        dateFormat="LL"
                     />
                     
                     <h4 style={{ margin: '41px 10px 0px 10px' }}> - </h4>
 
                     <DatePicker
-                        customInput={<TextField floatingLabelText='end date' style={{ width: '100px' }}/>}
+                        customInput={<TextField floatingLabelText='end date' style={{ width: '150px' }}/>}
                         showYearDropdown
                         showMonthDropdown
                         maxDate={moment()}
@@ -88,6 +89,7 @@ class DatepickerComponent extends Component {
                         startDate={this.state.startDate}
                         endDate={this.state.endDate}
                         onChange={this.handleChangeEnd}
+                        dateFormat="LL"
                     />
 
                     <div style={{ margin: '25px 10px' }}>

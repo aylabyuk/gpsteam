@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, TileLayer } from 'react-leaflet'
+import { Map, TileLayer, Tooltip } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
@@ -27,7 +27,6 @@ let continuousIcon = L.ExtraMarkers.icon({
     shape: 'square',
     prefix: 'fa'
 })
-  
 
 class PhMap extends Component {
     constructor() {
@@ -67,10 +66,12 @@ class PhMap extends Component {
         }).map(s => {
             return {
                 position: [s.latitude, s.longitude],
+                tooltip: s.name,
                 surveyType: s.surveyType.type,
                 options: {
-                    icon: s.surveyType.type === 'campaign' ? campaignIcon : continuousIcon
+                    icon: s.surveyType.type === 'campaign' ? campaignIcon : continuousIcon,
                 }
+
             }
         })
 
@@ -84,9 +85,7 @@ class PhMap extends Component {
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
 
                 <MarkerClusterGroup 
-                    markers={markers}
-                    // markerOptions={siteMarkers}
-                    />
+                    markers={markers}/>
 
             </Map>
         )

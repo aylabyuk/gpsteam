@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Map, TileLayer } from 'react-leaflet'
+import { client } from '../index'
+import gql from 'graphql-tag';
 
 import 'leaflet/dist/leaflet.css'
 
@@ -11,9 +13,31 @@ class PhMap extends Component {
           lng: 121.7740,
           zoom: 6,
           maxZoom: 18,
-          minZoom: 6
+          minZoom: 6,
+          sites: null
         };
-      }
+    }
+
+    componentDidMount() {
+        const sitesQuery = client.readQuery({
+            query: gql`
+                {
+                    sites {
+                        id
+                        name
+                        description
+                        location
+                        longitude
+                        latitude 
+                    }
+                }
+            `
+        })
+
+        console.log(sitesQuery)
+        this.setState({ sites: sitesQuery })
+
+    }
 
     render() {
         const { lat, lng, zoom, maxZoom, minZoom } = this.state
@@ -25,7 +49,6 @@ class PhMap extends Component {
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
-
 
             </Map>
         )

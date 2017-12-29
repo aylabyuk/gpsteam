@@ -38,7 +38,6 @@ export function requireAuthentication(Component) {
         // check if authenticated
         // if not redirect to Login page
         client.query({query: meQuery}).then((res) => {
-            console.log(res)
             if(!res.data.me || !res.data.me.id) {
                 // console.debug('not logged in. redirecting to login page...')
                 this.setState({ redirectToLogin: true })

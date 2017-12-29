@@ -12,18 +12,21 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 
-// siteIcon object is of type divIcon used by leaflet to set the appearance of the markers 
-let sIcon = L.ExtraMarkers.icon({
+let campaignIcon = L.ExtraMarkers.icon({
     icon: 'fa-circle',
     iconColor: 'white',
-    markerColor: 'blue',
+    markerColor: 'cyan',
     shape: 'square',
     prefix: 'fa'
 })
 
-let siteMarkers = {
-    icon: sIcon
-}
+let continuousIcon = L.ExtraMarkers.icon({
+    icon: 'fa-circle',
+    iconColor: 'white',
+    markerColor: 'pink',
+    shape: 'square',
+    prefix: 'fa'
+})
   
 
 class PhMap extends Component {
@@ -35,6 +38,7 @@ class PhMap extends Component {
           zoom: 6,
           maxZoom: 18,
           minZoom: 6,
+          maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
           sites: client.readQuery({
                 query: gql`
                     {
@@ -56,20 +60,24 @@ class PhMap extends Component {
     }
 
     render() {
-        const { lat, lng, zoom, maxZoom, minZoom, sites } = this.state
+        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds } = this.state
         
         const markers = sites.sites.filter(s => {
             return s.latitude && s.surveyType
         }).map(s => {
             return {
                 position: [s.latitude, s.longitude],
-                surveyType: s.surveyType.type
+                surveyType: s.surveyType.type,
+                options: {
+                    icon: s.surveyType.type === 'campaign' ? campaignIcon : continuousIcon
+                }
             }
         })
 
         return (
             <Map center={[lat, lng]} 
-                zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}>
+                zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
+                maxBounds={maxBounds}>
 
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -77,7 +85,8 @@ class PhMap extends Component {
 
                 <MarkerClusterGroup 
                     markers={markers}
-                    markerOptions={siteMarkers}/>
+                    // markerOptions={siteMarkers}
+                    />
 
             </Map>
         )

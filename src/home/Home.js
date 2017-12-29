@@ -58,6 +58,9 @@ export const sitesQuery = gql`
             location
             longitude
             latitude
+            surveyType {
+                type
+            }
         }
       }
 `

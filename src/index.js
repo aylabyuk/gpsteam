@@ -5,6 +5,8 @@ import { Routes } from './app/routes'
 
 import 'typeface-roboto'
 
+import './index.css'
+
 import { ApolloProvider } from 'react-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'

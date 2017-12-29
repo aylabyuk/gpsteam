@@ -3,7 +3,7 @@ import { Map, TileLayer } from 'react-leaflet'
 
 import 'leaflet/dist/leaflet.css'
 
-export default class PhMap extends Component {
+class PhMap extends Component {
     constructor() {
         super();
         this.state = {
@@ -20,7 +20,7 @@ export default class PhMap extends Component {
 
         return (
             <Map center={[lat, lng]} 
-                zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100vh' }}>
+                zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}>
 
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -31,3 +31,5 @@ export default class PhMap extends Component {
         )
     }
 }
+
+export default PhMap

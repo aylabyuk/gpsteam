@@ -2,6 +2,20 @@ body {
     margin: 0
 }
 
+.markerLabel {
+    width: 23px;
+    height: 23px;
+    margin-top: 5px;
+    margin-left: 6.5px;
+    line-height: 12px;
+    overflow-wrap: break-word;
+    text-align: center;
+    text-anchor: middle;
+    font-size: 1em;
+    color: white;
+    border: .5px;
+}
+
 .bg { 
     background: linear-gradient(343deg, #3f51b5, #ffffff, #2196f3);
     background-size: 600% 600%;

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Map, TileLayer, Tooltip } from 'react-leaflet'
+import { Map, TileLayer } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
@@ -12,20 +12,22 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 
-let campaignIcon = L.ExtraMarkers.icon({
+let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
     iconColor: 'white',
     markerColor: 'cyan',
     shape: 'square',
-    prefix: 'fa'
+    prefix: 'fa',
+    innerHTML: `<div class='markerLabel'><b>${name}</b></div>`
 })
 
-let continuousIcon = L.ExtraMarkers.icon({
+let continuousIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
     iconColor: 'white',
     markerColor: 'pink',
     shape: 'square',
-    prefix: 'fa'
+    prefix: 'fa',
+    innerHTML: `<div class='markerLabel'><b>${name}</b></div>`
 })
 
 class PhMap extends Component {
@@ -66,12 +68,10 @@ class PhMap extends Component {
         }).map(s => {
             return {
                 position: [s.latitude, s.longitude],
-                tooltip: s.name,
                 surveyType: s.surveyType.type,
                 options: {
-                    icon: s.surveyType.type === 'campaign' ? campaignIcon : continuousIcon,
+                    icon: s.surveyType.type === 'campaign' ? campaignIcon(s.name) : continuousIcon(s.name),
                 }
-
             }
         })
 

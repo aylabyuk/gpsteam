@@ -75,7 +75,10 @@ class PhMap extends Component {
             window.map.leafletElement.invalidateSize(true)
             window.map.leafletElement.setView(marker.getLatLng())
 
-            marker.toggleBouncing()
+            if(!marker.isBouncing()) {
+                marker.bounce()
+            }
+            
         })
     }
 

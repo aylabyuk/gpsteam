@@ -3,16 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import Drawer from 'material-ui/Drawer';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import List from 'material-ui/List';
-import { MenuItem } from 'material-ui/Menu';
-import Typography from 'material-ui/Typography';
-import TextField from 'material-ui/TextField';
-import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui-icons/Menu';
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 
 import PhMap from './Map'
@@ -88,8 +79,9 @@ class Map extends React.Component {
     anchor: 'right',
   };
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
+  handleDrawerOpen = async () => {
+    await this.setState({ open: true });
+    return true
   };
 
   handleDrawerClose = () => {
@@ -144,7 +136,7 @@ class Map extends React.Component {
               [classes[`contentShift-${anchor}`]]: open,
             })}
           >
-            <PhMap />
+            <PhMap openDrawer={this.handleDrawerOpen}/>
           </main>
           {after}
         </div>

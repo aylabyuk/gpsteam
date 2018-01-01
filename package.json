@@ -15,6 +15,7 @@
     "leaflet": "^1.2.0",
     "leaflet-extra-markers": "^1.0.6",
     "leaflet.markercluster": "^1.2.0",
+    "leaflet.smooth_marker_bouncing": "^1.1.4",
     "material-ui": "^1.0.0-beta.25",
     "material-ui-icons": "^1.0.0-beta.17",
     "react": "^16.2.0",

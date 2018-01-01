@@ -4,13 +4,14 @@ import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
 
-import L, { latLng } from 'leaflet'
+import L from 'leaflet'
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+import 'leaflet.smooth_marker_bouncing'
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -62,8 +63,20 @@ class PhMap extends Component {
     }
 
     handleMarkerClick = (marker) => {
-        window.map.leafletElement.setView(marker.getLatLng())
-        this.openDrawer()
+        this.props.openDrawer().then(() => {
+
+            marker.setBouncingOptions({
+                bounceHeight: 10,
+                bounceSpeed: 54,
+                exclusive: true,
+                elastic: false
+            })
+
+            window.map.leafletElement.invalidateSize(true)
+            window.map.leafletElement.setView(marker.getLatLng())
+
+            marker.toggleBouncing()
+        })
     }
 
     openDrawer = () => {

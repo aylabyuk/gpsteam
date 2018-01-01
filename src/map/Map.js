@@ -4,13 +4,15 @@ import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
 
-import L from 'leaflet'
+import L, { latLng } from 'leaflet'
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
 import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
+
+import MapSideBar from './MapSideBar'
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -34,13 +36,14 @@ class PhMap extends Component {
     constructor() {
         super();
         this.state = {
-          lat: 12.8797,
-          lng: 121.7740,
-          zoom: 6,
-          maxZoom: 18,
-          minZoom: 6,
-          maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
-          sites: client.readQuery({
+            openDrawer: false,
+            lat: 12.8797,
+            lng: 121.7740,
+            zoom: 6,
+            maxZoom: 18,
+            minZoom: 6,
+            maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
+            sites: client.readQuery({
                 query: gql`
                     {
                         sites {
@@ -56,8 +59,17 @@ class PhMap extends Component {
                         }
                     }
                 `
-            })
+                })
         };
+    }
+
+    handleMarkerClick = (marker) => {
+        window.map.leafletElement.setView(marker.getLatLng())
+        this.openDrawer()
+    }
+
+    openDrawer = () => {
+        this.setState({ openDrawer: true })
     }
 
     render() {
@@ -76,18 +88,21 @@ class PhMap extends Component {
         })
 
         return (
-            <Map center={[lat, lng]} 
-                zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
-                maxBounds={maxBounds}>
+            <div style={{ height: '100%', width: '100%' }}>
+                <Map center={[lat, lng]} 
+                    zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
+                    maxBounds={maxBounds} ref={(map) => window.map = map}>
 
-                <TileLayer
-                    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
+                    <TileLayer
+                        attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
 
-                <MarkerClusterGroup 
-                    markers={markers}/>
-
-            </Map>
+                    <MarkerClusterGroup 
+                        markers={markers}
+                        onMarkerClick={this.handleMarkerClick}/>
+                </Map>
+                <MapSideBar open={this.state.openDrawer} />
+            </div>
         )
     }
 }

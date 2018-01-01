@@ -65,15 +65,15 @@ class PhMap extends Component {
     handleMarkerClick = (marker) => {
         this.props.openDrawer().then(() => {
 
+            window.map.leafletElement.invalidateSize(true)
+            window.map.leafletElement.setView(marker.getLatLng())
+
             marker.setBouncingOptions({
                 bounceHeight: 10,
                 bounceSpeed: 54,
                 exclusive: true,
                 elastic: false
             })
-
-            window.map.leafletElement.invalidateSize(true)
-            window.map.leafletElement.setView(marker.getLatLng())
 
             if(!marker.isBouncing()) {
                 marker.bounce()
@@ -104,7 +104,7 @@ class PhMap extends Component {
         return (
             <Map center={[lat, lng]} 
                 zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
-                maxBounds={maxBounds} ref={(map) => window.map = map}>
+                maxBounds={maxBounds} ref={(map) => window.map = map} zoomControl={false}>
 
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

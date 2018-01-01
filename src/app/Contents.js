@@ -8,6 +8,8 @@ import Logsheets from '../logsheets/Logsheets'
 import Users from '../users/Users'
 import Equipments from '../equipments/Equipments'
 
+import testing from '../testing/testing'
+
 export default class Contents extends Component {
     render() {
         const { classes } = this.props
@@ -19,6 +21,7 @@ export default class Contents extends Component {
                 <Route path='/dash/logsheets' component={Logsheets} />
                 <Route path='/dash/equipments' component={Equipments} />
                 <Route path='/dash/users' component={Users} />
+                <Route path='/dash/test' component={testing} />
                 <Typography noWrap>{'You think water moves fast? You should see ice.'}</Typography>
             </main>
         )

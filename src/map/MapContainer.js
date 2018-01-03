@@ -7,6 +7,7 @@ import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 
 import SearchBox from './SearchBox'
 import PhMap from './Map'
+import SitesList from './SitesList'
 
 const drawerWidth = 240;
 
@@ -125,6 +126,7 @@ class Map extends React.Component {
               <ChevronRightIcon />
             </IconButton>
           </div>
+          <SitesList />
         </div>
       </Drawer>
     );
@@ -144,6 +146,7 @@ class Map extends React.Component {
               <ChevronRightIcon />
             </IconButton>
           </div>
+          <SitesList />
         </div>
       </Drawer>
     );

@@ -27,9 +27,6 @@ const styles = theme => ({
     marginLeft: 12,
     marginRight: 20,
   },
-  hide: {
-    display: 'none',
-  },
   drawerPaper: {
     position: 'relative',
     height: '100%',
@@ -117,19 +114,9 @@ class Map extends React.Component {
       </Drawer>
     );
 
-    let before = null;
-    let after = null;
-
-    if (anchor === 'left') {
-      before = drawer;
-    } else {
-      after = drawer;
-    }
-
     return (
       <div className={classes.root}>
         <div className={classes.appFrame}>
-          {before}
           <main
             className={classNames(classes.content, classes[`content-${anchor}`], {
               [classes.contentShift]: open,
@@ -138,7 +125,7 @@ class Map extends React.Component {
           >
             <PhMap openDrawer={this.handleDrawerOpen}/>
           </main>
-          {after}
+          {drawer}
         </div>
       </div>
     );

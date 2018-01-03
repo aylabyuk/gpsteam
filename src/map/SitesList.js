@@ -9,6 +9,7 @@ import ExpansionPanel, {
 } from 'material-ui/ExpansionPanel';
 import Typography from 'material-ui/Typography';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import { List, AutoSizer } from 'react-virtualized'
 
 const styles = theme => ({
   root: {
@@ -53,30 +54,37 @@ class SitesList extends React.Component {
     });
   };
 
+  _noRowsRenderer() {
+    return <div >No rows</div>;
+  }
+
+  _rowRenderer({index, isScrolling, key, style}) {
+    const { sites } = this.state.sites
+  }
+
   render() {
     const { classes } = this.props;
     const { expanded, sites } = this.state;
 
+    console.log(sites)
+
     return (
       <div className={classes.root}>
-        {
-            sites.sites.map((s) => {
-                return(
-                    <ExpansionPanel key={s.id} expanded={expanded === 'panel'+s.id} onChange={this.handleChange('panel'+s.id)}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={classes.heading}>{s.name}</Typography>
-                            <Typography className={classes.secondaryHeading}>{s.surveyType ? s.surveyType.type : 'unknown'}</Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Typography>
-                            {s.description ? s.description : 'no description'}
-                            </Typography>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                )
-            })
-        }
-
+        <AutoSizer disableHeight>
+            {({width}) => (
+              <List
+                ref="List"
+                height={300}
+                overscanRowCount={10}
+                noRowsRenderer={this._noRowsRenderer}
+                rowCount={sites.sites.length}
+                rowHeight={100}
+                rowRenderer={this._rowRenderer}
+                // scrollToIndex={scrollToIndex}
+                width={width}
+              />
+            )}
+        </AutoSizer>
       </div>
     );
   }

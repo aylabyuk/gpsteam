@@ -4,6 +4,7 @@ import pure from 'recompose/pure';
 import PropTypes from 'prop-types';
 import withWidth, { isWidthUp } from 'material-ui/utils/withWidth';
 import SearchIcon from 'material-ui-icons/Search';
+import CloseIcon from 'material-ui-icons/Close'
 import { fade } from 'material-ui/styles/colorManipulator';
 import { withStyles } from 'material-ui/styles';
 
@@ -52,7 +53,7 @@ const styles = theme => ({
   },
 });
 
-function AppSearch(props) {
+function SearchBox(props) {
   const { classes, width } = props;
 
   return (
@@ -60,20 +61,20 @@ function AppSearch(props) {
       <div className={classes.search}>
         <SearchIcon color='contrast'/>
       </div>
-      <input id="docsearch-input" className={classes.input} />
+      <input id="search-input" className={classes.input} />
     </div>
   );
 }
 
-AppSearch.propTypes = {
+SearchBox.propTypes = {
   classes: PropTypes.object.isRequired,
   width: PropTypes.string.isRequired,
 };
 
 export default compose(
   withStyles(styles, {
-    name: 'AppSearch',
+    name: 'SearchBox',
   }),
   withWidth(),
   pure,
-)(AppSearch);
+)(SearchBox);

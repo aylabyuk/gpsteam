@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { Map, TileLayer } from 'react-leaflet'
+import { Map, TileLayer,  } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
-
 import L from 'leaflet'
+import Control from 'react-leaflet-control'
+import SearchIcon from 'material-ui-icons/Search';
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
@@ -36,7 +37,6 @@ class PhMap extends Component {
         super();
         this.state = {
             mapIsSet: false,
-            openDrawer: false,
             lat: 12.8797,
             lng: 121.7740,
             zoom: 6,
@@ -86,10 +86,6 @@ class PhMap extends Component {
         })
     }
 
-    openDrawer = () => {
-        this.setState({ openDrawer: true })
-    }
-
     componentDidMount() {
         this.setState({ mapIsSet: true })
     }
@@ -122,8 +118,20 @@ class PhMap extends Component {
                         L.control.zoom({
                             position: 'topright'
                         }).addTo(map.leafletElement)
+
                     }
                 }}>
+
+                <Control position="topright" >
+                    <div className='leaflet-bar' style={{visibility: this.props.isDrawerOpen ? 'hidden' : 'visible' }}>
+                        <a className='leaflet-control-custom' onClick={(e) => {
+                            e.preventDefault()
+                            this.props.openDrawer()
+                        }} role='button' href=''>
+                            <SearchIcon />
+                        </a>
+                    </div>
+                </Control>
 
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -132,6 +140,7 @@ class PhMap extends Component {
                 <MarkerClusterGroup 
                     markers={markers}
                     onMarkerClick={this.handleMarkerClick}/>
+
             </Map>
         )
     }

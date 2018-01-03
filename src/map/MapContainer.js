@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 
-import Search from './SearchBox'
-
+import SearchBox from './SearchBox'
 import PhMap from './Map'
 
 const drawerWidth = 240;
@@ -121,7 +120,7 @@ class Map extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
-            <Search />
+            <SearchBox />
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronRightIcon />
             </IconButton>
@@ -140,7 +139,7 @@ class Map extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
-            <Search />
+            <SearchBox />
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronRightIcon />
             </IconButton>
@@ -158,7 +157,7 @@ class Map extends React.Component {
               [classes[`contentShift-margin`]]: open,
             })}
           >
-            <PhMap openDrawer={this.handleDrawerOpen}/>
+            <PhMap openDrawer={this.handleDrawerOpen} isDrawerOpen={open}/>
           </main>
           <Hidden smDown>{drawerRight}</Hidden>
           <Hidden smUp>{drawerBottom}</Hidden>

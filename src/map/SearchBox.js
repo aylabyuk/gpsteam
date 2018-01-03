@@ -7,62 +7,7 @@ import SearchIcon from 'material-ui-icons/Search';
 import { fade } from 'material-ui/styles/colorManipulator';
 import { withStyles } from 'material-ui/styles';
 
-let searchTimer;
-
-function initDocsearch() {
-  searchTimer = setInterval(() => {
-    if (window.docsearch && document.querySelector('#docsearch-input')) {
-      clearInterval(searchTimer);
-      window.docsearch({
-        apiKey: '1d8534f83b9b0cfea8f16498d19fbcab',
-        indexName: 'material-ui',
-        inputSelector: '#docsearch-input',
-        debug: false, // Set debug to true if you want to inspect the dropdown
-      });
-    }
-  }, 100);
-}
-
-function removeDocsearch() {
-  clearInterval(searchTimer);
-}
-
 const styles = theme => ({
-  '@global': {
-    '.algolia-autocomplete': {
-      fontFamily: theme.typography.fontFamily,
-      '& .algolia-docsearch-suggestion--category-header-lvl0': {
-        color: theme.palette.text.primary,
-      },
-      '& .algolia-docsearch-suggestion--subcategory-column-text': {
-        color: theme.palette.text.secondary,
-      },
-      '& .algolia-docsearch-suggestion--highlight': {
-        color: theme.palette.type === 'light' ? '#174d8c' : '#acccf1',
-      },
-      '& .algolia-docsearch-suggestion': {
-        background: 'transparent',
-      },
-      '& .algolia-docsearch-suggestion--title': {
-        ...theme.typography.title,
-      },
-      '& .algolia-docsearch-suggestion--text': {
-        ...theme.typography.body1,
-      },
-      '& .ds-dropdown-menu': {
-        boxShadow: theme.shadows[1],
-        borderRadius: 2,
-        '&::before': {
-          display: 'none',
-        },
-        '& [class^=ds-dataset-]': {
-          border: 0,
-          borderRadius: 2,
-          backgroundColor: theme.palette.background.paper,
-        },
-      },
-    },
-  },
   wrapper: {
     fontFamily: theme.typography.fontFamily,
     position: 'relative',
@@ -110,12 +55,10 @@ const styles = theme => ({
 function AppSearch(props) {
   const { classes, width } = props;
 
-  initDocsearch();
-
   return (
     <div className={classes.wrapper}>
       <div className={classes.search}>
-        <SearchIcon />
+        <SearchIcon color='contrast'/>
       </div>
       <input id="docsearch-input" className={classes.input} />
     </div>

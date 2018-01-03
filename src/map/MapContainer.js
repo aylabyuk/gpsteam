@@ -32,11 +32,13 @@ const styles = theme => ({
     position: 'relative',
     height: '100%',
     width: drawerWidth,
+    border: 0
   },
   drawerPaperBottom: {
     position: 'relative',
     height: '50vh',
     width: '100%',
+    border: 0
   },
   drawerHeader: {
     display: 'flex',
@@ -58,7 +60,7 @@ const styles = theme => ({
   },
   'content-style': {
     [theme.breakpoints.up('sm')]: {
-      marginRight: -drawerWidth,
+      marginRight: -drawerWidth-1,
       height: '100%',
     },
     [theme.breakpoints.down('sm')]: {

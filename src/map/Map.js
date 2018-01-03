@@ -35,6 +35,7 @@ class PhMap extends Component {
     constructor() {
         super();
         this.state = {
+            mapIsSet: false,
             openDrawer: false,
             lat: 12.8797,
             lng: 121.7740,
@@ -65,7 +66,10 @@ class PhMap extends Component {
     handleMarkerClick = (marker) => {
         this.props.openDrawer().then(() => {
 
-            window.map.leafletElement.invalidateSize(true)
+            setTimeout(() => {
+                window.map.leafletElement.invalidateSize(true)
+            }, 500)
+
             window.map.leafletElement.setView(marker.getLatLng())
 
             marker.setBouncingOptions({
@@ -86,6 +90,10 @@ class PhMap extends Component {
         this.setState({ openDrawer: true })
     }
 
+    componentDidMount() {
+        this.setState({ mapIsSet: true })
+    }
+    
     render() {
         const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds } = this.state
         
@@ -101,10 +109,21 @@ class PhMap extends Component {
             }
         })
 
+        if(window.map) {
+            window.map.leafletElement.invalidateSize(true)
+        }
+
         return (
             <Map center={[lat, lng]} 
                 zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
-                maxBounds={maxBounds} ref={(map) => window.map = map} zoomControl={false}>
+                maxBounds={maxBounds} zoomControl={false} ref={(map) => {
+                    window.map = map 
+                    if(map && !this.state.mapIsSet) {
+                        L.control.zoom({
+                            position: 'topright'
+                        }).addTo(map.leafletElement)
+                    }
+                }}>
 
                 <TileLayer
                     attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

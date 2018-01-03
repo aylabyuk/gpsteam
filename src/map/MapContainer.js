@@ -8,7 +8,6 @@ import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import PhMap from './Map'
 
 const drawerWidth = 240;
-const drawerHeight = 230;
 
 const styles = theme => ({
   root: {
@@ -20,6 +19,7 @@ const styles = theme => ({
   appFrame: {
     position: 'relative',
     display: 'flex',
+    flexDirection: 'row',
     width: '100%',
     height: '100%',
     [theme.breakpoints.down('sm')]: {
@@ -32,9 +32,8 @@ const styles = theme => ({
     width: drawerWidth,
   },
   drawerPaperBottom: {
-    backgroundColor: 'green',
     position: 'relative',
-    height: drawerHeight,
+    height: '50vh',
     width: '100%',
   },
   drawerHeader: {
@@ -53,13 +52,15 @@ const styles = theme => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    height: '100%'
   },
   'content-style': {
-    marginRight: -drawerWidth,
+    [theme.breakpoints.up('sm')]: {
+      marginRight: -drawerWidth,
+      height: '100%',
+    },
     [theme.breakpoints.down('sm')]: {
-      marginRight: 0,
-      marginDown: -drawerHeight
+      marginBottom: '-50vh',
+      height: `calc(100% - 50vh)`
     },
   },
   contentShift: {
@@ -68,11 +69,13 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  'contentShift-bottom': {
-    marginBottom: 0,
-  },
-  'contentShift-right': {
-    marginRight: 0,
+  'contentShift-margin': {
+    [theme.breakpoints.up('sm')]: {
+      marginRight: 0
+    },
+    [theme.breakpoints.down('sm')]: {
+      marginBottom: 0,
+    },
   },
 });
 
@@ -86,12 +89,20 @@ class Map extends React.Component {
     return true
   };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
+  handleDrawerClose = async () => {
+    await this.setState({ open: false });
+
+    setTimeout(() => {
+      window.map.leafletElement.invalidateSize(true)
+    }, 500)
+
+    return true
   };
 
+  drawer
+  
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
     const { open } = this.state;
 
     const drawerRight = (
@@ -137,7 +148,7 @@ class Map extends React.Component {
           <main
             className={classNames(classes.content, classes[`content-style`], {
               [classes.contentShift]: open,
-              [classes[`contentShift-bottom`]]: open,
+              [classes[`contentShift-margin`]]: open,
             })}
           >
             <PhMap openDrawer={this.handleDrawerOpen}/>

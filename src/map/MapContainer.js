@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
-import Drawer from 'material-ui/Drawer';
-import IconButton from 'material-ui/IconButton';
+import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 
 import PhMap from './Map'
 
 const drawerWidth = 240;
+const drawerHeight = 230;
 
 const styles = theme => ({
   root: {
@@ -22,11 +22,20 @@ const styles = theme => ({
     display: 'flex',
     width: '100%',
     height: '100%',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column'
+    },
   },
-  drawerPaper: {
+  drawerPaperRight: {
     position: 'relative',
     height: '100%',
     width: drawerWidth,
+  },
+  drawerPaperBottom: {
+    backgroundColor: 'green',
+    position: 'relative',
+    height: drawerHeight,
+    width: '100%',
   },
   drawerHeader: {
     display: 'flex',
@@ -46,11 +55,12 @@ const styles = theme => ({
     }),
     height: '100%'
   },
-  'content-left': {
-    marginLeft: -drawerWidth,
-  },
-  'content-right': {
+  'content-style': {
     marginRight: -drawerWidth,
+    [theme.breakpoints.down('sm')]: {
+      marginRight: 0,
+      marginDown: -drawerHeight
+    },
   },
   contentShift: {
     transition: theme.transitions.create('margin', {
@@ -58,8 +68,8 @@ const styles = theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  'contentShift-left': {
-    marginLeft: 0,
+  'contentShift-bottom': {
+    marginBottom: 0,
   },
   'contentShift-right': {
     marginRight: 0,
@@ -69,7 +79,6 @@ const styles = theme => ({
 class Map extends React.Component {
   state = {
     open: false,
-    anchor: 'right',
   };
 
   handleDrawerOpen = async () => {
@@ -81,23 +90,35 @@ class Map extends React.Component {
     this.setState({ open: false });
   };
 
-  handleChangeAnchor = event => {
-    this.setState({
-      anchor: event.target.value,
-    });
-  };
-
   render() {
     const { classes, theme } = this.props;
-    const { anchor, open } = this.state;
+    const { open } = this.state;
 
-    const drawer = (
+    const drawerRight = (
       <Drawer
         type="persistent"
         classes={{
-          paper: classes.drawerPaper,
+          paper: classes.drawerPaperRight,
         }}
-        anchor={anchor}
+        anchor='right'
+        open={open}
+      >
+        <div className={classes.drawerInner}>
+          <div className={classes.drawerHeader}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronRightIcon />
+            </IconButton>
+          </div>
+        </div>
+      </Drawer>
+    );
+
+    const drawerBottom = (<Drawer
+        type="persistent"
+        classes={{
+          paper: classes.drawerPaperBottom,
+        }}
+        anchor='bottom'
         open={open}
       >
         <div className={classes.drawerInner}>
@@ -114,14 +135,15 @@ class Map extends React.Component {
       <div className={classes.root}>
         <div className={classes.appFrame}>
           <main
-            className={classNames(classes.content, classes[`content-${anchor}`], {
+            className={classNames(classes.content, classes[`content-style`], {
               [classes.contentShift]: open,
-              [classes[`contentShift-${anchor}`]]: open,
+              [classes[`contentShift-bottom`]]: open,
             })}
           >
             <PhMap openDrawer={this.handleDrawerOpen}/>
           </main>
-          {drawer}
+          <Hidden smDown>{drawerRight}</Hidden>
+          <Hidden smUp>{drawerBottom}</Hidden>
         </div>
       </div>
     );

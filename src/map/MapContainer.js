@@ -5,6 +5,8 @@ import classNames from 'classnames';
 import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 
+import Search from './SearchBox'
+
 import PhMap from './Map'
 
 const drawerWidth = 240;
@@ -41,6 +43,7 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
+    backgroundColor: '#bdc3c7',
     ...theme.mixins.toolbar,
   },
   content: {
@@ -116,6 +119,7 @@ class Map extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
+            <Search />
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronRightIcon />
             </IconButton>
@@ -134,6 +138,7 @@ class Map extends React.Component {
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
+            <Search />
             <IconButton onClick={this.handleDrawerClose}>
               <ChevronRightIcon />
             </IconButton>

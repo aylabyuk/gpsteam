@@ -23,10 +23,6 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
   },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 20,
-  },
   drawerPaper: {
     position: 'relative',
     height: '100%',

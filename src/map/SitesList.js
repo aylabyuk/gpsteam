@@ -1,22 +1,19 @@
-import React from 'react';
+import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { client } from '../index'
 import gql from 'graphql-tag';
-import ExpansionPanel, {
-  ExpansionPanelDetails,
-  ExpansionPanelSummary,
-} from 'material-ui/ExpansionPanel';
+import List, { ListItem, ListItemText } from 'material-ui/List';
 import Typography from 'material-ui/Typography';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
-import { List, AutoSizer } from 'react-virtualized'
+import { List as RVList, AutoSizer } from 'react-virtualized'
 
 const styles = theme => ({
   root: {
     width: '100%',
+    height: 'calc(100% - 64px)'
   },
   heading: {
-    fontSize: theme.typography.pxToRem(15),
+    fontSize: theme.typography.pxToRem(20),
     flexBasis: '33.33%',
     flexShrink: 0,
   },
@@ -26,27 +23,30 @@ const styles = theme => ({
   },
 });
 
-class SitesList extends React.Component {
-  state = {
-    expanded: null,
-    sites: client.readQuery({
-        query: gql`
-            {
-                sites {
-                    id
-                    name
-                    description
-                    location
-                    longitude
-                    latitude
-                    surveyType {
-                        type
-                    }
-                }
-            }
-        `
-        })
-  };
+class SitesList extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      expanded: null,
+      sites: client.readQuery({
+          query: gql`
+              {
+                  sites {
+                      id
+                      name
+                      description
+                      location
+                      longitude
+                      latitude
+                      surveyType {
+                          type
+                      }
+                  }
+              }
+          `
+          })
+    };
+  }
 
   handleChange = panel => (event, expanded) => {
     this.setState({
@@ -54,34 +54,42 @@ class SitesList extends React.Component {
     });
   };
 
-  _noRowsRenderer() {
+  _noRowsRenderer = () => {
     return <div >No rows</div>;
   }
 
-  _rowRenderer({index, isScrolling, key, style}) {
-    const { sites } = this.state.sites
+  _rowRenderer = ({index, isScrolling, key, style}) => {
+      const sites = this.state.sites.sites
+      const { classes } = this.props;
+      const { expanded } = this.state
+
+      return(
+        <div key={key} style={style}>
+          <List>
+            <ListItem button>
+              <ListItemText primary={sites[index].name} secondary={sites[index].surveyType ? sites[index].surveyType.type : 'unknown'} />
+            </ListItem>
+          </List>
+        </div>
+      )
   }
 
   render() {
     const { classes } = this.props;
-    const { expanded, sites } = this.state;
-
-    console.log(sites)
+    const { sites } = this.state;
 
     return (
       <div className={classes.root}>
-        <AutoSizer disableHeight>
-            {({width}) => (
-              <List
-                ref="List"
-                height={300}
-                overscanRowCount={10}
+        <AutoSizer>
+            {({width, height}) => (
+              <RVList
+                height={height}
+                width={width}
                 noRowsRenderer={this._noRowsRenderer}
                 rowCount={sites.sites.length}
-                rowHeight={100}
+                rowHeight={70}
                 rowRenderer={this._rowRenderer}
                 // scrollToIndex={scrollToIndex}
-                width={width}
               />
             )}
         </AutoSizer>

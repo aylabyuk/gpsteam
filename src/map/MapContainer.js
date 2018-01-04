@@ -49,7 +49,8 @@ const styles = theme => ({
     ...theme.mixins.toolbar,
   },
   drawerInner: {
-    backgroundColor: '#bdc3c7'
+    width: '100%',
+    height: '100%'
   },
   content: {
     width: '100%',

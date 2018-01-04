@@ -4,7 +4,7 @@ import registerServiceWorker from './registerServiceWorker';
 import { Routes } from './app/routes'
 
 import 'typeface-roboto'
-
+import 'react-virtualized/styles.css'
 import './index.css'
 
 import { ApolloProvider } from 'react-apollo'

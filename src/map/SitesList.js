@@ -56,12 +56,17 @@ class SitesList extends Component {
     try {
       this.props.setSelectedSite(marker.name)
     } catch (error) {
+      console.log(error)
       alert(` This site is not yet mapped It is either a new site or it lacks important details.
         
       Please contact the admin to fix this issue.`)
     }
 
     
+  }
+
+  _onRowsRendered({ startIndex, stopIndex }) {
+    console.log(this.state.sites.sites[startIndex].name)
   }
 
   _noRowsRenderer = () => {
@@ -102,6 +107,7 @@ class SitesList extends Component {
                 rowCount={sites.sites.length}
                 rowHeight={70}
                 rowRenderer={this._rowRenderer}
+                onRowsRendered={this._onRowsRendered.bind(this)}
                 // scrollToIndex={scrollToIndex}
               />
             )}

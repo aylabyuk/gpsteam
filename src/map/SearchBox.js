@@ -2,9 +2,8 @@ import React from 'react';
 import compose from 'recompose/compose';
 import pure from 'recompose/pure';
 import PropTypes from 'prop-types';
-import withWidth, { isWidthUp } from 'material-ui/utils/withWidth';
+import withWidth from 'material-ui/utils/withWidth';
 import SearchIcon from 'material-ui-icons/Search';
-import CloseIcon from 'material-ui-icons/Close'
 import { fade } from 'material-ui/styles/colorManipulator';
 import { withStyles } from 'material-ui/styles';
 
@@ -54,7 +53,7 @@ const styles = theme => ({
 });
 
 function SearchBox(props) {
-  const { classes, width } = props;
+  const { classes } = props;
 
   return (
     <div className={classes.wrapper}>

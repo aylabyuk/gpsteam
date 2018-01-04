@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { client } from '../index'
 import gql from 'graphql-tag';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Typography from 'material-ui/Typography';
+import { ListItem, ListItemText } from 'material-ui/List';
 import { List as RVList, AutoSizer } from 'react-virtualized'
+import L from 'leaflet'
+import { connect } from 'react-redux'
+import { setSelectedSite } from './mapActions'
 
 const styles = theme => ({
   root: {
@@ -27,7 +29,6 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      expanded: null,
       sites: client.readQuery({
           query: gql`
               {
@@ -48,11 +49,20 @@ class SitesList extends Component {
     };
   }
 
-  handleChange = panel => (event, expanded) => {
-    this.setState({
-      expanded: expanded ? panel : false,
-    });
-  };
+  handleClick = (id) => {
+    const markers = window.cluster.props.markers
+    const marker = markers.find((m) => m.id === id)
+
+    try {
+      this.props.setSelectedSite(marker.name)
+    } catch (error) {
+      alert(` This site is not yet mapped It is either a new site or it lacks important details.
+        
+      Please contact the admin to fix this issue.`)
+    }
+
+    
+  }
 
   _noRowsRenderer = () => {
     return <div >No rows</div>;
@@ -60,16 +70,19 @@ class SitesList extends Component {
 
   _rowRenderer = ({index, isScrolling, key, style}) => {
       const sites = this.state.sites.sites
-      const { classes } = this.props;
-      const { expanded } = this.state
 
       return(
         <div key={key} style={style}>
-          <List>
-            <ListItem button>
-              <ListItemText primary={sites[index].name} secondary={sites[index].surveyType ? sites[index].surveyType.type : 'unknown'} />
-            </ListItem>
-          </List>
+          <ListItem button onClick={() => this.handleClick(sites[index].id)}>
+            <ListItemText primary={<strong>{sites[index].name}</strong>} secondary={
+                sites[index].surveyType ? 
+                <strong style={{ color: sites[index].surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
+                  {sites[index].surveyType.type}
+                </strong>
+                : <strong>unknown</strong>
+              } 
+            />
+          </ListItem>
         </div>
       )
   }
@@ -101,5 +114,7 @@ class SitesList extends Component {
 SitesList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+SitesList = connect(null, { setSelectedSite })(SitesList)
 
 export default withStyles(styles)(SitesList);

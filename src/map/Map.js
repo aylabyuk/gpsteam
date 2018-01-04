@@ -13,6 +13,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
+import { setSelectedSite } from './mapActions';
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -20,6 +21,7 @@ let campaignIcon = (name) => L.ExtraMarkers.icon({
     markerColor: 'cyan',
     shape: 'square',
     prefix: 'fa',
+    name,
     innerHTML: `<div class='markerLabel'><b>${name}</b></div>`
 })
 
@@ -29,6 +31,7 @@ let continuousIcon = (name) => L.ExtraMarkers.icon({
     markerColor: 'pink',
     shape: 'square',
     prefix: 'fa',
+    name,
     innerHTML: `<div class='markerLabel'><b>${name}</b></div>`
 })
 
@@ -66,6 +69,8 @@ class PhMap extends Component {
     handleMarkerClick = (marker) => {
         this.props.openDrawer().then(() => {
 
+            this.props.setSelectedSite(marker.options.icon.options.name)
+
             setTimeout(() => {
                 window.map.leafletElement.invalidateSize(true)
             }, 500)
@@ -97,6 +102,8 @@ class PhMap extends Component {
             return s.latitude && s.surveyType
         }).map(s => {
             return {
+                id: s.id,
+                name: s.name,
                 position: [s.latitude, s.longitude],
                 surveyType: s.surveyType.type,
                 options: {
@@ -144,7 +151,10 @@ class PhMap extends Component {
 
                 <MarkerClusterGroup 
                     markers={markers}
-                    onMarkerClick={this.handleMarkerClick}/>
+                    onMarkerClick={this.handleMarkerClick}
+                    ref={(cluster) => {
+                        window.cluster = cluster
+                    }}/>
 
             </Map>
         )

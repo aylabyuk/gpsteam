@@ -14,6 +14,7 @@ import App from './App'
 import Auth from '../auth/Auth'
 import Home from '../home/Home'
 import logger from 'redux-logger'
+import thunk from 'redux-thunk'
 
 import createHistory from 'history/createBrowserHistory'
 
@@ -31,6 +32,7 @@ const routerMid = routerMiddleware(history)
 
 const enhancer = composeEnhancers(
   applyMiddleware(logger),
+  applyMiddleware(thunk),
   applyMiddleware(routerMid)
 )
 

@@ -1,6 +1,8 @@
 
 import { homeReducer } from '../home/homeReducer'
+import { mapReducer } from '../map/mapReducer'
 
 export const rootReducers = {
-    home: homeReducer
+    home: homeReducer,
+    map: mapReducer
 }

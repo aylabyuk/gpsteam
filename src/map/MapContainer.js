@@ -4,6 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import classNames from 'classnames';
 import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import { connect } from 'react-redux'
+import { setSelectedSite } from './mapActions'
+
 
 import SearchBox from './SearchBox'
 import PhMap from './Map'
@@ -91,7 +94,12 @@ const styles = theme => ({
 class Map extends React.Component {
   state = {
     open: false,
+    selectedSite: null
   };
+
+  setSelectedSite = (site) => {
+    this.setState({ selectedSite: site });
+  }
 
   handleDrawerOpen = async () => {
     await this.setState({ open: true });
@@ -107,11 +115,9 @@ class Map extends React.Component {
 
     return true
   };
-
-  drawer
   
   render() {
-    const { classes } = this.props;
+    const { classes, setSelectedSite } = this.props;
     const { open } = this.state;
 
     const drawerRight = (
@@ -164,7 +170,7 @@ class Map extends React.Component {
               [classes[`contentShift-margin`]]: open,
             })}
           >
-            <PhMap openDrawer={this.handleDrawerOpen} isDrawerOpen={open}/>
+            <PhMap openDrawer={this.handleDrawerOpen} isDrawerOpen={open} setSelectedSite={setSelectedSite}/>
           </main>
           <Hidden smDown>{drawerRight}</Hidden>
           <Hidden smUp>{drawerBottom}</Hidden>
@@ -178,5 +184,13 @@ Map.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
 };
+
+const mapStateToProps = (state) => {
+  return {
+    selectedSite: state.map.selectedSite
+  }
+}
+
+Map = connect(mapStateToProps, { setSelectedSite })(Map)
 
 export default withStyles(styles, { withTheme: true })(Map);

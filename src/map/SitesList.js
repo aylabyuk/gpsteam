@@ -23,6 +23,17 @@ const styles = theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  follow: {
+    top: 0,
+    right: 0,
+    position: 'absolute',
+    width: '50px',
+    height: '50px',
+    marginRight:  '12px',
+    backgroundColor:  '#000',
+    color:  '#FFF',
+    zIndex: 5
+  }
 });
 
 class SitesList extends Component {
@@ -66,7 +77,15 @@ class SitesList extends Component {
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
-    console.log(this.state.sites.sites[startIndex].name)
+    console.log(this.state.sites.sites[startIndex].name.charAt(0))
+    const el = document.getElementById('siteList')
+    let a = el.scrollTop
+    let b = el.scrollHeight - el.clientHeight
+    let c = a / b
+
+    this.follow.style.setProperty('top', c * el.clientHeight+'px')
+    console.log('DOC:', document.getElementById('follow').style.top)
+    console.log('REA',this.follow.style.top)
   }
 
   _noRowsRenderer = () => {
@@ -100,16 +119,20 @@ class SitesList extends Component {
       <div className={classes.root}>
         <AutoSizer>
             {({width, height}) => (
-              <RVList
-                height={height}
-                width={width}
-                noRowsRenderer={this._noRowsRenderer}
-                rowCount={sites.sites.length}
-                rowHeight={70}
-                rowRenderer={this._rowRenderer}
-                onRowsRendered={this._onRowsRendered.bind(this)}
-                // scrollToIndex={scrollToIndex}
-              />
+              <div>
+                <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>test</div>
+                <RVList
+                  id='siteList'
+                  height={height}
+                  width={width}
+                  noRowsRenderer={this._noRowsRenderer}
+                  rowCount={sites.sites.length}
+                  rowHeight={70}
+                  rowRenderer={this._rowRenderer}
+                  onRowsRendered={this._onRowsRendered.bind(this)}
+                  // scrollToIndex={scrollToIndex}
+                />
+              </div>
             )}
         </AutoSizer>
       </div>

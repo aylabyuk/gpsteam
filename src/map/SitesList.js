@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import { client } from '../index'
 import gql from 'graphql-tag';
+import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { List as RVList, AutoSizer } from 'react-virtualized'
 import L from 'leaflet'
 import { connect } from 'react-redux'
 import { setSelectedSite } from './mapActions'
+
+import Follow from '../follow.svg'
 
 const styles = theme => ({
   root: {
@@ -29,10 +32,15 @@ const styles = theme => ({
     position: 'absolute',
     width: '50px',
     height: '50px',
-    marginRight:  '12px',
-    backgroundColor:  '#000',
+    marginRight:  '40px',
+    marginTop: '5px',
+    backgroundColor:  '#FFF',
     color:  '#FFF',
     zIndex: 5
+  },
+  followIcon: {
+    transform: 'scaleY(-1)',
+    filter: 'FlipV'
   }
 });
 
@@ -40,6 +48,7 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      currentLetter: 'A',
       sites: client.readQuery({
           query: gql`
               {
@@ -77,15 +86,29 @@ class SitesList extends Component {
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
-    console.log(this.state.sites.sites[startIndex].name.charAt(0))
+    let letter = this.state.sites.sites[startIndex].name.charAt(0)
+    this.setState({ currentLetter: letter })
     const el = document.getElementById('siteList')
     let a = el.scrollTop
     let b = el.scrollHeight - el.clientHeight
     let c = a / b
 
-    this.follow.style.setProperty('top', c * el.clientHeight+'px')
-    console.log('DOC:', document.getElementById('follow').style.top)
-    console.log('REA',this.follow.style.top)
+    let half =  el.clientHeight / 2
+    let current =  c * el.clientHeight
+
+    this.follow.style.setProperty('top', current+'px')
+
+    if(current <= 90) {
+      console.log(1)
+      this.followIcon.style.setProperty('transform', 'scaleY(-1)')
+      this.followIcon.style.setProperty('filter', 'FlipV')
+      this.followIcon.style.setProperty('transition', '.1s ease-in-out')
+    } else {
+      console.log(2)
+      this.followIcon.style.setProperty('transform', 'scaleY(1)')
+      this.follow.style.setProperty('top', current-90+'px')
+      this.followIcon.style.setProperty('transition', '.1s ease-in-out')
+    }
   }
 
   _noRowsRenderer = () => {
@@ -120,7 +143,12 @@ class SitesList extends Component {
         <AutoSizer>
             {({width, height}) => (
               <div>
-                <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>test</div>
+                <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>
+                  <img ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
+                  <Avatar style={{top: -75, left: 10 ,width: 60, height: 60, backgroundColor: '#3a4aa6', fontSize: 50}}>
+                    {this.state.currentLetter}
+                  </Avatar>
+                </div>
                 <RVList
                   id='siteList'
                   height={height}

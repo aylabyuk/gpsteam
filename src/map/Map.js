@@ -50,6 +50,10 @@ class PhMap extends Component {
     constructor() {
         super();
         this.state = {
+            showCampaignSites: true,
+            showContinuousSites: true,
+            showFaultLines: true,
+            enableCluster: true,
             showSettings: false,
             mapIsSet: false,
             lat: 12.8797,
@@ -74,7 +78,9 @@ class PhMap extends Component {
                         }
                     }
                 `
-                })
+                }),
+            markersCamp: null,
+            markersCont: null
         };
     }
 
@@ -103,14 +109,13 @@ class PhMap extends Component {
         })
     }
 
-    componentDidMount() {
-        this.setState({ mapIsSet: true })
-    }
+    handleChange = name => (event, checked) => {
+        this.setState({ [name]: checked });
+    };
     
-    render() {
-        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds } = this.state
-        
-        const markers = sites.sites.filter(s => {
+
+    componentDidMount() {
+        const markers = this.state.sites.sites.filter(s => {
             return s.latitude && s.surveyType
         }).map(s => {
             return {
@@ -124,8 +129,37 @@ class PhMap extends Component {
             }
         })
 
+        const markersCamp = markers.filter(m => {
+            return m.surveyType === 'campaign'
+        })
+
+        const markersCont = markers.filter(m => {
+            return m.surveyType === 'continuous'
+        })
+
+        this.setState({ mapIsSet: true, markersCamp, markersCont })
+    }
+    
+    render() {
+        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds, showCampaignSites, 
+            showContinuousSites, showFaultLines, showSettings, mapIsSet, enableCluster, markersCamp, markersCont } = this.state
+        
+        let newMarkers = []
         if(window.map) {
             window.map.leafletElement.invalidateSize(true)
+            let camp, cont
+            if(showCampaignSites) {
+                camp = markersCamp
+            } else {
+                camp = []
+            }
+
+            if(showContinuousSites) {
+                cont = markersCont
+            } else {
+                cont = []
+            }
+            newMarkers = camp.concat(cont)
         }
 
         return (
@@ -133,11 +167,10 @@ class PhMap extends Component {
                 zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
                 maxBounds={maxBounds} zoomControl={false} ref={(map) => {
                     window.map = map 
-                    if(map && !this.state.mapIsSet) {
+                    if(map && !mapIsSet) {
                         L.control.zoom({
                             position: 'topright'
                         }).addTo(map.leafletElement)
-
                     }
                 }}>
 
@@ -165,19 +198,24 @@ class PhMap extends Component {
                     <div className='leaflet-bar'
                         onMouseOver={()=> this.setState({ showSettings: true })}
                         onMouseOut={()=> this.setState({ showSettings: false })}>
-                        <a style={{display: !this.state.showSettings ? 'block' : 'none' }} 
+                        <a style={{display: !showSettings ? 'block' : 'none' }} 
                             className='leaflet-control-custom' onClick={(e) => {
                                 e.preventDefault()
                             }} role='button' href=''>
                                 <LayersIcon />
                         </a>
-                        <div style={{display: this.state.showSettings ? 'block' : 'none'}}>
+                        <div style={{display: showSettings ? 'block' : 'none'}}>
                             <Paper style={{ padding: '10px' }}>
                                 <FormControl component="fieldset">
                                     <FormGroup>
-                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Campaign"/>
-                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Continuous"/>
-                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Faultline"/>
+                                        <FormControlLabel control={<Checkbox checked={showCampaignSites}
+                                            onChange={this.handleChange('showCampaignSites')} />} label="Campaign"/>
+                                        <FormControlLabel control={<Checkbox checked={showContinuousSites}
+                                            onChange={this.handleChange('showContinuousSites')} />} label="Continuous"/>
+                                        <FormControlLabel control={<Checkbox checked={enableCluster}
+                                            onChange={this.handleChange('enableCluster')} />} label="Cluster"/>
+                                        <FormControlLabel control={<Checkbox checked={showFaultLines}
+                                            onChange={this.handleChange('showFaultLines')} />} label="Faultline"/>
                                     </FormGroup>
                                 </FormControl>
                             </Paper>
@@ -185,12 +223,12 @@ class PhMap extends Component {
                     </div>
                 </Control>
 
-                <MarkerClusterGroup 
-                    markers={markers}
+                {mapIsSet ? <MarkerClusterGroup 
+                    markers={newMarkers}
                     onMarkerClick={this.handleMarkerClick}
                     ref={(cluster) => {
                         window.cluster = cluster
-                }}/>
+                }}/> : null}
 
             </Map>
         )

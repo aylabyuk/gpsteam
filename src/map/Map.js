@@ -113,6 +113,42 @@ class PhMap extends Component {
         this.setState({ [name]: checked });
     };
     
+    componentDidUpdate(prevProps, prevState) {
+        const { enableCluster, mapIsSet, markersCamp, markersCont, showCampaignSites, showContinuousSites } = this.state
+
+        if(prevState.enableCluster != enableCluster) {
+            if(!enableCluster && mapIsSet) {
+
+                let camp, cont
+                if(showCampaignSites) {
+                    camp = markersCamp
+                } else {
+                    camp = []
+                }
+    
+                if(showContinuousSites) {
+                    cont = markersCont
+                } else {
+                    cont = []
+                }
+                let newMarkers = camp.concat(cont)
+                
+                console.log(newMarkers)
+
+                let newMarkerSet = []
+                newMarkers.map(m => {
+                    let mrk = L.marker(L.latLng(m.position), m.options)
+                    console.log(mrk)
+                    newMarkerSet.push(mrk)
+                })
+    
+                window.allMarkers = L.featureGroup(newMarkerSet)
+                window.allMarkers.addTo(window.map.leafletElement)
+            } else {
+                window.allMarkers.removeFrom(window.map.leafletElement)
+            }
+        }
+    }
 
     componentDidMount() {
         const markers = this.state.sites.sites.filter(s => {
@@ -223,7 +259,7 @@ class PhMap extends Component {
                     </div>
                 </Control>
 
-                {mapIsSet ? <MarkerClusterGroup 
+                {mapIsSet && enableCluster ? <MarkerClusterGroup 
                     markers={newMarkers}
                     onMarkerClick={this.handleMarkerClick}
                     ref={(cluster) => {

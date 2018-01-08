@@ -85,6 +85,11 @@ class PhMap extends Component {
     }
 
     handleMarkerClick = (marker) => {
+
+        if(!this.state.enableCluster) {
+            marker = marker.target
+        }
+
         this.props.openDrawer().then(() => {
 
             this.props.setSelectedSite(marker.options.icon.options.name)
@@ -132,13 +137,11 @@ class PhMap extends Component {
                     cont = []
                 }
                 let newMarkers = camp.concat(cont)
-                
-                console.log(newMarkers)
 
                 let newMarkerSet = []
                 newMarkers.map(m => {
                     let mrk = L.marker(L.latLng(m.position), m.options)
-                    console.log(mrk)
+                    mrk.on('click', this.handleMarkerClick)
                     newMarkerSet.push(mrk)
                 })
     
@@ -161,6 +164,8 @@ class PhMap extends Component {
                 surveyType: s.surveyType.type,
                 options: {
                     icon: s.surveyType.type === 'campaign' ? campaignIcon(s.name) : continuousIcon(s.name),
+                    riseOnHover: true,
+                    interactive: true
                 }
             }
         })

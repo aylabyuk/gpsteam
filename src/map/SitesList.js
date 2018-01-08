@@ -34,7 +34,7 @@ const styles = theme => ({
     height: '50px',
     marginRight:  '40px',
     marginTop: '5px',
-    backgroundColor:  '#FFF',
+    backgroundColor: 'rgba(0, 0, 0, 0)',
     color:  '#FFF',
     zIndex: 5
   },
@@ -99,12 +99,10 @@ class SitesList extends Component {
     this.follow.style.setProperty('top', current+'px')
 
     if(current <= 90) {
-      console.log(1)
       this.followIcon.style.setProperty('transform', 'scaleY(-1)')
       this.followIcon.style.setProperty('filter', 'FlipV')
       this.followIcon.style.setProperty('transition', '.1s ease-in-out')
     } else {
-      console.log(2)
       this.followIcon.style.setProperty('transform', 'scaleY(1)')
       this.follow.style.setProperty('top', current-90+'px')
       this.followIcon.style.setProperty('transition', '.1s ease-in-out')

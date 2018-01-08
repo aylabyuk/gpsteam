@@ -4,8 +4,18 @@ import MarkerClusterGroup from 'react-leaflet-markercluster'
 import { client } from '../index'
 import gql from 'graphql-tag';
 import L from 'leaflet'
-import Control from 'react-leaflet-control'
 import SearchIcon from 'material-ui-icons/Search';
+import LayersIcon from 'material-ui-icons/Layers';
+
+import Paper from 'material-ui/Paper'
+import Checkbox from 'material-ui/Checkbox';
+import {
+    FormLabel,
+    FormControl,
+    FormGroup,
+    FormControlLabel,
+    FormHelperText,
+} from 'material-ui/Form';
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
@@ -14,6 +24,7 @@ import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
 import { setSelectedSite } from './mapActions';
+import Control from 'react-leaflet-control';
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -39,6 +50,7 @@ class PhMap extends Component {
     constructor() {
         super();
         this.state = {
+            showSettings: false,
             mapIsSet: false,
             lat: 12.8797,
             lng: 121.7740,
@@ -129,6 +141,10 @@ class PhMap extends Component {
                     }
                 }}>
 
+                <TileLayer
+                    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
+
                 <Control position="topright" >
                     <div className='leaflet-bar' style={{visibility: this.props.isDrawerOpen ? 'hidden' : 'visible' }}>
                         <a className='leaflet-control-custom' onClick={(e) => {
@@ -145,16 +161,36 @@ class PhMap extends Component {
                     </div>
                 </Control>
 
-                <TileLayer
-                    attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
+                <Control position="bottomright" >
+                    <div className='leaflet-bar'
+                        onMouseOver={()=> this.setState({ showSettings: true })}
+                        onMouseOut={()=> this.setState({ showSettings: false })}>
+                        <a style={{display: !this.state.showSettings ? 'block' : 'none' }} 
+                            className='leaflet-control-custom' onClick={(e) => {
+                                e.preventDefault()
+                            }} role='button' href=''>
+                                <LayersIcon />
+                        </a>
+                        <div style={{display: this.state.showSettings ? 'block' : 'none'}}>
+                            <Paper style={{ padding: '10px' }}>
+                                <FormControl component="fieldset">
+                                    <FormGroup>
+                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Campaign"/>
+                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Continuous"/>
+                                        <FormControlLabel control={<Checkbox checked={true}/>} label="Faultline"/>
+                                    </FormGroup>
+                                </FormControl>
+                            </Paper>
+                        </div>
+                    </div>
+                </Control>
 
                 <MarkerClusterGroup 
                     markers={markers}
                     onMarkerClick={this.handleMarkerClick}
                     ref={(cluster) => {
                         window.cluster = cluster
-                    }}/>
+                }}/>
 
             </Map>
         )

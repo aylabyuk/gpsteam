@@ -27,10 +27,7 @@ import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
 import omnivore from 'leaflet-omnivore'
 import Control from 'react-leaflet-control'
-import { setSelectedSite, 
-    toggleShowCampaignSites, 
-    toggleShowContinuousSites, 
-    toggleShowFaultLines } from './mapActions'
+import * as mapActions from './mapActions'
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -60,9 +57,6 @@ class PhMap extends Component {
             maxZoom: 18,
             minZoom: 6,
             mapIsSet: false,
-            lat: 12.8797,
-            lng: 121.7740,
-            zoom: 6,
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
             markersCamp: null,
             markersCont: null,
@@ -165,9 +159,8 @@ class PhMap extends Component {
     }
     
     render() {
-        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
-
-        const {showCampaignSites, showContinuousSites, showFaultLines } = this.props
+        const { maxZoom, minZoom, sites, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
+        const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom } = this.props
         
         let newMarkers = []
         if(window.map) {
@@ -188,7 +181,7 @@ class PhMap extends Component {
         }
 
         return (
-            <Map center={[lat, lng]} 
+            <Map center={position} 
                 zoom={zoom} minZoom={minZoom} maxZoom={maxZoom} zoomSnap style={{ height: '100%' }}
                 maxBounds={maxBounds} zoomControl={false} ref={(map) => {
                     window.map = map 
@@ -197,13 +190,16 @@ class PhMap extends Component {
                             position: 'topright'
                         }).addTo(map.leafletElement)
 
-                        // load the fault lines
                         let layer = L.geoJSON(null, { style: function(feature) {
                             return { color: '#FF0000', weight: 0.8 };
                         } })
 
-                        // use omnivore library to parse kml file to geoJson
-                        // then add the geoJson file to the leaflet element/map
+                        map.leafletElement.on('moveend', () => {
+                                this.props.setZoom(map.leafletElement.getZoom())
+                                this.props.setPosition(map.leafletElement.getCenter())
+                            }
+                        )
+
                         window.faultline = omnivore.kml('http://localhost:4000/faultline/AF_2017.kml', null, layer)
                         window.faultline.addTo(map.leafletElement)
                     }
@@ -272,8 +268,4 @@ const mapStateToProps = (state) => {
     return {...state.map}
 }
 
-export default connect(mapStateToProps, 
-    { setSelectedSite, 
-    toggleShowCampaignSites, 
-    toggleShowContinuousSites, 
-    toggleShowFaultLines })(PhMap)
+export default connect(mapStateToProps, mapActions)(PhMap)

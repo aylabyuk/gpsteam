@@ -3,7 +3,9 @@ const initialState = {
     showCampaignSites: true,
     showContinuousSites: true,
     showFaultLines: false,
-    enableCluster: true
+    enableCluster: true,
+    position: [ 12.8797,  121.7740 ],
+    zoom: 6,
 }
 
 export const mapReducer = (state = initialState , action) => {
@@ -27,6 +29,16 @@ export const mapReducer = (state = initialState , action) => {
             return {
                 ...state,
                 showFaultLines: !state.showFaultLines
+            }
+        case 'SET_ZOOM': 
+            return {
+                ...state,
+                zoom: action.payload
+            }
+        case 'SET_POSITION': 
+            return {
+                ...state,
+                position: action.payload
             }
         default:
                 return state

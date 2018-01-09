@@ -14,3 +14,13 @@ export const toggleShowContinuousSites = () => ({
 export const toggleShowFaultLines = () => ({
     type: 'TOGGLE_SHOWFAULTLINES'
 })
+
+export const setZoom = (zoom) => ({
+    type: 'SET_ZOOM',
+    payload: zoom
+})
+
+export const setPosition = (position) => ({
+    type: 'SET_POSITION',
+    payload: position
+})

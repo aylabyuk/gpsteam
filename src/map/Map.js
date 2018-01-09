@@ -23,6 +23,7 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
+import omnivore from 'leaflet-omnivore'
 import { setSelectedSite } from './mapActions';
 import Control from 'react-leaflet-control';
 
@@ -52,7 +53,7 @@ class PhMap extends Component {
         this.state = {
             showCampaignSites: true,
             showContinuousSites: true,
-            showFaultLines: true,
+            showFaultLines: false,
             enableCluster: true,
             showSettings: false,
             mapIsSet: false,
@@ -62,6 +63,8 @@ class PhMap extends Component {
             maxZoom: 18,
             minZoom: 6,
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
+            markersCamp: null,
+            markersCont: null,
             sites: client.readQuery({
                 query: gql`
                     {
@@ -79,8 +82,6 @@ class PhMap extends Component {
                     }
                 `
                 }),
-            markersCamp: null,
-            markersCont: null
         };
     }
 
@@ -115,11 +116,20 @@ class PhMap extends Component {
     }
 
     handleChange = name => (event, checked) => {
-        this.setState({ [name]: checked });
+        this.setState({ [name]: checked});
+
+        if(name == 'showCampaignSites' || name == 'showContinuousSites' && !this.state.enableCluster) {
+            this.setState({ enableCluster: !this.state.enableCluster })
+
+            setTimeout(() => {
+                this.setState({ enableCluster: !this.state.enableCluster })
+            }, 1)
+  
+        }
     };
     
     componentDidUpdate(prevProps, prevState) {
-        const { enableCluster, mapIsSet, markersCamp, markersCont, showCampaignSites, showContinuousSites } = this.state
+        const { enableCluster, mapIsSet, markersCamp, markersCont, showCampaignSites, showContinuousSites, showFaultLines } = this.state
 
         if(prevState.enableCluster != enableCluster) {
             if(!enableCluster && mapIsSet) {
@@ -146,14 +156,30 @@ class PhMap extends Component {
                 })
     
                 window.allMarkers = L.featureGroup(newMarkerSet)
+                window.allMarkers.removeFrom(window.map.leafletElement)
                 window.allMarkers.addTo(window.map.leafletElement)
             } else {
                 window.allMarkers.removeFrom(window.map.leafletElement)
             }
         }
+
+        if(prevState.showFaultLines != showFaultLines) {
+            this.setUpFaults()
+        }
+
+    }
+
+    setUpFaults() {
+        const { showFaultLines } = this.state
+        if(showFaultLines) {
+            window.faultline.addTo(window.map.leafletElement)
+        } else {
+            window.faultline.removeFrom(window.map.leafletElement)
+        }
     }
 
     componentDidMount() {
+
         const markers = this.state.sites.sites.filter(s => {
             return s.latitude && s.surveyType
         }).map(s => {
@@ -177,7 +203,7 @@ class PhMap extends Component {
         const markersCont = markers.filter(m => {
             return m.surveyType === 'continuous'
         })
-
+        this.setUpFaults()
         this.setState({ mapIsSet: true, markersCamp, markersCont })
     }
     
@@ -212,6 +238,16 @@ class PhMap extends Component {
                         L.control.zoom({
                             position: 'topright'
                         }).addTo(map.leafletElement)
+
+                        // load the fault lines
+                        let layer = L.geoJSON(null, { style: function(feature) {
+                            return { color: '#FF0000', weight: 0.8 };
+                        } })
+
+                        // use omnivore library to parse kml file to geoJson
+                        // then add the geoJson file to the leaflet element/map
+                        window.faultline = omnivore.kml('http://localhost:4000/faultline/AF_2017.kml', null, layer)
+                        window.faultline.addTo(map.leafletElement)
                     }
                 }}>
 

@@ -85,6 +85,7 @@ class PhMap extends Component {
 
     handleChange = name => (event, checked) => {
         this.props[name]()
+        this.setClusterIsSetToFalse()
     };
     
     componentDidUpdate(prevProps, prevState) {
@@ -98,9 +99,11 @@ class PhMap extends Component {
             console.log('must focus on', this.props.selectedSite)
 
             let marker = window.mapMarkers[this.props.selectedSite]
-            window.map.leafletElement.invalidateSize(true)
 
             window.cluster.leafletElement.zoomToShowLayer(marker, () => {
+
+                window.map.leafletElement.invalidateSize(true)
+
                 marker.setBouncingOptions({
                     bounceHeight: 10,
                     bounceSpeed: 54,
@@ -152,6 +155,10 @@ class PhMap extends Component {
         })
         this.setUpFaults()
         this.setState({ mapIsSet: true, markersCamp, markersCont })
+    }
+
+    setClusterIsSetToFalse() {
+        this.setState({clusterIsSet: false})
     }
     
     render() {
@@ -244,7 +251,7 @@ class PhMap extends Component {
                                 <FormControl component="fieldset">
                                     <FormGroup>
                                         <FormControlLabel control={<Checkbox checked={showCampaignSites}
-                                            onChange={this.handleChange('toggleShowCampaignSites')} />} label="Campaign"/>
+                                            onChange={ this.handleChange('toggleShowCampaignSites')} />} label="Campaign"/>
                                         <FormControlLabel control={<Checkbox checked={showContinuousSites}
                                             onChange={this.handleChange('toggleShowContinuousSites')} />} label="Continuous"/>
                                         <FormControlLabel control={<Checkbox checked={showFaultLines}

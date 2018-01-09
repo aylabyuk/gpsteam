@@ -68,24 +68,12 @@ class SitesList extends Component {
     };
   }
 
-  handleClick = (id) => {
-    const markers = window.cluster.props.markers
-    const marker = markers.find((m) => m.id === id)
-
-    try {
-      this.props.setSelectedSite(marker.name)
-    } catch (error) {
-      console.log(error)
-      alert(` This site is not yet mapped It is either a new site or it lacks important details.
-        
-      Please contact the admin to fix this issue.`)
-    }
-
-    
+  handleClick = (name) => {
+    this.props.setSelectedSite(name)
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
-    let letter = this.state.sites.sites[startIndex].name.charAt(0)
+    let letter = this.state.sites[startIndex].name.charAt(0)
     this.setState({ currentLetter: letter })
     const el = document.getElementById('siteList')
     let a = el.scrollTop
@@ -110,12 +98,20 @@ class SitesList extends Component {
     return <div >No rows</div>;
   }
 
+  componentWillMount() {
+    let withSTypes = this.state.sites.sites.filter(s => {
+      return s.surveyType != null
+    })
+
+    this.setState({ sites: withSTypes })
+  }
+
   _rowRenderer = ({index, isScrolling, key, style}) => {
-      const sites = this.state.sites.sites
+      const sites = this.state.sites
 
       return(
         <div key={key} style={style}>
-          <ListItem button onClick={() => this.handleClick(sites[index].id)}>
+          <ListItem button onClick={() => this.handleClick(sites[index].name)}>
             <ListItemText primary={<strong>{sites[index].name}</strong>} secondary={
                 sites[index].surveyType ? 
                 <strong style={{ color: sites[index].surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
@@ -149,7 +145,7 @@ class SitesList extends Component {
                   height={height}
                   width={width}
                   noRowsRenderer={this._noRowsRenderer}
-                  rowCount={sites.sites.length}
+                  rowCount={sites.length}
                   rowHeight={70}
                   rowRenderer={this._rowRenderer}
                   onRowsRendered={this._onRowsRendered.bind(this)}
@@ -167,6 +163,10 @@ SitesList.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-SitesList = connect(null, { setSelectedSite })(SitesList)
+const mapStateToProps = (state) => {
+  return {...state.map}
+}
+
+SitesList = connect(mapStateToProps, { setSelectedSite })(SitesList)
 
 export default withStyles(styles)(SitesList);

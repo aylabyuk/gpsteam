@@ -6,6 +6,8 @@ import gql from 'graphql-tag';
 import L from 'leaflet'
 import SearchIcon from 'material-ui-icons/Search';
 import LayersIcon from 'material-ui-icons/Layers';
+import { connect } from 'react-redux'
+
 
 import Paper from 'material-ui/Paper'
 import Checkbox from 'material-ui/Checkbox';
@@ -24,8 +26,11 @@ import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
 import omnivore from 'leaflet-omnivore'
-import { setSelectedSite } from './mapActions';
-import Control from 'react-leaflet-control';
+import Control from 'react-leaflet-control'
+import { setSelectedSite, 
+    toggleShowCampaignSites, 
+    toggleShowContinuousSites, 
+    toggleShowFaultLines } from './mapActions'
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -51,17 +56,13 @@ class PhMap extends Component {
     constructor() {
         super();
         this.state = {
-            showCampaignSites: true,
-            showContinuousSites: true,
-            showFaultLines: false,
-            enableCluster: true,
             showSettings: false,
+            maxZoom: 18,
+            minZoom: 6,
             mapIsSet: false,
             lat: 12.8797,
             lng: 121.7740,
             zoom: 6,
-            maxZoom: 18,
-            minZoom: 6,
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
             markersCamp: null,
             markersCont: null,
@@ -86,10 +87,6 @@ class PhMap extends Component {
     }
 
     handleMarkerClick = (marker) => {
-
-        if(!this.state.enableCluster) {
-            marker = marker.target
-        }
 
         this.props.openDrawer().then(() => {
 
@@ -116,61 +113,21 @@ class PhMap extends Component {
     }
 
     handleChange = name => (event, checked) => {
-        this.setState({ [name]: checked});
-
-        if(name == 'showCampaignSites' || name == 'showContinuousSites' && !this.state.enableCluster) {
-            this.setState({ enableCluster: !this.state.enableCluster })
-
-            setTimeout(() => {
-                this.setState({ enableCluster: !this.state.enableCluster })
-            }, 1)
-  
-        }
+        this.props[name]()
     };
     
     componentDidUpdate(prevProps, prevState) {
-        const { enableCluster, mapIsSet, markersCamp, markersCont, showCampaignSites, showContinuousSites, showFaultLines } = this.state
+        const { mapIsSet, markersCamp, markersCont } = this.state
+        const { showCampaignSites, showContinuousSites, showFaultLines } = this.props
 
-        if(prevState.enableCluster != enableCluster) {
-            if(!enableCluster && mapIsSet) {
-
-                let camp, cont
-                if(showCampaignSites) {
-                    camp = markersCamp
-                } else {
-                    camp = []
-                }
-    
-                if(showContinuousSites) {
-                    cont = markersCont
-                } else {
-                    cont = []
-                }
-                let newMarkers = camp.concat(cont)
-
-                let newMarkerSet = []
-                newMarkers.map(m => {
-                    let mrk = L.marker(L.latLng(m.position), m.options)
-                    mrk.on('click', this.handleMarkerClick)
-                    newMarkerSet.push(mrk)
-                })
-    
-                window.allMarkers = L.featureGroup(newMarkerSet)
-                window.allMarkers.removeFrom(window.map.leafletElement)
-                window.allMarkers.addTo(window.map.leafletElement)
-            } else {
-                window.allMarkers.removeFrom(window.map.leafletElement)
-            }
-        }
-
-        if(prevState.showFaultLines != showFaultLines) {
+        if(prevProps.showFaultLines != showFaultLines) {
             this.setUpFaults()
         }
 
     }
 
     setUpFaults() {
-        const { showFaultLines } = this.state
+        const { toggleShowFaultLines, showFaultLines } = this.props
         if(showFaultLines) {
             window.faultline.addTo(window.map.leafletElement)
         } else {
@@ -208,8 +165,9 @@ class PhMap extends Component {
     }
     
     render() {
-        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds, showCampaignSites, 
-            showContinuousSites, showFaultLines, showSettings, mapIsSet, enableCluster, markersCamp, markersCont } = this.state
+        const { lat, lng, zoom, maxZoom, minZoom, sites, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
+
+        const {showCampaignSites, showContinuousSites, showFaultLines } = this.props
         
         let newMarkers = []
         if(window.map) {
@@ -286,13 +244,11 @@ class PhMap extends Component {
                                 <FormControl component="fieldset">
                                     <FormGroup>
                                         <FormControlLabel control={<Checkbox checked={showCampaignSites}
-                                            onChange={this.handleChange('showCampaignSites')} />} label="Campaign"/>
+                                            onChange={this.handleChange('toggleShowCampaignSites')} />} label="Campaign"/>
                                         <FormControlLabel control={<Checkbox checked={showContinuousSites}
-                                            onChange={this.handleChange('showContinuousSites')} />} label="Continuous"/>
-                                        <FormControlLabel control={<Checkbox checked={enableCluster}
-                                            onChange={this.handleChange('enableCluster')} />} label="Cluster"/>
+                                            onChange={this.handleChange('toggleShowContinuousSites')} />} label="Continuous"/>
                                         <FormControlLabel control={<Checkbox checked={showFaultLines}
-                                            onChange={this.handleChange('showFaultLines')} />} label="Faultline"/>
+                                            onChange={this.handleChange('toggleShowFaultLines')} />} label="Faultline"/>
                                     </FormGroup>
                                 </FormControl>
                             </Paper>
@@ -300,16 +256,24 @@ class PhMap extends Component {
                     </div>
                 </Control>
 
-                {mapIsSet && enableCluster ? <MarkerClusterGroup 
+                <MarkerClusterGroup 
                     markers={newMarkers}
                     onMarkerClick={this.handleMarkerClick}
                     ref={(cluster) => {
                         window.cluster = cluster
-                }}/> : null}
+                }}/>
 
             </Map>
         )
     }
 }
 
-export default PhMap
+const mapStateToProps = (state) => {
+    return {...state.map}
+}
+
+export default connect(mapStateToProps, 
+    { setSelectedSite, 
+    toggleShowCampaignSites, 
+    toggleShowContinuousSites, 
+    toggleShowFaultLines })(PhMap)

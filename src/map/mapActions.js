@@ -15,6 +15,11 @@ export const toggleShowFaultLines = () => ({
     type: 'TOGGLE_SHOWFAULTLINES'
 })
 
+export const toggleDrawer = () => ({
+    type: 'TOGGLE_DRAWER'
+})
+
+
 export const setZoom = (zoom) => ({
     type: 'SET_ZOOM',
     payload: zoom

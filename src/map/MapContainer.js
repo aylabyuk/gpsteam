@@ -5,8 +5,7 @@ import classNames from 'classnames';
 import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import { connect } from 'react-redux'
-import { setSelectedSite } from './mapActions'
-
+import * as mapActions from './mapActions'
 
 import SearchBox from './SearchBox'
 import PhMap from './Map'
@@ -92,33 +91,9 @@ const styles = theme => ({
 });
 
 class Map extends React.Component {
-  state = {
-    open: false,
-    selectedSite: null
-  };
-
-  setSelectedSite = (site) => {
-    this.setState({ selectedSite: site });
-  }
-
-  handleDrawerOpen = async () => {
-    await this.setState({ open: true });
-    return true
-  };
-
-  handleDrawerClose = async () => {
-    await this.setState({ open: false });
-
-    setTimeout(() => {
-      window.map.leafletElement.invalidateSize(true)
-    }, 500)
-
-    return true
-  };
   
   render() {
-    const { classes, setSelectedSite } = this.props;
-    const { open } = this.state;
+    const { classes, setSelectedSite, selectedSite, drawerOpen } = this.props;
 
     const drawerRight = (
       <Drawer
@@ -127,12 +102,12 @@ class Map extends React.Component {
           paper: classes.drawerPaperRight,
         }}
         anchor='right'
-        open={open}
+        open={drawerOpen}
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
             <SearchBox />
-            <IconButton onClick={this.handleDrawerClose}>
+            <IconButton onClick={this.props.toggleDrawer}>
               <ChevronRightIcon />
             </IconButton>
           </div>
@@ -147,12 +122,12 @@ class Map extends React.Component {
           paper: classes.drawerPaperBottom,
         }}
         anchor='bottom'
-        open={open}
+        open={drawerOpen}
       >
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
             <SearchBox />
-            <IconButton onClick={this.handleDrawerClose}>
+            <IconButton onClick={this.props.toggleDrawer}>
               <ChevronRightIcon />
             </IconButton>
           </div>
@@ -166,11 +141,11 @@ class Map extends React.Component {
         <div className={classes.appFrame}>
           <main
             className={classNames(classes.content, classes[`content-style`], {
-              [classes.contentShift]: open,
-              [classes[`contentShift-margin`]]: open,
+              [classes.contentShift]: drawerOpen,
+              [classes[`contentShift-margin`]]: drawerOpen,
             })}
           >
-            <PhMap openDrawer={this.handleDrawerOpen} isDrawerOpen={open} setSelectedSite={setSelectedSite}/>
+            <PhMap />
           </main>
           <Hidden smDown>{drawerRight}</Hidden>
           <Hidden smUp>{drawerBottom}</Hidden>
@@ -186,11 +161,9 @@ Map.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    selectedSite: state.map.selectedSite
-  }
+  return { ...state.map }
 }
 
-Map = connect(mapStateToProps, { setSelectedSite })(Map)
+Map = connect(mapStateToProps, { ...mapActions })(Map)
 
 export default withStyles(styles, { withTheme: true })(Map);

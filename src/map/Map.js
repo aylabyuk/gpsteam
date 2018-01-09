@@ -80,26 +80,21 @@ class PhMap extends Component {
 
     handleMarkerClick = (marker) => {
 
-        this.props.openDrawer().then(() => {
+        this.props.toggleDrawer()
 
-            this.props.setSelectedSite(marker.options.icon.options.name)
+        this.props.setSelectedSite(marker.options.icon.options.name)
 
-            setTimeout(() => {
-                window.map.leafletElement.invalidateSize(true)
-            }, 500)
-
-            marker.setBouncingOptions({
-                bounceHeight: 10,
-                bounceSpeed: 54,
-                exclusive: true,
-                elastic: false
-            })
-
-            if(!marker.isBouncing()) {
-                marker.bounce()
-            }
-            
+        marker.setBouncingOptions({
+            bounceHeight: 10,
+            bounceSpeed: 54,
+            exclusive: true,
+            elastic: false
         })
+
+        if(!marker.isBouncing()) {
+            marker.bounce()
+        }
+
     }
 
     handleChange = name => (event, checked) => {
@@ -159,7 +154,6 @@ class PhMap extends Component {
         
         let newMarkers = []
         if(window.map) {
-            window.map.leafletElement.invalidateSize(true)
             let camp, cont
             if(showCampaignSites) {
                 camp = markersCamp
@@ -189,8 +183,12 @@ class PhMap extends Component {
                             return { color: '#FF0000', weight: 0.8 };
                         } })
 
-                        map.leafletElement.on('moveend', () => {
+                        map.leafletElement.on('zoomend', () => {
                                 this.props.setZoom(map.leafletElement.getZoom())
+                            }
+                        )
+
+                        map.leafletElement.on('moveend', () => {
                                 this.props.setPosition(map.leafletElement.getCenter())
                             }
                         )
@@ -213,7 +211,7 @@ class PhMap extends Component {
                     <div className='leaflet-bar' style={{visibility: this.props.isDrawerOpen ? 'hidden' : 'visible' }}>
                         <a className='leaflet-control-custom' onClick={(e) => {
                             e.preventDefault()
-                            this.props.openDrawer()
+                            this.props.toggleDrawer()
 
                             setTimeout(() => {
                                 document.getElementById('search-input').focus()

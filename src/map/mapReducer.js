@@ -3,6 +3,7 @@ const initialState = {
     showCampaignSites: true,
     showContinuousSites: true,
     showFaultLines: false,
+    drawerOpen: false,
     enableCluster: true,
     position: [ 12.8797,  121.7740 ],
     zoom: 6,
@@ -29,6 +30,11 @@ export const mapReducer = (state = initialState , action) => {
             return {
                 ...state,
                 showFaultLines: !state.showFaultLines
+            }
+        case 'TOGGLE_DRAWER':
+            return {
+                ...state,
+                drawerOpen: !state.drawerOpen
             }
         case 'SET_ZOOM': 
             return {

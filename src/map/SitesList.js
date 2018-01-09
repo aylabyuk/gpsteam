@@ -99,8 +99,9 @@ class SitesList extends Component {
   }
 
   componentWillMount() {
+    // remove undefined surveytypes and undefined coordinates
     let withSTypes = this.state.sites.sites.filter(s => {
-      return s.surveyType != null
+      return s.surveyType && s.latitude && s.longitude
     })
 
     this.setState({ sites: withSTypes })
@@ -108,6 +109,7 @@ class SitesList extends Component {
 
   _rowRenderer = ({index, isScrolling, key, style}) => {
       const sites = this.state.sites
+      let { showCampaignSites, showContinuous } = this.props
 
       return(
         <div key={key} style={style}>

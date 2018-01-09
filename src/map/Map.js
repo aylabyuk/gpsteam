@@ -8,7 +8,6 @@ import SearchIcon from 'material-ui-icons/Search';
 import LayersIcon from 'material-ui-icons/Layers';
 import { connect } from 'react-redux'
 
-
 import Paper from 'material-ui/Paper'
 import Checkbox from 'material-ui/Checkbox';
 import { FormControl,
@@ -22,6 +21,8 @@ import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
+import 'leaflet-minimap/dist/Control.MiniMap.min.js'
+import 'leaflet-minimap/dist/Control.MiniMap.min.css'
 import omnivore from 'leaflet-omnivore'
 import Control from 'react-leaflet-control'
 import * as mapActions from './mapActions'
@@ -195,6 +196,11 @@ class PhMap extends Component {
                                 this.props.setPosition(map.leafletElement.getCenter())
                             }
                         )
+                        
+                        let osm2 = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                            {minZoom: 0, maxZoom: 13, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
+                        window.minimap = new L.Control.MiniMap(osm2, { toggleDisplay: true, minimized: true })
+                            .addTo(window.map.leafletElement)
 
                         window.faultline = omnivore.kml('http://localhost:4000/faultline/AF_2017.kml', null, layer)
                         window.faultline.addTo(map.leafletElement)

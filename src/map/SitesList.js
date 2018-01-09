@@ -7,7 +7,7 @@ import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { List as RVList, AutoSizer } from 'react-virtualized'
 import { connect } from 'react-redux'
-import { setSelectedSite } from './mapActions'
+import * as mapActions from './mapActions'
 
 import Follow from '../follow.svg'
 
@@ -68,10 +68,6 @@ class SitesList extends Component {
     };
   }
 
-  handleClick = (name) => {
-    this.props.setSelectedSite(name)
-  }
-
   _onRowsRendered({ startIndex, stopIndex }) {
     let letter = this.state.sites[startIndex].name.charAt(0)
     this.setState({ currentLetter: letter })
@@ -109,15 +105,15 @@ class SitesList extends Component {
 
   _rowRenderer = ({index, isScrolling, key, style}) => {
       const sites = this.state.sites
-      let { showCampaignSites, showContinuous } = this.props
+      let site = sites[index]
 
       return(
         <div key={key} style={style}>
-          <ListItem button onClick={() => this.handleClick(sites[index].name)}>
-            <ListItemText primary={<strong>{sites[index].name}</strong>} secondary={
-                sites[index].surveyType ? 
-                <strong style={{ color: sites[index].surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
-                  {sites[index].surveyType.type}
+          <ListItem button onClick={() => this.handleClick(site.name, site.surveyType.type)}>
+            <ListItemText primary={<strong>{site.name}</strong>} secondary={
+                site.surveyType ? 
+                <strong style={{ color: site.surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
+                  {site.surveyType.type}
                 </strong>
                 : <strong>unknown</strong>
               } 
@@ -125,6 +121,17 @@ class SitesList extends Component {
           </ListItem>
         </div>
       )
+  }
+
+  handleClick = (name, type) => {
+    let { showCampaignSites, showContinuousSites } = this.props
+    if(type === 'campaign' && !showCampaignSites) {
+
+    } else if(type === 'continuous' && !showContinuousSites) {
+
+    } else {
+      this.props.setSelectedSite(name)
+    }
   }
 
   render() {
@@ -169,6 +176,6 @@ const mapStateToProps = (state) => {
   return {...state.map}
 }
 
-SitesList = connect(mapStateToProps, { setSelectedSite })(SitesList)
+SitesList = connect(mapStateToProps, mapActions)(SitesList)
 
 export default withStyles(styles)(SitesList);

@@ -103,8 +103,9 @@ class SitesList extends Component {
     this.setState({ sites: withSTypes })
   }
 
-  _rowRenderer = ({index, isScrolling, key, style}) => {
+  _rowRenderer = ({index, isScrolling, key, style }) => {
       const sites = this.state.sites
+      let { showCampaignSites, showContinuousSites } = this.props
       let site = sites[index]
 
       return(

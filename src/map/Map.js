@@ -11,12 +11,9 @@ import { connect } from 'react-redux'
 
 import Paper from 'material-ui/Paper'
 import Checkbox from 'material-ui/Checkbox';
-import {
-    FormLabel,
-    FormControl,
+import { FormControl,
     FormGroup,
     FormControlLabel,
-    FormHelperText,
 } from 'material-ui/Form';
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
@@ -111,17 +108,16 @@ class PhMap extends Component {
     };
     
     componentDidUpdate(prevProps, prevState) {
-        const { mapIsSet, markersCamp, markersCont } = this.state
-        const { showCampaignSites, showContinuousSites, showFaultLines } = this.props
+        const { showFaultLines } = this.props
 
-        if(prevProps.showFaultLines != showFaultLines) {
+        if(prevProps.showFaultLines !== showFaultLines) {
             this.setUpFaults()
         }
 
     }
 
     setUpFaults() {
-        const { toggleShowFaultLines, showFaultLines } = this.props
+        const { showFaultLines } = this.props
         if(showFaultLines) {
             window.faultline.addTo(window.map.leafletElement)
         } else {
@@ -159,7 +155,7 @@ class PhMap extends Component {
     }
     
     render() {
-        const { maxZoom, minZoom, sites, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
+        const { maxZoom, minZoom, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
         const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom } = this.props
         
         let newMarkers = []

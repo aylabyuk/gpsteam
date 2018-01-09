@@ -1,7 +1,9 @@
 import React from 'react'
 
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
+import { persistStore, persistCombineReducers } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
 import { Route } from 'react-router-dom'
 import { requireAuthentication as isAuth } from '../auth/requireAuth'
@@ -36,16 +38,24 @@ const enhancer = composeEnhancers(
   applyMiddleware(routerMid)
 )
 
+// for redux persist
+const config = {
+  key: 'root',
+  storage,
+}
+
 // Add the reducer to your store on the `router` key
 // Also apply our middleware for navigating
 const store = createStore(
-  combineReducers({
+  persistCombineReducers(config, {
     router: routerReducer,
     ...reducers,
     form: formReducer
   }),
   enhancer
 )
+
+const persistor = persistStore(store) 
 
 // Now you can dispatch navigation actions from anywhere!
 // store.dispatch(push('/foo'))

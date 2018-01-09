@@ -15,6 +15,7 @@
     "history": "^4.7.2",
     "leaflet": "^1.2.0",
     "leaflet-extra-markers": "^1.0.6",
+    "leaflet-minimap": "^3.6.0",
     "leaflet-omnivore": "^0.3.4",
     "leaflet.markercluster": "^1.2.0",
     "leaflet.smooth_marker_bouncing": "^1.1.4",
@@ -36,6 +37,7 @@
     "redux": "^3.7.2",
     "redux-form": "^7.2.0",
     "redux-logger": "^3.0.6",
+    "redux-persist": "^5.4.0",
     "redux-thunk": "^2.2.0",
     "typeface-roboto": "0.0.45"
   },

@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { List as RVList, AutoSizer } from 'react-virtualized'
-import L from 'leaflet'
 import { connect } from 'react-redux'
 import { setSelectedSite } from './mapActions'
 
@@ -92,8 +91,6 @@ class SitesList extends Component {
     let a = el.scrollTop
     let b = el.scrollHeight - el.clientHeight
     let c = a / b
-
-    let half =  el.clientHeight / 2
     let current =  c * el.clientHeight
 
     this.follow.style.setProperty('top', current+'px')
@@ -134,7 +131,7 @@ class SitesList extends Component {
 
   render() {
     const { classes } = this.props;
-    const { sites } = this.state;
+    const { sites, currentLetter } = this.state;
 
     return (
       <div className={classes.root}>
@@ -142,9 +139,9 @@ class SitesList extends Component {
             {({width, height}) => (
               <div>
                 <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>
-                  <img ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
+                  <img alt={currentLetter} ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
                   <Avatar style={{top: -75, left: 10 ,width: 60, height: 60, backgroundColor: '#3a4aa6', fontSize: 50}}>
-                    {this.state.currentLetter}
+                    {currentLetter}
                   </Avatar>
                 </div>
                 <RVList

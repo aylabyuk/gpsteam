@@ -61,7 +61,7 @@ class PhMap extends Component {
             sites: client.readQuery({
                 query: gql`
                     {
-                        sites {
+                        sites(order: "name") {
                             id
                             name
                             description

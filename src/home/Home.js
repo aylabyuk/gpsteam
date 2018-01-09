@@ -51,7 +51,7 @@ Home.propTypes = {
 
 export const sitesQuery = gql`
     {
-        sites {
+        sites(order: "name") {
             id
             name
             description

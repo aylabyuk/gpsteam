@@ -88,8 +88,6 @@ class PhMap extends Component {
                 window.map.leafletElement.invalidateSize(true)
             }, 500)
 
-            window.map.leafletElement.setView(marker.getLatLng())
-
             marker.setBouncingOptions({
                 bounceHeight: 10,
                 bounceSpeed: 54,
@@ -199,7 +197,7 @@ class PhMap extends Component {
                         
                         let osm2 = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
                             {minZoom: 0, maxZoom: 13, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});
-                        window.minimap = new L.Control.MiniMap(osm2, { toggleDisplay: true, minimized: true })
+                        window.minimap = new L.Control.MiniMap(osm2, { toggleDisplay: true, minimized: true, position: 'topleft' })
                             .addTo(window.map.leafletElement)
 
                         window.faultline = omnivore.kml('http://localhost:4000/faultline/AF_2017.kml', null, layer)

@@ -107,7 +107,7 @@ class Map extends React.Component {
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
             <SearchBox />
-            <IconButton onClick={this.props.toggleDrawer}>
+            <IconButton onClick={this.props.closeDrawer}>
               <ChevronRightIcon />
             </IconButton>
           </div>
@@ -127,7 +127,7 @@ class Map extends React.Component {
         <div className={classes.drawerInner}>
           <div className={classes.drawerHeader}>
             <SearchBox />
-            <IconButton onClick={this.props.toggleDrawer}>
+            <IconButton onClick={this.props.closeDrawer}>
               <ChevronRightIcon />
             </IconButton>
           </div>

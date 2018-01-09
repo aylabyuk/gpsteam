@@ -15,10 +15,13 @@ export const toggleShowFaultLines = () => ({
     type: 'TOGGLE_SHOWFAULTLINES'
 })
 
-export const toggleDrawer = () => ({
-    type: 'TOGGLE_DRAWER'
+export const openDrawer = () => ({
+    type: 'OPEN_DRAWER'
 })
 
+export const closeDrawer = () => ({
+    type: 'CLOSE_DRAWER'
+})
 
 export const setZoom = (zoom) => ({
     type: 'SET_ZOOM',

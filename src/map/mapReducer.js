@@ -31,10 +31,15 @@ export const mapReducer = (state = initialState , action) => {
                 ...state,
                 showFaultLines: !state.showFaultLines
             }
-        case 'TOGGLE_DRAWER':
+        case 'OPEN_DRAWER':
             return {
                 ...state,
-                drawerOpen: !state.drawerOpen
+                drawerOpen: true
+            }
+        case 'CLOSE_DRAWER':
+            return {
+                ...state,
+                drawerOpen: false
             }
         case 'SET_ZOOM': 
             return {

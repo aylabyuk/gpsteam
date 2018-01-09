@@ -80,7 +80,7 @@ class PhMap extends Component {
 
     handleMarkerClick = (marker) => {
 
-        this.props.toggleDrawer()
+        this.props.openDrawer()
 
         this.props.setSelectedSite(marker.options.icon.options.name)
 
@@ -106,6 +106,10 @@ class PhMap extends Component {
 
         if(prevProps.showFaultLines !== showFaultLines) {
             this.setUpFaults()
+        }
+
+        if(prevProps.selectedSite !== this.props.selectedSite) {
+            console.log('must focus on', this.props.selectedSite)
         }
 
     }
@@ -189,7 +193,7 @@ class PhMap extends Component {
                         )
 
                         map.leafletElement.on('moveend', () => {
-                                this.props.setPosition(map.leafletElement.getCenter())
+                                // this.props.setPosition(map.leafletElement.getCenter())
                             }
                         )
                         
@@ -208,10 +212,10 @@ class PhMap extends Component {
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
 
                 <Control position="topright" >
-                    <div className='leaflet-bar' style={{visibility: this.props.isDrawerOpen ? 'hidden' : 'visible' }}>
+                    <div className='leaflet-bar' style={{visibility: this.props.drawerOpen ? 'hidden' : 'visible' }}>
                         <a className='leaflet-control-custom' onClick={(e) => {
                             e.preventDefault()
-                            this.props.toggleDrawer()
+                            this.props.openDrawer()
 
                             setTimeout(() => {
                                 document.getElementById('search-input').focus()

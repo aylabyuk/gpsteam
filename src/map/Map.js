@@ -17,7 +17,6 @@ import { FormControl,
 
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css'
 import 'leaflet-extra-markers/dist/js/leaflet.extra-markers.min.js'
-import 'font-awesome/css/font-awesome.min.css'
 import 'leaflet/dist/leaflet.css'
 import 'react-leaflet-markercluster/dist/styles.min.css'
 import 'leaflet.smooth_marker_bouncing'
@@ -55,6 +54,7 @@ class PhMap extends Component {
             maxZoom: 18,
             minZoom: 6,
             mapIsSet: false,
+            clusterIsSet: false,
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
             markersCamp: null,
             markersCont: null,
@@ -79,22 +79,8 @@ class PhMap extends Component {
     }
 
     handleMarkerClick = (marker) => {
-
         this.props.openDrawer()
-
         this.props.setSelectedSite(marker.options.icon.options.name)
-
-        marker.setBouncingOptions({
-            bounceHeight: 10,
-            bounceSpeed: 54,
-            exclusive: true,
-            elastic: false
-        })
-
-        if(!marker.isBouncing()) {
-            marker.bounce()
-        }
-
     }
 
     handleChange = name => (event, checked) => {
@@ -110,6 +96,22 @@ class PhMap extends Component {
 
         if(prevProps.selectedSite !== this.props.selectedSite) {
             console.log('must focus on', this.props.selectedSite)
+
+            let marker = window.mapMarkers[this.props.selectedSite]
+            window.map.leafletElement.invalidateSize(true)
+
+            window.cluster.leafletElement.zoomToShowLayer(marker, () => {
+                marker.setBouncingOptions({
+                    bounceHeight: 10,
+                    bounceSpeed: 54,
+                    exclusive: true,
+                    elastic: false
+                })
+        
+                if(!marker.isBouncing()) {
+                    marker.bounce()
+                }
+            })
         }
 
     }
@@ -153,7 +155,7 @@ class PhMap extends Component {
     }
     
     render() {
-        const { maxZoom, minZoom, maxBounds, mapIsSet, markersCamp, markersCont, showSettings } = this.state
+        const { maxZoom, minZoom, maxBounds, mapIsSet, clusterIsSet, markersCamp, markersCont, showSettings } = this.state
         const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom } = this.props
         
         let newMarkers = []
@@ -259,6 +261,15 @@ class PhMap extends Component {
                     onMarkerClick={this.handleMarkerClick}
                     ref={(cluster) => {
                         window.cluster = cluster
+
+                        if(!clusterIsSet && cluster) {
+                            window.mapMarkers = []
+                            window.cluster.leafletElement.getLayers().map(c => {
+                                window.mapMarkers[c.options.icon.options.name] = c
+                            })
+                            this.setState({ clusterIsSet: true })
+                        }
+
                 }}/>
 
             </Map>

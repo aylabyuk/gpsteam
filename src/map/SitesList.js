@@ -46,13 +46,18 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      currentLetter: 'A'
+      currentLetter: 'A',
+      currentRows: []
     };
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
     let letter = this.props.sites[startIndex].name.charAt(0)
     this.setState({ currentLetter: letter })
+
+
+    this.setState({ currentRows: [ startIndex, stopIndex ] })
+
   }
 
   _noRowsRenderer = () => {
@@ -116,13 +121,17 @@ class SitesList extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { selectedSite, sites } = this.props
-    const { shouldFocusOnList } = this.state
+    const { currentRows } = this.state
+    
+    // focus site's row on list
     if(prevProps.selectedSite !== selectedSite) {
       let siteIndex = sites.findIndex(s => {
         return s.name === selectedSite
       })
 
-      this.rvList.scrollToRow(siteIndex)
+      if(!(siteIndex > currentRows[0] && siteIndex < currentRows[1])) {
+        this.rvList.scrollToRow(siteIndex)
+      }
     }
 }
 

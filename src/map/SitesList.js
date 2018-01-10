@@ -69,11 +69,11 @@ class SitesList extends Component {
     if(current <= 90) {
       this.followIcon.style.setProperty('transform', 'scaleY(-1)')
       this.followIcon.style.setProperty('filter', 'FlipV')
-      this.followIcon.style.setProperty('transition', '.1s ease-in-out')
+      // this.followIcon.style.setProperty('transition', '.1s ease-in-out')
     } else {
       this.followIcon.style.setProperty('transform', 'scaleY(1)')
       this.follow.style.setProperty('top', current-90+'px')
-      this.followIcon.style.setProperty('transition', '.1s ease-in-out')
+      // this.followIcon.style.setProperty('transition', '.1s ease-in-out')
     }
   }
 
@@ -96,7 +96,7 @@ class SitesList extends Component {
 
       return(
         <div key={key} style={style}>
-          <ListItem button onClick={() => this.handleClick(site.name, site.surveyType.type)}>
+          <ListItem button onClick={() => this.handleClick(site.name)}>
             <ListItemText primary={<strong>{site.name}</strong>} secondary={
                 site.surveyType ? 
                 <strong style={{ color: site.surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
@@ -110,13 +110,25 @@ class SitesList extends Component {
       )
   }
 
-  handleClick = (name, type) => {
+  handleClick = (name) => {
     this.props.setSelectedSite(name)
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { selectedSite, sites } = this.props
+    const { shouldFocusOnList } = this.state
+    if(prevProps.selectedSite !== selectedSite) {
+      let siteIndex = sites.findIndex(s => {
+        return s.name === selectedSite
+      })
+
+      this.rvList.scrollToRow(siteIndex)
+    }
+}
+
   render() {
     const { classes, sites } = this.props;
-    const { currentLetter, followClassName } = this.state;
+    const { currentLetter, scrollToIndex } = this.state;
 
     return (
       <div className={classes.root}>
@@ -133,6 +145,7 @@ class SitesList extends Component {
                 </div>
                 <RVList
                   id='siteList'
+                  ref={(s) => this.rvList = s}
                   height={height}
                   width={width}
                   noRowsRenderer={this._noRowsRenderer}
@@ -141,7 +154,7 @@ class SitesList extends Component {
                   rowRenderer={this._rowRenderer}
                   onRowsRendered={this._onRowsRendered.bind(this)}
                   onScroll={this._onscroll.bind(this)}
-                  // scrollToIndex={scrollToIndex}
+                  scrollToAlignment='center'
                 />
               </div>
             )}

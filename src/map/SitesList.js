@@ -81,7 +81,6 @@ class SitesList extends Component {
       const { sites } = this.props
       let site = sites[index]
 
-      console.log('scrolling',isScrolling)
       let el = document.getElementById('followParent').classList
       if(isScrolling) {
         el.remove('hidden')

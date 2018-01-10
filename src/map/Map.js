@@ -80,6 +80,7 @@ class PhMap extends Component {
         if(prevProps.selectedSite !== this.props.selectedSite) {
             console.log('must focus on', this.props.selectedSite)
 
+            window.map.leafletElement.invalidateSize()
             let marker = window.mapMarkers[this.props.selectedSite]
 
             window.cluster.leafletElement.zoomToShowLayer(marker, () => {

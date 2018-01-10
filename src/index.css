@@ -37,7 +37,7 @@ body {
 .hidden {
   visibility: hidden;
   opacity: 0;
-  transition: visibility 0s 1s, opacity 1s linear;
+  transition: visibility 0s .4s, opacity .4s linear;
 }
 
 @-webkit-keyframes AnimationName {

@@ -65,7 +65,7 @@ class SitesList extends Component {
 
     setTimeout(() => {
       this.setState({ followClassName: 'hidden' })
-    }, 2000);
+    }, 1000);
 
 
     if(current <= 90) {

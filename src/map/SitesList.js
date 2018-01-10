@@ -45,7 +45,8 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      currentLetter: 'A'
+      currentLetter: 'A',
+      followClassName: 'hidden'
     };
   }
 
@@ -60,6 +61,13 @@ class SitesList extends Component {
 
     this.follow.style.setProperty('top', current+'px')
 
+    this.setState({ followClassName: 'visible' })
+
+    setTimeout(() => {
+      this.setState({ followClassName: 'hidden' })
+    }, 2000);
+
+
     if(current <= 90) {
       this.followIcon.style.setProperty('transform', 'scaleY(-1)')
       this.followIcon.style.setProperty('filter', 'FlipV')
@@ -72,7 +80,7 @@ class SitesList extends Component {
   }
 
   _noRowsRenderer = () => {
-    return <div >No rows</div>;
+    return <div ></div>;
   }
 
   _rowRenderer = ({index, isScrolling, key, style }) => {
@@ -96,30 +104,25 @@ class SitesList extends Component {
   }
 
   handleClick = (name, type) => {
-    let { showCampaignSites, showContinuousSites } = this.props
-    if(type === 'campaign' && !showCampaignSites) {
-
-    } else if(type === 'continuous' && !showContinuousSites) {
-
-    } else {
-      this.props.setSelectedSite(name)
-    }
+    this.props.setSelectedSite(name)
   }
 
   render() {
     const { classes, sites } = this.props;
-    const { currentLetter } = this.state;
+    const { currentLetter, followClassName } = this.state;
 
     return (
       <div className={classes.root}>
         <AutoSizer>
             {({width, height}) => (
               <div>
-                <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>
-                  <img alt={currentLetter} ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
-                  <Avatar style={{top: -75, left: 10 ,width: 60, height: 60, backgroundColor: '#3a4aa6', fontSize: 50}}>
-                    {currentLetter}
-                  </Avatar>
+                <div className={followClassName}>
+                  <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>
+                    <img alt={currentLetter} ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
+                    <Avatar style={{top: -75, left: 10 ,width: 60, height: 60, backgroundColor: '#3a4aa6', fontSize: 50}}>
+                      {currentLetter}
+                    </Avatar>
+                  </div>
                 </div>
                 <RVList
                   id='siteList'

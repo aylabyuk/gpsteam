@@ -29,6 +29,17 @@ body {
     animation: AnimationName 17s ease infinite;
 }
 
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .5s linear;
+}
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 1s, opacity 1s linear;
+}
+
 @-webkit-keyframes AnimationName {
     0%{background-position:0% 17%}
     50%{background-position:100% 84%}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Map, TileLayer,  } from 'react-leaflet'
+import { Map, TileLayer, Popup } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
+import ReactDOMServer from 'react-dom/server';
 
 import L from 'leaflet'
 import SearchIcon from 'material-ui-icons/Search';
@@ -24,8 +25,10 @@ import 'leaflet-minimap/dist/Control.MiniMap.min.css'
 import omnivore from 'leaflet-omnivore'
 import Control from 'react-leaflet-control'
 import * as mapActions from './mapActions'
+import siteCard from './SiteCard';
+import { sitesQuery } from '../home/Home';
+import SiteCard from './SiteCard';
 
-import SiteDetails from './SiteDetails'
 
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
@@ -59,12 +62,14 @@ class PhMap extends Component {
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
             markersCamp: null,
             markersCont: null,
+            popup: false,
         };
     }
 
     handleMarkerClick = (marker) => {
         this.props.openDrawer()
         this.props.setSelectedSite(marker.options.icon.options.name)
+        this.addPopup(marker)
     }
 
     handleChange = name => (event, checked) => {
@@ -144,6 +149,22 @@ class PhMap extends Component {
 
     setClusterIsSetToFalse() {
         this.setState({clusterIsSet: false})
+    }
+
+    // remove the popup when clicked outside the marker
+    removePopup = () => {
+        this.setState({
+            popup: false
+        })
+    }
+
+    addPopup = (marker) => {
+        this.setState({
+            popup: { 
+                site: marker.options.icon.options.name,
+                position: marker.getLatLng()
+            }
+        })
     }
     
     render() {
@@ -248,14 +269,6 @@ class PhMap extends Component {
                     </div>
                 </Control>
 
-                { selectedSite ? <Control position="bottomleft" >
-                    <div className='leaflet-bar' >
-                        <Paper>
-                            <SiteDetails site={selectedSite}/>
-                        </Paper>
-                    </div>
-                </Control> : null }
-
                 <MarkerClusterGroup 
                     markers={newMarkers}
                     onMarkerClick={this.handleMarkerClick}
@@ -269,8 +282,18 @@ class PhMap extends Component {
                             })
                             this.setState({ clusterIsSet: true })
                         }
+                
+                }}
+                
+                />
 
-                }}/>
+                { this.state.popup && 
+                    <Popup
+                        key={`popup-${this.state.popup.site + Math.random()}`}
+                        position={this.state.popup.position} 
+                        children={
+                            <SiteCard site={this.state.popup.site} />
+                        }/>}
 
             </Map>
         )

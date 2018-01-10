@@ -7,30 +7,30 @@ import Typography from 'material-ui/Typography';
 
 const styles = {
   card: {
-    maxWidth: 345,
+    maxWidth: 900,
   },
   media: {
-    height: 200,
+    height: 400,
+    width: 500
   },
 };
 
-function SimpleMediaCard(props) {
+function SiteCard(props) {
   const { classes, site } = props;
   return (
     <div>
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
+          image={`http://localhost:4000/timeseries/${site}.jpg`}
+          title={site}
         />
         <CardContent>
           <Typography type="headline" component="h2">
             {site}
           </Typography>
           <Typography component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
+            content
           </Typography>
         </CardContent>
         <CardActions>
@@ -46,8 +46,8 @@ function SimpleMediaCard(props) {
   );
 }
 
-SimpleMediaCard.propTypes = {
+SiteCard.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SimpleMediaCard);
+export default withStyles(styles)(SiteCard);

@@ -13,6 +13,8 @@ import SearchBox from './SearchBox'
 import PhMap from './Map'
 import SitesList from './SitesList'
 
+import { setSelectedSite } from './mapActions';
+
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -136,7 +138,7 @@ class Map extends React.Component {
   }
   
   render() {
-    const { classes, drawerOpen, showCampaignSites, showContinuousSites  } = this.props;
+    const { classes, drawerOpen, showCampaignSites, showContinuousSites, selectedSite } = this.props;
     const { sites, sitesCamp, sitesCont } = this.state
 
     let list = []

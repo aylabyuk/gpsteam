@@ -28,7 +28,6 @@ const styles = theme => ({
     top: 0,
     right: 0,
     position: 'absolute',
-    zIndex: 999,
     width: '50px',
     height: '50px',
     marginRight:  '40px',

@@ -25,6 +25,8 @@ import omnivore from 'leaflet-omnivore'
 import Control from 'react-leaflet-control'
 import * as mapActions from './mapActions'
 
+import SiteDetails from './SiteDetails'
+
 let campaignIcon = (name) => L.ExtraMarkers.icon({
     icon: 'fa-circle',
     iconColor: 'white',
@@ -146,7 +148,7 @@ class PhMap extends Component {
     
     render() {
         const { maxZoom, minZoom, maxBounds, mapIsSet, clusterIsSet, showSettings, markersCont, markersCamp } = this.state
-        const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom } = this.props
+        const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom , selectedSite} = this.props
 
         let newMarkers = []
         if(window.map) {
@@ -245,6 +247,14 @@ class PhMap extends Component {
                         </div>
                     </div>
                 </Control>
+
+                { selectedSite ? <Control position="bottomleft" >
+                    <div className='leaflet-bar' >
+                        <Paper>
+                            <SiteDetails site={selectedSite}/>
+                        </Paper>
+                    </div>
+                </Control> : null }
 
                 <MarkerClusterGroup 
                     markers={newMarkers}

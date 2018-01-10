@@ -28,6 +28,7 @@ const styles = theme => ({
     top: 0,
     right: 0,
     position: 'absolute',
+    zIndex: 999,
     width: '50px',
     height: '50px',
     marginRight:  '40px',
@@ -39,6 +40,9 @@ const styles = theme => ({
   followIcon: {
     transform: 'scaleY(-1)',
     filter: 'FlipV'
+  },
+  selectedRow: {
+    backgroundColor: '#ecf0f1'
   }
 });
 
@@ -83,7 +87,7 @@ class SitesList extends Component {
   }
 
   _rowRenderer = ({index, isScrolling, key, style }) => {
-      const { sites } = this.props
+      const { sites, selectedSite, classes } = this.props
       let site = sites[index]
 
       let el = document.getElementById('followParent').classList
@@ -100,8 +104,11 @@ class SitesList extends Component {
       }
 
       return(
-        <div key={key} style={style}>
-          <ListItem button onClick={() => this.handleClick(site.name)}>
+        <div key={key} style={{...style}}>
+          <ListItem button onClick={() => this.handleClick(site.name)} classes={{
+            root: selectedSite === site.name ? classes.selectedRow : null
+          }}>
+           {/* ={selectedSite === site.name ? 'primary' : 'accent'}> */}
             <ListItemText primary={<strong>{site.name}</strong>} secondary={
                 site.surveyType ? 
                 <strong style={{ color: site.surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>

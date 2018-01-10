@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import * as mapActions from './mapActions'
 
 import Follow from '../follow.svg'
+import { setTimeout } from 'timers';
 
 const styles = theme => ({
   root: {
@@ -45,28 +46,25 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      currentLetter: 'A',
-      followClassName: 'hidden'
+      currentLetter: 'A'
     };
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
     let letter = this.props.sites[startIndex].name.charAt(0)
     this.setState({ currentLetter: letter })
-    const el = document.getElementById('siteList')
-    let a = el.scrollTop
-    let b = el.scrollHeight - el.clientHeight
-    let c = a / b
-    let current =  c * el.clientHeight
+  }
+
+  _noRowsRenderer = () => {
+    return <div ></div>;
+  }
+
+  _onscroll = ({ clientHeight, scrollHeight, scrollTop }) => {
+    let b = scrollHeight - clientHeight
+    let c = scrollTop / b
+    let current =  c * clientHeight
 
     this.follow.style.setProperty('top', current+'px')
-
-    this.setState({ followClassName: 'visible' })
-
-    setTimeout(() => {
-      this.setState({ followClassName: 'hidden' })
-    }, 1000);
-
 
     if(current <= 90) {
       this.followIcon.style.setProperty('transform', 'scaleY(-1)')
@@ -79,13 +77,23 @@ class SitesList extends Component {
     }
   }
 
-  _noRowsRenderer = () => {
-    return <div ></div>;
-  }
-
   _rowRenderer = ({index, isScrolling, key, style }) => {
       const { sites } = this.props
       let site = sites[index]
+
+      console.log('scrolling',isScrolling)
+      let el = document.getElementById('followParent').classList
+      if(isScrolling) {
+        el.remove('hidden')
+        el.add('visible')
+      } else {
+
+        setTimeout(() => {
+          el.remove('visible')
+          el.add('hidden')
+        }, 1000)
+
+      }
 
       return(
         <div key={key} style={style}>
@@ -116,7 +124,7 @@ class SitesList extends Component {
         <AutoSizer>
             {({width, height}) => (
               <div>
-                <div className={followClassName}>
+                <div id='followParent'>
                   <div id='follow' ref={(f) => { this.follow = f }} className={classes.follow}>
                     <img alt={currentLetter} ref={(f) => { this.followIcon = f }} width={80} height={80} src={Follow} />
                     <Avatar style={{top: -75, left: 10 ,width: 60, height: 60, backgroundColor: '#3a4aa6', fontSize: 50}}>
@@ -133,6 +141,7 @@ class SitesList extends Component {
                   rowHeight={70}
                   rowRenderer={this._rowRenderer}
                   onRowsRendered={this._onRowsRendered.bind(this)}
+                  onScroll={this._onscroll.bind(this)}
                   // scrollToIndex={scrollToIndex}
                 />
               </div>

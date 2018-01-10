@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { Map, TileLayer,  } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
-import { client } from '../index'
-import gql from 'graphql-tag';
+
 import L from 'leaflet'
 import SearchIcon from 'material-ui-icons/Search';
 import LayersIcon from 'material-ui-icons/Layers';
@@ -58,23 +57,6 @@ class PhMap extends Component {
             maxBounds: new L.LatLngBounds([2.6138389710984824, 103.38134765625001], [21.555284406923192, 145.56884765625003]),
             markersCamp: null,
             markersCont: null,
-            sites: client.readQuery({
-                query: gql`
-                    {
-                        sites(order: "name") {
-                            id
-                            name
-                            description
-                            location
-                            longitude
-                            latitude
-                            surveyType {
-                                type
-                            }
-                        }
-                    }
-                `
-                }),
         };
     }
 
@@ -102,7 +84,7 @@ class PhMap extends Component {
 
             window.cluster.leafletElement.zoomToShowLayer(marker, () => {
 
-                window.map.leafletElement.invalidateSize(true)
+                // window.map.leafletElement.invalidateSize(true)
 
                 marker.setBouncingOptions({
                     bounceHeight: 10,
@@ -130,7 +112,7 @@ class PhMap extends Component {
 
     componentDidMount() {
 
-        const markers = this.state.sites.sites.filter(s => {
+        const markers = this.props.sites.filter(s => {
             return s.latitude && s.surveyType
         }).map(s => {
             return {
@@ -162,9 +144,9 @@ class PhMap extends Component {
     }
     
     render() {
-        const { maxZoom, minZoom, maxBounds, mapIsSet, clusterIsSet, markersCamp, markersCont, showSettings } = this.state
+        const { maxZoom, minZoom, maxBounds, mapIsSet, clusterIsSet, showSettings, markersCont, markersCamp } = this.state
         const {showCampaignSites, showContinuousSites, showFaultLines, position, zoom } = this.props
-        
+
         let newMarkers = []
         if(window.map) {
             let camp, cont

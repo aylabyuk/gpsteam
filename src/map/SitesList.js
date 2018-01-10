@@ -1,8 +1,6 @@
 import React, { Component }  from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
-import { client } from '../index'
-import gql from 'graphql-tag';
 import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import { List as RVList, AutoSizer } from 'react-virtualized'
@@ -47,29 +45,12 @@ class SitesList extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      currentLetter: 'A',
-      sites: client.readQuery({
-          query: gql`
-              {
-                  sites(order: "name") {
-                      id
-                      name
-                      description
-                      location
-                      longitude
-                      latitude
-                      surveyType {
-                          type
-                      }
-                  }
-              }
-          `
-          })
+      currentLetter: 'A'
     };
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
-    let letter = this.state.sites[startIndex].name.charAt(0)
+    let letter = this.props.sites[startIndex].name.charAt(0)
     this.setState({ currentLetter: letter })
     const el = document.getElementById('siteList')
     let a = el.scrollTop
@@ -94,18 +75,8 @@ class SitesList extends Component {
     return <div >No rows</div>;
   }
 
-  componentWillMount() {
-    // remove undefined surveytypes and undefined coordinates
-    let withSTypes = this.state.sites.sites.filter(s => {
-      return s.surveyType && s.latitude && s.longitude
-    })
-
-    this.setState({ sites: withSTypes })
-  }
-
   _rowRenderer = ({index, isScrolling, key, style }) => {
-      const sites = this.state.sites
-      let { showCampaignSites, showContinuousSites } = this.props
+      const { sites } = this.props
       let site = sites[index]
 
       return(
@@ -136,8 +107,8 @@ class SitesList extends Component {
   }
 
   render() {
-    const { classes } = this.props;
-    const { sites, currentLetter } = this.state;
+    const { classes, sites } = this.props;
+    const { currentLetter } = this.state;
 
     return (
       <div className={classes.root}>

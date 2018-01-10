@@ -6,6 +6,8 @@ import { Drawer, IconButton, Hidden } from 'material-ui/';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
 import { connect } from 'react-redux'
 import * as mapActions from './mapActions'
+import { client } from '../index'
+import gql from 'graphql-tag';
 
 import SearchBox from './SearchBox'
 import PhMap from './Map'
@@ -91,9 +93,62 @@ const styles = theme => ({
 });
 
 class Map extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      sites: client.readQuery({
+        query: gql`
+            {
+                sites(order: "name") {
+                    id
+                    name
+                    description
+                    location
+                    longitude
+                    latitude
+                    surveyType {
+                        type
+                    }
+                }
+            }
+        `
+        }),
+        sitesCamp: null,
+        sitesCont: null
+    }
+  }
+
+  componentWillMount() {
+    // remove undefined surveytypes and undefined coordinates
+    let filtered = this.state.sites.sites.filter(s => {
+      return s.surveyType && s.latitude && s.longitude
+    })
+
+    let sitesCamp = filtered.filter(s => {
+      return s.surveyType.type === 'campaign'
+    })
+
+    let sitesCont = filtered.filter(s => {
+      return s.surveyType.type === 'continuous'
+    })
+
+    this.setState({ sites: filtered, sitesCamp, sitesCont })
+  }
   
   render() {
-    const { classes, setSelectedSite, selectedSite, drawerOpen } = this.props;
+    const { classes, drawerOpen, showCampaignSites, showContinuousSites  } = this.props;
+    const { sites, sitesCamp, sitesCont } = this.state
+
+    let list = []
+    if(showCampaignSites) {
+      list = sitesCamp
+    }
+    if(showContinuousSites) {
+      list = sitesCont
+    }
+    if(showCampaignSites && showContinuousSites) {
+      list = sitesCont.concat(sitesCamp)
+    }
 
     const drawerRight = (
       <Drawer
@@ -111,7 +166,7 @@ class Map extends React.Component {
               <ChevronRightIcon />
             </IconButton>
           </div>
-          <SitesList />
+          <SitesList sites={list}/>
         </div>
       </Drawer>
     );
@@ -131,7 +186,7 @@ class Map extends React.Component {
               <ChevronRightIcon />
             </IconButton>
           </div>
-          <SitesList />
+          <SitesList sites={list}/>
         </div>
       </Drawer>
     );
@@ -145,7 +200,7 @@ class Map extends React.Component {
               [classes[`contentShift-margin`]]: drawerOpen,
             })}
           >
-            <PhMap />
+            <PhMap sites={sites}/>
           </main>
           <Hidden smDown>{drawerRight}</Hidden>
           <Hidden smUp>{drawerBottom}</Hidden>

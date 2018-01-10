@@ -15,7 +15,7 @@ import { rootReducers as reducers } from './reducers'
 import App from './App'
 import Auth from '../auth/Auth'
 import Home from '../home/Home'
-import logger from 'redux-logger'
+// import logger from 'redux-logger'
 import thunk from 'redux-thunk'
 
 import createHistory from 'history/createBrowserHistory'
@@ -33,7 +33,7 @@ const history = createHistory()
 const routerMid = routerMiddleware(history)
 
 const enhancer = composeEnhancers(
-  applyMiddleware(logger),
+  // applyMiddleware(logger),
   applyMiddleware(thunk),
   applyMiddleware(routerMid)
 )

@@ -42,6 +42,7 @@ function SiteCard(props) {
           </Button>
         </CardActions>
       </Card>
+      <center><div className="arrow-down" /></center>
     </div>
   );
 }

@@ -143,7 +143,7 @@ class SitesList extends Component {
 
   render() {
     const { classes, sites } = this.props;
-    const { currentLetter, scrollToIndex } = this.state;
+    const { currentLetter } = this.state;
 
     return (
       <div className={classes.root}>

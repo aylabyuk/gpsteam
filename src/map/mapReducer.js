@@ -6,7 +6,7 @@ const initialState = {
     drawerOpen: false,
     enableCluster: true,
     position: [ 12.8797,  121.7740 ],
-    zoom: 6,
+    zoom: 6
 }
 
 export const mapReducer = (state = initialState , action) => {

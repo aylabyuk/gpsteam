@@ -191,7 +191,11 @@ class PhMap extends Component {
 
                         map.leafletElement.on('moveend', () => {
                                 setTimeout( ()=> { 
-                                    this.props.setPosition(map.leafletElement.getCenter())
+                                    try {
+                                        this.props.setPosition(map.leafletElement.getCenter())
+                                    } catch (error) {
+                                        // console.log('Disregard this error: ',error)
+                                    }
                                 }, 2000)
                             }
                         )
@@ -281,7 +285,7 @@ class PhMap extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return {...state.map}
+    return {...state.map, ...state.router.location}
 }
 
 export default connect(mapStateToProps, mapActions)(PhMap)

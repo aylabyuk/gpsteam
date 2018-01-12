@@ -4,12 +4,9 @@ import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
 import Button from 'material-ui/Button';
-import Paper from 'material-ui/Paper';
 import { List as RVList, AutoSizer } from 'react-virtualized'
 import { connect } from 'react-redux'
 import * as mapActions from './mapActions'
-
-import SiteCard from './SiteCard'
 
 import Follow from '../follow.svg'
 import { setTimeout } from 'timers';

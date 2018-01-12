@@ -184,6 +184,7 @@ class PhMap extends Component {
                         } })
 
                         map.leafletElement.on('zoomend', () => {
+                                map.leafletElement.invalidateSize()
                                 this.props.setZoom(map.leafletElement.getZoom())
                             }
                         )
@@ -194,6 +195,10 @@ class PhMap extends Component {
                                 }, 2000)
                             }
                         )
+
+                        map.leafletElement.on('resize', () => {
+                            map.leafletElement.invalidateSize()
+                        })
                         
                         let osm2 = new L.TileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
                             {minZoom: 0, maxZoom: 13, attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'});

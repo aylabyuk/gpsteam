@@ -64,11 +64,17 @@ class PhMap extends Component {
     handleMarkerClick = (marker) => {
         this.props.openDrawer()
         this.props.setSelectedSite(marker.options.icon.options.name)
+        window.rvList.recomputeRowHeights()
     }
 
     handleChange = name => (event, checked) => {
         this.props[name]()
         this.setClusterIsSetToFalse()
+
+        if(name === 'toggleShowCampaignSites' || name === 'toggleShowContinuousSites') {
+            window.rvList.recomputeRowHeights()
+        }
+
     };
     
     componentDidUpdate(prevProps, prevState) {

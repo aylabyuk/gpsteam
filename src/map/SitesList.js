@@ -3,9 +3,13 @@ import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 import { ListItem, ListItemText } from 'material-ui/List';
+import Button from 'material-ui/Button';
+import Paper from 'material-ui/Paper';
 import { List as RVList, AutoSizer } from 'react-virtualized'
 import { connect } from 'react-redux'
 import * as mapActions from './mapActions'
+
+import SiteCard from './SiteCard'
 
 import Follow from '../follow.svg'
 import { setTimeout } from 'timers';
@@ -40,9 +44,6 @@ const styles = theme => ({
     transform: 'scaleY(-1)',
     filter: 'FlipV'
   },
-  selectedRow: {
-    backgroundColor: '#ecf0f1'
-  }
 });
 
 class SitesList extends Component {
@@ -52,6 +53,7 @@ class SitesList extends Component {
       currentLetter: 'A',
       currentRows: []
     };
+    this._getRowHeight = this._getRowHeight.bind(this);
   }
 
   _onRowsRendered({ startIndex, stopIndex }) {
@@ -102,20 +104,22 @@ class SitesList extends Component {
 
       }
 
+      let isSelected = selectedSite === site.name ? true : false
+
       return(
-        <div key={key} style={{...style}}>
-          <ListItem button onClick={() => this.handleClick(site.name)} classes={{
-            root: selectedSite === site.name ? classes.selectedRow : null
-          }}>
-           {/* ={selectedSite === site.name ? 'primary' : 'accent'}> */}
-            <ListItemText primary={<strong>{site.name}</strong>} secondary={
-                site.surveyType ? 
-                <strong style={{ color: site.surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e' }}>
-                  {site.surveyType.type}
-                </strong>
-                : <strong>unknown</strong>
-              } 
+        <div key={key} style={{...style, backgroundColor: isSelected ? '#FFF' : '#ecf0f1' }}>
+          <ListItem button={!isSelected} 
+            onClick={() => this.handleClick(site.name)} style={{display: 'flex', flexDirection: 'column', height: '100%', alignItems: 'baseline'}}>
+            <ListItemText primary={<strong style={{color: site.surveyType.type === 'campaign' ? '#1e9cd8' : '#bf539e'}}>
+              {site.name}</strong>} secondary={
+                site.surveyType ?
+                  <span>
+                    {site.location}
+                  </span>
+                : <span>unknown</span>
+              }
             />
+            {isSelected && <Button color='accent' style={{ alignSelf: 'flex-end', marginBottom: '15px' }}>view details</Button>}
           </ListItem>
         </div>
       )
@@ -123,6 +127,7 @@ class SitesList extends Component {
 
   handleClick = (name) => {
     this.props.setSelectedSite(name)
+    this.rvList.recomputeRowHeights()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -139,7 +144,18 @@ class SitesList extends Component {
         this.rvList.scrollToRow(siteIndex)
       }
     }
-}
+  }
+
+  _getRowHeight({index}) {
+    let { selectedSite, sites } = this.props
+
+    if(sites[index].name === selectedSite) {
+      return 200
+    } else {
+      return 75
+    }
+
+  }
 
   render() {
     const { classes, sites } = this.props;
@@ -160,12 +176,13 @@ class SitesList extends Component {
                 </div>
                 <RVList
                   id='siteList'
-                  ref={(s) => this.rvList = s}
+                  ref={(s) => {this.rvList = s 
+                    window.rvList = s }}
                   height={height}
                   width={width}
                   noRowsRenderer={this._noRowsRenderer}
                   rowCount={sites.length}
-                  rowHeight={70}
+                  rowHeight={this._getRowHeight}
                   rowRenderer={this._rowRenderer}
                   onRowsRendered={this._onRowsRendered.bind(this)}
                   onScroll={this._onscroll.bind(this)}
